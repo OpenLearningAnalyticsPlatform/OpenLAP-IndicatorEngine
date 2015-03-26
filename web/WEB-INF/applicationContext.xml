@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ /*
+  ~  * Copyright (C) 2015  Tanmaya Mahapatra
+  ~  *
+  ~  * This program is free software; you can redistribute it and/or
+  ~  * modify it under the terms of the GNU General Public License
+  ~  * as published by the Free Software Foundation; either version 2
+  ~  * of the License, or (at your option) any later version.
+  ~  *
+  ~  * This program is distributed in the hope that it will be useful,
+  ~  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  * GNU General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program; if not, write to the Free Software
+  ~  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  ~  */
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:flow="http://www.springframework.org/schema/webflow-config"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config.xsd">
+
+    <!-- For Enabling Annotation-based wiring-->
+    <context:annotation-config/>
+
+    <!-- Load in application properties reference -->
+    <bean id="applicationProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:goalla.properties"/>
+    </bean>
+
+    <!-- For Threading -->
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="${Thread.corePoolSize}" />
+        <property name="maxPoolSize" value="${Thread.maxPoolSize}" />
+        <property name="queueCapacity" value="${Thread.queueCapacity}" />
+    </bean>
+
+    <!-- Data Source Bean : Accesses the Database -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName"  value="${db.driver}"></property>
+        <property name="url" value="${db.url}"></property>
+        <property name="username" value="${db.username}"></property>
+        <property name="password" value="${db.password}"></property>
+    </bean>
+
+    <!-- Hibernate Session Factory Bean Configuration -->
+    <bean id="goalLAHibernateSessionFactory"  class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        <property name="packagesToScan" value="com.goalla.datamodel"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="current_session_context_class">thread</prop>
+                <prop key="connection.pool_size">10</prop>
+                <prop key="hibernate.connection.url">jdbc:sqlserver://Lenovo-PC:1433;databaseName=Goal_LA</prop>
+                <prop key="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</prop>
+
+            </props>
+        </property>
+    </bean>
+
+    <!-- For Transaction Management -->
+    <tx:annotation-driven />
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="goalLAHibernateSessionFactory" />
+    </bean>
+
+    <!-- Bean for Accessing Data from i9-->
+    <bean id="learningContextDatai9"
+          class="com.goalla.learningcontextdata.ContextData">
+        <property name="appID" value="${LearningContext.appId}"/>
+        <property name="appSecret" value ="${LearningContext.appSecret}"/>
+        <property name="username" value = "${LearningContext.username}"/>
+        <property name="password" value ="${LearningContext.password}"/>
+        <property name="taskExecutor" ref="taskExecutor"/>
+        <property name="server" value="http://api.learning-context.de/"/>
+        <property name="version" value="3"/>
+    </bean>
+
+    <!-- Mail Bean : For Sending Emails-->
+    <bean id="mail"
+          class="com.goalla.email.MailPackage">
+        <constructor-arg value="${mail.id}" />
+        <constructor-arg value="${mail.password}"/>
+        <property name="toEmail"><null/></property>
+        <property name="mailServerProperties">
+            <props>
+                <prop key="mail.smtp.host">smtp.gmail.com</prop>
+                <prop key="mail.smtp.socketFactory.port">465</prop>
+                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.port">465</prop>
+            </props>
+        </property>
+    </bean>
+    <!-- Drools Bean-->
+    <bean id="drooltest"
+          class="com.goalla.droolstest.Purchase">
+        <property name="total" value="27"/>
+        <property name="tacoCount" value="12"/>
+        <property name="drinkIncluded" value="true"/>
+    </bean>
+
+    <bean id="userDetails"
+          class="com.goalla.dao.UserCredentialsDaoImpl">
+    </bean>
+    <bean id="userRoleDetails"
+          class="com.goalla.dao.SecurityRoleEntityDaoImpl">
+    </bean>
+    <bean id="glaUser"
+          class="com.goalla.dao.GLAUserDaoImpl">
+    </bean>
+    <bean id="glaCategory"
+          class="com.goalla.dao.GLACategoryDaoImpl">
+    </bean>
+    <bean id="glaEntity"
+          class="com.goalla.dao.GLAEntityDaoImpl">
+    </bean>
+    <bean id="glaEvent"
+          class="com.goalla.dao.GLAEventDaoImpl">
+    </bean>
+    <bean id="encoder"
+           class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+    </bean>
+</beans>

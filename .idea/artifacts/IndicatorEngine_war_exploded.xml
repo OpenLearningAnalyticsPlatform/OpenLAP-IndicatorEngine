@@ -7,6 +7,27 @@
         <element id="directory" name="classes">
           <element id="module-output" name="IndicatorEngine" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Spring-4.1.6.RELEASE" />
+          <element id="library" level="project" name="Spring Data JPA-1.3.3" />
+          <element id="library" level="project" name="Spring Batch-2.2.6" />
+          <element id="library" level="project" name="Spring Integration-4.0.3" />
+          <element id="library" level="project" name="Spring Security-3.2.5" />
+          <element id="library" level="project" name="Spring Webflow-2.4.0" />
+          <element id="library" level="project" name="Spring Web Services-2.0.2" />
+          <element id="library" level="project" name="Spring MVC-4.1.6.RELEASE" />
+          <element id="library" level="project" name="Hibernate 4.2.2-4.2.2" />
+          <element id="library" level="project" name="gson-2.2.4" />
+          <element id="library" level="project" name="httpclient-4.4" />
+          <element id="library" level="project" name="httpcore-4.4" />
+          <element id="library" level="project" name="commons-io-2.4" />
+          <element id="library" level="project" name="log4j-1.2.14" />
+          <element id="library" level="project" name="Drools-5.4.0" />
+          <element id="library" level="project" name="ant:ant-javamail:1.6" />
+          <element id="library" level="project" name="org.fluttercode.datafactory:datafactory:0.8" />
+          <element id="library" level="project" name="javax.mail:mail:1.4" />
+          <element id="library" level="project" name="sqljdbc4" />
+        </element>
       </element>
     </root>
   </artifact>

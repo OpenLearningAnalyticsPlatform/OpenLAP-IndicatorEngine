@@ -1,0 +1,86 @@
+MailPackage mailBean = (MailPackage) context.getBean("Mail");
+        //goalLABean.fetchDatai9();
+        mailBean.sendMail("tanmaya.linuxaddict@gmail.com", "OTP", OTP.generatePassword(), false, "src//License.txt");
+        //Purchase droolsbean = (Purchase ) context.getBean("drooltest");
+        //droolsbean.testRules();
+        //List<UserAuthentication> contacts = mbean.displayall();
+                //for (UserAuthentication con : contacts) {
+                 //  System.out.println("---------------------------------------------------");
+                 //  System.out.println(con.toString());
+               // }
+
+
+               GenerateTestData userTestData = new GenerateTestData();
+                       for(int i =1 ; i<=1000; i++)
+                           mbean.add(userTestData.generateUserData());
+                           Set<GLAEntity> obj = new HashSet<GLAEntity>(2);
+                                   obj.add(new GLAEntity("XYZ","123"));
+                                   obj.add(new GLAEntity("PQR","345"));
+                                   ;
+
+
+List of URLS
+
+http://www.codejava.net/frameworks/hibernate/hibernate-one-to-one-mapping-with-foreign-key-annotations-example
+http://www.tutorialspoint.com/hibernate/hibernate_many_to_many_mapping.htm
+http://www.tutorialspoint.com/hibernate/hibernate_many_to_one_mapping.htm
+http://www.tutorialspoint.com/hibernate/hibernate_one_to_many_mapping.htm
+http://www.mkyong.com/hibernate/hibernate-one-to-many-relationship-example-annotation/
+http://www.tutorialspoint.com/hibernate/hibernate_criteria_queries.htm
+
+<http>
+        <intercept-url pattern="/login" filters="none"/>
+        <intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <form-login login-page="/login"
+                    authentication-failure-url="/login.do?error=failed"
+                    login-processing-url="/processlogin" />
+        <logout logout-url="/logoff-please.do"
+                logout-success-url="/logoff.html" />
+    </http>
+
+    <beans:bean id="daoAuthenticationProvider"
+                class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <beans:property name="userDetailsService" ref="userDetailsService"/>
+    </beans:bean>
+
+    <beans:bean id="authenticationManager"
+                class="org.springframework.security.authentication.ProviderManager">
+        <beans:property name="providers">
+            <beans:list>
+                <beans:ref local="daoAuthenticationProvider" />
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+
+    <beans:bean id="userDetailsService" class="com.goalla.model.UserDetailsServiceImpl"/>
+
+
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <user name="tanmaya" password="123456" authorities="ROLE_ADMIN" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+
+
+    *****************
+
+
+@Entity
+@Table(name = "gla_Category")
+public final class GLACategory implements Serializable {
+@Id
+@Column(name = "category_id",unique = true, nullable = false)
+@GeneratedValue(strategy = IDENTITY)
+private long id;
+@Column(name = "major", nullable = false)
+private String major;
+@Column(name = "minor", nullable = false)
+private String minor;
+@Column(name = "type", nullable = false)
+private String type;
+@OneToMany(fetch = FetchType.LAZY, mappedBy = "glaCategory")
+private Set<GLAEvent> events = new HashSet<GLAEvent>(0);
+//Ignore constructors, Setter/Getters
+}

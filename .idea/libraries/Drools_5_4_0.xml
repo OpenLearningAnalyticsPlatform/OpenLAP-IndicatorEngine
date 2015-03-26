@@ -1,0 +1,52 @@
+<component name="libraryTable">
+  <library name="Drools-5.4.0" type="Drools">
+    <properties version="5.4.0" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/drools-decisiontables-5.4.0.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/drools-jsr94-5.4.0.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/drools-clips-5.4.0.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/drools-persistence-jpa-5.4.0.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/drools-templates-5.4.0.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/drools-verifier-5.4.0.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/knowledge-internal-api-5.4.0.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/knowledge-api-5.4.0.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/drools-compiler-5.4.0.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/antlr-runtime-3.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/bcmail-jdk14-138.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/antlr-3.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ecj-3.5.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/guava-r06.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/drools-core-5.4.0.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jsr94-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/bcprov-jdk14-138.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jta-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javassist-3.14.0-GA.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/log4j-1.2.14.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/itext-2.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.6.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/stringtemplate-3.2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jxl-2.6.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xpp3_min-1.1.4c.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/protobuf-java-2.4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xml-apis-1.3.04.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/mvel2-2.1.0.drools16.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xstream-1.4.1.jar!/" />
+      <root url="file://$PROJECT_DIR$/lib/droolsjbpm-introduction-docs-5.4.0.Final.jdocbook" />
+      <root url="jar://$PROJECT_DIR$/lib/antlr-2.7.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/dom4j-1.6.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/hibernate-jpa-2.0-api-1.0.1.Final.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/drools-clips-5.4.0.Final-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/drools-decisiontables-5.4.0.Final-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/drools-compiler-5.4.0.Final-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/drools-jsr94-5.4.0.Final-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/drools-persistence-jpa-5.4.0.Final-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/drools-templates-5.4.0.Final-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/drools-verifier-5.4.0.Final-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/knowledge-api-5.4.0.Final-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/drools-core-5.4.0.Final-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

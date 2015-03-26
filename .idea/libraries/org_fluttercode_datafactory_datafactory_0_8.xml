@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="org.fluttercode.datafactory:datafactory:0.8" type="repository">
+    <properties maven-id="org.fluttercode.datafactory:datafactory:0.8" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/datafactory-0.8.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

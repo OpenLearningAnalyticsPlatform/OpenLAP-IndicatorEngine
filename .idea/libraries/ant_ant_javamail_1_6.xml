@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="ant:ant-javamail:1.6" type="repository">
+    <properties maven-id="ant:ant-javamail:1.6" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/ant-javamail-1.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
