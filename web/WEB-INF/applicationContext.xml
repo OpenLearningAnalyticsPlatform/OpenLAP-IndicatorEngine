@@ -32,7 +32,7 @@
 
     <!-- Load in application properties reference -->
     <bean id="applicationProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:goalla.properties"/>
+        <property name="location" value="classpath:IndicatorEngine.properties"/>
     </bean>
 
     <!-- For Threading -->
@@ -53,7 +53,7 @@
     <!-- Hibernate Session Factory Bean Configuration -->
     <bean id="goalLAHibernateSessionFactory"  class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"></property>
-        <property name="packagesToScan" value="com.goalla.datamodel"/>
+        <property name="packagesToScan" value="com.indicator_engine.datamodel"/>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
@@ -76,7 +76,7 @@
 
     <!-- Bean for Accessing Data from i9-->
     <bean id="learningContextDatai9"
-          class="com.goalla.learningcontextdata.ContextData">
+          class="com.indicator_engine.learningcontextdata.ContextData">
         <property name="appID" value="${LearningContext.appId}"/>
         <property name="appSecret" value ="${LearningContext.appSecret}"/>
         <property name="username" value = "${LearningContext.username}"/>
@@ -88,7 +88,7 @@
 
     <!-- Mail Bean : For Sending Emails-->
     <bean id="mail"
-          class="com.goalla.email.MailPackage">
+          class="com.indicator_engine.email.MailPackage">
         <constructor-arg value="${mail.id}" />
         <constructor-arg value="${mail.password}"/>
         <property name="toEmail"><null/></property>
@@ -104,29 +104,29 @@
     </bean>
     <!-- Drools Bean-->
     <bean id="drooltest"
-          class="com.goalla.droolstest.Purchase">
+          class="com.indicator_engine.droolstest.Purchase">
         <property name="total" value="27"/>
         <property name="tacoCount" value="12"/>
         <property name="drinkIncluded" value="true"/>
     </bean>
 
     <bean id="userDetails"
-          class="com.goalla.dao.UserCredentialsDaoImpl">
+          class="com.indicator_engine.dao.UserCredentialsDaoImpl">
     </bean>
     <bean id="userRoleDetails"
-          class="com.goalla.dao.SecurityRoleEntityDaoImpl">
+          class="com.indicator_engine.dao.SecurityRoleEntityDaoImpl">
     </bean>
     <bean id="glaUser"
-          class="com.goalla.dao.GLAUserDaoImpl">
+          class="com.indicator_engine.dao.GLAUserDaoImpl">
     </bean>
     <bean id="glaCategory"
-          class="com.goalla.dao.GLACategoryDaoImpl">
+          class="com.indicator_engine.dao.GLACategoryDaoImpl">
     </bean>
     <bean id="glaEntity"
-          class="com.goalla.dao.GLAEntityDaoImpl">
+          class="com.indicator_engine.dao.GLAEntityDaoImpl">
     </bean>
     <bean id="glaEvent"
-          class="com.goalla.dao.GLAEventDaoImpl">
+          class="com.indicator_engine.dao.GLAEventDaoImpl">
     </bean>
     <bean id="encoder"
            class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">

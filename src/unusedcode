@@ -52,7 +52,7 @@ http://www.tutorialspoint.com/hibernate/hibernate_criteria_queries.htm
         </beans:property>
     </beans:bean>
 
-    <beans:bean id="userDetailsService" class="com.goalla.model.UserDetailsServiceImpl"/>
+    <beans:bean id="userDetailsService" class="com.indicator_engine.model.UserDetailsServiceImpl"/>
 
 
     <authentication-manager>
