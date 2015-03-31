@@ -219,7 +219,7 @@ public class ToolkitAdminController {
         GLAUserDao glauserBean = (GLAUserDao) appContext.getBean("glaUser");
         List<GLAUser> glaUserListList = glauserBean.loadUsersRange(pageDisplayLength);
         //Here is server side pagination logic. Based on the page number you could make call
-        //to the data base create new list and send back to the client. For demo I am shuffling
+        //to the data base create new list and send back to the client. For demo IndicatorPreProcessing am shuffling
         //the same list to show data randomly
         // Paging & searching Logic still has to be done
         if (pageNumber == 1) {
@@ -260,7 +260,7 @@ public class ToolkitAdminController {
         GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
         List<GLAEvent> glaEventList = glaEventBean.loadEventRange(pageDisplayLength);
         //Here is server side pagination logic. Based on the page number you could make call
-        //to the data base create new list and send back to the client. For demo I am shuffling
+        //to the data base create new list and send back to the client. For demo IndicatorPreProcessing am shuffling
         //the same list to show data randomly
         // Paging & searching Logic still has to be done
         if (pageNumber == 1) {
@@ -301,7 +301,7 @@ public class ToolkitAdminController {
         GLACategoryDao glacategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
         List<GLACategory> glaCategoryList = glacategoryBean.loadCategoryRange(pageDisplayLength);
         //Here is server side pagination logic. Based on the page number you could make call
-        //to the data base create new list and send back to the client. For demo I am shuffling
+        //to the data base create new list and send back to the client. For demo IndicatorPreProcessing am shuffling
         //the same list to show data randomly
         // Paging & searching Logic still has to be done
         if (pageNumber == 1) {
@@ -342,7 +342,7 @@ public class ToolkitAdminController {
         GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
         List<GLAEntity> glaEntityList = glaEntityBean.loadEntitesRange(pageDisplayLength);
         //Here is server side pagination logic. Based on the page number you could make call
-        //to the data base create new list and send back to the client. For demo I am shuffling
+        //to the data base create new list and send back to the client. For demo IndicatorPreProcessing am shuffling
         //the same list to show data randomly
         // Paging & searching Logic still has to be done
         if (pageNumber == 1) {

@@ -54,7 +54,7 @@ public class LoginController {
     public ModelAndView LoginController() {
 
         ModelAndView model = new ModelAndView();
-        model.setViewName("welcome");
+        model.setViewName("app/welcome");
         return model;
     }
 
@@ -62,7 +62,7 @@ public class LoginController {
     public String getLogin(Map<String, Object> model) {
         LoginForm loginForm = new LoginForm();
         model.put("loginForm", loginForm);
-        return "login";
+        return "app/login";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -104,7 +104,7 @@ public class LoginController {
         }
         if (authid && activation_status) {
             String sid = session.getId();
-            model = new ModelAndView("home");
+            model = new ModelAndView("app/home");
             model.addObject("sid", sid);
             model.addObject("loggedIn", "true");
             model.addObject("userName", sessionUserName);
@@ -113,7 +113,7 @@ public class LoginController {
             model.addObject("admin_access", admin_role);
         } else if (authid && !activation_status) {
             String sid = session.getId();
-            model = new ModelAndView("activate");
+            model = new ModelAndView("app/activate");
             model.addObject("sid", sid);
             model.addObject("loggedIn", "true");
             model.addObject("userName", sessionUserName);
@@ -121,13 +121,13 @@ public class LoginController {
             model.addObject("role", user_role);
             model.addObject("admin_access", admin_role);
         } else
-            model = new ModelAndView("login");
+            model = new ModelAndView("app/login");
         return model;
     }
 
-    @RequestMapping(value = "/logoff", method = RequestMethod.GET)
+    @RequestMapping(value = "logoff", method = RequestMethod.GET)
     public ModelAndView getLogOff() {
-        return new ModelAndView("logoff");
+        return new ModelAndView("app/logoff");
     }
 
 }

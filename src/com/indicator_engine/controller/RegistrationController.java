@@ -58,7 +58,7 @@ public class RegistrationController {
 
         RegistrationForm RegisterForm = new RegistrationForm();
         model.put("RegisterForm", RegisterForm);
-        return "register";
+        return "app/register";
     }
 
     @RequestMapping(value="/register",method = RequestMethod.POST)
@@ -87,7 +87,7 @@ public class RegistrationController {
         userDetailsBean.add(uc);
         mailBean.sendMail(uc.getUp().getEmailid(), "OTP", uc.getOtp(), false, null);
         model.put("msg", uc.getUid());
-        return "registration_success";
+        return "app/registration_success";
     }
 
     @RequestMapping(value = "/checkusername", method = RequestMethod.GET)
@@ -127,7 +127,7 @@ public class RegistrationController {
     @RequestMapping(value="/activate",method = RequestMethod.GET)
     public ModelAndView getLogin(){
 
-        return new ModelAndView("activate");
+        return new ModelAndView("app/activate");
     }
     @Transactional
     @RequestMapping(value = "/validateotp", method = RequestMethod.GET)

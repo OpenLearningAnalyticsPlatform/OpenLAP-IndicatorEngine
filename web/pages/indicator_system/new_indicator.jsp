@@ -77,7 +77,7 @@
                     <i class="fa fa-database"></i> Indicator System <div class="pull-right"><span class="caret"></span></div>
                 </a>
                 <ul class="templatemo-submenu">
-                    <li><a href="/indicators/new"><i class="fa fa-file"></i><span class="badge pull-right"></span>Define New</a></li>
+                    <li><a href="/indicators/indicators_definition"><i class="fa fa-file"></i><span class="badge pull-right"></span>Define New</a></li>
                     <li><a href="/indicators/viewall"><i class="fa fa-th-large"></i><span class="badge pull-right"></span>View Existing</a></li>
                     <li><a href="/indicators/modify"><i class="fa fa-edit"></i><span class="badge pull-right"></span>Modify Existing</a></li>
                     <li><a href="/indicators/delete"><i class="fa fa-trash-o"></i><span class="badge pull-right"></span>Delete a Specific Indicator</a></li>
@@ -95,9 +95,26 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Indicator Control Panel</h1>
-            <p>Here you can define new Indicators, modify or view existing ones.</p>
-
+            <h1>Define a New Indicator</h1>
+            <p>Called from Web Flow</p>
+            <div class="row">
+                <div class="col-md-12">
+                    <form:form role="form" id="operationSelection"  method="post" modelAttribute="availableOperations" action="${flowExecutionUrl}">
+                        <div class="row">
+                            <div class="col-md-6 margin-bottom-15">
+                                <label for="_operation">Select an Operation </label>
+                                <form:select class="form-control margin-bottom-15" path="selectedOperation" items="${availableOperations.operation}" name ="_operation" id="_operation" />
+                            </div>
+                        </div>
+                        <div class="row templatemo-form-buttons">
+                            <div class="col-md-12">
+                                <input type="submit" name="_eventId_operationSelected"
+                                       value="Next" />
+                            </div>
+                        </div>
+                    </form:form>
+                </div>
+            </div>
         </div>
     </div>
     <!-- Modal -->

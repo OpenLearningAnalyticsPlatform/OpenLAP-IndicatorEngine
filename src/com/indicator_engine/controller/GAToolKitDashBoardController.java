@@ -29,12 +29,14 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -49,13 +51,14 @@ public class GAToolKitDashBoardController {
     private SessionFactory factory;
     @Autowired
     private ApplicationContext appContext;
-    @RequestMapping(value="/dashboard",method = RequestMethod.GET)
-    public ModelAndView getDashboard(){
-        return new ModelAndView("home");
+
+    @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
+    public ModelAndView getDashboard() {
+        return new ModelAndView("app/home");
     }
 
-    @RequestMapping(value="/user_profile",method = RequestMethod.GET)
-    public String getUserProfile(HttpSession session, Map<String, Object> model){
+    @RequestMapping(value = "/user_profile", method = RequestMethod.GET)
+    public String getUserProfile(HttpSession session, Map<String, Object> model) {
         UserProfileForm UprofileForm = new UserProfileForm();
         UserProfile up;
         UserCredentialsDao userDetailsBean = (UserCredentialsDao) appContext.getBean("userDetails");
@@ -63,7 +66,7 @@ public class GAToolKitDashBoardController {
         List<UserCredentials> selectedUserList = userDetailsBean.searchByUserName(userName);
         for (UserCredentials eachuser : selectedUserList) {
             up = eachuser.getUp();
-            UprofileForm.setFname(up.getFname()) ;
+            UprofileForm.setFname(up.getFname());
             UprofileForm.setLname(up.getLname());
             UprofileForm.setDob(String.valueOf(up.getDob()));
             UprofileForm.setEmail(up.getEmailid());
@@ -79,37 +82,36 @@ public class GAToolKitDashBoardController {
             UprofileForm.setChangepasswd(false);
         }
         model.put("UprofileForm", UprofileForm);
-        return "user_profile";
+        return "app/user_profile";
     }
 
-    @RequestMapping(value="/update_user_profile",method = RequestMethod.POST)
-    public String updateUserProfile(HttpSession session,@ModelAttribute("UprofileForm") UserProfileForm UprofileForm, Map<String, Object> model) {
+    @RequestMapping(value = "/update_user_profile", method = RequestMethod.POST)
+    public String updateUserProfile(HttpSession session, @ModelAttribute("UprofileForm") UserProfileForm UprofileForm, Map<String, Object> model) {
 
         UserProfile up;
         UserCredentialsDao userDetailsBean = (UserCredentialsDao) appContext.getBean("userDetails");
         String userName = (String) session.getAttribute("userName");
         List<UserCredentials> selectedUserList = userDetailsBean.searchByUserName(userName);
         for (UserCredentials eachuser : selectedUserList) {
-            if(!eachuser.getUp().getFname().equals(UprofileForm.getFname()))
+            if (!eachuser.getUp().getFname().equals(UprofileForm.getFname()))
                 eachuser.getUp().setFname(UprofileForm.getFname());
-            if(!eachuser.getUp().getLname().equals(UprofileForm.getLname()))
+            if (!eachuser.getUp().getLname().equals(UprofileForm.getLname()))
                 eachuser.getUp().setLname(UprofileForm.getLname());
-            if(!eachuser.getUp().getCity().equals(UprofileForm.getCity()))
+            if (!eachuser.getUp().getCity().equals(UprofileForm.getCity()))
                 eachuser.getUp().setCity(UprofileForm.getCity());
-            if(!eachuser.getUp().getCountry().equals(UprofileForm.getCountry()))
+            if (!eachuser.getUp().getCountry().equals(UprofileForm.getCountry()))
                 eachuser.getUp().setCountry(UprofileForm.getCountry());
-            if(!(eachuser.getUp().getZip()== Integer.parseInt(UprofileForm.getZip())))
+            if (!(eachuser.getUp().getZip() == Integer.parseInt(UprofileForm.getZip())))
                 eachuser.getUp().setZip(Integer.parseInt(UprofileForm.getZip()));
-            if(!(eachuser.getUp().getPhone()== Long.parseLong(UprofileForm.getPhonenumber())))
+            if (!(eachuser.getUp().getPhone() == Long.parseLong(UprofileForm.getPhonenumber())))
                 eachuser.getUp().setPhone(Long.parseLong(UprofileForm.getPhonenumber()));
-            if(!eachuser.getUp().getStr_address().equals(UprofileForm.getAddress()))
+            if (!eachuser.getUp().getStr_address().equals(UprofileForm.getAddress()))
                 eachuser.getUp().setStr_address(UprofileForm.getAddress());
-            if(!eachuser.getUp().getState().equals(UprofileForm.getState()))
+            if (!eachuser.getUp().getState().equals(UprofileForm.getState()))
                 eachuser.getUp().setState(UprofileForm.getState());
-            if(UprofileForm.isChangepasswd())
-            {
-                if(UprofileForm.getPassword().equals(UprofileForm.getConfirmpassword())) {
-                    if(!eachuser.getPassword().equals(UprofileForm.getConfirmpassword()))
+            if (UprofileForm.isChangepasswd()) {
+                if (UprofileForm.getPassword().equals(UprofileForm.getConfirmpassword())) {
+                    if (!eachuser.getPassword().equals(UprofileForm.getConfirmpassword()))
                         eachuser.setPassword(UprofileForm.getConfirmpassword());
                 }
             }
@@ -117,7 +119,7 @@ public class GAToolKitDashBoardController {
         }
         for (UserCredentials eachuser : selectedUserList) {
             up = eachuser.getUp();
-            UprofileForm.setFname(up.getFname()) ;
+            UprofileForm.setFname(up.getFname());
             UprofileForm.setLname(up.getLname());
             UprofileForm.setDob(String.valueOf(up.getDob()));
             UprofileForm.setEmail(up.getEmailid());
@@ -133,6 +135,7 @@ public class GAToolKitDashBoardController {
             UprofileForm.setChangepasswd(false);
         }
         model.put("UprofileForm", UprofileForm);
-        return "user_profile";
+        return "app/user_profile";
     }
+
 }

@@ -44,10 +44,6 @@ public class GAIndicatorSystemController {
         return new ModelAndView("indicator_system/indicators_home");
     }
 
-    @RequestMapping(value = "/new", method = RequestMethod.GET)
-    public ModelAndView getIndicatorsNew() {
-        return new ModelAndView("indicator_system/new_indicator");
-    }
 
     @RequestMapping(value = "/viewall", method = RequestMethod.GET)
     public ModelAndView getIndicatorsViewAll() {

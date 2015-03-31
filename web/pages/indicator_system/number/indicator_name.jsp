@@ -42,7 +42,7 @@
 <head>
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-    <title>Indicator Control Panel</title>
+    <title>Indicator Naming</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
@@ -53,7 +53,7 @@
 <body>
 <div class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <div class="logo"><h1>Indicator Control Panel</h1></div>
+        <div class="logo"><h1>Indicator Naming</h1></div>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -95,9 +95,26 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Indicator Control Panel</h1>
-            <p>Here you can define new Indicators, modify or view existing ones.</p>
-
+            <h1>Name for the New Indicator</h1>
+            <p>Please Enter a Name for the to be defined Indicator</p>
+            <div class="row">
+                <div class="col-md-12">
+                    <form:form role="form" id="indicatorNaming"  method="post" modelAttribute="indicatorName" action="${flowExecutionUrl}">
+                        <div class="row">
+                            <div class="col-md-6 margin-bottom-15">
+                                <label for="indicatorNaming">Enter Indicator Name </label>
+                                <form:input path="indicatorName" type="text" class="form-control" name ="username" id="username" />
+                            </div>
+                        </div>
+                        <div class="row templatemo-form-buttons">
+                            <div class="col-md-12">
+                                <input type="submit" name="_eventId_indicatorNameEntered"
+                                       value="Next" />
+                            </div>
+                        </div>
+                    </form:form>
+                </div>
+            </div>
         </div>
     </div>
     <!-- Modal -->

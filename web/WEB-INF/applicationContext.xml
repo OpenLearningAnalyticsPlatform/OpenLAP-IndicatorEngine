@@ -102,6 +102,7 @@
             </props>
         </property>
     </bean>
+
     <!-- Drools Bean-->
     <bean id="drooltest"
           class="com.indicator_engine.droolstest.Purchase">
@@ -129,6 +130,10 @@
           class="com.indicator_engine.dao.GLAEventDaoImpl">
     </bean>
     <bean id="encoder"
-           class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+          class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+    </bean>
+
+    <bean id="indicatorPreProcessor"
+          class="com.indicator_engine.indicator_system.IndicatorPreProcessing">
     </bean>
 </beans>

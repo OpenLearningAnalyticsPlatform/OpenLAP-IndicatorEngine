@@ -380,7 +380,7 @@ p.change_link{
 	animation-fill-mode: both;
 }
 
-/** yerk some ugly IE fixes 'cause I know someone will ask "why does it look ugly in IE?", no matter how many warnings I will put in the article */
+/** yerk some ugly IE fixes 'cause IndicatorPreProcessing know someone will ask "why does it look ugly in IE?", no matter how many warnings IndicatorPreProcessing will put in the article */
 
 .lt8 #wrapper input{
 	padding: 10px 5px 10px 32px;

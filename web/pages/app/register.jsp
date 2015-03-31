@@ -21,8 +21,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Tanmaya Mahapatra
-  Date: 01-03-2015
-  Time: 11:55
+  Date: 02-03-2015
+  Time: 19:07
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -30,7 +30,7 @@
 <%
     if ((session.getAttribute("loggedIn") != null) && (session.getAttribute("userName") != null) && (session.getAttribute("activationStatus")== "true"))
         response.sendRedirect("/home/dashboard");
-    else {
+    else{
 %>
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6 lt8"> <![endif]-->
 <!--[if IE 7 ]>    <html lang="en" class="no-js ie7 lt8"> <![endif]-->
@@ -43,13 +43,13 @@
     <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  -->
     <title>Goal Oriented LA ToolKit : Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Goal Oriented LA ToolKit : Login" />
+    <meta name="description" content="Goal Oriented LA ToolKit : Register" />
     <meta name="keywords" content="html5, css3, form, switch, animation, :target, pseudo-class" />
-    <meta name="author" content="Codrops" />
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" type="text/css" href="../css/demo.css" />
-    <link rel="stylesheet" type="text/css" href="../css/login_style.css" />
-    <link rel="stylesheet" type="text/css" href="../css/animate-custom.css" />
+    <meta name="author" content="Tanmaya Mahapatra" />
+    <script language="JavaScript" src="${pageContext.request.contextPath}/js/user_registration_checks.js"> </script>
+    <link rel="stylesheet" type="text/css" href="../../css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/login_style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/animate-custom.css" />
     <title>Please Login</title>
 </head>
 <body>
@@ -77,40 +77,51 @@
             <a class="hiddenanchor" id="tologin"></a>
             <div id="wrapper">
                 <div id="login" class="animate form">
-                    <form:form  action="/login" method="post" autocomplete="on" commandName="loginForm">
-                        <h1>Log in</h1>
+                    <form:form  action="/register" method="post" autocomplete="on" commandName="RegisterForm">
+                        <h1> Register </h1>
                         <p>
-                            <label for="username" class="uname" data-icon="u" >Username </label>
-                            <form:input id="username" name="username" required="required" path="userName" placeholder="myusername"/>
+                            <label for="usernamesignup" class="uname" data-icon="u">Your username</label>
+
+                            <form:input  path="userName" name="usernamesignup" id = "usernamesignup" required="required" type="text" placeholder="mysuperusername690" onchange="checkPreExistingUserName()" />
                         </p>
                         <p>
-                            <label for="password" class="youpasswd" data-icon="p">password </label>
-                            <form:input id="password" name="password" required="required" type="password" path="password" placeholder="eg. X8df!90EO" />
+                            <label for="emailsignup" class="youmail" data-icon="e" > Your email</label>
+                            <form:input id="emailsignup" name="emailsignup" required="required" type="email" placeholder="mysupermail@mail.com" path="email" onchange="checkPreExistingEmailID()"/>
                         </p>
-                        <p class="keeplogin">
-                            <input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping" />
-                            <label for="loginkeeping">Keep me logged in</label>
+                        <p>
+                            <label for="passwordsignup" class="youpasswd" data-icon="p">Your password </label>
+                            <form:input id="passwordsignup" name="passwordsignup" required="required" type="password" placeholder="eg. X8df!90EO" path="password"/>
                         </p>
-                        <p class="login button">
-                            <input type="submit" value="Login" />
+                        <p>
+                            <label for="passwordsignup_confirm" class="youpasswd" data-icon="p">Please confirm your password </label>
+                            <form:input id="passwordsignup_confirm" name="passwordsignup_confirm" required="required" type="password" placeholder="eg. X8df!90EO" path="confirmpassword" onchange="checkPassword()"/>
+                        </p>
+                        <p>
+                            <label for="dob" class="dob" data-icon="d"> Date of Brith </label>
+                            <form:input id="dob" name="dob"  type="text" required="required" placeholder="DD-MM-yyyy" path="dob" onchange="checkDate()"/>
+                        </p>
+                        <p class="signin button">
+                            <input type="reset" value="Reset"/>
+                        </p>
+                        <p class="signin button">
+                            <input type="submit" value="Sign up"/>
                         </p>
                         <p class="change_link">
-                            Not a member yet ?
-                            <a href="/register">Register</a>
+                            Already a member ?
+                            <a href="/login"> Go and log in </a>
                         </p>
                     </form:form>
-
-
                 </div>
+            </div>
+        </div>
 
 
-        </div>
-        </div>
-    </section>
+</section>
 </div>
 
 </body>
 </html>
+
 <%
     }
 %>
