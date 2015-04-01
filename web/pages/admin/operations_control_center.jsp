@@ -39,7 +39,7 @@
 <head>
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-    <title>Delete Data</title>
+    <title>Goal LA Tookit Admin Center</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
@@ -53,7 +53,7 @@
 <body>
 <div class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <div class="logo"><h1>Delete User</h1></div>
+        <div class="logo"><h1>Goal LA Tookit Admin Center</h1></div>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -98,31 +98,109 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/toolkit/admin">Toolkit Admin Home</a></li>
             </ol>
-            <h1>Delete User</h1>
-            <p>Not Implemented yet.</p>
-
-        </div>
-    </div>
-    <!-- Modal -->
-    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Are you sure you want to sign out?</h4>
+            <h1> Manage Operations & Other Stuff.</h1>
+            <p>Here You can add or View Available Operations. Please be careful there are no checks for the operations here in. You can ruin all data.</p>
+            <div class="col-md-6 col-sm-6 margin-bottom-30">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Add Operations</div>
+                    <div class="panel-body">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>S/L</th>
+                                <th>Operation Name</th>
+                                <th>Description</th>
+                                <th>Link</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Add Operation</td>
+                                <td>Adds a new Operation</td>
+                                <td><a href="/toolkit/add_operation"><i class="fa fa-user"></i><span class="badge pull-right"></span>Add Operation</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <a href="/logoff" class="btn btn-primary">Yes</a>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            </div>
+            <div class="col-md-6 col-sm-6 margin-bottom-30">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">View Operations</div>
+                    <div class="panel-body">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>S/L</th>
+                                <th>Operation Name</th>
+                                <th>Description</th>
+                                <th>Link</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>View Operation</td>
+                                <td>Listing of all Operations present</td>
+                                <td><a href="/toolkit/view_operations"><i class="fa fa-user"></i><span class="badge pull-right"></span>View Operations</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 margin-bottom-30">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Delete Operations </div>
+                    <div class="panel-body">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>S/L</th>
+                                <th>Operation Name</th>
+                                <th>Description</th>
+                                <th>Link</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Delete Operation</td>
+                                <td>Delete an Operation</td>
+                                <td><a href="/toolkit/delete_operations"><i class="fa fa-user"></i><span class="badge pull-right"></span>Delete Operation</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
-    <footer class="templatemo-footer">
-        <div class="templatemo-copyright">
-            <p>Copyright &copy; 2015 Learning Technologies Group, RWTH</p>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Are you sure you want to sign out?</h4>
+            </div>
+            <div class="modal-footer">
+                <a href="/logoff" class="btn btn-primary">Yes</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            </div>
         </div>
-    </footer>
+    </div>
+</div>
+<footer class="templatemo-footer">
+    <div class="templatemo-copyright">
+        <p>Copyright &copy; 2015 Learning Technologies Group, RWTH</p>
+    </div>
+</footer>
 </div>
 
 <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>

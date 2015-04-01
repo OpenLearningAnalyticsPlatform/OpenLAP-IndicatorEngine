@@ -23,14 +23,8 @@ package com.indicator_engine.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.indicator_engine.dao.GLACategoryDao;
-import com.indicator_engine.dao.GLAEntityDao;
-import com.indicator_engine.dao.GLAEventDao;
-import com.indicator_engine.dao.GLAUserDao;
-import com.indicator_engine.datamodel.GLACategory;
-import com.indicator_engine.datamodel.GLAEntity;
-import com.indicator_engine.datamodel.GLAEvent;
-import com.indicator_engine.datamodel.GLAUser;
+import com.indicator_engine.dao.*;
+import com.indicator_engine.datamodel.*;
 import com.indicator_engine.model.*;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -70,6 +64,15 @@ public class ToolkitAdminController {
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public ModelAndView getToolkitAdmin() {
         return new ModelAndView("admin/toolkitadmin");
+    }
+
+    @RequestMapping(value = "/data_control_center", method = RequestMethod.GET)
+    public ModelAndView getDataControlCenter() {
+        return new ModelAndView("admin/data_control_center");
+    }
+    @RequestMapping(value = "/operations_control_center", method = RequestMethod.GET)
+    public ModelAndView getOperationsControlCenter() {
+        return new ModelAndView("admin/operations_control_center");
     }
 
     @RequestMapping(value = "/add_userdata", method = RequestMethod.GET)
@@ -449,6 +452,30 @@ public class ToolkitAdminController {
         return  entityGson.toJson(glaentity);
 
     }
+
+    // Handling of Operations
+
+    @RequestMapping(value = "/add_operation", method = RequestMethod.GET)
+    public String getAddOperations(Map<String, Object> model) {
+        AdminAddOperationDataForm addOperationDataForm = new AdminAddOperationDataForm();
+        model.put("addOperationDataForm", addOperationDataForm);
+        return "admin/add_operation";
+    }
+
+    @RequestMapping(value = "/add_operation", method = RequestMethod.POST)
+    public String processAddOperations (Map<String, Object> model, @ModelAttribute("addOperationDataForm") AdminAddOperationDataForm addOperationDataForm) {
+        GLAOperationsDao glaOperationsBean = (GLAOperationsDao) appContext.getBean("glaOperations");
+        GLAOperations glaOperations = new GLAOperations(addOperationDataForm.getOperations());
+        glaOperationsBean.addNewOperation(glaOperations);
+        model.put("addOperationDataForm", addOperationDataForm);
+        return "admin/add_operation";
+    }
+
+    @RequestMapping(value = "/view_operations", method = RequestMethod.GET)
+    public ModelAndView getViewOperations() {
+        return new ModelAndView("admin/view_operations");
+    }
+
 
 }
 class GLAENTITYDTO

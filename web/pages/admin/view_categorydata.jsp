@@ -123,35 +123,18 @@
             <li class="active"><a href="/toolkit/admin"><i class="fa fa-dashboard"></i>Admin Dashboard</a></li>
             <li class="sub open">
                 <a href="javascript:;">
-                    <i class="fa fa-database"></i> Add Data <div class="pull-right"><span class="caret"></span></div>
+                    <i class="fa fa-database"></i> Manage Data <div class="pull-right"><span class="caret"></span></div>
                 </a>
                 <ul class="templatemo-submenu">
-                    <li><a href="/toolkit/add_categorydata"><i class="fa fa-lemon-o"></i><span class="badge pull-right"></span>Add Category</a></li>
-                    <li><a href="/toolkit/add_entitydata"><i class="fa fa-certificate"></i><span class="badge pull-right"></span>Add Entity</a></li>
-                    <li><a href="/toolkit/add_userdata"><i class="fa fa-user"></i><span class="badge pull-right"></span>Add User</a></li>
-                    <li><a href="/toolkit/add_eventdata"><i class="fa fa-tasks"></i><span class="badge pull-right"></span>Add Event</a></li>
+                    <li><a href="/toolkit/data_control_center"><i class="fa fa-certificate"></i><span class="badge pull-right"></span>Datasets</a></li>
                 </ul>
             </li>
             <li class="sub open">
                 <a href="javascript:;">
-                    <i class="fa fa-database"></i> Delete Data <div class="pull-right"><span class="caret"></span></div>
+                    <i class="fa fa-database"></i> Manage Operations <div class="pull-right"><span class="caret"></span></div>
                 </a>
                 <ul class="templatemo-submenu">
-                    <li><a href="/toolkit/delete_categorydata"><i class="fa fa-lemon-o"></i><span class="badge pull-right"></span>Delete Category</a></li>
-                    <li><a href="/toolkit/delete_entitydata"><i class="fa fa-certificate"></i><span class="badge pull-right"></span>Delete Entity</a></li>
-                    <li><a href="/toolkit/delete_userdata"><i class="fa fa-user"></i><span class="badge pull-right"></span>Delete User</a></li>
-                    <li><a href="/toolkit/delete_eventdata"><i class="fa fa-tasks"></i><span class="badge pull-right"></span>Delete Event</a></li>
-                </ul>
-            </li>
-            <li class="sub open">
-                <a href="javascript:;">
-                    <i class="fa fa-database"></i> View Data <div class="pull-right"><span class="caret"></span></div>
-                </a>
-                <ul class="templatemo-submenu">
-                    <li><a href="/toolkit/view_categorydata"><i class="fa fa-lemon-o"></i><span class="badge pull-right"></span>View Category</a></li>
-                    <li><a href="/toolkit/view_entitydata"><i class="fa fa-certificate"></i><span class="badge pull-right"></span>View Entity</a></li>
-                    <li><a href="/toolkit/view_userdata"><i class="fa fa-user"></i><span class="badge pull-right"></span>View User</a></li>
-                    <li><a href="/toolkit/view_eventdata"><i class="fa fa-tasks"></i><span class="badge pull-right"></span>View Event</a></li>
+                    <li><a href="/toolkit/operations_control_center"><i class="fa fa-certificate"></i><span class="badge pull-right"></span>Operations</a></li>
                 </ul>
             </li>
 

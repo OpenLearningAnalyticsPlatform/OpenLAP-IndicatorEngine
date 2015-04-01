@@ -6,14 +6,13 @@
 		http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
 
-    <var name="availableOperations" class="com.indicator_engine.model.IndicatorDefnOperationForm"/>
     <var name="indicatorName" class="com.indicator_engine.model.IndicatorNaming"/>
-    <var name="selectNumberParameters" class="com.indicator_engine.model.SelectNumberParameters" />
-
 
     <on-start>
         <evaluate expression="indicatorPreProcessor.initSelectNumberParametersObject()"
                   result="flowScope.selectNumberParameters" />
+        <evaluate expression="indicatorPreProcessor.initAvailableOperations_DB()"
+                  result="flowScope.availableOperations" />
     </on-start>
 
     <!-- By default, the first state is the start state. -->

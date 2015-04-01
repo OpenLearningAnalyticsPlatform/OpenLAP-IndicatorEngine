@@ -12,12 +12,6 @@ public class IndicatorDefnOperationForm implements Serializable{
     private List<String> operation =  new ArrayList<>();
     private String selectedOperation;
 
-    IndicatorDefnOperationForm(){
-        operation.add("Number");
-        operation.add("Correlation");
-        selectedOperation=null;
-    }
-
     public List<String> getOperation() {
         return operation;
     }

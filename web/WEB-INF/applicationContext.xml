@@ -129,10 +129,12 @@
     <bean id="glaEvent"
           class="com.indicator_engine.dao.GLAEventDaoImpl">
     </bean>
+    <bean id="glaOperations"
+          class="com.indicator_engine.dao.GLAOperationsDaoImpl">
+    </bean>
     <bean id="encoder"
           class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
     </bean>
-
     <bean id="indicatorPreProcessor"
           class="com.indicator_engine.indicator_system.IndicatorPreProcessing">
     </bean>

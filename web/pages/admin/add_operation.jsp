@@ -26,6 +26,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%
     if ((session.getAttribute("loggedIn") == null) || (session.getAttribute("loggedIn") == ""))
         response.sendRedirect("/login");
@@ -39,7 +40,7 @@
 <head>
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-    <title>Delete Data</title>
+    <title>Add Operations</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
@@ -53,7 +54,7 @@
 <body>
 <div class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <div class="logo"><h1>Delete User</h1></div>
+        <div class="logo"><h1>Add a New Operation</h1></div>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -98,9 +99,26 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/toolkit/admin">Toolkit Admin Home</a></li>
             </ol>
-            <h1>Delete User</h1>
-            <p>Not Implemented yet.</p>
-
+            <h1>Add a New Operation</h1>
+            <p> Here you can add a new Operation. Every Valid Operation is just a String of Characters.</p>
+            <div class="row">
+                <div class="col-md-12">
+                    <form:form role="form" id="dataset-addnewuserForm"  method="post" commandName="addOperationDataForm" action="/toolkit/add_operation">
+                        <div class="row">
+                            <div class="col-md-6 margin-bottom-15">
+                                <label for="operationname" class="control-label">Operation Name</label>
+                                <form:input path="operations" type="text" class="form-control" name ="operationname" id="operationname" />
+                            </div>
+                        </div>
+                        <div class="row templatemo-form-buttons">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary">Add Operation</button>
+                                <button type="reset" class="btn btn-default">Reset</button>
+                            </div>
+                        </div>
+                    </form:form>
+                </div>
+            </div>
         </div>
     </div>
     <!-- Modal -->
