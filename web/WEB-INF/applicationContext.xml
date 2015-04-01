@@ -103,14 +103,6 @@
         </property>
     </bean>
 
-    <!-- Drools Bean-->
-    <bean id="drooltest"
-          class="com.indicator_engine.droolstest.Purchase">
-        <property name="total" value="27"/>
-        <property name="tacoCount" value="12"/>
-        <property name="drinkIncluded" value="true"/>
-    </bean>
-
     <bean id="userDetails"
           class="com.indicator_engine.dao.UserCredentialsDaoImpl">
     </bean>
@@ -137,5 +129,8 @@
     </bean>
     <bean id="indicatorPreProcessor"
           class="com.indicator_engine.indicator_system.IndicatorPreProcessing">
+    </bean>
+    <bean id="operationNumberProcessor"
+          class="com.indicator_engine.indicator_system.Number.OperationNumberProcessor">
     </bean>
 </beans>

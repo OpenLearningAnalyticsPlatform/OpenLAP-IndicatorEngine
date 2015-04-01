@@ -1,11 +1,14 @@
 package com.indicator_engine.dao;
 
 import com.indicator_engine.datamodel.GLAOperations;
+import com.indicator_engine.datamodel.GLAUser;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,4 +38,23 @@ public class GLAOperationsDaoImpl implements GLAOperationsDao {
                 .setProjection(Projections.property("operations"));
         return criteria.list();
     }
+
+    @Override
+    @Transactional
+    public List<GLAOperations> loadOperationsRange(long maxId) {
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAOperations.class);
+        criteria.add(Restrictions.le("id", maxId));
+        return  criteria.list();
+
+    }
+
+    @Override
+    @Transactional
+    public int getTotalOperations() {
+        Session session = factory.getCurrentSession();
+        return ((Number) session.createCriteria(GLAOperations.class).setProjection(Projections.rowCount()).uniqueResult()).intValue();
+
+    }
+
 }

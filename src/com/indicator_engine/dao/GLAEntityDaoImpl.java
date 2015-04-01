@@ -29,9 +29,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,10 +59,6 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
         GLAEvent glaEvent = null;
         Criteria criteria = session.createCriteria(GLAEvent.class)
                 .add(Restrictions.eq("id", Long.parseLong(id)));
-
-        // Convenience method to return a single instance that matches the
-        // query, or null if the query returns no results.
-        //
         Object result = criteria.uniqueResult();
         if (result != null) {
             glaEvent = (GLAEvent) result;
@@ -87,6 +85,35 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
     public int getTotalEntities() {
         Session session = factory.getCurrentSession();
         return ((Number) session.createCriteria(GLAEntity.class).setProjection(Projections.rowCount()).uniqueResult()).intValue();
+
+    }
+    @Override
+    @Transactional
+    public List<String> loadEntitiesByCategoryID(Long categoryID){
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAEntity.class);
+        criteria.setProjection(Projections.distinct(Projections.property("key")));
+        criteria.createAlias("glaEvent", "events");
+        criteria.setFetchMode("events", FetchMode.JOIN);
+        criteria.createAlias("events.glaCategory", "category");
+        criteria.setFetchMode("category", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("category.id", categoryID));
+        return criteria.list();
+
+    }
+
+    @Override
+    @Transactional
+    public List<String> loadEntitiesByCategoryIDName(Long categoryID, String name){
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAEntity.class);
+        criteria.createAlias("glaEvent", "events");
+        criteria.setFetchMode("events", FetchMode.JOIN);
+        criteria.createAlias("events.glaCategory", "category");
+        criteria.setFetchMode("category", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("category.id", categoryID));
+        criteria.add(Restrictions.eq("key", name));
+        return criteria.list();
 
     }
 

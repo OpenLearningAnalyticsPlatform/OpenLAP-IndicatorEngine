@@ -10,4 +10,6 @@ import java.util.List;
 public interface GLAOperationsDao {
     public long addNewOperation(GLAOperations glaOperation);
     public List<String> selectAllOperations();
+    public int getTotalOperations();
+    public List<GLAOperations> loadOperationsRange(long maxId);
 }

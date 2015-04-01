@@ -27,9 +27,6 @@ import com.indicator_engine.dao.*;
 import com.indicator_engine.datamodel.*;
 import com.indicator_engine.model.*;
 import org.apache.log4j.Logger;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -45,8 +42,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Timestamp;
-import org.json.simple.parser.ParseException;
-
 import java.util.*;
 
 /**
@@ -247,6 +242,47 @@ public class ToolkitAdminController {
         userJsonObject.setAaData(glaUserListList);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json2 = gson.toJson(userJsonObject);
+        return json2;
+    }
+
+    @RequestMapping(value = "/fetchGlaOperationsData.web", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    String fetchglaOperations(HttpServletRequest request) throws IOException {
+        //Fetch the page number from client
+        Integer pageNumber = 0;
+        if (null != request.getParameter("iDisplayStart"))
+            pageNumber = (Integer.valueOf(request.getParameter("iDisplayStart"))/10)+1;
+
+        //Fetch search parameter
+        String searchParameter = request.getParameter("sSearch");
+
+        //Fetch Page display length
+        Integer pageDisplayLength = Integer.valueOf(request.getParameter("iDisplayLength"));
+
+        //Create page list data
+        GLAOperationsDao glaOperationsBean = (GLAOperationsDao) appContext.getBean("glaOperations");
+        List<GLAOperations> glaOperationsList = glaOperationsBean.loadOperationsRange(pageDisplayLength);
+        //Here is server side pagination logic. Based on the page number you could make call
+        //to the data base create new list and send back to the client. For demo IndicatorPreProcessing am shuffling
+        //the same list to show data randomly
+        // Paging & searching Logic still has to be done
+        if (pageNumber == 1) {
+            Collections.shuffle(glaOperationsList);
+        }else if (pageNumber == 2) {
+            Collections.shuffle(glaOperationsList);
+        }else {
+            Collections.shuffle(glaOperationsList);
+        }
+        //Search functionality: Returns filtered list based on search parameter
+        //personsList = getListBasedOnSearchParameter(searchParameter,personsList);
+        GLAOperationsJSONObj operationsJsonObject = new GLAOperationsJSONObj();
+        //Set Total display record
+        operationsJsonObject.setiTotalDisplayRecords(glaOperationsBean.getTotalOperations());
+        //Set Total record
+        operationsJsonObject.setiTotalRecords(glaOperationsBean.getTotalOperations());
+        operationsJsonObject.setAaData(glaOperationsList);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json2 = gson.toJson(operationsJsonObject);
         return json2;
     }
 

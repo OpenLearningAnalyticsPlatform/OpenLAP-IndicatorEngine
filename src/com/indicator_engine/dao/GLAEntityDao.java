@@ -32,6 +32,8 @@ public interface GLAEntityDao {
     public void addWithExistingEvent(GLAEntity glaEntity, String id);
     public int getTotalEntities();
     public List<GLAEntity> loadEntitesRange(Integer maxId) ;
+    public List<String> loadEntitiesByCategoryID(Long categoryID);
+    public List<String> loadEntitiesByCategoryIDName(Long categoryID, String name);
 
 }
 

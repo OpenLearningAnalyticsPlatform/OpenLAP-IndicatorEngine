@@ -33,6 +33,9 @@ public interface GLAEventDao {
     public List<GLAEvent> loadEventRange(long maxId);
     public int getTotalEvents();
     public List<String> selectAllEvents();
+    public List<String> loadEventByCategoryID(Long categoryID);
     public GLAEvent loadEventByID(Long id);
+
+
 
 }

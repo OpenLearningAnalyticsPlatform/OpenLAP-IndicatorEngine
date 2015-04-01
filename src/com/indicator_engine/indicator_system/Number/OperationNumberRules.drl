@@ -1,0 +1,13 @@
+package com.indicator_engine.indicator_system.Number;
+import com.indicator_engine.model.SelectNumberParameters
+import com.indicator_engine.dao.GLACategoryDao
+import com.indicator_engine.dao.GLAEntityDao
+import java.util.List;
+dialect  "mvel"
+
+rule "When Minor and Key is pre-selected"
+when
+$obj : SelectNumberParameters ( selectedMinor != "" && selectedKeys !="" )
+then
+long category_id = $glacategoryBean:GLACategoryDao.findCategoryID($obj.getSelectedMinor());
+end

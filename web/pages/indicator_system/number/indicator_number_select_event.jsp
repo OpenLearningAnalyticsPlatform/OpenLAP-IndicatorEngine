@@ -53,7 +53,7 @@
 <body>
 <div class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <div class="logo"><h1>Select Entity</h1></div>
+        <div class="logo"><h1>Select Event</h1></div>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -95,20 +95,20 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Select Entity</h1>
-            <p>Based on your previous selection, here is the relevant list of Entities. Please choose one to continue.</p>
+            <h1>Select Event</h1>
+            <p>Based on your previous selection, here is the relevant list of Events. Please choose one to continue.</p>
             <div class="row">
                 <div class="col-md-12">
                     <form:form role="form" id="entitySelection"  method="post" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">
                         <div class="row">
                             <div class="col-md-6 margin-bottom-15">
-                                <label for="entitySelection">Select an Entity </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedKeys" items="${selectNumberParameters.keys}" name ="entitySelection" id="entitySelection" />
+                                <label for="entitySelection">Select an Event </label>
+                                <form:select class="form-control margin-bottom-15" path="selectedEvents" items="${selectNumberParameters.events}" name ="entitySelection" id="entitySelection" />
                             </div>
                         </div>
                         <div class="row templatemo-form-buttons">
                             <div class="col-md-12">
-                                <input type="submit" name="_eventId_entitySelected"
+                                <input type="submit" name="_eventId_eventSelected"
                                        value="Next" />
                             </div>
                         </div>

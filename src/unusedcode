@@ -84,3 +84,18 @@ private String type;
 private Set<GLAEvent> events = new HashSet<GLAEvent>(0);
 //Ignore constructors, Setter/Getters
 }
+
+
+**********************************
+<action-state id="populateEvents">
+        <evaluate expression="indicatorPreProcessor.initAvailableEvents_DB(selectNumberParameters.selectedMinor)"
+                  result="selectNumberParameters.events" />
+        <transition to="selectEvent" />
+    </action-state>
+
+    <view-state id="selectEvent" view="indicator_system/number/indicator_number_select_event" model="selectNumberParameters">
+    <binder>
+        <binding property="selectedEvents" required="true" />
+    </binder>
+    <transition on="eventSelected" to="populateEntities" />
+    </view-state>

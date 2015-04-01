@@ -25,21 +25,45 @@
 
     <action-state id="retrieveOperation">
         <evaluate expression="indicatorPreProcessor.retrieveOperation(availableOperations)" />
-        <transition on="Number" to="indicatorName" />
-        <transition on="Correlation" to="definitionHome" />
+        <transition on="NUMBER" to="indicatorName" />
+        <transition on="CORRELATION" to="definitionHome" />
     </action-state>
 
     <view-state id="indicatorName" view="indicator_system/number/indicator_name" model="indicatorName">
         <binder>
             <binding property="indicatorName" required="true" />
         </binder>
-        <transition on="indicatorNameEntered" to="selectEntity" />
+        <transition on="indicatorNameEntered" to="selectMinor" />
     </view-state>
 
-    <view-state id="selectEntity" view="indicator_system/number/indicator_number_select_entity" model="selectNumberParameters">
+    <view-state id="selectMinor" view="indicator_system/number/indicator_number_select_minor" model="selectNumberParameters">
         <binder>
             <binding property="selectedMinor" required="true" />
         </binder>
+        <transition on="minorSelected" to="populateEntities" />
+    </view-state>
+
+    <action-state id="populateEntities">
+        <evaluate expression="indicatorPreProcessor.initAvailableEntities_DB(selectNumberParameters.selectedMinor)"
+                  result="selectNumberParameters.keys" />
+        <transition to="selectEntities" />
+    </action-state>
+
+    <view-state id="selectEntities" view="indicator_system/number/indicator_number_select_entity" model="selectNumberParameters">
+    <binder>
+        <binding property="selectedKeys" required="true" />
+    </binder>
+    <transition on="entitySelected" to="calculateResult" />
+    </view-state>
+
+    <action-state id="calculateResult">
+        <evaluate expression="operationNumberProcessor.computeResult(selectNumberParameters)"
+                  result="selectNumberParameters.result" />
+        <transition to="displayResult" />
+    </action-state>
+
+    <view-state id="displayResult" view="indicator_system/number/indicator_number_result" model="selectNumberParameters">
+        <transition to="definitionEnd" />
     </view-state>
 
 	<end-state id="definitionEnd" view="externalRedirect:contextRelative:/welcome"/>

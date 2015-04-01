@@ -28,11 +28,14 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -101,7 +104,27 @@ public class GLAEventDaoImpl implements GLAEventDao {
         }
         return glaEvent;
     }
-
+    @Override
+    @Transactional
+    public List<String> loadEventByCategoryID(Long categoryID){
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAEvent.class);
+        criteria.createAlias("glaCategory", "category");
+        criteria.setFetchMode("entities", FetchMode.JOIN);
+        criteria.setFetchMode("glaUser", FetchMode.JOIN);
+        criteria.setFetchMode("category", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("category.id", categoryID));
+        log.info("Dumping criteria" + criteria.list());
+        List<GLAEvent> list  = criteria.list();
+        log.info("Dumping List<GLAEvent> list" + list);
+        List<String> selectedEvents = new ArrayList<>();
+        for(GLAEvent data : list) {
+            selectedEvents.add(data.getAction());
+            log.info("Dumping List<GLAEvent>.Actions list" + data.getAction());
+        }
+        log.info("Dumping Events By Category ID" + selectedEvents);
+        return selectedEvents;
+    }
 
 }
 

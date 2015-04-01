@@ -33,5 +33,6 @@ public interface GLACategoryDao {
     public int getTotalCategories();
     public List<String> selectAllMinors();
     public GLACategory  loadcategoryByname(String categoryname);
+    public long findCategoryID(String minor);
 
 }

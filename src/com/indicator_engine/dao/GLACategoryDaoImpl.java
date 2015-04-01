@@ -96,6 +96,17 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
         return glaCategory;
     }
 
-
-
+    @Override
+    @Transactional
+    public long findCategoryID(String minor){
+        Session session = factory.getCurrentSession();
+        GLACategory glaCategory = null;
+        Criteria criteria = session.createCriteria(GLACategory.class)
+                .add(Restrictions.eq("minor", minor));
+        Object result = criteria.uniqueResult();
+        if (result != null) {
+            glaCategory = (GLACategory) result;
+        }
+        return glaCategory.getId();
+    }
 }
