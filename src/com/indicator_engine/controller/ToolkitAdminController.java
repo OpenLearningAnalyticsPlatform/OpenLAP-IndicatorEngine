@@ -20,6 +20,9 @@
 
 package com.indicator_engine.controller;
 
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.indicator_engine.dao.GLACategoryDao;
 import com.indicator_engine.dao.GLAEntityDao;
 import com.indicator_engine.dao.GLAEventDao;
@@ -29,9 +32,10 @@ import com.indicator_engine.datamodel.GLAEntity;
 import com.indicator_engine.datamodel.GLAEvent;
 import com.indicator_engine.datamodel.GLAUser;
 import com.indicator_engine.model.*;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.apache.log4j.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -40,15 +44,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import org.json.simple.parser.ParseException;
+
+import java.util.*;
 
 /**
  * Created by Tanmaya Mahapatra on 18-03-2015.
@@ -365,6 +370,203 @@ public class ToolkitAdminController {
         return json2;
     }
 
+    @RequestMapping(value = "/add_json_user", method = RequestMethod.GET)
+    public @ResponseBody String loadUserfromJSON() {
+        Gson userGson = new Gson();
+        GLAUSERDTO[] glausers= null;
+        GLAUserDao glauserBean = (GLAUserDao) appContext.getBean("glaUser");
+        try{
+            glausers = userGson.fromJson(new FileReader("c:\\gla_User.json"), GLAUSERDTO[].class);
 
+        } catch(FileNotFoundException e){}
+        System.out.println(userGson.toJson(glausers));
+        for(int i = 0; i < glausers.length; i++) {
+            glauserBean.add(new GLAUser(glausers[i].getName(), glausers[i].getPassword(), glausers[i].getEmail()));
+        }
+        return  userGson.toJson(glausers);
+    }
+
+    @RequestMapping(value = "/add_json_category", method = RequestMethod.GET)
+    public @ResponseBody String loadCategoryfromJSON() {
+        Gson categoryGson = new Gson();
+        GLACATEGORYDTO[] glacategory= null;
+        GLACategoryDao glacategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
+        try{
+            glacategory = categoryGson.fromJson(new FileReader("c:\\gla_Category.json"), GLACATEGORYDTO[].class);
+
+        } catch(FileNotFoundException e){}
+
+        for(int i = 0; i < glacategory.length; i++) {
+            glacategoryBean.add(new GLACategory(glacategory[i].getMAJOR(),glacategory[i].getMINOR(),glacategory[i].getTYPE()));
+        }
+        return  categoryGson.toJson(glacategory);
+    }
+
+    @RequestMapping(value = "/add_json_events", method = RequestMethod.GET)
+    public @ResponseBody String loadEventsfromJSON() {
+        Gson eventGson = new Gson();
+        GLAEVENTDTO[] glaevents= null;
+        GLAUserDao glauserBean = (GLAUserDao) appContext.getBean("glaUser");
+        GLACategoryDao glacategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
+        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
+        try{
+            glaevents = eventGson.fromJson(new FileReader("c:\\gla_Event.json"), GLAEVENTDTO[].class);
+
+        } catch(FileNotFoundException e){}
+
+        for(int i =0 ; i< glaevents.length ; i++) {
+
+            GLAUser selectedglaUser = glauserBean.loaduserByName(glaevents[i].getUSERNAME());
+            GLACategory selectedglaCategory = glacategoryBean.loadcategoryByname(glaevents[i].getCATEGORY());
+            GLAEvent glaEvent = new GLAEvent();
+            glaEvent.setSession(glaevents[i].getSESSION());
+            glaEvent.setAction(glaevents[i].getACTION());
+            glaEvent.setPlatform(glaevents[i].getPLATFORM());
+            glaEvent.setTimestamp(Timestamp.valueOf(glaevents[i].getTIMESTAMP()));
+            glaEvent.setSource(glaevents[i].getSOURCE());
+            glaEvent.setGlaUser(selectedglaUser);
+            glaEvent.setGlaCategory(selectedglaCategory);
+            GLAEntity glaEntity = new GLAEntity(glaevents[i].getKEY(), glaevents[i].getVALUE());
+            glaEventBean.add(glaEvent,glaEntity);
+        }
+
+        return  eventGson.toJson(glaevents);
+    }
+
+    @RequestMapping(value = "/add_json_entity", method = RequestMethod.GET)
+    public @ResponseBody String loadEntityfromJSON() {
+        Gson entityGson = new Gson();
+        GLAENTITYDTO[] glaentity= null;
+        GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
+        try{
+            glaentity = entityGson.fromJson(new FileReader("c:\\gla_Entity.json"), GLAENTITYDTO[].class);
+
+        } catch(FileNotFoundException e){}
+        for(int i =0 ; i< glaentity.length ; i++) {
+            glaEntityBean.addWithExistingEvent(new GLAEntity(glaentity[i].getKEY(), glaentity[i].getVALUE()), glaentity[i].getEVENT_ID());
+
+        }
+        return  entityGson.toJson(glaentity);
+
+    }
 
 }
+class GLAENTITYDTO
+{
+    String KEY;
+    String VALUE;
+    String EVENT_ID;
+
+    public String getKEY() {
+        return KEY;
+    }
+
+    public String getVALUE() {
+        return VALUE;
+    }
+
+    public String getEVENT_ID() {
+        return EVENT_ID;
+    }
+}
+
+class GLAUSERDTO
+{
+    String Password;
+    String FName;
+    String LName;
+    String Name;
+    String Email;
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public String getFName() {
+        return FName;
+    }
+
+    public String getLName() {
+        return LName;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+}
+
+class GLACATEGORYDTO
+{
+    String TYPE;
+    String MAJOR;
+    String MINOR;
+
+    public String getTYPE() {
+        return TYPE;
+    }
+
+    public String getMAJOR() {
+        return MAJOR;
+    }
+
+    public String getMINOR() {
+        return MINOR;
+    }
+}
+
+class GLAEVENTDTO
+{
+    String SOURCE;
+    String ACTION;
+    String PLATFORM;
+    String SESSION;
+    String TIMESTAMP;
+    String KEY;
+    String VALUE;
+    String USERNAME;
+    String CATEGORY;
+
+    public String getSOURCE() {
+        return SOURCE;
+    }
+
+    public String getACTION() {
+        return ACTION;
+    }
+
+    public String getPLATFORM() {
+        return PLATFORM;
+    }
+
+    public String getSESSION() {
+        return SESSION;
+    }
+
+    public String getTIMESTAMP() {
+        return TIMESTAMP;
+    }
+
+    public String getKEY() {
+        return KEY;
+    }
+
+    public String getVALUE() {
+        return VALUE;
+    }
+
+    public String getUSERNAME() {
+        return USERNAME;
+    }
+
+    public String getCATEGORY() {
+        return CATEGORY;
+    }
+}
+
+
+
+
