@@ -81,7 +81,7 @@
                 //We will use below variable to track page number on server side(For more information visit: http://legacy.datatables.net/usage/options#iDisplayStart)
                 "iDisplayStart": 0,
                 "fnDrawCallback": function () {
-                    //Get page numer on client. Please note: number start from 0 So
+                    //Get page number on client. Please note: number start from 0 So
                     //for the first page you will see 0 second page 1 third page 2...
                     //Un-comment below alert to see page number
                     //alert("Current page number: "+this.fnPagingInfo().iPage);

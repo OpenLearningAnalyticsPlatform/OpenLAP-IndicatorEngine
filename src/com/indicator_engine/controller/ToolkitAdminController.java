@@ -225,13 +225,7 @@ public class ToolkitAdminController {
         //to the data base create new list and send back to the client. For demo IndicatorPreProcessing am shuffling
         //the same list to show data randomly
         // Paging & searching Logic still has to be done
-        if (pageNumber == 1) {
-            Collections.shuffle(glaUserListList);
-        }else if (pageNumber == 2) {
-            Collections.shuffle(glaUserListList);
-        }else {
-            Collections.shuffle(glaUserListList);
-        }
+
         //Search functionality: Returns filtered list based on search parameter
         //personsList = getListBasedOnSearchParameter(searchParameter,personsList);
         glaUserJsonObject userJsonObject = new glaUserJsonObject();
