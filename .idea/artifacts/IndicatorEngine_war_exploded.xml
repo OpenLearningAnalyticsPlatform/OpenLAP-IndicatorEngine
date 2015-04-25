@@ -27,6 +27,9 @@
           <element id="library" level="project" name="org.fluttercode.datafactory:datafactory:0.8" />
           <element id="library" level="project" name="javax.mail:mail:1.4" />
           <element id="library" level="project" name="sqljdbc4" />
+          <element id="library" level="project" name="commons-collections4-4.0" />
+          <element id="library" level="project" name="javax.servlet.jsp.jstl-1.2.1" />
+          <element id="library" level="project" name="javax.servlet.jsp.jstl-api-1.2.1" />
         </element>
       </element>
     </root>

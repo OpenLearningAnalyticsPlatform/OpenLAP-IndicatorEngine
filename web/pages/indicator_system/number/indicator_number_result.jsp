@@ -113,6 +113,10 @@
                                 <label for="result">is </label>
                                 <input type="text" class="form-control" name ="result" id="result" value="${selectNumberParameters.result}" disabled>
                             </div>
+                            <div class="col-md-6 margin-bottom-15">
+                                <label for="hql">HQL </label>
+                                <input type="text" class="form-control" name ="hql" id="hql" value="${selectNumberParameters.hql}" >
+                            </div>
                         </div>
                         <div class="row templatemo-form-buttons">
                             <div class="col-md-12">

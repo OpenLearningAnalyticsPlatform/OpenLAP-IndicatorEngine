@@ -22,10 +22,7 @@ package com.indicator_engine.dao;
 
 import com.indicator_engine.datamodel.GLACategory;
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,5 +105,14 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
             glaCategory = (GLACategory) result;
         }
         return glaCategory.getId();
+    }
+
+    @Override
+    @Transactional
+    public List<String> findCategoryByID(Long category_id, String sentity){
+        Session session = factory.getCurrentSession();
+        String hql = "SELECT "+ sentity+ " FROM GLACategory WHERE id ="+ category_id;
+        Query query = session.createQuery(hql);
+        return query.list();
     }
 }

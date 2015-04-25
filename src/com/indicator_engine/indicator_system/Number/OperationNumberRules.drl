@@ -3,11 +3,21 @@ import com.indicator_engine.model.SelectNumberParameters
 import com.indicator_engine.dao.GLACategoryDao
 import com.indicator_engine.dao.GLAEntityDao
 import java.util.List;
+
 dialect  "mvel"
 
 rule "When Minor and Key is pre-selected"
 when
 $obj : SelectNumberParameters ( selectedMinor != "" && selectedKeys !="" )
 then
-long category_id = $glacategoryBean:GLACategoryDao.findCategoryID($obj.getSelectedMinor());
+$obj.setHql("SELECT COUNT(*) FROM GLAEntity WHERE glaEvent.action ='"+$obj.getSelectedAction()+"'"
+        +" AND glaEvent.source = '"+ $obj.getSelectedSource()+"'"+ " AND glaEvent.platform = '"
+        + $obj.getSelectedPlatform()+"'"+" AND glaEvent.glaCategory.major = '"+$obj.getSelectedMajor()+"'"
+        +" AND glaEvent.glaCategory.minor = '"+$obj.getSelectedMinor()+"'"+" AND glaEvent.glaCategory.type = '"
+        +$obj.getSelectedType()+"'"+" AND key = '"+ $obj.getSelectedKeys()+"'");
+/*$obj.setHql("SELECT COUNT(key) FROM GLAEntity WHERE key ='"+$obj.getSelectedKeys()+"'");
+            //+" AND glaEvent.source = '"+ $obj.getSelectedSource()+"'"
+           // + " AND glaEvent.platform = '"+ $obj.getSelectedPlatform()+"'"
+            //+" AND glaEvent.action = '"+ $obj.getSelectedAction()+"'");*/
+
 end

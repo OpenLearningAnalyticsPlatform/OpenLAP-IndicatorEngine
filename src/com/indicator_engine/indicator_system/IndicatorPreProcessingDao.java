@@ -15,4 +15,9 @@ public interface IndicatorPreProcessingDao {
     public List<String> initAvailableEvents_DB(String minor);
     public IndicatorDefnOperationForm initAvailableOperations_DB();
     public SelectNumberParameters initSelectNumberParametersObject();
+    public List<String> initPopulateMinors(SelectNumberParameters selectNumberParameters);
+    public List<String> initPopulateTypes(SelectNumberParameters selectNumberParameters);
+    public List<String> initPopulateMajors(SelectNumberParameters selectNumberParameters);
+    public void manageEValues(SelectNumberParameters obj);
+    public void clearEValuesSpecifications(SelectNumberParameters selectNumberParameters );
 }

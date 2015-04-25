@@ -16,6 +16,14 @@
     </on-start>
 
     <!-- By default, the first state is the start state. -->
+
+    <view-state id="indicatorName" view="indicator_system/number/indicator_name" model="indicatorName">
+        <binder>
+            <binding property="indicatorName" required="true" />
+        </binder>
+        <transition on="indicatorNameEntered" to="definitionHome" />
+    </view-state>
+
 	<view-state id="definitionHome" view="indicator_system/new_indicator" model="availableOperations">
         <binder>
             <binding property="selectedOperation" required="true" />
@@ -25,20 +33,41 @@
 
     <action-state id="retrieveOperation">
         <evaluate expression="indicatorPreProcessor.retrieveOperation(availableOperations)" />
-        <transition on="NUMBER" to="indicatorName" />
+        <transition on="NUMBER" to="selectEventParameters" />
         <transition on="CORRELATION" to="definitionHome" />
     </action-state>
 
-    <view-state id="indicatorName" view="indicator_system/number/indicator_name" model="indicatorName">
+    <view-state id="selectEventParameters" view="indicator_system/number/indicator_number_select_event" model="selectNumberParameters">
         <binder>
-            <binding property="indicatorName" required="true" />
+            <binding property="selectedSource" required="true" />
+            <binding property="selectedPlatform" required="true" />
+            <binding property="selectedAction" required="true" />
         </binder>
-        <transition on="indicatorNameEntered" to="selectMinor" />
+        <transition on="eventSelected" to="populateCategoryTypes" />
     </view-state>
+    <action-state id="populateCategoryTypes">
+        <evaluate expression="indicatorPreProcessor.initPopulateTypes(selectNumberParameters)"
+                  result="selectNumberParameters.type" />
+        <transition to="populateCategoryMajors" />
+    </action-state>
+
+    <action-state id="populateCategoryMajors">
+        <evaluate expression="indicatorPreProcessor.initPopulateMajors(selectNumberParameters)"
+                  result="selectNumberParameters.majors" />
+        <transition to="populateCategoryMinors" />
+    </action-state>
+
+    <action-state id="populateCategoryMinors">
+        <evaluate expression="indicatorPreProcessor.initPopulateMinors(selectNumberParameters)"
+                  result="selectNumberParameters.minors" />
+        <transition to="selectMinor" />
+    </action-state>
 
     <view-state id="selectMinor" view="indicator_system/number/indicator_number_select_minor" model="selectNumberParameters">
         <binder>
             <binding property="selectedMinor" required="true" />
+            <binding property="selectedMajor" required="true" />
+            <binding property="selectedType" required="true" />
         </binder>
         <transition on="minorSelected" to="populateEntities" />
     </view-state>
@@ -52,7 +81,22 @@
     <view-state id="selectEntities" view="indicator_system/number/indicator_number_select_entity" model="selectNumberParameters">
     <binder>
         <binding property="selectedKeys" required="true" />
+        <binding property="entityValues[0].eValues" />
+        <binding property="entityValues[1].eValues" />
+        <binding property="entityValues[2].eValues" />
+        <binding property="entityValues[3].eValues" />
+        <binding property="entityValues[4].eValues" />
+        <binding property="entityValues[5].eValues" />
+        <binding property="entityValues[6].eValues" />
+        <binding property="entityValues[7].eValues" />
+        <binding property="entityValues[8].eValues" />
     </binder>
+    <transition on="specifyEValues">
+        <evaluate expression="indicatorPreProcessor.manageEValues(selectNumberParameters)"/>
+    </transition>
+    <transition on="clearEValues">
+        <evaluate expression="indicatorPreProcessor.clearEValuesSpecifications(selectNumberParameters)"/>
+    </transition>
     <transition on="entitySelected" to="calculateResult" />
     </view-state>
 

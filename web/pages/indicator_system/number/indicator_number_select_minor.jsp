@@ -102,8 +102,20 @@
                     <form:form role="form" id="entitySelection"  method="post" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">
                         <div class="row">
                             <div class="col-md-6 margin-bottom-15">
-                                <label for="entitySelection">Select an Entity(Minors) : X </label>
+                                <label for="typeSelection">Select an Entity Type: X </label>
+                                <form:select class="form-control margin-bottom-15" path="selectedType" items="${selectNumberParameters.type}" name ="typeSelection" id="typeSelection" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 margin-bottom-15">
+                                <label for="entitySelection">Select an Entity Minor </label>
                                 <form:select class="form-control margin-bottom-15" path="selectedMinor" items="${selectNumberParameters.minors}" name ="entitySelection" id="entitySelection" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 margin-bottom-15">
+                                <label for="majorSelection">Select an Entity Major </label>
+                                <form:select class="form-control margin-bottom-15" path="selectedMajor" items="${selectNumberParameters.majors}" name ="majorSelection" id="majorSelection" />
                             </div>
                         </div>
                         <div class="row templatemo-form-buttons">

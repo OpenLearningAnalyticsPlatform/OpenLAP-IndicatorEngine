@@ -7,5 +7,5 @@ import com.indicator_engine.model.SelectNumberParameters;
  */
 public interface OperationNumberProcessorDao {
 
-    public int computeResult(SelectNumberParameters selectNumberParameters);
+    public long computeResult(SelectNumberParameters selectNumberParameters);
 }

@@ -34,5 +34,6 @@ public interface GLACategoryDao {
     public List<String> selectAllMinors();
     public GLACategory  loadcategoryByname(String categoryname);
     public long findCategoryID(String minor);
+    public List<String> findCategoryByID(Long category_id,String sentity);
 
 }

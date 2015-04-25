@@ -35,7 +35,7 @@ public interface GLAEventDao {
     public List<String> selectAllEvents();
     public List<String> loadEventByCategoryID(Long categoryID);
     public GLAEvent loadEventByID(Long id);
-
-
-
+    public List<String> selectAll(String EventComponent);
+    public long findCategoryId(String action, String source, String platform);
+    public long findNumber(String hql);
 }

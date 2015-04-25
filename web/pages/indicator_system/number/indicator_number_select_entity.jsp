@@ -28,6 +28,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     if ((session.getAttribute("loggedIn") == null) || (session.getAttribute("loggedIn") == ""))
         response.sendRedirect("/login");
@@ -42,12 +44,13 @@
 <head>
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-    <title>Indicator Naming</title>
+    <title>Entity Selection</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
     <script type="javascript" src="${pageContext.request.contextPath}/js/user_profile_checks.js"> </script>
+    <script type="text/javascript" src="/dynamiclists/js/jquery-1.3.2.min.js"></script>
 
 </head>
 <body>
@@ -99,44 +102,91 @@
             <p>Based on your previous selection, here is the relevant list of Entities. Please choose one to continue.</p>
             <div class="row">
                 <div class="col-md-12">
-                    <form:form role="form" id="entitySelection"  method="post" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">
+                    <form:form role="form" id="entitySelection"  method="POST" commandName="selectNumberParameters" action="${flowExecutionUrl}">
                         <div class="row">
                             <div class="col-md-6 margin-bottom-15">
-                                <label for="entitySelection">Select an Entity </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedKeys" items="${selectNumberParameters.keys}" name ="entitySelection" id="entitySelection" />
+                                <label for="entityKeySelection">Select an Entity </label>
+                                <form:select class="form-control margin-bottom-15" path="selectedKeys" items="${selectNumberParameters.keys}" name ="entityKeySelection" id="entityKeySelection" />
                             </div>
                         </div>
-                        <div class="row templatemo-form-buttons">
-                            <div class="col-md-12">
-                                <input type="submit" name="_eventId_entitySelected"
-                                       value="Next" />
+                        <c:forEach items="${selectNumberParameters.entityValues}" var="entityVal" varStatus="loop">
+                            <div class="row">
+                                <div class="col-md-6 margin-bottom-15">
+                                    <label for="specificationType">Select Specification Type </label>
+                                    <form:select class="form-control margin-bottom-15" path="entityValues[${loop.index}].type" items="${selectNumberParameters.entityValueTypes}" name ="specificationType" id="specificationType" />
+                                </div>
+                                <div class="col-md-6 margin-bottom-15">
+                                    <label for="entityValue" class="control-label">${loop.count} Filter Specification</label>
+                                    <form:input class="form-control" path="entityValues[${loop.index}].eValues"  name="entityValue" id ="entityValue"/>
+                                </div>
+                            </div>
+                        </c:forEach>
+                        <div class="col-md-6 col-sm-6 margin-bottom-30">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">Entered Parameters</div>
+                                <div class="panel-body">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>S/L</th>
+                                            <th>Entity Filtering Specification</th>
+                                            <th>Filtering Type</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach var="entityVal" items="${selectNumberParameters.entityValues}"  varStatus="loop">
+                                            <tr>
+                                                <td>${loop.count}</td>
+                                                <td><c:out value="${entityVal.eValues}"/></td>
+                                                <td><c:out value="${entityVal.type}"/></td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </form:form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal -->
-    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Are you sure you want to sign out?</h4>
-                </div>
-                <div class="modal-footer">
-                    <a href="/logoff" class="btn btn-primary">Yes</a>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <footer class="templatemo-footer">
-        <div class="templatemo-copyright">
-            <p>Copyright &copy; 2015 Learning Technologies Group, RWTH</p>
-        </div>
-    </footer>
+           <div class="row templatemo-form-buttons">
+               <div class="col-md-12">
+                   <input type="submit" name="_eventId_specifyEValues"
+                          value="Add new Entity Specifcations" />
+               </div>
+               <div class="col-md-12">
+                   <input type="submit" name="_eventId_clearEValues"
+                          value="Delete All Specifcations" />
+               </div>
+           </div>
+           <div class="row templatemo-form-buttons">
+               <div class="col-md-12">
+                   <input type="submit" name="_eventId_entitySelected"
+                          value="Next" />
+               </div>
+           </div>
+       </form:form>
+   </div>
+</div>
+</div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+   <div class="modal-header">
+       <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+       <h4 class="modal-title" id="myModalLabel">Are you sure you want to sign out?</h4>
+   </div>
+   <div class="modal-footer">
+       <a href="/logoff" class="btn btn-primary">Yes</a>
+       <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+   </div>
+</div>
+</div>
+</div>
+<footer class="templatemo-footer">
+<div class="templatemo-copyright">
+<p>Copyright &copy; 2015 Learning Technologies Group, RWTH</p>
+</div>
+</footer>
 </div>
 
 <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
@@ -148,5 +198,5 @@
 </body>
 </html>
 <%
-    }
+}
 %>

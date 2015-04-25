@@ -24,14 +24,12 @@ package com.indicator_engine.dao;
 import com.indicator_engine.datamodel.GLAEntity;
 import com.indicator_engine.datamodel.GLAEvent;
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
+import org.hibernate.type.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -124,6 +122,33 @@ public class GLAEventDaoImpl implements GLAEventDao {
         }
         log.info("Dumping Events By Category ID" + selectedEvents);
         return selectedEvents;
+    }
+    @Override
+    @Transactional
+    public List<String> selectAll(String EventComponent){
+        Session session = factory.getCurrentSession();
+        String hql = "SELECT DISTINCT " + EventComponent +" FROM GLAEvent";
+        Query query = session.createQuery(hql);
+
+        return query.list();
+    }
+
+    @Override
+    @Transactional
+    public long findCategoryId(String action, String source, String platform){
+        Session session = factory.getCurrentSession();
+        String hql = "SELECT DISTINCT glaCategory.id FROM GLAEvent WHERE action = '"+ action+"'"+ " AND source = '"+ source+"'"+ " AND platform = '"+ platform+"'";
+        Query query = session.createQuery(hql);
+        return ((Long) query.uniqueResult()).longValue();
+
+    }
+
+    @Override
+    @Transactional
+    public long findNumber(String hql){
+        Session session = factory.getCurrentSession();
+        Query query = session.createQuery(hql);
+        return ((Long) query.uniqueResult()).longValue();
     }
 
 }

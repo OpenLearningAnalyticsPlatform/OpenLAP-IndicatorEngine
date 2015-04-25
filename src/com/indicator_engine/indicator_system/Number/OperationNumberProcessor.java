@@ -2,7 +2,15 @@ package com.indicator_engine.indicator_system.Number;
 
 import com.indicator_engine.dao.GLACategoryDao;
 import com.indicator_engine.dao.GLAEntityDao;
+import com.indicator_engine.dao.GLAEventDao;
 import com.indicator_engine.model.SelectNumberParameters;
+import org.drools.KnowledgeBase;
+import org.drools.KnowledgeBaseFactory;
+import org.drools.builder.KnowledgeBuilder;
+import org.drools.builder.KnowledgeBuilderFactory;
+import org.drools.builder.ResourceType;
+import org.drools.io.ResourceFactory;
+import org.drools.runtime.StatefulKnowledgeSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import java.util.List;
@@ -15,12 +23,9 @@ public class OperationNumberProcessor implements OperationNumberProcessorDao {
     private ApplicationContext appContext;
 
     @Override
-    public int computeResult(SelectNumberParameters selectNumberParameters){
-        GLACategoryDao glacategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
-        long category_id = glacategoryBean.findCategoryID(selectNumberParameters.getSelectedMinor());
-        GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
-        List<String> selectedEntities = glaEntityBean.loadEntitiesByCategoryIDName(category_id, selectNumberParameters.getSelectedKeys());
-        /*StatefulKnowledgeSession session = null;
+    public long computeResult(SelectNumberParameters selectNumberParameters){
+        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
+        StatefulKnowledgeSession session = null;
         try {
             KnowledgeBuilder builder = KnowledgeBuilderFactory.
                     newKnowledgeBuilder();
@@ -32,8 +37,6 @@ public class OperationNumberProcessor implements OperationNumberProcessorDao {
             knowledgeBase.addKnowledgePackages(builder.getKnowledgePackages());
             session = knowledgeBase.newStatefulKnowledgeSession();
             session.insert(selectNumberParameters);
-            session.insert(glacategoryBean);
-            session.insert(glaEntityBean);
             session.fireAllRules();
         } catch(Throwable t) {
             t.printStackTrace();
@@ -41,8 +44,10 @@ public class OperationNumberProcessor implements OperationNumberProcessorDao {
             if (session != null) {
                 session.dispose();
             }
-        }*/
-        return selectedEntities.size();
+        }
+        long result = glaEventBean.findNumber(selectNumberParameters.getHql());
+        selectNumberParameters.setHql(selectNumberParameters.getHql() + selectNumberParameters.getEntityValues().get(2).geteValues());
+        return result;
 
     }
 

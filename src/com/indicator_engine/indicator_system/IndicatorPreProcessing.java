@@ -4,11 +4,13 @@ import com.indicator_engine.dao.GLACategoryDao;
 import com.indicator_engine.dao.GLAEntityDao;
 import com.indicator_engine.dao.GLAEventDao;
 import com.indicator_engine.dao.GLAOperationsDao;
+import com.indicator_engine.model.EntityValues;
 import com.indicator_engine.model.IndicatorDefnOperationForm;
 import com.indicator_engine.model.SelectNumberParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.AutoPopulatingList;
 
 import java.util.List;
 
@@ -27,9 +29,43 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
     @Override
     public SelectNumberParameters initSelectNumberParametersObject(){
         SelectNumberParameters obj = new SelectNumberParameters();
-        GLACategoryDao glacategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
-        obj.setMinors(glacategoryBean.selectAllMinors());
+        obj.getEntityValues().add(new EntityValues());
+        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
+        obj.setSource(glaEventBean.selectAll("source"));
+        obj.setPlatform(glaEventBean.selectAll("platform"));
+        obj.setAction(glaEventBean.selectAll("action"));
         return obj;
+    }
+
+    @Override
+    public List<String> initPopulateMinors(SelectNumberParameters selectNumberParameters)
+    {
+        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
+        GLACategoryDao glacategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
+        List<String> minor = null;
+        long category_id = glaEventBean.findCategoryId(selectNumberParameters.getSelectedAction(),selectNumberParameters.getSelectedSource(), selectNumberParameters.getSelectedPlatform());
+        minor = glacategoryBean.findCategoryByID(category_id,"minor");
+        return minor;
+    }
+    @Override
+    public List<String> initPopulateMajors(SelectNumberParameters selectNumberParameters)
+    {
+        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
+        GLACategoryDao glacategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
+        List<String> major = null;
+        long category_id = glaEventBean.findCategoryId(selectNumberParameters.getSelectedAction(),selectNumberParameters.getSelectedSource(), selectNumberParameters.getSelectedPlatform());
+        major = glacategoryBean.findCategoryByID(category_id,"major");
+        return major;
+    }
+    @Override
+    public List<String> initPopulateTypes(SelectNumberParameters selectNumberParameters)
+    {
+        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
+        GLACategoryDao glacategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
+        List<String> types = null;
+        long category_id = glaEventBean.findCategoryId(selectNumberParameters.getSelectedAction(),selectNumberParameters.getSelectedSource(), selectNumberParameters.getSelectedPlatform());
+        types = glacategoryBean.findCategoryByID(category_id,"type");
+        return types;
     }
     @Override
     public IndicatorDefnOperationForm initAvailableOperations_DB(){
@@ -53,5 +89,14 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
         GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
         long category_id = glacategoryBean.findCategoryID(minor);
         return glaEventBean.loadEventByCategoryID(category_id);
+    }
+    @Override
+    public void manageEValues(SelectNumberParameters obj) {
+        obj.getEntityValues().add(new EntityValues());
+    }
+
+    @Override
+    public void clearEValuesSpecifications(SelectNumberParameters selectNumberParameters ){
+        selectNumberParameters.getEntityValues().clear();
     }
 }

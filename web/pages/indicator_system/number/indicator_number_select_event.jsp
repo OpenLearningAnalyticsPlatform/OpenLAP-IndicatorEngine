@@ -102,8 +102,20 @@
                     <form:form role="form" id="entitySelection"  method="post" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">
                         <div class="row">
                             <div class="col-md-6 margin-bottom-15">
-                                <label for="entitySelection">Select an Event </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedEvents" items="${selectNumberParameters.events}" name ="entitySelection" id="entitySelection" />
+                                <label for="sourceSelection">Select a Source </label>
+                                <form:select class="form-control margin-bottom-15" path="selectedSource" items="${selectNumberParameters.source}" name ="sourceSelection" id="sourceSelection" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 margin-bottom-15">
+                                <label for="PlatformSelection">Select a Plaftorm </label>
+                                <form:select class="form-control margin-bottom-15" path="selectedPlatform" items="${selectNumberParameters.platform}" name ="PlatformSelection" id="PlatformSelection" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 margin-bottom-15">
+                                <label for="actionSelection">Select an Action</label>
+                                <form:select class="form-control margin-bottom-15" path="selectedAction" items="${selectNumberParameters.action}" name ="actionSelection" id="actionSelection" />
                             </div>
                         </div>
                         <div class="row templatemo-form-buttons">
