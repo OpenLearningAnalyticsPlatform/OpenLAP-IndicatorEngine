@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class GLAUserDaoImpl implements  GLAUserDao{
 
-    static Logger log = Logger.getLogger(GLAEventDaoImpl.class.getName());
+    static Logger log = Logger.getLogger(GLAUserDaoImpl.class.getName());
     @Autowired
     private SessionFactory factory;
     @Override
@@ -95,5 +95,20 @@ public class GLAUserDaoImpl implements  GLAUserDao{
         return glaUser;
     }
 
+    @Override
+    @Transactional
+    public List<String> searchSimilarUserDetails(String userDetail, String searchCriteria)
+    {
+        Session session = factory.getCurrentSession();
+        String hql = null;
+        if(userDetail.equals("UserName"))
+            hql = "SELECT DISTINCT username FROM GLAUser WHERE username LIKE '%"+ searchCriteria +"%'";
+        else if (userDetail.equals("UserEmail"))
+            hql = "SELECT DISTINCT email FROM GLAUser WHERE email LIKE '%"+ searchCriteria +"%'";
+        log.info("Search Hibernate Query " + hql);
+        Query query = session.createQuery(hql);
+        log.info("Search Hibernate Query " + query.list());
+        return query.list();
+    }
 
 }

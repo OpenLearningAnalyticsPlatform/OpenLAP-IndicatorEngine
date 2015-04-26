@@ -24,7 +24,7 @@ import com.indicator_engine.dao.UserCredentialsDao;
 import com.indicator_engine.datamodel.UserCredentials;
 import com.indicator_engine.datamodel.UserProfile;
 import com.indicator_engine.email.MailPackage;
-import com.indicator_engine.model.RegistrationForm;
+import com.indicator_engine.model.app.RegistrationForm;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

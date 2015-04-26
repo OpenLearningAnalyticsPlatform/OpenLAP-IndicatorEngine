@@ -1,4 +1,4 @@
-package com.indicator_engine.model;
+package com.indicator_engine.model.indicator_system;
 
 import java.io.Serializable;
 import java.util.ArrayList;

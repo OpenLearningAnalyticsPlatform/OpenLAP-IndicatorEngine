@@ -18,7 +18,7 @@
  *
  */
 
-package com.indicator_engine.model;
+package com.indicator_engine.model.admin;
 
 import java.util.ArrayList;
 import java.util.List;

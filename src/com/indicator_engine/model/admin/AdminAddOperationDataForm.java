@@ -1,4 +1,4 @@
-package com.indicator_engine.model;
+package com.indicator_engine.model.admin;
 
 /**
  * Created by Tanmaya Mahapatra on 01-04-2015.

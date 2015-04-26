@@ -18,23 +18,21 @@
  *
  */
 
-package com.indicator_engine.model;
+package com.indicator_engine.model.app;
 
 /**
- * Created by Tanmaya Mahapatra on 18-03-2015.
+ * Created by Tanmaya Mahapatra on 16-03-2015.
  */
-public class AdminAddUserDataForm {
-
-    private String username;
+public class LoginForm {
+    private String userName;
     private String password;
-    private String email;
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -43,13 +41,5 @@ public class AdminAddUserDataForm {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 }

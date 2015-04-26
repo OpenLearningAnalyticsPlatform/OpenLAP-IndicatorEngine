@@ -18,19 +18,16 @@
  *
  */
 
-package com.indicator_engine.model;
+package com.indicator_engine.model.admin;
 
-import com.indicator_engine.datamodel.GLAUser;
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.indicator_engine.datamodel.GLAEvent;
 
 import java.util.List;
 
 /**
  * Created by Tanmaya Mahapatra on 23-03-2015.
  */
-public class glaUserJsonObject {
+public class GLAEventJsonObject {
 
     int iTotalRecords;
 
@@ -39,7 +36,7 @@ public class glaUserJsonObject {
     String sEcho;
 
     String sColumns;
-    List<GLAUser> aaData;
+    List<GLAEvent> aaData;
 
     public int getiTotalRecords() {
         return iTotalRecords;
@@ -73,17 +70,11 @@ public class glaUserJsonObject {
         this.sColumns = sColumns;
     }
 
-    public List<GLAUser> getAaData() {
+    public List<GLAEvent> getAaData() {
         return aaData;
     }
 
-    public void setAaData(List<GLAUser> aaData) {
+    public void setAaData(List<GLAEvent> aaData) {
         this.aaData = aaData;
     }
-    static Gson createGsonFromBuilder( ExclusionStrategy exs ){
-        GsonBuilder gsonbuilder = new GsonBuilder();
-        gsonbuilder.setExclusionStrategies(exs);
-        return gsonbuilder.serializeNulls().create();
-    }
-
 }

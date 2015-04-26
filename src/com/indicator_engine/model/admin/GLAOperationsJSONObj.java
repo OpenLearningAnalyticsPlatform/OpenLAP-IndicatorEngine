@@ -18,16 +18,19 @@
  *
  */
 
-package com.indicator_engine.model;
+package com.indicator_engine.model.admin;
 
-import com.indicator_engine.datamodel.GLACategory;
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.indicator_engine.datamodel.GLAOperations;
 
 import java.util.List;
 
 /**
  * Created by Tanmaya Mahapatra on 23-03-2015.
  */
-public class GLACategoryJsonObject {
+public class GLAOperationsJSONObj {
 
     int iTotalRecords;
 
@@ -36,7 +39,7 @@ public class GLACategoryJsonObject {
     String sEcho;
 
     String sColumns;
-    List<GLACategory> aaData;
+    List<GLAOperations> aaData;
 
     public int getiTotalRecords() {
         return iTotalRecords;
@@ -70,11 +73,17 @@ public class GLACategoryJsonObject {
         this.sColumns = sColumns;
     }
 
-    public List<GLACategory> getAaData() {
+    public List<GLAOperations> getAaData() {
         return aaData;
     }
 
-    public void setAaData(List<GLACategory> aaData) {
+    public void setAaData(List<GLAOperations> aaData) {
         this.aaData = aaData;
     }
+    static Gson createGsonFromBuilder( ExclusionStrategy exs ){
+        GsonBuilder gsonbuilder = new GsonBuilder();
+        gsonbuilder.setExclusionStrategies(exs);
+        return gsonbuilder.serializeNulls().create();
+    }
+
 }

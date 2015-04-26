@@ -18,16 +18,17 @@
  *
  */
 
-package com.indicator_engine.model;
+package com.indicator_engine.model.admin;
 
-import com.indicator_engine.datamodel.GLAEvent;
+import com.indicator_engine.datamodel.GLAEntity;
+
 
 import java.util.List;
 
 /**
  * Created by Tanmaya Mahapatra on 23-03-2015.
  */
-public class GLAEventJsonObject {
+public class GLAEntityJsonObject {
 
     int iTotalRecords;
 
@@ -36,7 +37,7 @@ public class GLAEventJsonObject {
     String sEcho;
 
     String sColumns;
-    List<GLAEvent> aaData;
+    List<GLAEntity> aaData;
 
     public int getiTotalRecords() {
         return iTotalRecords;
@@ -70,11 +71,11 @@ public class GLAEventJsonObject {
         this.sColumns = sColumns;
     }
 
-    public List<GLAEvent> getAaData() {
+    public List<GLAEntity> getAaData() {
         return aaData;
     }
 
-    public void setAaData(List<GLAEvent> aaData) {
+    public void setAaData(List<GLAEntity> aaData) {
         this.aaData = aaData;
     }
 }

@@ -1,7 +1,7 @@
 package com.indicator_engine.indicator_system;
 
-import com.indicator_engine.model.IndicatorDefnOperationForm;
-import com.indicator_engine.model.SelectNumberParameters;
+import com.indicator_engine.model.indicator_system.IndicatorDefnOperationForm;
+import com.indicator_engine.model.indicator_system.Number.SelectNumberParameters;
 
 import java.util.List;
 
@@ -20,4 +20,14 @@ public interface IndicatorPreProcessingDao {
     public List<String> initPopulateMajors(SelectNumberParameters selectNumberParameters);
     public void manageEValues(SelectNumberParameters obj);
     public void clearEValuesSpecifications(SelectNumberParameters selectNumberParameters );
+    public void specifyNewUser(SelectNumberParameters selectNumberParameters);
+    public void clearUserSpecifications(SelectNumberParameters selectNumberParameters );
+    public void searchUser(SelectNumberParameters selectNumberParameters);
+    public void clearSearchSettings(SelectNumberParameters selectNumberParameters);
+    public void specifyNewSession(SelectNumberParameters selectNumberParameters);
+    public void clearSessionSpecifications(SelectNumberParameters selectNumberParameters);
+    public void searchSession(SelectNumberParameters selectNumberParameters);
+    public void specifyNewTime(SelectNumberParameters selectNumberParameters);
+    public void clearTimeSpecifications(SelectNumberParameters selectNumberParameters);
+    public void searchTime(SelectNumberParameters selectNumberParameters);
 }

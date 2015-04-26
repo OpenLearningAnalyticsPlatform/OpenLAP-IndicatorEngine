@@ -44,7 +44,7 @@
 <head>
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-    <title>Entity Selection</title>
+    <title>Entity Selection and Search Specifications</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
@@ -56,7 +56,7 @@
 <body>
 <div class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <div class="logo"><h1>Select Entity</h1></div>
+        <div class="logo"><h1>Entity Selection and Search Specifications</h1></div>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -99,69 +99,98 @@
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
             <h1>Select Entity</h1>
-            <p>Based on your previous selection, here is the relevant list of Entities. Please choose one to continue.</p>
+            <p>Based on your previous selection, here is the relevant list of Entities. Please choose one to continue. You can
+               specify upto 10 search criteria here.</p>
             <div class="row">
                 <div class="col-md-12">
                     <form:form role="form" id="entitySelection"  method="POST" commandName="selectNumberParameters" action="${flowExecutionUrl}">
-                        <div class="row">
-                            <div class="col-md-6 margin-bottom-15">
-                                <label for="entityKeySelection">Select an Entity </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedKeys" items="${selectNumberParameters.keys}" name ="entityKeySelection" id="entityKeySelection" />
-                            </div>
-                        </div>
-                        <c:forEach items="${selectNumberParameters.entityValues}" var="entityVal" varStatus="loop">
-                            <div class="row">
-                                <div class="col-md-6 margin-bottom-15">
-                                    <label for="specificationType">Select Specification Type </label>
-                                    <form:select class="form-control margin-bottom-15" path="entityValues[${loop.index}].type" items="${selectNumberParameters.entityValueTypes}" name ="specificationType" id="specificationType" />
+            <div class="col-md-6 col-sm-6 margin-bottom-30">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Entity Selection & Filtering</div>
+                    <div class="panel-body">
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <div class="row">
+                                    <div class="col-md-6 margin-bottom-15">
+                                        <label for="entityKeySelection">Select an Entity </label>
+                                        <form:select class="form-control margin-bottom-15" path="selectedKeys" items="${selectNumberParameters.keys}" name ="entityKeySelection" id="entityKeySelection" />
+                                    </div>
                                 </div>
-                                <div class="col-md-6 margin-bottom-15">
-                                    <label for="entityValue" class="control-label">${loop.count} Filter Specification</label>
-                                    <form:input class="form-control" path="entityValues[${loop.index}].eValues"  name="entityValue" id ="entityValue"/>
+                            </tr>
+                            <tr>
+                                <div class="row">
+                                    <div class="col-md-6 margin-bottom-15">
+                                        <label for="specificationType">Select Specification Type </label>
+                                        <form:select class="form-control margin-bottom-15" path="selectedentityValueTypes" items="${selectNumberParameters.entityValueTypes}" name ="specificationType" id="specificationType" />
+                                    </div>
                                 </div>
-                            </div>
-                        </c:forEach>
-                        <div class="col-md-6 col-sm-6 margin-bottom-30">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">Entered Parameters</div>
-                                <div class="panel-body">
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>S/L</th>
-                                            <th>Entity Filtering Specification</th>
-                                            <th>Filtering Type</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <c:forEach var="entityVal" items="${selectNumberParameters.entityValues}"  varStatus="loop">
-                                            <tr>
-                                                <td>${loop.count}</td>
-                                                <td><c:out value="${entityVal.eValues}"/></td>
-                                                <td><c:out value="${entityVal.type}"/></td>
-                                            </tr>
-                                        </c:forEach>
-                                        </tbody>
-                                    </table>
+                            </tr>
+                            <tr>
+                                <div class="row">
+                                    <div class="col-md-6 margin-bottom-15">
+                                        <label for="entityValue" class="control-label">Filter Specification</label>
+                                        <form:input class="form-control" path="evalue"  name="entityValue" id ="entityValue"/>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-           <div class="row templatemo-form-buttons">
-               <div class="col-md-12">
-                   <input type="submit" name="_eventId_specifyEValues"
-                          value="Add new Entity Specifcations" />
-               </div>
-               <div class="col-md-12">
-                   <input type="submit" name="_eventId_clearEValues"
-                          value="Delete All Specifcations" />
-               </div>
-           </div>
-           <div class="row templatemo-form-buttons">
-               <div class="col-md-12">
-                   <input type="submit" name="_eventId_entitySelected"
-                          value="Next" />
-               </div>
-           </div>
+                            </tr>
+                            <tr>
+                                <div class="row templatemo-form-buttons">
+                                    <div class="col-md-12">
+                                        <input type="submit" name="_eventId_specifyEValues"
+                                               value="Add Entity Specifcation" />
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr>
+                                <div class="row templatemo-form-buttons">
+                                    <div class="col-md-12">
+                                        <input type="submit" name="_eventId_clearEValues"
+                                               value="Delete All Specifcations" />
+                                    </div>
+                                </div>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 margin-bottom-30">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Entered Parameters</div>
+                    <div class="panel-body">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>S/L</th>
+                                <th>Entity Key</th>
+                                <th>Entity Filtering Specification</th>
+                                <th>Filtering Type</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach var="entityVal" items="${selectNumberParameters.entityValues}"  varStatus="loop">
+                                <tr>
+                                    <td>${loop.count}</td>
+                                    <td><c:out value="${entityVal.key}"/></td>
+                                    <td><c:out value="${entityVal.eValues}"/></td>
+                                    <td><c:out value="${entityVal.type}"/></td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row templatemo-form-buttons">
+                <div class="col-md-12">
+                    <input cclass="btn btn-default" type="submit" name="_eventId_prevScreen"
+                           value="Previous" />
+                    <input class="btn btn-primary" type="submit" name="_eventId_entitySelected"
+                           value="Next" />
+                </div>
+            </div>
+
        </form:form>
    </div>
 </div>

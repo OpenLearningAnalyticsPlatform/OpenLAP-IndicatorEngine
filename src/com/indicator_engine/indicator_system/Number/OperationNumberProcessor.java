@@ -1,9 +1,7 @@
 package com.indicator_engine.indicator_system.Number;
 
-import com.indicator_engine.dao.GLACategoryDao;
-import com.indicator_engine.dao.GLAEntityDao;
 import com.indicator_engine.dao.GLAEventDao;
-import com.indicator_engine.model.SelectNumberParameters;
+import com.indicator_engine.model.indicator_system.Number.SelectNumberParameters;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
@@ -13,7 +11,6 @@ import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import java.util.List;
 
 /**
  * Created by Tanmaya Mahapatra on 01-04-2015.
@@ -46,7 +43,7 @@ public class OperationNumberProcessor implements OperationNumberProcessorDao {
             }
         }
         long result = glaEventBean.findNumber(selectNumberParameters.getHql());
-        selectNumberParameters.setHql(selectNumberParameters.getHql() + selectNumberParameters.getEntityValues().get(2).geteValues());
+        //selectNumberParameters.setHql(selectNumberParameters.getHql() + selectNumberParameters.getEntityValues().get(2).geteValues());
         return result;
 
     }

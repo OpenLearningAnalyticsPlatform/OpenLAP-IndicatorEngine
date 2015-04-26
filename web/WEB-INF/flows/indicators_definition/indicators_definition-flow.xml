@@ -6,7 +6,7 @@
 		http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
 
-    <var name="indicatorName" class="com.indicator_engine.model.IndicatorNaming"/>
+    <var name="indicatorName" class="com.indicator_engine.model.indicator_system.Number.IndicatorNaming"/>
 
     <on-start>
         <evaluate expression="indicatorPreProcessor.initSelectNumberParametersObject()"
@@ -43,6 +43,7 @@
             <binding property="selectedPlatform" required="true" />
             <binding property="selectedAction" required="true" />
         </binder>
+        <transition  on="prevScreen" to="definitionHome"/>
         <transition on="eventSelected" to="populateCategoryTypes" />
     </view-state>
     <action-state id="populateCategoryTypes">
@@ -60,15 +61,16 @@
     <action-state id="populateCategoryMinors">
         <evaluate expression="indicatorPreProcessor.initPopulateMinors(selectNumberParameters)"
                   result="selectNumberParameters.minors" />
-        <transition to="selectMinor" />
+        <transition to="specifyCategory" />
     </action-state>
 
-    <view-state id="selectMinor" view="indicator_system/number/indicator_number_select_minor" model="selectNumberParameters">
+    <view-state id="specifyCategory" view="indicator_system/number/indicator_number_select_minor" model="selectNumberParameters">
         <binder>
             <binding property="selectedMinor" required="true" />
             <binding property="selectedMajor" required="true" />
             <binding property="selectedType" required="true" />
         </binder>
+        <transition  on="prevScreen" to="selectEventParameters"/>
         <transition on="minorSelected" to="populateEntities" />
     </view-state>
 
@@ -79,25 +81,145 @@
     </action-state>
 
     <view-state id="selectEntities" view="indicator_system/number/indicator_number_select_entity" model="selectNumberParameters">
-    <binder>
-        <binding property="selectedKeys" required="true" />
-        <binding property="entityValues[0].eValues" />
-        <binding property="entityValues[1].eValues" />
-        <binding property="entityValues[2].eValues" />
-        <binding property="entityValues[3].eValues" />
-        <binding property="entityValues[4].eValues" />
-        <binding property="entityValues[5].eValues" />
-        <binding property="entityValues[6].eValues" />
-        <binding property="entityValues[7].eValues" />
-        <binding property="entityValues[8].eValues" />
-    </binder>
-    <transition on="specifyEValues">
-        <evaluate expression="indicatorPreProcessor.manageEValues(selectNumberParameters)"/>
-    </transition>
-    <transition on="clearEValues">
-        <evaluate expression="indicatorPreProcessor.clearEValuesSpecifications(selectNumberParameters)"/>
-    </transition>
-    <transition on="entitySelected" to="calculateResult" />
+        <binder>
+            <binding property="selectedKeys" required="true" />
+            <binding property="selectedentityValueTypes" required="true" />
+            <binding property="evalue"/>
+            <binding property="entityValues[0].eValues" />
+            <binding property="entityValues[1].eValues" />
+            <binding property="entityValues[2].eValues" />
+            <binding property="entityValues[3].eValues" />
+            <binding property="entityValues[4].eValues" />
+            <binding property="entityValues[5].eValues" />
+            <binding property="entityValues[6].eValues" />
+            <binding property="entityValues[7].eValues" />
+            <binding property="entityValues[8].eValues" />
+            <binding property="entityValues[9].eValues" />
+            <binding property="entityValues[0].type" />
+            <binding property="entityValues[1].type" />
+            <binding property="entityValues[2].type" />
+            <binding property="entityValues[3].type" />
+            <binding property="entityValues[4].type" />
+            <binding property="entityValues[5].type" />
+            <binding property="entityValues[6].type" />
+            <binding property="entityValues[7].type" />
+            <binding property="entityValues[8].type" />
+            <binding property="entityValues[9].type" />
+        </binder>
+        <transition on="specifyEValues">
+            <evaluate expression="indicatorPreProcessor.manageEValues(selectNumberParameters)"/>
+        </transition>
+        <transition on="clearEValues">
+            <evaluate expression="indicatorPreProcessor.clearEValuesSpecifications(selectNumberParameters)"/>
+        </transition>
+        <transition  on="prevScreen" to="specifyCategory"/>
+        <transition  on="entitySelected" to="userSpecifications">
+            <evaluate expression="indicatorPreProcessor.manageEValues(selectNumberParameters)"/>
+        </transition>
+    </view-state>
+
+    <view-state id="userSpecifications" view="indicator_system/number/indicator_number_userspecifications" model="selectNumberParameters">
+        <binder>
+            <binding property="userSearchTypes"/>
+            <binding property="selecteduserSearchTypes"/>
+            <binding property="searchUserString"/>
+            <binding property="selectedSearchStrings"/>
+            <binding property="searchResults"/>
+            <binding property="userSpecifications[0].userSearchType"/>
+            <binding property="userSpecifications[1].userSearchType"/>
+            <binding property="userSpecifications[2].userSearchType" />
+            <binding property="userSpecifications[3].userSearchType" />
+            <binding property="userSpecifications[4].userSearchType"/>
+            <binding property="userSpecifications[0].userSearch"/>
+            <binding property="userSpecifications[1].userSearch"/>
+            <binding property="userSpecifications[2].userSearch"/>
+            <binding property="userSpecifications[3].userSearch"/>
+            <binding property="userSpecifications[4].userSearch"/>
+        </binder>
+        <transition on="specifyUser">
+            <evaluate expression="indicatorPreProcessor.specifyNewUser(selectNumberParameters)"/>
+        </transition>
+        <transition on="clearUserValues">
+            <evaluate expression="indicatorPreProcessor.clearUserSpecifications(selectNumberParameters)"/>
+        </transition>
+        <transition on="searchUser">
+            <evaluate expression="indicatorPreProcessor.searchUser(selectNumberParameters)"/>
+        </transition>
+        <transition  on="prevScreen" to="selectEntities"/>
+        <transition  on="userSpecified" to="sessionSpecifications"/>
+
+    </view-state>
+
+    <view-state id="sessionSpecifications" view="indicator_system/number/indicator_number_sessionspecifications" model="selectNumberParameters">
+        <binder>
+            <binding property="selectedsessionSearchType"/>
+            <binding property="sessionSearch"/>
+            <binding property="selectedSearchStrings"/>
+            <binding property="searchResults"/>
+            <binding property="sessionSpecifications[0].session"/>
+            <binding property="sessionSpecifications[1].session"/>
+            <binding property="sessionSpecifications[2].session"/>
+            <binding property="sessionSpecifications[3].session"/>
+            <binding property="sessionSpecifications[4].session"/>
+            <binding property="sessionSpecifications[0].type"/>
+            <binding property="sessionSpecifications[1].type"/>
+            <binding property="sessionSpecifications[2].type"/>
+            <binding property="sessionSpecifications[3].type"/>
+            <binding property="sessionSpecifications[4].type"/>
+        </binder>
+        <on-entry>
+            <evaluate expression="indicatorPreProcessor.clearSearchSettings(selectNumberParameters)"/>
+        </on-entry>
+        <transition on="specifySession">
+            <evaluate expression="indicatorPreProcessor.specifyNewSession(selectNumberParameters)"/>
+        </transition>
+        <transition on="clearSessionValues">
+            <evaluate expression="indicatorPreProcessor.clearSessionSpecifications(selectNumberParameters)"/>
+        </transition>
+        <transition on="searchSession">
+            <evaluate expression="indicatorPreProcessor.searchSession(selectNumberParameters)"/>
+        </transition>
+        <transition  on="prevScreen" to="userSpecifications"/>
+        <transition  on="sessionSpecified" to="otherSpecifications"/>
+    </view-state>
+
+    <view-state id="otherSpecifications" view="indicator_system/number/indicator_number_otherspecifications" model="selectNumberParameters">
+        <binder>
+            <binding property="selectedTimeSearchType" required="true"/>
+            <binding property="selectedSearchStrings"/>
+            <binding property="searchResults"/>
+            <binding property="timeSearch"/>
+            <binding property="selectedTimeType"/>
+            <binding property="timeSpecifications[0].timestamp"/>
+            <binding property="timeSpecifications[1].timestamp"/>
+            <binding property="timeSpecifications[2].timestamp"/>
+            <binding property="timeSpecifications[3].timestamp"/>
+            <binding property="timeSpecifications[4].timestamp"/>
+            <binding property="timeSpecifications[0].type"/>
+            <binding property="timeSpecifications[1].type"/>
+            <binding property="timeSpecifications[2].type"/>
+            <binding property="timeSpecifications[3].type"/>
+            <binding property="timeSpecifications[4].type"/>
+        </binder>
+        <on-entry>
+            <evaluate expression="indicatorPreProcessor.clearSearchSettings(selectNumberParameters)"/>
+        </on-entry>
+        <transition on="specifyTime">
+            <evaluate expression="indicatorPreProcessor.specifyNewTime(selectNumberParameters)"/>
+        </transition>
+        <transition on="clearTimeValues">
+            <evaluate expression="indicatorPreProcessor.clearTimeSpecifications(selectNumberParameters)"/>
+        </transition>
+        <transition on="searchTime">
+            <evaluate expression="indicatorPreProcessor.searchTime(selectNumberParameters)"/>
+        </transition>
+        <transition  on="prevScreen" to="sessionSpecifications"/>
+        <transition  on="TimeSpecified" to="displaySummary"/>
+    </view-state>
+
+    <view-state id="displaySummary" view="indicator_system/number/indicator_number_summary" model="selectNumberParameters" >
+        <transition  on="prevScreen" to="otherSpecifications"/>
+        <transition  on="summaryOK" to="calculateResult"/>
     </view-state>
 
     <action-state id="calculateResult">

@@ -18,17 +18,19 @@
  *
  */
 
-package com.indicator_engine.model;
+package com.indicator_engine.model.admin;
 
-import com.indicator_engine.datamodel.GLAEntity;
-
+import com.indicator_engine.datamodel.GLAUser;
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
 /**
  * Created by Tanmaya Mahapatra on 23-03-2015.
  */
-public class GLAEntityJsonObject {
+public class glaUserJsonObject {
 
     int iTotalRecords;
 
@@ -37,7 +39,7 @@ public class GLAEntityJsonObject {
     String sEcho;
 
     String sColumns;
-    List<GLAEntity> aaData;
+    List<GLAUser> aaData;
 
     public int getiTotalRecords() {
         return iTotalRecords;
@@ -71,11 +73,17 @@ public class GLAEntityJsonObject {
         this.sColumns = sColumns;
     }
 
-    public List<GLAEntity> getAaData() {
+    public List<GLAUser> getAaData() {
         return aaData;
     }
 
-    public void setAaData(List<GLAEntity> aaData) {
+    public void setAaData(List<GLAUser> aaData) {
         this.aaData = aaData;
     }
+    static Gson createGsonFromBuilder( ExclusionStrategy exs ){
+        GsonBuilder gsonbuilder = new GsonBuilder();
+        gsonbuilder.setExclusionStrategies(exs);
+        return gsonbuilder.serializeNulls().create();
+    }
+
 }

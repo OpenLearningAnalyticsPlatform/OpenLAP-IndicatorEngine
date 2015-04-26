@@ -120,7 +120,9 @@
                         </div>
                         <div class="row templatemo-form-buttons">
                             <div class="col-md-12">
-                                <input type="submit" name="_eventId_minorSelected"
+                                <input cclass="btn btn-default" type="submit" name="_eventId_prevScreen"
+                                       value="Previous" />
+                                <input class="btn btn-primary" type="submit" name="_eventId_minorSelected"
                                        value="Next" />
                             </div>
                         </div>

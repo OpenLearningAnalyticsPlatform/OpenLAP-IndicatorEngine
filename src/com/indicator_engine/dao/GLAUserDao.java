@@ -21,6 +21,7 @@
 package com.indicator_engine.dao;
 
 import com.indicator_engine.datamodel.GLAUser;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,5 +34,6 @@ public interface GLAUserDao {
     public List<GLAUser> loadUsersRange(long maxId);
     public int getTotalUsers();
     public List<String> selectAllUsers();
+    public List<String> searchSimilarUserDetails(String userDetail, String searchCriteria);
     public GLAUser loaduserByName(String username);
 }

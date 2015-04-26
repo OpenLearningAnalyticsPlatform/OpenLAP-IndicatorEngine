@@ -18,7 +18,7 @@
  *
  */
 
-package com.indicator_engine.model;
+package com.indicator_engine.model.app;
 
 /**
  * Created by Tanmaya Mahapatra on 16-03-2015.

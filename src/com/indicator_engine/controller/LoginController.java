@@ -24,7 +24,7 @@ import com.indicator_engine.dao.SecurityRoleEntityDao;
 import com.indicator_engine.dao.UserCredentialsDao;
 import com.indicator_engine.datamodel.SecurityRoleEntity;
 import com.indicator_engine.datamodel.UserCredentials;
-import com.indicator_engine.model.LoginForm;
+import com.indicator_engine.model.app.LoginForm;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

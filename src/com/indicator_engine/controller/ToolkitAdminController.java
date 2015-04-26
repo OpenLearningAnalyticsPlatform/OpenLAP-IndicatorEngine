@@ -25,7 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.indicator_engine.dao.*;
 import com.indicator_engine.datamodel.*;
-import com.indicator_engine.model.*;
+import com.indicator_engine.model.admin.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

@@ -23,20 +23,16 @@ package com.indicator_engine.controller;
 import com.indicator_engine.dao.UserCredentialsDao;
 import com.indicator_engine.datamodel.UserCredentials;
 import com.indicator_engine.datamodel.UserProfile;
-import com.indicator_engine.model.UserProfileForm;
+import com.indicator_engine.model.app.UserProfileForm;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.List;
 import java.util.Map;
 

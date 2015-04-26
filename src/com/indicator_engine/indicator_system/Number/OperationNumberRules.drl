@@ -1,5 +1,5 @@
 package com.indicator_engine.indicator_system.Number;
-import com.indicator_engine.model.SelectNumberParameters
+import com.indicator_engine.model.indicator_system.Number.SelectNumberParameters
 import com.indicator_engine.dao.GLACategoryDao
 import com.indicator_engine.dao.GLAEntityDao
 import java.util.List;

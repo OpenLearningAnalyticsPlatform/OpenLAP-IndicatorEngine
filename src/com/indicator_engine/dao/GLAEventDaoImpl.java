@@ -150,6 +150,39 @@ public class GLAEventDaoImpl implements GLAEventDao {
         Query query = session.createQuery(hql);
         return ((Long) query.uniqueResult()).longValue();
     }
+    @Override
+    @Transactional
+    public List<String> searchSimilarSessionDetails(String searchType, String searchCriteria)
+    {
+        Session session = factory.getCurrentSession();
+        String hql = null;
+        if(searchType.equals("SEARCH LIKE"))
+            hql = "SELECT DISTINCT session FROM GLAEvent WHERE session LIKE '%"+ searchCriteria +"%'";
+        else if (searchType.equals("ALL"))
+            hql = "SELECT DISTINCT session FROM GLAEvent";
+        log.info("Search Session Hibernate Query " + hql);
+        Query query = session.createQuery(hql);
+        log.info("Result of Search Session Hibernate Query " + query.list());
+        return query.list();
+    }
+    @Override
+    @Transactional
+    public List<String> searchSimilarTimeDetails(String searchType, String searchCriteria)
+    {
+        Session session = factory.getCurrentSession();
+        String hql = null;
+        if(searchType.equals("LIKE"))
+            hql = "SELECT DISTINCT timestamp FROM GLAEvent WHERE timestamp LIKE "+ searchCriteria +"";
+        else if (searchType.equals("ALL"))
+            hql = "SELECT DISTINCT timestamp FROM GLAEvent";
+        else if (searchType.equals("EXACT"))
+            hql = "SELECT DISTINCT timestamp FROM GLAEvent WHERE timestamp = '"+ searchCriteria +"'";
+        log.info("Search Session Hibernate Query " + hql);
+        Query query = session.createQuery(hql);
+        log.info("Result of Search Session Hibernate Query " + query.list());
+        return query.list();
+    }
+
 
 }
 

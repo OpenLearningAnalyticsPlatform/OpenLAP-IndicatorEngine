@@ -1,4 +1,3 @@
-<%@ page import="com.indicator_engine.datamodel.UserProfile" %>
 <%--
   ~ /*
   ~  * Copyright (C) 2015  Tanmaya Mahapatra
@@ -28,6 +27,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     if ((session.getAttribute("loggedIn") == null) || (session.getAttribute("loggedIn") == ""))
         response.sendRedirect("/login");
@@ -42,18 +43,19 @@
 <head>
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-    <title>Indicator Naming</title>
+    <title>Session Specifications</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
     <script type="javascript" src="${pageContext.request.contextPath}/js/user_profile_checks.js"> </script>
+    <script type="text/javascript" src="/dynamiclists/js/jquery-1.3.2.min.js"></script>
 
 </head>
 <body>
 <div class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <div class="logo"><h1>Select Event</h1></div>
+        <div class="logo"><h1>Session Specifications</h1></div>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -95,34 +97,104 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Select Event</h1>
-            <p>Based on your previous selection, here is the relevant list of Events. Please choose one to continue.</p>
+            <h1>Specify Session Based Filters</h1>
+            <p>Based on your previous selection, here you can choose  and
+                specify upto 10 session based search criteria here.</p>
             <div class="row">
                 <div class="col-md-12">
-                    <form:form role="form" id="entitySelection"  method="post" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">
-                        <div class="row">
-                            <div class="col-md-6 margin-bottom-15">
-                                <label for="sourceSelection">Select a Source </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedSource" items="${selectNumberParameters.source}" name ="sourceSelection" id="sourceSelection" />
+                    <form:form role="form" id="sessionSelection"  method="POST" commandName="selectNumberParameters" action="${flowExecutionUrl}">
+
+                        <div class="col-md-6 col-sm-6 margin-bottom-30">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">Session Filtering Selection</div>
+                                <div class="panel-body">
+                                    <table class="table table-striped">
+                                        <tbody>
+                                        <tr>
+                                            <div class="row">
+                                                <div class="col-md-6 margin-bottom-15">
+                                                    <label for="sessionSearchType">Select Session Search Type </label>
+                                                    <form:select class="form-control margin-bottom-15" path="selectedsessionSearchType" items="${selectNumberParameters.sessionSearchType}" name ="sessionSearchType" id="sessionSearchType" />
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <div class="row">
+                                                <div class="col-md-6 margin-bottom-15">
+                                                    <label for="searchString" class="control-label">Filter Specification</label>
+                                                    <form:input class="form-control" path="sessionSearch"  name="searchString" id ="searchString"/>
+                                                </div>
+                                            </div>
+                                        </tr>
+
+                                        <tr>
+                                            <div class="col-md-12">
+                                                <input type="submit" name="_eventId_searchSession"
+                                                       value="Search" />
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <div class="row">
+                                                <div class="col-md-6 margin-bottom-15">
+                                                    <label for="multipleSelect">Search Results </label>
+                                                    <form:select class="form-control" multiple="true" path="selectedSearchStrings" name="multipleSelect">
+                                                        <form:options items="${selectNumberParameters.searchResults}" />
+                                                    </form:select>
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <div class="row templatemo-form-buttons">
+                                                <div class="col-md-12">
+                                                    <input type="submit" name="_eventId_specifySession"
+                                                           value="Add Session Specification" />
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <div class="row templatemo-form-buttons">
+                                                <div class="col-md-12">
+                                                    <input type="submit" name="_eventId_clearSessionValues"
+                                                           value="Delete All Specifications" />
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 margin-bottom-15">
-                                <label for="PlatformSelection">Select a Plaftorm </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedPlatform" items="${selectNumberParameters.platform}" name ="PlatformSelection" id="PlatformSelection" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 margin-bottom-15">
-                                <label for="actionSelection">Select an Action</label>
-                                <form:select class="form-control margin-bottom-15" path="selectedAction" items="${selectNumberParameters.action}" name ="actionSelection" id="actionSelection" />
+
+                        <div class="col-md-6 col-sm-6 margin-bottom-30">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">Entered Session Based Parameters</div>
+                                <div class="panel-body">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>S/L</th>
+                                            <th>Session Values</th>
+                                            <th>Search Type</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach var="SessionSpec" items="${selectNumberParameters.sessionSpecifications}"  varStatus="loop">
+                                            <tr>
+                                                <td>${loop.count}</td>
+                                                <td><c:out value="${SessionSpec.session}"/></td>
+                                                <td><c:out value="${SessionSpec.type}"/></td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                         <div class="row templatemo-form-buttons">
                             <div class="col-md-12">
                                 <input cclass="btn btn-default" type="submit" name="_eventId_prevScreen"
                                        value="Previous" />
-                                <input class="btn btn-primary" type="submit" name="_eventId_eventSelected"
+                                <input class="btn btn-primary" type="submit" name="_eventId_sessionSpecified"
                                        value="Next" />
                             </div>
                         </div>

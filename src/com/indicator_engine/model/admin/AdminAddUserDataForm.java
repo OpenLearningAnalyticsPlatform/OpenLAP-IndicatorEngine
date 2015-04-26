@@ -18,24 +18,23 @@
  *
  */
 
-package com.indicator_engine.model;
+package com.indicator_engine.model.admin;
 
 /**
- * Created by Tanmaya Mahapatra on 16-03-2015.
+ * Created by Tanmaya Mahapatra on 18-03-2015.
  */
-public class RegistrationForm {
-    private String userName;
+public class AdminAddUserDataForm {
+
+    private String username;
     private String password;
     private String email;
-    private String dob;
-    private String confirmpassword;
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -52,21 +51,5 @@ public class RegistrationForm {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getDob() {
-        return dob;
-    }
-
-    public void setDob(String dob) {
-        this.dob = dob;
-    }
-
-    public String getConfirmpassword() {
-        return confirmpassword;
-    }
-
-    public void setConfirmpassword(String confirmpassword) {
-        this.confirmpassword = confirmpassword;
     }
 }

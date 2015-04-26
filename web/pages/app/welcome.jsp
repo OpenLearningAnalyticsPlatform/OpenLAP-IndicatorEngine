@@ -113,6 +113,5 @@
     </footer>
 
 </div><!-- #wrapper -->
-<!-- Free template created by http://freehtml5templates.com -->
 </body>
 </html>

@@ -18,14 +18,17 @@
  *
  */
 
-package com.indicator_engine.model;
+package com.indicator_engine.model.app;
 
 /**
  * Created by Tanmaya Mahapatra on 16-03-2015.
  */
-public class LoginForm {
+public class RegistrationForm {
     private String userName;
     private String password;
+    private String email;
+    private String dob;
+    private String confirmpassword;
 
     public String getUserName() {
         return userName;
@@ -41,5 +44,29 @@ public class LoginForm {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public String getConfirmpassword() {
+        return confirmpassword;
+    }
+
+    public void setConfirmpassword(String confirmpassword) {
+        this.confirmpassword = confirmpassword;
     }
 }
