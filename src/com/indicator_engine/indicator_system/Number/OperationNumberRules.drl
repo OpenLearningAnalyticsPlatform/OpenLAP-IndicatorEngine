@@ -2,22 +2,63 @@ package com.indicator_engine.indicator_system.Number;
 import com.indicator_engine.model.indicator_system.Number.SelectNumberParameters
 import com.indicator_engine.dao.GLACategoryDao
 import com.indicator_engine.dao.GLAEntityDao
+import com.indicator_engine.indicator_system.Number.ProcessUserFilters;
 import java.util.List;
 
 dialect  "mvel"
 
-rule "When Minor and Key is pre-selected"
+rule "When User does not opt for any Additional Filters"
 when
-$obj : SelectNumberParameters ( selectedMinor != "" && selectedKeys !="" )
+    SelectNumberParameters ( userSpecifications.isEmpty() == true,
+                             timeSpecifications.isEmpty() == true,
+                             sessionSpecifications.isEmpty() == true,
+                             entityValues.size()== 1,
+                             entityValues.get(0).geteValues() ==  "ALL")
+    $userParameter : SelectNumberParameters( $source : selectedSource,
+                                             $platform : selectedPlatform,
+                                             $action : selectedAction,
+                                             $major : selectedMajor,
+                                             $minor : selectedMinor,
+                                             $type : selectedType,
+                                             $key : entityValues)
 then
-$obj.setHql("SELECT COUNT(*) FROM GLAEntity WHERE glaEvent.action ='"+$obj.getSelectedAction()+"'"
-        +" AND glaEvent.source = '"+ $obj.getSelectedSource()+"'"+ " AND glaEvent.platform = '"
-        + $obj.getSelectedPlatform()+"'"+" AND glaEvent.glaCategory.major = '"+$obj.getSelectedMajor()+"'"
-        +" AND glaEvent.glaCategory.minor = '"+$obj.getSelectedMinor()+"'"+" AND glaEvent.glaCategory.type = '"
-        +$obj.getSelectedType()+"'"+" AND key = '"+ $obj.getSelectedKeys()+"'");
-/*$obj.setHql("SELECT COUNT(key) FROM GLAEntity WHERE key ='"+$obj.getSelectedKeys()+"'");
-            //+" AND glaEvent.source = '"+ $obj.getSelectedSource()+"'"
-           // + " AND glaEvent.platform = '"+ $obj.getSelectedPlatform()+"'"
-            //+" AND glaEvent.action = '"+ $obj.getSelectedAction()+"'");*/
+
+
+   $userParameter.setHql("SELECT COUNT(*) FROM GLAEntity WHERE glaEvent.action ='"+$action+"'"
+                             +" AND glaEvent.source = '"+ $source+"'"+ " AND glaEvent.platform = '"
+                             + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
+                             +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
+                             +$type+"'"+" AND key = '"+ $key.get(0).getKey()+"'");
 
 end
+
+rule "When All Filters are Present"
+when
+    SelectNumberParameters ( userSpecifications.isEmpty() == false,
+                                          timeSpecifications.isEmpty() == false,
+                                          sessionSpecifications.isEmpty() == false,
+                                          entityValues.isEmpty() == false )
+
+    $pFilter : ProcessUserFilters()
+    $userParameter : SelectNumberParameters( $source : selectedSource,
+                                              $platform : selectedPlatform,
+                                              $action : selectedAction,
+                                              $major : selectedMajor,
+                                              $minor : selectedMinor,
+                                              $type : selectedType,
+                                              $key : entityValues)
+
+then
+
+    $userParameter.setHql("SELECT COUNT(*) FROM GLAEntity WHERE glaEvent.action ='"+$action+"'"
+                                 +" AND glaEvent.source = '"+ $source+"'"+ " AND glaEvent.platform = '"
+                                 + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
+                                 +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
+                                 +$type+"'"+" AND key = '"+ $key.get(0).getKey()+"'");
+
+    $pFilter.processEntities($key);
+
+
+end
+
+

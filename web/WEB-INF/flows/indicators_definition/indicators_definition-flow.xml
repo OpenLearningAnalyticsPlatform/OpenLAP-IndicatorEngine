@@ -114,7 +114,7 @@
         </transition>
         <transition  on="prevScreen" to="specifyCategory"/>
         <transition  on="entitySelected" to="userSpecifications">
-            <evaluate expression="indicatorPreProcessor.manageEValues(selectNumberParameters)"/>
+            <evaluate expression="indicatorPreProcessor.addDefaultEValues(selectNumberParameters)"/>
         </transition>
     </view-state>
 

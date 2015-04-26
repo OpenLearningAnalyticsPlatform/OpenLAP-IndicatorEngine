@@ -34,6 +34,7 @@ public class OperationNumberProcessor implements OperationNumberProcessorDao {
             knowledgeBase.addKnowledgePackages(builder.getKnowledgePackages());
             session = knowledgeBase.newStatefulKnowledgeSession();
             session.insert(selectNumberParameters);
+            session.insert(new ProcessUserFilters());
             session.fireAllRules();
         } catch(Throwable t) {
             t.printStackTrace();

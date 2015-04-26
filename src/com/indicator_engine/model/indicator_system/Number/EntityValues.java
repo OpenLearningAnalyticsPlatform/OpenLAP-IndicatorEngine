@@ -22,8 +22,20 @@ public class EntityValues implements Serializable {
         this.eValues=eValues;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     public String geteValues() {
         return eValues;
+    }
+
+    public void seteValues(String eValues) {
+        this.eValues = eValues;
     }
 
     public String getType() {
@@ -32,17 +44,5 @@ public class EntityValues implements Serializable {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public void seteValues(String eValues) {
-        this.eValues = eValues;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 }

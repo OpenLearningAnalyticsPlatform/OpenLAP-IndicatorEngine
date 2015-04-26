@@ -90,11 +90,16 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
 
     @Override
     public void manageEValues(SelectNumberParameters selectNumberParameters) {
-        if (selectNumberParameters.getEvalue() == null || selectNumberParameters.getEvalue().isEmpty())
-            selectNumberParameters.getEntityValues().add(new EntityValues(selectNumberParameters.getSelectedKeys(), selectNumberParameters.getSelectedentityValueTypes(), "ALL"));
-        else
+
             selectNumberParameters.getEntityValues().add(new EntityValues(selectNumberParameters.getSelectedKeys(),
                     selectNumberParameters.getSelectedentityValueTypes(), selectNumberParameters.getEvalue()));
+    }
+
+    @Override
+    public void addDefaultEValues(SelectNumberParameters selectNumberParameters) {
+        if ((selectNumberParameters.getEntityValues().isEmpty()))
+            selectNumberParameters.getEntityValues().add(new EntityValues(selectNumberParameters.getSelectedKeys(), selectNumberParameters.getSelectedentityValueTypes(), "ALL"));
+
     }
 
     @Override
@@ -156,7 +161,5 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
     @Override
     public void clearSearchSettings(SelectNumberParameters selectNumberParameters) {
         selectNumberParameters.getSearchResults().clear();
-        //selectNumberParameters.getSelectedSearchStrings().clear();
-
     }
 }

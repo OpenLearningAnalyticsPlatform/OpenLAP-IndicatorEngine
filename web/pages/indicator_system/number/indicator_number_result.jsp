@@ -115,7 +115,8 @@
                             </div>
                             <div class="col-md-6 margin-bottom-15">
                                 <label for="hql">HQL </label>
-                                <input type="text" class="form-control" name ="hql" id="hql" value="${selectNumberParameters.hql}" >
+                                <form:textarea class="form-control" path="hql" name ="hql" id="hql" value="${selectNumberParameters.hql}" rows="5" cols="30" />
+
                             </div>
                         </div>
                         <div class="row templatemo-form-buttons">

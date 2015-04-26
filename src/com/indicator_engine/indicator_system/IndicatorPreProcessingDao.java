@@ -30,4 +30,5 @@ public interface IndicatorPreProcessingDao {
     public void specifyNewTime(SelectNumberParameters selectNumberParameters);
     public void clearTimeSpecifications(SelectNumberParameters selectNumberParameters);
     public void searchTime(SelectNumberParameters selectNumberParameters);
+    public void addDefaultEValues(SelectNumberParameters selectNumberParameters);
 }

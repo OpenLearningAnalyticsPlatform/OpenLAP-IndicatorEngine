@@ -64,5 +64,7 @@
     <orderEntry type="library" name="commons-collections4-4.0" level="project" />
     <orderEntry type="library" name="javax.servlet.jsp.jstl-1.2.1" level="project" />
     <orderEntry type="library" name="javax.servlet.jsp.jstl-api-1.2.1" level="project" />
+    <orderEntry type="library" name="org.hibernate:hibernate-validator:5.1.2.Final" level="project" />
+    <orderEntry type="library" name="javax.validation:validation-api:1.1.0.Final" level="project" />
   </component>
 </module>

@@ -30,6 +30,8 @@
           <element id="library" level="project" name="commons-collections4-4.0" />
           <element id="library" level="project" name="javax.servlet.jsp.jstl-1.2.1" />
           <element id="library" level="project" name="javax.servlet.jsp.jstl-api-1.2.1" />
+          <element id="library" level="project" name="org.hibernate:hibernate-validator:5.1.2.Final" />
+          <element id="library" level="project" name="javax.validation:validation-api:1.1.0.Final" />
         </element>
       </element>
     </root>
