@@ -43,7 +43,7 @@
 <head>
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-    <title>User Type Selection and Search Specifications</title>
+    <title>Select Filtering Type</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
@@ -55,7 +55,7 @@
 <body>
 <div class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <div class="logo"><h1>User Type Selection and Search Specifications</h1></div>
+        <div class="logo"><h1>Select Filtering Type : AND/OR ?</h1></div>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -97,73 +97,55 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Specify User Based Filters</h1>
-            <p>Based on your previous selection, here you can choose user search type and
-                specify upto 10 user search criteria here.</p>
+            <h1>Select Filtering Type : AND/OR ?</h1>
+            <p>Please select AND or OR to generate Queries</p>
             <div class="row">
                 <div class="col-md-12">
-                    <form:form role="form" id="userSelection"  method="POST" commandName="selectNumberParameters" action="${flowExecutionUrl}">
+                    <form:form role="form" id="filterSelection"  method="POST" commandName="selectNumberParameters" action="${flowExecutionUrl}">
 
                         <div class="col-md-6 col-sm-6 margin-bottom-30">
                             <div class="panel panel-primary">
-                                <div class="panel-heading">User Filtering Selection</div>
+                                <div class="panel-heading">Filtering Type Selection</div>
                                 <div class="panel-body">
                                     <table class="table table-striped">
                                         <tbody>
-                                            <tr>
-                                                <div class="row">
-                                                    <div class="col-md-6 margin-bottom-15">
-                                                        <label for="userType">Select User Type </label>
-                                                        <form:select class="form-control margin-bottom-15" path="selecteduserSearchTypes" items="${selectNumberParameters.userSearchTypes}" name ="userType" id="userType" />
-                                                    </div>
-                                                </div>
-                                            </tr>
-                                            <tr>
-                                                <div class="row">
-                                                <div class="col-md-6 margin-bottom-15">
-                                                    <label for="searchString" class="control-label">Filter Specification</label>
-                                                    <form:input class="form-control" path="searchUserString"  name="searchString" id ="searchString"/>
-                                                </div>
-                                                </div>
-                                            </tr>
-
-                                            <tr>
-                                                <div class="col-md-12">
-                                                <input type="submit" name="_eventId_searchUser"
-                                                       value="Search" />
-                                                </div>
-                                            </tr>
-                                            <tr>
-                                                <div class="row">
-                                                    <div class="col-md-6 margin-bottom-15">
-                                                        <label for="multipleSelect">Search Results </label>
-                                                        <form:select multiple="true" class="form-control" path="selectedSearchStrings" name="multipleSelect">
-                                                            <form:options items="${selectNumberParameters.searchResults}" />
-                                                        </form:select>
-                                                    </div>
-                                                </div>
-                                            </tr>
-                                            <tr>
-                                                <div class="row">
-                                                    <div class="col-md-6 margin-bottom-15">
-                                                        <label for="searchType">Select Search Type Type </label>
-                                                        <form:select class="form-control margin-bottom-15" path="selectedSearchType" items="${selectNumberParameters.searchType}" name ="searchType" id="searchType" />
-                                                    </div>
-                                                </div>
-                                            </tr>
                                         <tr>
-                                            <div class="row templatemo-form-buttons">
-                                                <div class="col-md-12">
-                                                    <input type="submit" name="_eventId_specifyUser"
-                                                           value="Add User Specification" />
+                                            <div class="row">
+                                                <div class="col-md-6 margin-bottom-15">
+                                                    <label for="FilterType">Select AND or OR </label>
+                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
                                                 </div>
                                             </div>
                                         </tr>
                                         <tr>
-                                            <div class="row templatemo-form-buttons">
-                                                <div class="col-md-12">
-                                                    <input type="submit" name="_eventId_clearUserValues"
-                                                        value="Delete All Specifications" />
+                                            <div class="row">
+                                                <div class="col-md-6 margin-bottom-15">
+                                                    <label for="FilterType">Select AND or OR </label>
+                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <div class="row">
+                                                <div class="col-md-6 margin-bottom-15">
+                                                    <label for="FilterType">Select AND or OR </label>
+                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <div class="row">
+                                                <div class="col-md-6 margin-bottom-15">
+                                                    <label for="FilterType">Select AND or OR </label>
+                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <div class="row">
+                                                <div class="col-md-6 margin-bottom-15">
+                                                    <label for="FilterType">Select AND or OR </label>
+                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
                                                 </div>
                                             </div>
                                         </tr>
@@ -172,29 +154,52 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-md-6 col-sm-6 margin-bottom-30">
                             <div class="panel panel-primary">
-                                <div class="panel-heading">Entered User Search Parameters</div>
+                                <div class="panel-heading">Filtering Type Selection</div>
                                 <div class="panel-body">
                                     <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>S/L</th>
-                                            <th>Entity Filtering Specification</th>
-                                            <th>Filtering Type</th>
-                                            <th>Search Pattern Type</th>
-                                        </tr>
-                                        </thead>
                                         <tbody>
-                                        <c:forEach var="UserSpec" items="${selectNumberParameters.userSpecifications}"  varStatus="loop">
-                                            <tr>
-                                                <td>${loop.count}</td>
-                                                <td><c:out value="${UserSpec.userSearchType}"/></td>
-                                                <td><c:out value="${UserSpec.userSearch}"/></td>
-                                                <td><c:out value="${UserSpec.searchPattern}"/></td>
-                                            </tr>
-                                        </c:forEach>
+                                        <tr>
+                                            <div class="row">
+                                                <div class="col-md-6 margin-bottom-15">
+                                                    <label for="FilterType">Select AND or OR </label>
+                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <div class="row">
+                                                <div class="col-md-6 margin-bottom-15">
+                                                    <label for="FilterType">Select AND or OR </label>
+                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <div class="row">
+                                                <div class="col-md-6 margin-bottom-15">
+                                                    <label for="FilterType">Select AND or OR </label>
+                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <div class="row">
+                                                <div class="col-md-6 margin-bottom-15">
+                                                    <label for="FilterType">Select AND or OR </label>
+                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <div class="row">
+                                                <div class="col-md-6 margin-bottom-15">
+                                                    <label for="FilterType">Select AND or OR </label>
+                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
+                                                </div>
+                                            </div>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -203,8 +208,8 @@
                         <div class="row templatemo-form-buttons">
                             <div class="col-md-12">
                                 <input cclass="btn btn-default" type="submit" name="_eventId_prevScreen"
-                                   value="Previous" />
-                                <input class="btn btn-primary" type="submit" name="_eventId_userSpecified"
+                                       value="Previous" />
+                                <input class="btn btn-primary" type="submit" name="_eventId_filterSpecified"
                                        value="Next" />
                             </div>
                         </div>
@@ -212,6 +217,8 @@
                 </div>
             </div>
         </div>
+
+
     </div>
     <!-- Modal -->
     <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

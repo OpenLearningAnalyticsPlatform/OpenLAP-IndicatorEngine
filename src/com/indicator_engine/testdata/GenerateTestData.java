@@ -29,6 +29,7 @@ import com.indicator_engine.datamodel.UserProfile;
 import org.fluttercode.datafactory.impl.DataFactory;
 
 // http://www.andygibson.net/blog/article/generate-test-data-with-datafactory/
+@SuppressWarnings({"unused", "unchecked"})
 public class GenerateTestData {
 
     public UserCredentials generateUserData() {

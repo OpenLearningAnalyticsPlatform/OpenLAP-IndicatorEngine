@@ -23,6 +23,7 @@ package com.indicator_engine.model.admin;
 /**
  * Created by Tanmaya Mahapatra on 18-03-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class AdminAddUserDataForm {
 
     private String username;

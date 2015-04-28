@@ -3,12 +3,21 @@ package com.indicator_engine.model.indicator_system.Number;
 import javax.mail.Session;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Tanmaya Mahapatra on 31-03-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class SelectNumberParameters implements Serializable{
+
+    private final List<String> persistenceObjects = new ArrayList<>();
+    private final Map persistenceObjectsRelation = new HashMap();
+    private final HashMap<String, ArrayList<String>> retrievableObjects = new HashMap<String, ArrayList<String>>();
+    private String selectedPersistenceObject;
+    private String selectedRetrievableObjects;
 
     List<String> source =  new ArrayList<>();
     List<String> platform =  new ArrayList<>();
@@ -30,35 +39,53 @@ public class SelectNumberParameters implements Serializable{
     private String evalue;
     private String selectedentityValueTypes;
     private List<EntityValues>  entityValues = new ArrayList<EntityValues>();
-    private List<String> entityValueTypes = new ArrayList<>();
+    private final List<String> entityValueTypes = new ArrayList<>();
     List<String> keys = new ArrayList<>();
 
 
     private List<UserSearchSpecifications>  userSpecifications = new ArrayList<UserSearchSpecifications>();
-    private List<String> userSearchTypes = new ArrayList<>();
+    private final List<String> userSearchTypes = new ArrayList<>();
     private String selecteduserSearchTypes;
     private String searchUserString;
     private List<String> selectedSearchStrings = new ArrayList<>();
     private List<String> searchResults = new ArrayList<>();
+    private final List<String> searchType = new ArrayList<>();
+    private String selectedSearchType;
 
     private List<SessionSpecifications>  sessionSpecifications = new ArrayList<SessionSpecifications>();
-    private List<String> sessionSearchType = new ArrayList<>();
+    private final List<String> sessionSearchType = new ArrayList<>();
     private String selectedsessionSearchType;
     private String sessionSearch;
 
     private List<TimeSearchSpecifications>  timeSpecifications = new ArrayList<TimeSearchSpecifications>();
-    private List<String> timeSearchType = new ArrayList<>();
+    private final List<String> timeSearchType = new ArrayList<>();
     private String selectedTimeSearchType;
     private String TimeSearch;
-    private List<String> timeType = new ArrayList<>();
+    private final List<String> timeType = new ArrayList<>();
     private  String selectedTimeType;
 
 
     private long result;
     private String hql;
+    private final List<String> filteringType = new ArrayList<>();
+    private String selectedFilteringType;
 
 
     public SelectNumberParameters(){
+        persistenceObjects.add("GLA_Entity");
+        persistenceObjectsRelation.put("GLA_Entity", "GLAEntity");
+        persistenceObjectsRelation.put("GLA_Entity.key","key");
+        persistenceObjectsRelation.put("GLA_Entity.value","value");
+        persistenceObjectsRelation.put("GLA_Entity.action","glaEvent.action");
+        persistenceObjectsRelation.put("GLA_Entity.source","glaEvent.source");
+        persistenceObjectsRelation.put("GLA_Entity.platform","glaEvent.platform");
+        persistenceObjectsRelation.put("GLA_Entity.major","glaEvent.glaCategory.major");
+        persistenceObjectsRelation.put("GLA_Entity.minor","glaEvent.glaCategory.minor");
+        persistenceObjectsRelation.put("GLA_Entity.type","glaEvent.glaCategory.type");
+        new ArrayList<String>().add("j");
+        retrievableObjects.put("GLA_Entity", new ArrayList<String>());
+        retrievableObjects.get("GLA_Entity").add(" COUNT(*) ");
+        retrievableObjects.get("GLA_Entity").add(" ALL ");
         entityValueTypes.add("Text");
         entityValueTypes.add("Number");
         entityValueTypes.add("Regex");
@@ -71,295 +98,335 @@ public class SelectNumberParameters implements Serializable{
         timeSearchType.add("EXACT");
         timeType.add("EXACT");
         timeType.add("RANGE");
+        searchType.add("EXACT");
+        searchType.add("REGEX");
+        filteringType.add("AND");
+        filteringType.add("OR");
 
-    }
-
-    public List<String> getSelectedSearchStrings() {
-        return selectedSearchStrings;
-    }
-
-    public void setSelectedSearchStrings(List<String> selectedSearchStrings) {
-        this.selectedSearchStrings = selectedSearchStrings;
-    }
-
-    public List<String> getSearchResults() {
-        return searchResults;
-    }
-
-    public void setSearchResults(List<String> searchResults) {
-        this.searchResults = searchResults;
-    }
-
-    public String getSelecteduserSearchTypes() {
-        return selecteduserSearchTypes;
-    }
-
-    public void setSelecteduserSearchTypes(String selecteduserSearchTypes) {
-        this.selecteduserSearchTypes = selecteduserSearchTypes;
-    }
-
-    public List<String> getEntityValueTypes() {
-        return entityValueTypes;
-    }
-
-    public void setEntityValueTypes(List<String> entityValueTypes) {
-        this.entityValueTypes = entityValueTypes;
-    }
-
-    public String getHql() {
-        return hql;
-    }
-
-    public void setHql(String hql) {
-        this.hql = hql;
-    }
-
-    public String getEvalue() {
-        return evalue;
-    }
-
-    public void setEvalue(String evalue) {
-        this.evalue = evalue;
-    }
-
-    public long getResult() {
-        return result;
-    }
-
-    public void setResult(long result) {
-        this.result = result;
-    }
-
-    public List<String> getMinors() {
-        return minors;
-    }
-
-    public void setMinors(List<String> minors) {
-        this.minors = minors;
-    }
-
-    public String getSelectedMinor() {
-        return selectedMinor;
-    }
-
-    public void setSelectedMinor(String selectedMinor) {
-        this.selectedMinor = selectedMinor;
     }
 
     public List<String> getSource() {
         return source;
     }
 
-    public void setSource(List<String> source) {
-        this.source = source;
-    }
-
     public List<String> getPlatform() {
         return platform;
-    }
-
-    public void setPlatform(List<String> platform) {
-        this.platform = platform;
     }
 
     public List<String> getAction() {
         return action;
     }
 
-    public void setAction(List<String> action) {
-        this.action = action;
-    }
-
     public String getSelectedSource() {
         return selectedSource;
-    }
-
-    public void setSelectedSource(String selectedSource) {
-        this.selectedSource = selectedSource;
     }
 
     public String getSelectedPlatform() {
         return selectedPlatform;
     }
 
-    public void setSelectedPlatform(String selectedPlatform) {
-        this.selectedPlatform = selectedPlatform;
-    }
-
     public String getSelectedAction() {
         return selectedAction;
     }
 
-    public void setSelectedAction(String selectedAction) {
-        this.selectedAction = selectedAction;
+    public List<String> getMinors() {
+        return minors;
     }
+
+    public HashMap<String, ArrayList<String>> getRetrievableObjects() {
+        return retrievableObjects;
+    }
+
+    public String getSelectedRetrievableObjects() {
+        return selectedRetrievableObjects;
+    }
+
 
     public List<String> getMajors() {
         return majors;
-    }
-
-    public void setMajors(List<String> majors) {
-        this.majors = majors;
     }
 
     public List<String> getType() {
         return type;
     }
 
-    public void setType(List<String> type) {
-        this.type = type;
+    public String getSelectedMinor() {
+        return selectedMinor;
     }
 
     public String getSelectedMajor() {
         return selectedMajor;
     }
 
-    public void setSelectedMajor(String selectedMajor) {
-        this.selectedMajor = selectedMajor;
-    }
-
     public String getSelectedType() {
         return selectedType;
     }
 
-    public void setSelectedType(String selectedType) {
-        this.selectedType = selectedType;
-    }
-    public List<String> getKeys() {
-        return keys;
-    }
-
-    public void setKeys(List<String> keys) {
-        this.keys = keys;
-    }
     public String getSelectedKeys() {
         return selectedKeys;
     }
 
-    public void setSelectedKeys(String selectedKeys) {
-        this.selectedKeys = selectedKeys;
-
-    }
-
-    public List<EntityValues> getEntityValues() {
-        return entityValues;
-    }
-
-    public void setEntityValues(List<EntityValues> entityValues) {
-        this.entityValues = entityValues;
-    }
-
-    public List<UserSearchSpecifications> getUserSpecifications() {
-        return userSpecifications;
-    }
-
-    public void setUserSpecifications(List<UserSearchSpecifications> userSpecifications) {
-        this.userSpecifications = userSpecifications;
-    }
-
-    public List<SessionSpecifications> getSessionSpecifications() {
-        return sessionSpecifications;
-    }
-
-    public void setSessionSpecifications(List<SessionSpecifications> sessionSpecifications) {
-        this.sessionSpecifications = sessionSpecifications;
-    }
-
-    public List<String> getUserSearchTypes() {
-        return userSearchTypes;
-    }
-
-    public void setUserSearchTypes(List<String> userSearchTypes) {
-        this.userSearchTypes = userSearchTypes;
-    }
-
-    public String getSearchUserString() {
-        return searchUserString;
-    }
-
-    public void setSearchUserString(String searchUserString) {
-        this.searchUserString = searchUserString;
+    public String getEvalue() {
+        return evalue;
     }
 
     public String getSelectedentityValueTypes() {
         return selectedentityValueTypes;
     }
 
-    public void setSelectedentityValueTypes(String selectedentityValueTypes) {
-        this.selectedentityValueTypes = selectedentityValueTypes;
+    public List<EntityValues> getEntityValues() {
+        return entityValues;
     }
 
-    public List<TimeSearchSpecifications> getTimeSpecifications() {
-        return timeSpecifications;
+    public List<String> getEntityValueTypes() {
+        return entityValueTypes;
     }
 
-    public void setTimeSpecifications(List<TimeSearchSpecifications> timeSpecifications) {
-        this.timeSpecifications = timeSpecifications;
+    public List<String> getKeys() {
+        return keys;
+    }
+
+    public List<UserSearchSpecifications> getUserSpecifications() {
+        return userSpecifications;
+    }
+
+    public List<String> getUserSearchTypes() {
+        return userSearchTypes;
+    }
+
+    public String getSelecteduserSearchTypes() {
+        return selecteduserSearchTypes;
+    }
+
+    public String getSearchUserString() {
+        return searchUserString;
+    }
+
+    public List<String> getSelectedSearchStrings() {
+        return selectedSearchStrings;
+    }
+
+    public List<String> getSearchResults() {
+        return searchResults;
+    }
+
+    public List<String> getSearchType() {
+        return searchType;
+    }
+
+    public List<String> getPersistenceObjects() {
+        return persistenceObjects;
+    }
+
+    public String getSelectedPersistenceObject() {
+        return selectedPersistenceObject;
+    }
+
+    public Map getPersistenceObjectsRelation() {
+        return persistenceObjectsRelation;
+    }
+
+    public String getSelectedSearchType() {
+        return selectedSearchType;
+    }
+
+    public List<SessionSpecifications> getSessionSpecifications() {
+        return sessionSpecifications;
     }
 
     public List<String> getSessionSearchType() {
         return sessionSearchType;
     }
 
-    public void setSessionSearchType(List<String> sessionSearchType) {
-        this.sessionSearchType = sessionSearchType;
-    }
-
     public String getSelectedsessionSearchType() {
         return selectedsessionSearchType;
-    }
-
-    public void setSelectedsessionSearchType(String selectedsessionSearchType) {
-        this.selectedsessionSearchType = selectedsessionSearchType;
     }
 
     public String getSessionSearch() {
         return sessionSearch;
     }
 
-    public void setSessionSearch(String sessionSearch) {
-        this.sessionSearch = sessionSearch;
+    public List<TimeSearchSpecifications> getTimeSpecifications() {
+        return timeSpecifications;
     }
 
     public List<String> getTimeSearchType() {
         return timeSearchType;
     }
 
-    public void setTimeSearchType(List<String> timeSearchType) {
-        this.timeSearchType = timeSearchType;
-    }
-
     public String getSelectedTimeSearchType() {
         return selectedTimeSearchType;
-    }
-
-    public void setSelectedTimeSearchType(String selectedTimeSearchType) {
-        this.selectedTimeSearchType = selectedTimeSearchType;
     }
 
     public String getTimeSearch() {
         return TimeSearch;
     }
 
-    public void setTimeSearch(String timeSearch) {
-        TimeSearch = timeSearch;
-    }
-
     public List<String> getTimeType() {
         return timeType;
-    }
-
-    public void setTimeType(List<String> timeType) {
-        this.timeType = timeType;
     }
 
     public String getSelectedTimeType() {
         return selectedTimeType;
     }
 
+    public long getResult() {
+        return result;
+    }
+
+    public String getHql() {
+        return hql;
+    }
+
+    public List<String> getFilteringType() {
+        return filteringType;
+    }
+
+    public String getSelectedFilteringType() {
+        return selectedFilteringType;
+    }
+
+    public void setSource(List<String> source) {
+        this.source = source;
+    }
+
+    public void setPlatform(List<String> platform) {
+        this.platform = platform;
+    }
+
+    public void setAction(List<String> action) {
+        this.action = action;
+    }
+
+    public void setSelectedSource(String selectedSource) {
+        this.selectedSource = selectedSource;
+    }
+
+    public void setSelectedPlatform(String selectedPlatform) {
+        this.selectedPlatform = selectedPlatform;
+    }
+
+    public void setSelectedAction(String selectedAction) {
+        this.selectedAction = selectedAction;
+    }
+
+    public void setMinors(List<String> minors) {
+        this.minors = minors;
+    }
+
+    public void setMajors(List<String> majors) {
+        this.majors = majors;
+    }
+
+    public void setType(List<String> type) {
+        this.type = type;
+    }
+
+    public void setSelectedMinor(String selectedMinor) {
+        this.selectedMinor = selectedMinor;
+    }
+
+    public void setSelectedMajor(String selectedMajor) {
+        this.selectedMajor = selectedMajor;
+    }
+
+    public void setSelectedType(String selectedType) {
+        this.selectedType = selectedType;
+    }
+
+    public void setSelectedKeys(String selectedKeys) {
+        this.selectedKeys = selectedKeys;
+    }
+
+    public void setEvalue(String evalue) {
+        this.evalue = evalue;
+    }
+
+    public void setSelectedentityValueTypes(String selectedentityValueTypes) {
+        this.selectedentityValueTypes = selectedentityValueTypes;
+    }
+
+    public void setEntityValues(List<EntityValues> entityValues) {
+        this.entityValues = entityValues;
+    }
+
+    public void setKeys(List<String> keys) {
+        this.keys = keys;
+    }
+
+    public void setUserSpecifications(List<UserSearchSpecifications> userSpecifications) {
+        this.userSpecifications = userSpecifications;
+    }
+
+    public void setSelecteduserSearchTypes(String selecteduserSearchTypes) {
+        this.selecteduserSearchTypes = selecteduserSearchTypes;
+    }
+
+    public void setSearchUserString(String searchUserString) {
+        this.searchUserString = searchUserString;
+    }
+
+    public void setSelectedSearchStrings(List<String> selectedSearchStrings) {
+        this.selectedSearchStrings = selectedSearchStrings;
+    }
+
+    public void setSearchResults(List<String> searchResults) {
+        this.searchResults = searchResults;
+    }
+
+    public void setSelectedSearchType(String selectedSearchType) {
+        this.selectedSearchType = selectedSearchType;
+    }
+
+    public void setSessionSpecifications(List<SessionSpecifications> sessionSpecifications) {
+        this.sessionSpecifications = sessionSpecifications;
+    }
+
+    public void setSelectedsessionSearchType(String selectedsessionSearchType) {
+        this.selectedsessionSearchType = selectedsessionSearchType;
+    }
+
+    public void setSessionSearch(String sessionSearch) {
+        this.sessionSearch = sessionSearch;
+    }
+
+    public void setTimeSpecifications(List<TimeSearchSpecifications> timeSpecifications) {
+        this.timeSpecifications = timeSpecifications;
+    }
+
+    public void setSelectedTimeSearchType(String selectedTimeSearchType) {
+        this.selectedTimeSearchType = selectedTimeSearchType;
+    }
+
+    public void setTimeSearch(String timeSearch) {
+        TimeSearch = timeSearch;
+    }
+
     public void setSelectedTimeType(String selectedTimeType) {
         this.selectedTimeType = selectedTimeType;
     }
+
+    public void setResult(long result) {
+        this.result = result;
+    }
+
+    public void setHql(String hql) {
+        this.hql = hql;
+    }
+
+    public void setSelectedFilteringType(String selectedFilteringType) {
+        this.selectedFilteringType = selectedFilteringType;
+    }
+
+    public void setSelectedPersistenceObject(String selectedPersistenceObject) {
+        this.selectedPersistenceObject = selectedPersistenceObject;
+    }
+
+    public void setSelectedRetrievableObjects(String selectedRetrievableObjects) {
+        this.selectedRetrievableObjects = selectedRetrievableObjects;
+    }
+
+
 }
 
 

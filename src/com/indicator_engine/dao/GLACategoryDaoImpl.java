@@ -33,6 +33,7 @@ import java.util.List;
 /**
  * Created by Tanmaya Mahapatra on 23-03-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class GLACategoryDaoImpl implements GLACategoryDao {
     static Logger log = Logger.getLogger(GLAEventDaoImpl.class.getName());
     @Autowired

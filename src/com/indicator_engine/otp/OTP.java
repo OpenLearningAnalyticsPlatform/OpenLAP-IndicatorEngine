@@ -26,6 +26,7 @@ import java.util.Random;
 /**
  * Created by Tanmaya Mahapatra on 25-02-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class OTP {
 
     public static String generatePassword() {

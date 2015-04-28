@@ -26,6 +26,7 @@ import java.util.List;
 /**
  * Created by Tanmaya Mahapatra on 23-03-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class AdminAddEntityDataForm {
     private String key;
     private String value;

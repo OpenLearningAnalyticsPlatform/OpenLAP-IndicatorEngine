@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * Created by Tanmaya Mahapatra on 31-03-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
     static Logger log = Logger.getLogger(IndicatorPreProcessingDao.class.getName());
     @Autowired
@@ -109,7 +110,7 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
 
     @Override
     public void specifyNewUser(SelectNumberParameters selectNumberParameters) {
-        selectNumberParameters.getUserSpecifications().add(new UserSearchSpecifications(selectNumberParameters.getSelecteduserSearchTypes(), selectNumberParameters.getSelectedSearchStrings()));
+        selectNumberParameters.getUserSpecifications().add(new UserSearchSpecifications(selectNumberParameters.getSelecteduserSearchTypes(), selectNumberParameters.getSelectedSearchStrings(), selectNumberParameters.getSelectedSearchType()));
     }
 
     @Override

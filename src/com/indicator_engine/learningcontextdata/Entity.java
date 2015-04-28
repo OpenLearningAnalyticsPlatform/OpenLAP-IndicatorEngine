@@ -3,6 +3,7 @@ package com.indicator_engine.learningcontextdata;
 /**
  * Created by Tanmaya Mahapatra on 22-02-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class Entity<T> {
     private String key;
     private T value;

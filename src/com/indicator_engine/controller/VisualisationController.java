@@ -33,6 +33,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 @RequestMapping(value="/visualisation")
+@SuppressWarnings({"unused", "unchecked"})
 public class VisualisationController {
     @Autowired
     private ApplicationContext appContext;

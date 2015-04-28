@@ -37,7 +37,7 @@ import javax.mail.internet.MimeMultipart;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Properties;
-
+@SuppressWarnings({"unused", "unchecked"})
 public class MailPackage implements MailFunctionalities {
     /**
      Outgoing Mail (SMTP) Server

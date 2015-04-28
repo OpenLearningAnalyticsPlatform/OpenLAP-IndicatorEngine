@@ -45,6 +45,7 @@ import java.util.Map;
  * Created by Tanmaya Mahapatra on 01-03-2015.
  */
 @Controller
+@SuppressWarnings({"unused", "unchecked"})
 public class RegistrationController {
     static Logger log = Logger.getLogger(LoginController.class.getName());
     @Autowired

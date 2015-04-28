@@ -35,6 +35,7 @@ import java.util.List;
 /**
  * Created by Tanmaya Mahapatra on 26-02-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class UserCredentialsDaoImpl implements UserCredentialsDao {
     static Logger log = Logger.getLogger(UserCredentialsDaoImpl.class.getName());
     @Autowired

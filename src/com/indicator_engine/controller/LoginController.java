@@ -40,7 +40,7 @@ import java.util.Map;
 
 @Controller
 @SessionAttributes({"loggedIn", "userName", "sid", "activationStatus","role", "admin_access"})
-
+@SuppressWarnings({"unused", "unchecked"})
 public class LoginController {
     static Logger log = Logger.getLogger(LoginController.class.getName());
     @Autowired

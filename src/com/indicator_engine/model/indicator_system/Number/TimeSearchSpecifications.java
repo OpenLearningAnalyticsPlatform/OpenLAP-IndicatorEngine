@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * Created by Tanmaya Mahapatra on 26-04-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class TimeSearchSpecifications  implements Serializable{
     private String type;
     private List<String> timestamp = new ArrayList<>();

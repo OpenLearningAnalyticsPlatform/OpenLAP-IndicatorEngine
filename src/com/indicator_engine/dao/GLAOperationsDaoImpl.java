@@ -17,6 +17,7 @@ import java.util.List;
 /**
  * Created by Tanmaya Mahapatra on 01-04-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class GLAOperationsDaoImpl implements GLAOperationsDao {
     static Logger log = Logger.getLogger(GLAOperationsDaoImpl.class.getName());
     @Autowired

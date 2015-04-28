@@ -51,7 +51,7 @@ import java.util.ArrayList;
  * @author Hendrik Thüs
  *
  */
-
+@SuppressWarnings({"unused", "unchecked"})
 public class ContextData {
 
     private String server;

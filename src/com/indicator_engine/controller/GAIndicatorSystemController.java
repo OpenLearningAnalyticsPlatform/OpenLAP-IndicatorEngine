@@ -33,6 +33,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 @RequestMapping(value="/indicators")
+@SuppressWarnings({"unused", "unchecked"})
 public class GAIndicatorSystemController {
 
     @Autowired

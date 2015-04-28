@@ -33,6 +33,7 @@ import java.util.List;
 /**
  * Created by Tanmaya Mahapatra on 19-03-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class GLAUserDaoImpl implements  GLAUserDao{
 
     static Logger log = Logger.getLogger(GLAUserDaoImpl.class.getName());

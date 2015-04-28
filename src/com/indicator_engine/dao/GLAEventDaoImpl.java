@@ -33,12 +33,15 @@ import org.hibernate.type.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Tanmaya Mahapatra on 28-02-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class GLAEventDaoImpl implements GLAEventDao {
     static Logger log = Logger.getLogger(GLAEventDaoImpl.class.getName());
     @Autowired
@@ -126,10 +129,13 @@ public class GLAEventDaoImpl implements GLAEventDao {
     @Override
     @Transactional
     public List<String> selectAll(String EventComponent){
+
         Session session = factory.getCurrentSession();
         String hql = "SELECT DISTINCT " + EventComponent +" FROM GLAEvent";
-        Query query = session.createQuery(hql);
-
+        Query query = null;
+        try{
+            query = session.createQuery(hql);
+        } catch(Exception ex){String message = getStackTrace(ex);}
         return query.list();
     }
 
@@ -143,13 +149,6 @@ public class GLAEventDaoImpl implements GLAEventDao {
 
     }
 
-    @Override
-    @Transactional
-    public long findNumber(String hql){
-        Session session = factory.getCurrentSession();
-        Query query = session.createQuery(hql);
-        return ((Long) query.uniqueResult()).longValue();
-    }
     @Override
     @Transactional
     public List<String> searchSimilarSessionDetails(String searchType, String searchCriteria)
@@ -181,6 +180,13 @@ public class GLAEventDaoImpl implements GLAEventDao {
         Query query = session.createQuery(hql);
         log.info("Result of Search Session Hibernate Query " + query.list());
         return query.list();
+    }
+
+    public static String getStackTrace(final Throwable throwable) {
+        final StringWriter sw = new StringWriter();
+        final PrintWriter pw = new PrintWriter(sw, true);
+        throwable.printStackTrace(pw);
+        return sw.getBuffer().toString();
     }
 
 

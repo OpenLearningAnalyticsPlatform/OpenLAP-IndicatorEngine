@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * Created by Tanmaya Mahapatra on 31-03-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class IndicatorDefnOperationForm implements Serializable{
 
     private List<String> operation =  new ArrayList<>();

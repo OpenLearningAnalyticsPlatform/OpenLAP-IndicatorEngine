@@ -1,7 +1,9 @@
 package com.indicator_engine.indicator_system.Number;
 
+import com.indicator_engine.dao.GLAEntityDao;
 import com.indicator_engine.dao.GLAEventDao;
 import com.indicator_engine.model.indicator_system.Number.SelectNumberParameters;
+import org.apache.log4j.Logger;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
@@ -15,13 +17,15 @@ import org.springframework.context.ApplicationContext;
 /**
  * Created by Tanmaya Mahapatra on 01-04-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class OperationNumberProcessor implements OperationNumberProcessorDao {
+    static Logger log = Logger.getLogger(OperationNumberProcessor.class.getName());
     @Autowired
     private ApplicationContext appContext;
 
     @Override
     public long computeResult(SelectNumberParameters selectNumberParameters){
-        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
+        GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
         StatefulKnowledgeSession session = null;
         try {
             KnowledgeBuilder builder = KnowledgeBuilderFactory.
@@ -43,8 +47,8 @@ public class OperationNumberProcessor implements OperationNumberProcessorDao {
                 session.dispose();
             }
         }
-        long result = glaEventBean.findNumber(selectNumberParameters.getHql());
-        //selectNumberParameters.setHql(selectNumberParameters.getHql() + selectNumberParameters.getEntityValues().get(2).geteValues());
+        log.info("Dumping HQL" + selectNumberParameters.getHql());
+        long result = glaEntityBean.findNumber(selectNumberParameters.getHql());
         return result;
 
     }

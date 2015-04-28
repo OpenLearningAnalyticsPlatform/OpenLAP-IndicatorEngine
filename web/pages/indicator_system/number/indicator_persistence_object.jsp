@@ -1,29 +1,8 @@
-<%@ page import="com.indicator_engine.datamodel.UserProfile" %>
-<%--
-  ~ /*
-  ~  * Copyright (C) 2015  Tanmaya Mahapatra
-  ~  *
-  ~  * This program is free software; you can redistribute it and/or
-  ~  * modify it under the terms of the GNU General Public License
-  ~  * as published by the Free Software Foundation; either version 2
-  ~  * of the License, or (at your option) any later version.
-  ~  *
-  ~  * This program is distributed in the hope that it will be useful,
-  ~  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~  * GNU General Public License for more details.
-  ~  *
-  ~  * You should have received a copy of the GNU General Public License
-  ~  * along with this program; if not, write to the Free Software
-  ~  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-  ~  */
-  --%>
-
 <%--
   Created by IntelliJ IDEA.
   User: Tanmaya Mahapatra
-  Date: 16-03-2015
-  Time: 04:33
+  Date: 27-04-2015
+  Time: 14:10
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -42,7 +21,7 @@
 <head>
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-    <title>Indicator Control Panel</title>
+    <title>Select Persistence Object</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
@@ -53,7 +32,7 @@
 <body>
 <div class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <div class="logo"><h1>Indicator Control Panel</h1></div>
+        <div class="logo"><h1>Select Persistence Object</h1></div>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -95,22 +74,22 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Define a New Indicator</h1>
-            <p>Called from Web Flow</p>
+            <h1>Select Persistence Object</h1>
+            <p>Select a Persistence Object which you want to query</p>
             <div class="row">
                 <div class="col-md-12">
-                    <form:form role="form" id="operationSelection"  method="post" modelAttribute="availableOperations" action="${flowExecutionUrl}">
+                    <form:form role="form" id="objectSelectionform"  method="post" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">
                         <div class="row">
                             <div class="col-md-6 margin-bottom-15">
-                                <label for="_operation">Select an Operation </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedOperation" items="${availableOperations.operation}" name ="_operation" id="_operation" />
+                                <label for="objectSelection">Select an Object </label>
+                                <form:select class="form-control margin-bottom-15" path="selectedPersistenceObject" items="${selectNumberParameters.persistenceObjects}" name ="objectSelection" id="objectSelection" />
                             </div>
                         </div>
                         <div class="row templatemo-form-buttons">
                             <div class="col-md-12">
                                 <input cclass="btn btn-default" type="submit" name="_eventId_prevScreen"
                                        value="Previous" />
-                                <input class="btn btn-primary" type="submit" name="_eventId_operationSelected"
+                                <input class="btn btn-primary" type="submit" name="_eventId_objectSelected"
                                        value="Next" />
                             </div>
                         </div>

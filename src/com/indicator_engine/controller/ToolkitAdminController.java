@@ -120,7 +120,7 @@ public class ToolkitAdminController {
 
     @RequestMapping(value = "/add_eventdata", method = RequestMethod.POST)
     public String processAddEventData(@ModelAttribute("addEventDataForm") AdminAddEventDataForm addEventDataForm, Map<String, Object> model) {
-        log.info("Chutia");
+        log.info("Entering Method : processAddEventData");
         GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
         GLACategoryDao glacategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
         GLAUserDao glauserBean = (GLAUserDao) appContext.getBean("glaUser");

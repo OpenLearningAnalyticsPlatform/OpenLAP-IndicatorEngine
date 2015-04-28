@@ -5,6 +5,7 @@ import java.util.List;
 /**
  * Created by Tanmaya Mahapatra on 22-02-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class Event {
     private String action;
     private String type;

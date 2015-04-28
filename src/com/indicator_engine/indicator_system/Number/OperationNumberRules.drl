@@ -1,13 +1,11 @@
 package com.indicator_engine.indicator_system.Number;
 import com.indicator_engine.model.indicator_system.Number.SelectNumberParameters
-import com.indicator_engine.dao.GLACategoryDao
-import com.indicator_engine.dao.GLAEntityDao
 import com.indicator_engine.indicator_system.Number.ProcessUserFilters;
 import java.util.List;
 
 dialect  "mvel"
 
-rule "When User does not opt for any Additional Filters"
+rule "When Only Entity Filtering (Default Rule) is Present"
 when
     SelectNumberParameters ( userSpecifications.isEmpty() == true,
                              timeSpecifications.isEmpty() == true,
@@ -29,15 +27,15 @@ then
                              + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
                              +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
                              +$type+"'"+" AND key = '"+ $key.get(0).getKey()+"'");
-
 end
 
-rule "When All Filters are Present"
+rule "When Only Entity Filtering (more than 2) is Present"
 when
-    SelectNumberParameters ( userSpecifications.isEmpty() == false,
-                                          timeSpecifications.isEmpty() == false,
-                                          sessionSpecifications.isEmpty() == false,
-                                          entityValues.isEmpty() == false )
+    SelectNumberParameters ( userSpecifications.isEmpty() == true,
+                             timeSpecifications.isEmpty() == true,
+                             sessionSpecifications.isEmpty() == true,
+                             entityValues.isEmpty() == false,
+                             entityValues.size() >= 1  )
 
     $pFilter : ProcessUserFilters()
     $userParameter : SelectNumberParameters( $source : selectedSource,
@@ -46,7 +44,8 @@ when
                                               $major : selectedMajor,
                                               $minor : selectedMinor,
                                               $type : selectedType,
-                                              $key : entityValues)
+                                              $key : entityValues,
+                                              $filter : selectedFilteringType)
 
 then
 
@@ -54,11 +53,31 @@ then
                                  +" AND glaEvent.source = '"+ $source+"'"+ " AND glaEvent.platform = '"
                                  + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
                                  +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
-                                 +$type+"'"+" AND key = '"+ $key.get(0).getKey()+"'");
-
-    $pFilter.processEntities($key);
-
-
+                                 +$type+"'"+ " AND key IN " + $pFilter.processEntities($key,$filter));
 end
 
+rule "When Only User Filtering is Present"
+when
+    SelectNumberParameters ( userSpecifications.isEmpty() == false,
+                             timeSpecifications.isEmpty() == true,
+                             sessionSpecifications.isEmpty() == true,
+                             entityValues.isEmpty() == true)
+
+    $pFilter : ProcessUserFilters()
+    $userParameter : SelectNumberParameters( $source : selectedSource,
+                                              $platform : selectedPlatform,
+                                              $action : selectedAction,
+                                              $major : selectedMajor,
+                                              $minor : selectedMinor,
+                                              $type : selectedType,
+                                              $user : userSpecifications,
+                                              $filter : selectedFilteringType)
+
+then
+    $userParameter.setHql("SELECT COUNT(*) FROM GLAEntity WHERE glaEvent.action ='"+$action+"'"
+                                 +" AND glaEvent.source = '"+ $source+"'"+ " AND glaEvent.platform = '"
+                                 + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
+                                 +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
+                                 +$type+"'"+ " AND"   + $pFilter.processUsers($user,$filter));
+end
 

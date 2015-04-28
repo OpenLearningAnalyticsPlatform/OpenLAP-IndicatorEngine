@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * Created by Tanmaya Mahapatra on 26-04-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class SessionSpecifications implements Serializable {
     private List<String> session = new ArrayList<>();
     private String type;

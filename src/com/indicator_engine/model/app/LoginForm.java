@@ -25,6 +25,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 /**
  * Created by Tanmaya Mahapatra on 16-03-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class LoginForm {
     @NotEmpty
     private String userName;

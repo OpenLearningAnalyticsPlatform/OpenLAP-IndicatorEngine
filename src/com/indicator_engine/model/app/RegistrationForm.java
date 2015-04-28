@@ -23,6 +23,7 @@ package com.indicator_engine.model.app;
 /**
  * Created by Tanmaya Mahapatra on 16-03-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class RegistrationForm {
     private String userName;
     private String password;

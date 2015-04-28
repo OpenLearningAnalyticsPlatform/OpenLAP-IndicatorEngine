@@ -41,6 +41,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value="/home")
+@SuppressWarnings({"unused", "unchecked"})
 public class GAToolKitDashBoardController {
     static Logger log = Logger.getLogger(LoginController.class.getName());
     @Autowired

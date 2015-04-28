@@ -5,6 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Tanmaya Mahapatra on 31-03-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class IndicatorNaming implements Serializable{
     private String indicatorName;
 

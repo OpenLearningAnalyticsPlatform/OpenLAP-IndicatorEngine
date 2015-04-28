@@ -35,6 +35,7 @@ import java.util.List;
 /**
  * Created by Tanmaya Mahapatra on 18-03-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class SecurityRoleEntityDaoImpl implements SecurityRoleEntityDao {
     static Logger log = Logger.getLogger(UserCredentialsDaoImpl.class.getName());
     @Autowired

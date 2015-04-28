@@ -37,7 +37,6 @@ public interface GLAEventDao {
     public GLAEvent loadEventByID(Long id);
     public List<String> selectAll(String EventComponent);
     public long findCategoryId(String action, String source, String platform);
-    public long findNumber(String hql);
     public List<String> searchSimilarSessionDetails(String searchType, String searchCriteria);
     public List<String> searchSimilarTimeDetails(String searchType, String searchCriteria);
 }

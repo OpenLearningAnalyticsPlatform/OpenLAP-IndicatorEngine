@@ -5,6 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Tanmaya Mahapatra on 25-04-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class OtherSearchSpecifications implements Serializable {
     private String timestamp;
     private String session;

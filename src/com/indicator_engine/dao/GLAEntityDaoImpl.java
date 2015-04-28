@@ -23,22 +23,18 @@ package com.indicator_engine.dao;
 import com.indicator_engine.datamodel.GLAEntity;
 import com.indicator_engine.datamodel.GLAEvent;
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Tanmaya Mahapatra on 23-03-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class GLAEntityDaoImpl implements GLAEntityDao{
     static Logger log = Logger.getLogger(GLAEventDaoImpl.class.getName());
     @Autowired
@@ -115,6 +111,14 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
         criteria.add(Restrictions.eq("key", name));
         return criteria.list();
 
+    }
+
+    @Override
+    @Transactional
+    public long findNumber(String hql) {
+        Session session = factory.getCurrentSession();
+        Query query = session.createQuery(hql);
+        return ((Long) query.uniqueResult()).longValue();
     }
 
 }

@@ -17,7 +17,7 @@
 
     <!-- By default, the first state is the start state. -->
 
-    <view-state id="indicatorName" view="indicator_system/number/indicator_name" model="indicatorName">
+    <view-state id="indicatorName" view="indicator_system/indicator_name" model="indicatorName">
         <binder>
             <binding property="indicatorName" required="true" />
         </binder>
@@ -28,14 +28,31 @@
         <binder>
             <binding property="selectedOperation" required="true" />
         </binder>
+        <transition  on="prevScreen" to="indicatorName"/>
         <transition on="operationSelected" to="retrieveOperation" />
 	</view-state>
 
     <action-state id="retrieveOperation">
         <evaluate expression="indicatorPreProcessor.retrieveOperation(availableOperations)" />
-        <transition on="NUMBER" to="selectEventParameters" />
+        <transition on="NUMBER" to="persistenceObjectSelection" />
         <transition on="CORRELATION" to="definitionHome" />
     </action-state>
+
+    <view-state id="persistenceObjectSelection" view="indicator_system/number/indicator_persistence_object" model="selectNumberParameters">
+        <binder>
+        <binding property="selectedPersistenceObject" required="true" />
+        </binder>
+        <transition  on="prevScreen" to="definitionHome"/>
+        <transition on="objectSelected" to="objectPropertySelection" />
+    </view-state>
+
+    <view-state id="objectPropertySelection" view="indicator_system/number/indicator_object_property" model="selectNumberParameters">
+        <binder>
+            <binding property="selectedRetrievableObjects" required="true" />
+        </binder>
+        <transition  on="prevScreen" to="persistenceObjectSelection"/>
+        <transition on="objectSelected" to="selectEventParameters" />
+    </view-state>
 
     <view-state id="selectEventParameters" view="indicator_system/number/indicator_number_select_event" model="selectNumberParameters">
         <binder>
@@ -43,7 +60,7 @@
             <binding property="selectedPlatform" required="true" />
             <binding property="selectedAction" required="true" />
         </binder>
-        <transition  on="prevScreen" to="definitionHome"/>
+        <transition  on="prevScreen" to="objectPropertySelection"/>
         <transition on="eventSelected" to="populateCategoryTypes" />
     </view-state>
     <action-state id="populateCategoryTypes">
@@ -125,6 +142,7 @@
             <binding property="searchUserString"/>
             <binding property="selectedSearchStrings"/>
             <binding property="searchResults"/>
+            <binding property="selectedSearchType"/>
             <binding property="userSpecifications[0].userSearchType"/>
             <binding property="userSpecifications[1].userSearchType"/>
             <binding property="userSpecifications[2].userSearchType" />
@@ -214,11 +232,20 @@
             <evaluate expression="indicatorPreProcessor.searchTime(selectNumberParameters)"/>
         </transition>
         <transition  on="prevScreen" to="sessionSpecifications"/>
-        <transition  on="TimeSpecified" to="displaySummary"/>
+        <transition  on="TimeSpecified" to="selectFiltering"/>
     </view-state>
 
-    <view-state id="displaySummary" view="indicator_system/number/indicator_number_summary" model="selectNumberParameters" >
+    <view-state id="selectFiltering" view="indicator_system/number/indicator_number_filteringtype" model="selectNumberParameters" >
+        <binder>
+        <binding property="selectedFilteringType" required="true"/>
+        </binder>
         <transition  on="prevScreen" to="otherSpecifications"/>
+        <transition  on="filterSpecified" to="displaySummary"/>
+    </view-state>
+
+
+    <view-state id="displaySummary" view="indicator_system/number/indicator_number_summary" model="selectNumberParameters" >
+        <transition  on="prevScreen" to="selectFiltering"/>
         <transition  on="summaryOK" to="calculateResult"/>
     </view-state>
 

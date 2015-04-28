@@ -4,6 +4,7 @@ import java.util.Random;
 /**
  * Created by Tanmaya Mahapatra on 22-02-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class RandomString {
 
     public static String randomString(final int length) {
