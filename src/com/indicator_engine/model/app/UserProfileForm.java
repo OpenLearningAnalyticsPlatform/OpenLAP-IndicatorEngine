@@ -20,22 +20,51 @@
 
 package com.indicator_engine.model.app;
 
+import com.indicator_engine.validator.PasswordsEqualConstraint;
+import com.indicator_engine.validator.Phone;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Pattern;
+
 /**
  * Created by Tanmaya Mahapatra on 16-03-2015.
  */
 @SuppressWarnings({"unused", "unchecked"})
 public class UserProfileForm {
+
+
     private String uid;
+    @NotEmpty(message = "First Name cannot be empty")
+    @Pattern(regexp="^[a-zA-Z]+$", message="First Name must be alphabets with no spaces")
     private String fname;
+    @NotEmpty(message = "Last Name cannot be empty")
+    @Pattern(regexp="^[a-zA-Z]+$", message="Last Name must be alphabets with no spaces")
     private String lname;
+
     private String dob;
     private String email;
+
+    @Phone(message = "Invalid characters in Phone Number")
+    @Pattern(regexp = "[\\s]*[0-9]*[1-9]+",message="Phone Number should have only Positive Natural Numbers")
     private String phonenumber;
+
     private String address;
+
+    @Pattern(regexp = "[\\s]*[0-9]*[1-9]+",message="ZIP should have only Positive Natural Numbers")
     private String zip;
+
+    @NotEmpty(message = "City cannot be empty")
+    @Pattern(regexp="^[a-zA-Z]+$", message="City must be alphabets with no spaces")
     private String city;
+
+    @NotEmpty(message = "State cannot be empty")
+    @Pattern(regexp="^[a-zA-Z]+$", message="State must be alphabets with no spaces")
     private String state;
+
+    @NotEmpty(message = "Country cannot be empty")
+    @Pattern(regexp="^[a-zA-Z]+$", message="Country must be alphabets with no spaces")
     private String country;
+
     private String password;
     private String confirmpassword;
     private boolean changepasswd;

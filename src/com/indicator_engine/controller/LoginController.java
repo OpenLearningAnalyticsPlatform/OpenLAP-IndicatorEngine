@@ -31,9 +31,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -66,10 +68,14 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView processLoginForm(@ModelAttribute("loginForm") LoginForm loginForm, HttpSession session) {
+    public ModelAndView processLoginForm(@Valid @ModelAttribute("loginForm") LoginForm loginForm, BindingResult bindingResult, HttpSession session) {
+
         ModelAndView model;
+        if(bindingResult.hasErrors()) {
+            return new ModelAndView("app/login");
+        }
         boolean authid = false;
-        String user_role = null;
+        String user_role = "INVALID";
         String admin_role = "NO";
         boolean activation_status = false;
         String sessionUserName = null;
@@ -85,7 +91,10 @@ public class LoginController {
             log.info(eachuser.getPassword());
             if (username.equals(eachuser.getUname())) {
                 if (encoder.matches(password, eachuser.getPassword())) {
+                    authid = true;
+                    sessionUserName = username;
                     if (eachuser.getActivation_status() == true) {
+                        activation_status = true;
                         List<SecurityRoleEntity> roleEntity = securityRoleEntityBean.searchRolesByID(eachuser.getUid());
                         for (SecurityRoleEntity roles : roleEntity)
                         {
@@ -94,14 +103,17 @@ public class LoginController {
                             if( roles.getRole().equals("ROLE_USER"))
                                 user_role = "ROLE_USER";
                         }
-                        activation_status = true;
-                        sessionUserName = username;
-                        authid = true;
                         break;
                     }
                 }
             }
         }
+        log.info("---------------------------------------------------");
+        log.info("Debug Login : \n");
+        log.info("Debug Login : Auth ID : \t" + authid);
+        log.info("Debug Login : Activation Status : \t" + activation_status);
+        log.info("Debug Login : Session User Name : \t" + sessionUserName);
+        log.info("Debug Login : Role : \t" + user_role);
         if (authid && activation_status) {
             String sid = session.getId();
             model = new ModelAndView("app/home");
@@ -111,7 +123,8 @@ public class LoginController {
             model.addObject("activationStatus", "true");
             model.addObject("role", user_role);
             model.addObject("admin_access", admin_role);
-        } else if (authid && !activation_status) {
+        }
+        else if (authid && activation_status == false) {
             String sid = session.getId();
             model = new ModelAndView("app/activate");
             model.addObject("sid", sid);
@@ -120,8 +133,10 @@ public class LoginController {
             model.addObject("activationStatus", "false");
             model.addObject("role", user_role);
             model.addObject("admin_access", admin_role);
-        } else
+        }
+        else
             model = new ModelAndView("app/login");
+        log.info("Debug Login : Selected Model : \t" + model);
         return model;
     }
 

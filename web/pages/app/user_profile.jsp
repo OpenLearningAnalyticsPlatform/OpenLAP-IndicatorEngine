@@ -48,10 +48,19 @@
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
     <script type="javascript" src="${pageContext.request.contextPath}/js/user_profile_checks.js"> </script>
-    <!--
-    Dashboard Template
-    http://www.templatemo.com/preview/templatemo_415_dashboard
-    -->
+    <style>
+        .error {
+            color: #ff0000;
+        }
+
+        .errorblock {
+            color: #000;
+            background-color: #ffEEEE;
+            border: 3px solid #ff0000;
+            padding: 8px;
+            margin: 16px;
+        }
+    </style>
 </head>
 <body>
 <div class="navbar navbar-inverse" role="navigation">
@@ -196,6 +205,9 @@
                                 <button type="reset" class="btn btn-default">Reset</button>
                             </div>
                         </div>
+                        <p>
+                            <form:errors path="*" cssClass="errorblock" element="div" />
+                        </p>
                     </form:form>
                 </div>
             </div>

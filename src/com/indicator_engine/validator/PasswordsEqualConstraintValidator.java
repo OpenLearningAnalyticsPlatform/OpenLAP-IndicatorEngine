@@ -17,6 +17,7 @@ public class PasswordsEqualConstraintValidator implements ConstraintValidator<Pa
     @Override
     public boolean isValid(Object candidate, ConstraintValidatorContext arg1) {
         RegistrationForm user = (RegistrationForm) candidate;
+
         return user.getPassword().equals(user.getConfirmpassword());
     }
 }

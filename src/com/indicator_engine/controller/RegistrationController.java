@@ -159,7 +159,7 @@ public class RegistrationController {
         log.info(otp);
         List<UserCredentials> selectedUserList = userDetailsBean.searchByUserName(username);
         String status = "false";
-        log.info(selectedUserList);
+        log.info("Selected User List " +selectedUserList);
         for (UserCredentials eachuser : selectedUserList) {
             if (username.equals(eachuser.getUname())) {
                 if (otp.equals(eachuser.getOtp())) {

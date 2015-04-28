@@ -29,10 +29,12 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -83,8 +85,11 @@ public class GAToolKitDashBoardController {
     }
 
     @RequestMapping(value = "/update_user_profile", method = RequestMethod.POST)
-    public String updateUserProfile(HttpSession session, @ModelAttribute("UprofileForm") UserProfileForm UprofileForm, Map<String, Object> model) {
+    public String updateUserProfile(HttpSession session, @Valid @ModelAttribute("UprofileForm") UserProfileForm UprofileForm,BindingResult bindingResult, Map<String, Object> model) {
 
+        if(bindingResult.hasErrors()) {
+            return "app/user_profile";
+        }
         UserProfile up;
         UserCredentialsDao userDetailsBean = (UserCredentialsDao) appContext.getBean("userDetails");
         String userName = (String) session.getAttribute("userName");

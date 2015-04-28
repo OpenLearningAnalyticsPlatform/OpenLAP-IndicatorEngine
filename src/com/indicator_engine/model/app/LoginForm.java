@@ -20,16 +20,21 @@
 
 package com.indicator_engine.model.app;
 
-import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  * Created by Tanmaya Mahapatra on 16-03-2015.
  */
 @SuppressWarnings({"unused", "unchecked"})
 public class LoginForm {
-    @NotEmpty
+
+    @Size(min=3, max=20, message="Username must be between 3 and 20 characters")
+    @Pattern(regexp="^[a-zA-Z0-9]+$", message="Username must be alphanumeric with no spaces")
     private String userName;
-    @NotEmpty
+
+    @Size(min=6, max=20,message="The password must be at least 6 characters long.")
     private String password;
 
     public String getUserName() {
