@@ -27,6 +27,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%
     if ((session.getAttribute("loggedIn") != null) && (session.getAttribute("userName") != null) && (session.getAttribute("activationStatus")== "true"))
         response.sendRedirect("/home/dashboard");
@@ -51,6 +52,19 @@
     <link rel="stylesheet" type="text/css" href="../../css/login_style.css" />
     <link rel="stylesheet" type="text/css" href="../../css/animate-custom.css" />
     <title>Please Login</title>
+    <style>
+        .error {
+            color: #ff0000;
+        }
+
+        .errorblock {
+            color: #000;
+            background-color: #ffEEEE;
+            border: 3px solid #ff0000;
+            padding: 8px;
+            margin: 16px;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -77,12 +91,13 @@
             <a class="hiddenanchor" id="tologin"></a>
             <div id="wrapper">
                 <div id="login" class="animate form">
-                    <form:form  action="/register" method="post" autocomplete="on" commandName="RegisterForm">
+                    <form:form  action="/register" method="post" autocomplete="on"  commandName="RegisterForm">
                         <h1> Register </h1>
                         <p>
-                            <label for="usernamesignup" class="uname" data-icon="u">Your username</label>
 
+                            <label for="usernamesignup" class="uname" data-icon="u">Your username</label>
                             <form:input  path="userName" name="usernamesignup" id = "usernamesignup" required="required" type="text" placeholder="mysuperusername690" onchange="checkPreExistingUserName()" />
+
                         </p>
                         <p>
                             <label for="emailsignup" class="youmail" data-icon="e" > Your email</label>
@@ -100,6 +115,10 @@
                             <label for="dob" class="dob" data-icon="d"> Date of Brith </label>
                             <form:input id="dob" name="dob"  type="text" required="required" placeholder="DD-MM-yyyy" path="dob" onchange="checkDate()"/>
                         </p>
+                        <p>
+                            <form:errors path="*" cssClass="errorblock" element="div" />
+                        </p>
+
                         <p class="signin button">
                             <input type="reset" value="Reset"/>
                         </p>

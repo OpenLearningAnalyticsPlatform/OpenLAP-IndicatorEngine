@@ -20,15 +20,52 @@
 
 package com.indicator_engine.model.app;
 
+import com.indicator_engine.validator.NotExistingEmail;
+import com.indicator_engine.validator.NotExistingUserName;
+import com.indicator_engine.validator.PasswordsEqualConstraint;
+import com.indicator_engine.validator.Year;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.util.Date;
+
 /**
  * Created by Tanmaya Mahapatra on 16-03-2015.
  */
 @SuppressWarnings({"unused", "unchecked"})
+@PasswordsEqualConstraint(message = "Passwords are not equal")
+@NotExistingUserName(message = "User Name already Exists")
+@NotExistingEmail(message = "Email ID already Exists")
 public class RegistrationForm {
+
+    @Size(min=3, max=20, message="Username must be between 3 and 20 characters")
+    @Pattern(regexp="^[a-zA-Z0-9]+$", message="Username must be alphanumeric with no spaces")
     private String userName;
+
+
+    @Size(min=6, max=20,message="The password must be at least 6 characters long.")
     private String password;
+
+
+    @Pattern(regexp="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}",
+            message="Invalid email address.")
+    @NotEmpty(message = "Email Address cannot be empty")
     private String email;
-    private String dob;
+
+
+
+    @DateTimeFormat(pattern="dd-MM-yyyy")
+    @NotNull(message = "Date of Birth cannot be Null")
+    @Past(message = "Date of Birth Cannot be a Future Date.")
+    private Date dob;
+
+
+    @Size(min=6, max=20,message="The confirm password must be at least 6 characters long.")
     private String confirmpassword;
 
     public String getUserName() {
@@ -55,11 +92,11 @@ public class RegistrationForm {
         this.email = email;
     }
 
-    public String getDob() {
+    public Date getDob() {
         return dob;
     }
 
-    public void setDob(String dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 

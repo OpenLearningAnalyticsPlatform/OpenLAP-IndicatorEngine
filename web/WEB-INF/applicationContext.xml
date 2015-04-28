@@ -132,4 +132,5 @@
     <bean id="operationNumberProcessor"
           class="com.indicator_engine.indicator_system.Number.OperationNumberProcessor">
     </bean>
+
 </beans>

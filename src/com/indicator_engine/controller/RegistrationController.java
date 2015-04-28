@@ -28,16 +28,21 @@ import com.indicator_engine.model.app.RegistrationForm;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +59,20 @@ public class RegistrationController {
     private ApplicationContext appContext;
     @Autowired
     private BCryptPasswordEncoder encoder;
+
+    /**
+     * Register Property Editors
+     */
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        sdf.setLenient(true);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
+        // You can register other Custom Editors with the WebDataBinder,
+        // like CustomNumberEditor for Integers and Longs, or StringTrimmerEditor for Strings
+    }
+
+
     @RequestMapping(value="/register",method = RequestMethod.GET)
     public String getRegister(Map<String, Object> model){
 
@@ -63,21 +82,19 @@ public class RegistrationController {
     }
 
     @RequestMapping(value="/register",method = RequestMethod.POST)
-    public String processRegistrationForm(@ModelAttribute("RegisterForm") RegistrationForm RegisterForm,Map<String, Object> model){
+    public String processRegistrationForm(@Valid @ModelAttribute("RegisterForm") RegistrationForm RegisterForm, BindingResult bindingResult, Map<String, Object> model){
+        if(bindingResult.hasErrors()) {
+            return "app/register";
+        }
         UserCredentialsDao userDetailsBean = (UserCredentialsDao) appContext.getBean("userDetails");
         MailPackage mailBean = (MailPackage) appContext.getBean("mail");
         String errorMsg;
         String uname = RegisterForm.getUserName();
         String password = RegisterForm.getPassword();
         String hashedPassword = encoder.encode(password);
-        String dob = RegisterForm.getDob();
+        Date dob = RegisterForm.getDob();
         java.sql.Date sqlStartDate = null;
-        try {
-            SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
-            java.util.Date date = sdf1.parse(dob);
-            sqlStartDate = new java.sql.Date(date.getTime());
-        } catch(ParseException e){}
-
+        sqlStartDate = new java.sql.Date(dob.getTime());
         String email = RegisterForm.getEmail();
         // Error Handling Not done Yet. Synchronize Java Script checks + Server Side checks. Eliminate redundant checks
         if(uname == null || email == null || password == null  )
