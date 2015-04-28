@@ -1,5 +1,7 @@
 package com.indicator_engine.model.indicator_system;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
 public class IndicatorDefnOperationForm implements Serializable{
 
     private List<String> operation =  new ArrayList<>();
+    @NotEmpty(message = "Please Select an Operation")
     private String selectedOperation;
 
     public List<String> getOperation() {

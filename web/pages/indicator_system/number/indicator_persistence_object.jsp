@@ -27,6 +27,7 @@
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
     <script type="javascript" src="${pageContext.request.contextPath}/js/user_profile_checks.js"> </script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
 
 </head>
 <body>
@@ -85,6 +86,9 @@
                                 <form:select class="form-control margin-bottom-15" path="selectedPersistenceObject" items="${selectNumberParameters.persistenceObjects}" name ="objectSelection" id="objectSelection" />
                             </div>
                         </div>
+                        <p>
+                            <form:errors path="*" cssClass="errorblock" element="div" />
+                        </p>
                         <div class="row templatemo-form-buttons">
                             <div class="col-md-12">
                                 <input cclass="btn btn-default" type="submit" name="_eventId_prevScreen"

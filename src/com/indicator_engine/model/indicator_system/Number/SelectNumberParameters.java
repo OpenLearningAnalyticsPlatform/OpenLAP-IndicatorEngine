@@ -1,5 +1,7 @@
 package com.indicator_engine.model.indicator_system.Number;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.mail.Session;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class SelectNumberParameters implements Serializable{
     private final List<String> persistenceObjects = new ArrayList<>();
     private final Map persistenceObjectsRelation = new HashMap();
     private final HashMap<String, ArrayList<String>> retrievableObjects = new HashMap<String, ArrayList<String>>();
+    @NotEmpty(message = "Please Select a Persistence Object ")
     private String selectedPersistenceObject;
     private String selectedRetrievableObjects;
 
@@ -73,6 +76,7 @@ public class SelectNumberParameters implements Serializable{
 
     public SelectNumberParameters(){
         persistenceObjects.add("GLA_Entity");
+        persistenceObjects.add("H");
         persistenceObjectsRelation.put("GLA_Entity", "GLAEntity");
         persistenceObjectsRelation.put("GLA_Entity.key","key");
         persistenceObjectsRelation.put("GLA_Entity.value","value");

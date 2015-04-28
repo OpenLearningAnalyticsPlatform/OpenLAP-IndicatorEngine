@@ -21,7 +21,7 @@
         <binder>
             <binding property="indicatorName" required="true" />
         </binder>
-        <transition on="indicatorNameEntered" to="definitionHome" />
+        <transition on="indicatorNameEntered" bind="true" validate="true" to="definitionHome" />
     </view-state>
 
 	<view-state id="definitionHome" view="indicator_system/new_indicator" model="availableOperations">
@@ -29,7 +29,7 @@
             <binding property="selectedOperation" required="true" />
         </binder>
         <transition  on="prevScreen" to="indicatorName"/>
-        <transition on="operationSelected" to="retrieveOperation" />
+        <transition on="operationSelected" bind="true" validate="true" to="retrieveOperation" />
 	</view-state>
 
     <action-state id="retrieveOperation">
@@ -43,7 +43,7 @@
         <binding property="selectedPersistenceObject" required="true" />
         </binder>
         <transition  on="prevScreen" to="definitionHome"/>
-        <transition on="objectSelected" to="objectPropertySelection" />
+        <transition on="objectSelected" bind="true" validate="true" to="objectPropertySelection" />
     </view-state>
 
     <view-state id="objectPropertySelection" view="indicator_system/number/indicator_object_property" model="selectNumberParameters">

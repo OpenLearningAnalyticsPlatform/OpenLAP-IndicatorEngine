@@ -1,4 +1,3 @@
-<%@ page import="com.indicator_engine.datamodel.UserProfile" %>
 <%--
   ~ /*
   ~  * Copyright (C) 2015  Tanmaya Mahapatra
@@ -48,6 +47,7 @@
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
     <script type="javascript" src="${pageContext.request.contextPath}/js/user_profile_checks.js"> </script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
 
 </head>
 <body>

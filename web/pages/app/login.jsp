@@ -50,19 +50,7 @@
     <link rel="stylesheet" type="text/css" href="../../css/demo.css" />
     <link rel="stylesheet" type="text/css" href="../../css/login_style.css" />
     <link rel="stylesheet" type="text/css" href="../../css/animate-custom.css" />
-    <style>
-        .error {
-            color: #ff0000;
-        }
-
-        .errorblock {
-            color: #000;
-            background-color: #ffEEEE;
-            border: 3px solid #ff0000;
-            padding: 8px;
-            margin: 16px;
-        }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
     <title>Please Login</title>
 </head>
 <body>
