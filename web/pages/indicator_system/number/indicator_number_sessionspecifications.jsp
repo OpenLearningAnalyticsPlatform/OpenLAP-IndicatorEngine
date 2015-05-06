@@ -137,9 +137,17 @@
                                             <div class="row">
                                                 <div class="col-md-6 margin-bottom-15">
                                                     <label for="multipleSelect">Search Results </label>
-                                                    <form:select class="form-control" multiple="true" path="selectedSearchStrings" name="multipleSelect">
+                                                    <form:select class="form-control"  path="selectedUserString" name="multipleSelect">
                                                         <form:options items="${selectNumberParameters.searchResults}" />
                                                     </form:select>
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <div class="row">
+                                                <div class="col-md-6 margin-bottom-15">
+                                                    <label for="searchType">Select Search Type Type </label>
+                                                    <form:select class="form-control margin-bottom-15" path="selectedSearchType" items="${selectNumberParameters.searchType}" name ="searchType" id="searchType" />
                                                 </div>
                                             </div>
                                         </tr>

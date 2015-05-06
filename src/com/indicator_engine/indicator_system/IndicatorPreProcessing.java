@@ -128,7 +128,7 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
     }
     @Override
     public void specifyNewSession(SelectNumberParameters selectNumberParameters){
-        selectNumberParameters.getSessionSpecifications().add(new SessionSpecifications(selectNumberParameters.getSelectedsessionSearchType(),selectNumberParameters.getSelectedSearchStrings()));
+        selectNumberParameters.getSessionSpecifications().add(new SessionSpecifications(selectNumberParameters.getSelectedSearchType(),selectNumberParameters.getSelectedUserString()));
 
     }
     @Override
@@ -162,5 +162,7 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
     @Override
     public void clearSearchSettings(SelectNumberParameters selectNumberParameters) {
         selectNumberParameters.getSearchResults().clear();
+        selectNumberParameters.setSelectedSearchType("");
+
     }
 }

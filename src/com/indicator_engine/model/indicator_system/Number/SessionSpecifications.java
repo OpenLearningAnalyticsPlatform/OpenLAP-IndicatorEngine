@@ -9,20 +9,20 @@ import java.util.List;
  */
 @SuppressWarnings({"unused", "unchecked"})
 public class SessionSpecifications implements Serializable {
-    private List<String> session = new ArrayList<>();
+    private String session;
     private String type;
 
     public SessionSpecifications(){}
-    public SessionSpecifications(String type, List<String> session) {
+    public SessionSpecifications(String type, String session) {
         this.type = type;
         this.session = session;
     }
 
-    public List<String> getSession() {
+    public String getSession() {
         return session;
     }
 
-    public void setSession(List<String> session) {
+    public void setSession(String session) {
         this.session = session;
     }
 

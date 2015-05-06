@@ -174,7 +174,9 @@
             <binding property="selectedsessionSearchType"/>
             <binding property="sessionSearch"/>
             <binding property="selectedSearchStrings"/>
+            <binding property="selectedSearchType"/>
             <binding property="searchResults"/>
+            <binding property="selectedUserString"/>
             <binding property="sessionSpecifications[0].session"/>
             <binding property="sessionSpecifications[1].session"/>
             <binding property="sessionSpecifications[2].session"/>

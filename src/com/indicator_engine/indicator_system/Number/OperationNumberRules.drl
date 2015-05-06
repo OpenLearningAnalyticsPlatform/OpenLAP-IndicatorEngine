@@ -31,13 +31,12 @@ then
 
 end
 
-rule "When Only Entity Filtering (more than 2) is Present"
+rule "When Only Entity Filtering (2+) is Present"
 when
     SelectNumberParameters ( userSpecifications.isEmpty() == true,
                              timeSpecifications.isEmpty() == true,
                              sessionSpecifications.isEmpty() == true,
-                             entityValues.isEmpty() == false,
-                             entityValues.size() >= 1  )
+                             entityValues.isEmpty() == false)
 
     $pFilter : ProcessUserFilters()
     $userParameter : SelectNumberParameters( $source : selectedSource,
@@ -53,11 +52,11 @@ when
 
 then
 
-    $userParameter.setHql("SELECT " + "kite."+$robject+ " FROM " + $pobject + "kite" + " WHERE glaEvent.action ='"+$action+"'"
-                                 +" AND glaEvent.source = '"+ $source+"'"+ " AND glaEvent.platform = '"
-                                 + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
-                                 +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
-                                 +$type+"'"+ " AND key IN " + $pFilter.processEntities($key,$filter));
+    $userParameter.setHql("SELECT " + $robject + " FROM " + $pobject + " WHERE glaEvent.action ='"+$action+"'"
+                           +" AND glaEvent.source = '"+ $source+"'"+ " AND glaEvent.platform = '"
+                           + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
+                           +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
+                           +$type+"'"+ " AND key IN " + $pFilter.processEntities($key,$filter));
 end
 
 rule "When Only User Filtering and Entity Filtering are Present"
@@ -76,14 +75,73 @@ when
                                               $type : selectedType,
                                               $key : entityValues,
                                               $user : userSpecifications,
-                                              $filter : selectedFilteringType)
+                                              $filter : selectedFilteringType,
+                                              $pobject: selectedPersistenceObject,
+                                              $robject : selectedRetrievableObjects)
 
 then
-    $userParameter.setHql("SELECT COUNT(*) FROM GLAEntity WHERE glaEvent.action ='"+$action+"'"
+    $userParameter.setHql("SELECT " + $robject + " FROM " + $pobject + " WHERE glaEvent.action ='"+$action+"'"
                                  +" AND glaEvent.source = '"+ $source+"'"+ " AND glaEvent.platform = '"
                                  + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
                                  +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
                                  +$type+"'"+ " AND key IN " + $pFilter.processEntities($key,$filter) + $pFilter.processUsers($user, $filter));
-                                 // " AND  glaEvent.glaUser.username = 'Chris Nichols'  " );
+end
+
+rule "When Session & Entity Filtering are Present"
+when
+    SelectNumberParameters ( userSpecifications.isEmpty() == true,
+                             timeSpecifications.isEmpty() == true,
+                             sessionSpecifications.isEmpty() == false,
+                             entityValues.isEmpty() == false)
+
+    $pFilter : ProcessUserFilters()
+    $userParameter : SelectNumberParameters( $source : selectedSource,
+                                              $platform : selectedPlatform,
+                                              $action : selectedAction,
+                                              $major : selectedMajor,
+                                              $minor : selectedMinor,
+                                              $type : selectedType,
+                                              $key : entityValues,
+                                              $session : sessionSpecifications,
+                                              $filter : selectedFilteringType,
+                                              $pobject: selectedPersistenceObject,
+                                              $robject : selectedRetrievableObjects)
+
+then
+    $userParameter.setHql("SELECT " + $robject + " FROM " + $pobject + " WHERE glaEvent.action ='"+$action+"'"
+                                 +" AND glaEvent.source = '"+ $source+"'"+ " AND glaEvent.platform = '"
+                                 + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
+                                 +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
+                                 +$type+"'"+ " AND key IN " + $pFilter.processEntities($key,$filter)+ $pFilter.processSessions($session,$filter));
+end
+
+
+rule "When User Filtering, Session & Entity Filtering are Present"
+when
+    SelectNumberParameters ( userSpecifications.isEmpty() == false,
+                             timeSpecifications.isEmpty() == true,
+                             sessionSpecifications.isEmpty() == false,
+                             entityValues.isEmpty() == false)
+
+    $pFilter : ProcessUserFilters()
+    $userParameter : SelectNumberParameters( $source : selectedSource,
+                                              $platform : selectedPlatform,
+                                              $action : selectedAction,
+                                              $major : selectedMajor,
+                                              $minor : selectedMinor,
+                                              $type : selectedType,
+                                              $key : entityValues,
+                                              $user : userSpecifications,
+                                              $session : sessionSpecifications,
+                                              $filter : selectedFilteringType,
+                                              $pobject: selectedPersistenceObject,
+                                              $robject : selectedRetrievableObjects)
+
+then
+    $userParameter.setHql("SELECT " + $robject + " FROM " + $pobject + " WHERE glaEvent.action ='"+$action+"'"
+                                 +" AND glaEvent.source = '"+ $source+"'"+ " AND glaEvent.platform = '"
+                                 + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
+                                 +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
+                                 +$type+"'"+ " AND key IN " + $pFilter.processEntities($key,$filter) + $pFilter.processUsers($user, $filter) + $pFilter.processSessions($session,$filter));
 end
 

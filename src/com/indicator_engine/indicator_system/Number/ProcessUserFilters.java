@@ -1,6 +1,7 @@
 package com.indicator_engine.indicator_system.Number;
 
 import com.indicator_engine.model.indicator_system.Number.EntityValues;
+import com.indicator_engine.model.indicator_system.Number.SessionSpecifications;
 import com.indicator_engine.model.indicator_system.Number.UserSearchSpecifications;
 import org.drools.definition.process.*;
 
@@ -189,6 +190,53 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
             hibernateQuery += hibernateLikeEmailQuery;
         return hibernateQuery;
 
+    }
+
+    public String processSessions( List<SessionSpecifications>  sessionSpecifications, String filter){
+        String hibernateQuery=" ";
+        String hibernateExactSession =" AND glaEvent.session IN (";
+        String hibernateLikeSession =" AND glaEvent.session IN (";
+        String session , type;
+        session = type = null;
+        int counterSession = 0;
+        int counterLikeSesion = 0;
+        for(SessionSpecifications sessionSpec : sessionSpecifications){
+            session = sessionSpec.getSession();
+            type = sessionSpec.getType();
+            if(type.equals("EXACT")) {
+                if(counterSession == 0) {
+                    hibernateExactSession += "'"+ session + "' ";
+                    counterSession++;
+                    continue;
+                }
+                if(counterSession >= 1 ) {
+                    hibernateExactSession += ", '"+ session + "' ";
+                    counterSession++;
+                    continue;
+                }
+            }
+            if(type.equals("REGEX")) {
+                if(counterLikeSesion == 0) {
+                    hibernateLikeSession += " ( SELECT session FROM GLAEvent " +
+                            " WHERE session LIKE  '%"+ session + "%' ";
+                    counterLikeSesion++;
+                    continue;
+                }
+                if(counterLikeSesion >= 1 ) {
+                    hibernateLikeSession += filter +" session LIKE '%"+ session + "%' ";
+                    counterLikeSesion++;
+                    continue;
+                }
+            }
+        }
+        hibernateExactSession += " )";
+        hibernateLikeSession +=") )";
+        if(counterSession > 0)
+            hibernateQuery += hibernateExactSession;
+        if(counterLikeSesion > 0)
+            hibernateQuery += hibernateLikeSession;
+
+        return hibernateQuery;
     }
 
 }
