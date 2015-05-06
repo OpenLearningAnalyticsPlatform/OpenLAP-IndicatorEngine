@@ -61,7 +61,7 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
                     }
                 }
             }
-            if(type.equals("Regex"))
+            if(type.equals("REGEX"))
             {
                 if(eValue.equals("ALL"))
                 {
@@ -100,18 +100,20 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
 
     @Override
     public String processUsers( List<UserSearchSpecifications>  userSpecifications, String filter){
-        String hibernateQuery = "(";
+        String hibernateQuery=" ";
         String hibernateUserNameQuery =" AND glaEvent.glaUser.username IN (";
         String hibernateUserEmailQuery = " AND glaEvent.glaUser.email IN (";
+        String hibernateLikeUserNameQuery = " AND glaEvent.glaUser.username IN (";
+        String hibernateLikeEmailQuery = " AND glaEvent.glaUser.email IN (";
         // For keeping track of how many queries are generated for each case
         int counterUserName = 0;
         int counterEmail = 0;
+        int counterLikeUserName = 0;
+        int counterLikeEmail =0;
         // For individual members of each UserSearchSpecifications
         String pattern, type;
         String user;
         pattern = type = user = null;
-        int counter = 1;
-        int totalLength = userSpecifications.size();
         for(UserSearchSpecifications userSpec : userSpecifications){
             user = userSpec.getUserSearch();
             type = userSpec.getUserSearchType();
@@ -119,17 +121,72 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
             if(pattern.equals("EXACT")) {
                 if(type.equals("UserName")) {
                     if(counterUserName == 0) {
-                        hibernateUserNameQuery += " ( SELECT username FROM GLAUser " +
-                                " WHERE username =  '"+ user + "' ";
+                        hibernateUserNameQuery += "'"+ user + "' ";
+                        counterUserName++;
+                        continue;
                     }
-                    if(counterUserName >= 1 )
-                        hibernateUserNameQuery += "OR username = '"+ user + "' ";
-                    counterUserName++;
+                    if(counterUserName >= 1 ) {
+                        hibernateUserNameQuery += ", '"+ user + "' ";
+                        counterUserName++;
+                        continue;
+                    }
+
+                }
+                if(type.equals("UserEmail")) {
+                    if(counterEmail == 0) {
+                        hibernateUserEmailQuery += "'"+ user + "' ";
+                        counterEmail++;
+                        continue;
+                    }
+                    if(counterEmail >= 1 ) {
+                        hibernateUserEmailQuery += ", '"+ user + "' ";
+                        counterEmail++;
+                        continue;
+                    }
+
+                }
+            }
+            if(pattern.equals("REGEX")) {
+                if(type.equals("UserName")) {
+                    if(counterLikeUserName == 0) {
+                        hibernateLikeUserNameQuery += " ( SELECT username FROM GLAUser " +
+                                " WHERE username LIKE  '%"+ user + "%' ";
+                        counterLikeUserName++;
+                        continue;
+                    }
+                    if(counterLikeUserName >= 1 ) {
+                        hibernateLikeUserNameQuery += filter +" username LIKE '%"+ user + "%' ";
+                        counterLikeUserName++;
+                        continue;
+                    }
+                }
+                if(type.equals("UserEmail")) {
+                    if(counterLikeEmail == 0) {
+                        hibernateLikeEmailQuery += " ( SELECT username FROM GLAUser " +
+                                " WHERE email LIKE  '%"+ user + "%' ";
+                        counterLikeEmail++;
+                        continue;
+                    }
+                    if(counterLikeEmail >= 1 ) {
+                        hibernateLikeEmailQuery += filter+" email LIKE '%"+ user + "%' ";
+                        counterLikeEmail++;
+                        continue;
+                    }
                 }
             }
         }
-        hibernateUserNameQuery += " ) )";
-        hibernateQuery = hibernateUserNameQuery;
+        hibernateLikeUserNameQuery +=") )";
+        hibernateLikeEmailQuery +=") )";
+        hibernateUserNameQuery += " )";
+        hibernateUserEmailQuery += " )";
+        if(counterUserName > 0)
+            hibernateQuery += hibernateUserNameQuery;
+        if(counterEmail > 0)
+            hibernateQuery += hibernateUserEmailQuery;
+        if(counterLikeUserName > 0)
+            hibernateQuery += hibernateLikeUserNameQuery;
+        if(counterLikeEmail > 0)
+            hibernateQuery += hibernateLikeEmailQuery;
         return hibernateQuery;
 
     }

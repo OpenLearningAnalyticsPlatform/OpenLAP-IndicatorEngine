@@ -117,94 +117,12 @@
                                                 </div>
                                             </div>
                                         </tr>
-                                        <tr>
-                                            <div class="row">
-                                                <div class="col-md-6 margin-bottom-15">
-                                                    <label for="FilterType">Select AND or OR </label>
-                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
-                                                </div>
-                                            </div>
-                                        </tr>
-                                        <tr>
-                                            <div class="row">
-                                                <div class="col-md-6 margin-bottom-15">
-                                                    <label for="FilterType">Select AND or OR </label>
-                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
-                                                </div>
-                                            </div>
-                                        </tr>
-                                        <tr>
-                                            <div class="row">
-                                                <div class="col-md-6 margin-bottom-15">
-                                                    <label for="FilterType">Select AND or OR </label>
-                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
-                                                </div>
-                                            </div>
-                                        </tr>
-                                        <tr>
-                                            <div class="row">
-                                                <div class="col-md-6 margin-bottom-15">
-                                                    <label for="FilterType">Select AND or OR </label>
-                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
-                                                </div>
-                                            </div>
-                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-6 margin-bottom-30">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">Filtering Type Selection</div>
-                                <div class="panel-body">
-                                    <table class="table table-striped">
-                                        <tbody>
-                                        <tr>
-                                            <div class="row">
-                                                <div class="col-md-6 margin-bottom-15">
-                                                    <label for="FilterType">Select AND or OR </label>
-                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
-                                                </div>
-                                            </div>
-                                        </tr>
-                                        <tr>
-                                            <div class="row">
-                                                <div class="col-md-6 margin-bottom-15">
-                                                    <label for="FilterType">Select AND or OR </label>
-                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
-                                                </div>
-                                            </div>
-                                        </tr>
-                                        <tr>
-                                            <div class="row">
-                                                <div class="col-md-6 margin-bottom-15">
-                                                    <label for="FilterType">Select AND or OR </label>
-                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
-                                                </div>
-                                            </div>
-                                        </tr>
-                                        <tr>
-                                            <div class="row">
-                                                <div class="col-md-6 margin-bottom-15">
-                                                    <label for="FilterType">Select AND or OR </label>
-                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
-                                                </div>
-                                            </div>
-                                        </tr>
-                                        <tr>
-                                            <div class="row">
-                                                <div class="col-md-6 margin-bottom-15">
-                                                    <label for="FilterType">Select AND or OR </label>
-                                                    <form:select class="form-control margin-bottom-15" path="selectedFilteringType" items="${selectNumberParameters.filteringType}" name ="FilterType" id="FilterType" />
-                                                </div>
-                                            </div>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="row templatemo-form-buttons">
                             <div class="col-md-12">
                                 <input cclass="btn btn-default" type="submit" name="_eventId_prevScreen"
