@@ -51,7 +51,7 @@
             <binding property="selectedRetrievableObjects" required="true" />
         </binder>
         <transition  on="prevScreen" to="persistenceObjectSelection"/>
-        <transition on="objectSelected" to="selectEventParameters" />
+        <transition on="objectSelected" bind="true" validate="true" to="selectEventParameters" />
     </view-state>
 
     <view-state id="selectEventParameters" view="indicator_system/number/indicator_number_select_event" model="selectNumberParameters">
@@ -61,7 +61,7 @@
             <binding property="selectedAction" required="true" />
         </binder>
         <transition  on="prevScreen" to="objectPropertySelection"/>
-        <transition on="eventSelected" to="populateCategoryTypes" />
+        <transition on="eventSelected" bind="true" validate="true" to="populateCategoryTypes" />
     </view-state>
     <action-state id="populateCategoryTypes">
         <evaluate expression="indicatorPreProcessor.initPopulateTypes(selectNumberParameters)"
@@ -88,7 +88,7 @@
             <binding property="selectedType" required="true" />
         </binder>
         <transition  on="prevScreen" to="selectEventParameters"/>
-        <transition on="minorSelected" to="populateEntities" />
+        <transition on="minorSelected" bind="true" validate="true" to="populateEntities" />
     </view-state>
 
     <action-state id="populateEntities">
@@ -130,7 +130,7 @@
             <evaluate expression="indicatorPreProcessor.clearEValuesSpecifications(selectNumberParameters)"/>
         </transition>
         <transition  on="prevScreen" to="specifyCategory"/>
-        <transition  on="entitySelected" to="userSpecifications">
+        <transition  on="entitySelected" bind="true" validate="true" to="userSpecifications">
             <evaluate expression="indicatorPreProcessor.addDefaultEValues(selectNumberParameters)"/>
         </transition>
     </view-state>
@@ -143,6 +143,7 @@
             <binding property="selectedSearchStrings"/>
             <binding property="searchResults"/>
             <binding property="selectedSearchType"/>
+            <binding property="selectedUserString"/>
             <binding property="userSpecifications[0].userSearchType"/>
             <binding property="userSpecifications[1].userSearchType"/>
             <binding property="userSpecifications[2].userSearchType" />
@@ -164,7 +165,7 @@
             <evaluate expression="indicatorPreProcessor.searchUser(selectNumberParameters)"/>
         </transition>
         <transition  on="prevScreen" to="selectEntities"/>
-        <transition  on="userSpecified" to="sessionSpecifications"/>
+        <transition  on="userSpecified" bind="true" validate="true" to="sessionSpecifications"/>
 
     </view-state>
 
@@ -198,7 +199,7 @@
             <evaluate expression="indicatorPreProcessor.searchSession(selectNumberParameters)"/>
         </transition>
         <transition  on="prevScreen" to="userSpecifications"/>
-        <transition  on="sessionSpecified" to="otherSpecifications"/>
+        <transition  on="sessionSpecified" bind="true" validate="true" to="otherSpecifications"/>
     </view-state>
 
     <view-state id="otherSpecifications" view="indicator_system/number/indicator_number_otherspecifications" model="selectNumberParameters">
@@ -232,7 +233,7 @@
             <evaluate expression="indicatorPreProcessor.searchTime(selectNumberParameters)"/>
         </transition>
         <transition  on="prevScreen" to="sessionSpecifications"/>
-        <transition  on="TimeSpecified" to="selectFiltering"/>
+        <transition  on="TimeSpecified" bind="true" validate="true" to="selectFiltering"/>
     </view-state>
 
     <view-state id="selectFiltering" view="indicator_system/number/indicator_number_filteringtype" model="selectNumberParameters" >
@@ -240,7 +241,7 @@
         <binding property="selectedFilteringType" required="true"/>
         </binder>
         <transition  on="prevScreen" to="otherSpecifications"/>
-        <transition  on="filterSpecified" to="displaySummary"/>
+        <transition  on="filterSpecified" bind="true" validate="true" to="displaySummary"/>
     </view-state>
 
 

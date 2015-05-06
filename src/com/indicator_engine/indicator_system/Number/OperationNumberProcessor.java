@@ -14,6 +14,8 @@ import org.drools.runtime.StatefulKnowledgeSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
+import java.util.List;
+
 /**
  * Created by Tanmaya Mahapatra on 01-04-2015.
  */
@@ -49,6 +51,8 @@ public class OperationNumberProcessor implements OperationNumberProcessorDao {
         }
         log.info("Dumping HQL" + selectNumberParameters.getHql());
         long result = glaEntityBean.findNumber(selectNumberParameters.getHql());
+        log.info("Dumping Result \n" + result);
+        log.info("Result Finished ");
         return result;
 
     }

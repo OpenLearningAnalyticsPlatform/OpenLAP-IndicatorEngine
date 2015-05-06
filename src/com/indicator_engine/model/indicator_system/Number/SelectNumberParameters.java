@@ -50,6 +50,7 @@ public class SelectNumberParameters implements Serializable{
     private final List<String> userSearchTypes = new ArrayList<>();
     private String selecteduserSearchTypes;
     private String searchUserString;
+    private String selectedUserString;
     private List<String> selectedSearchStrings = new ArrayList<>();
     private List<String> searchResults = new ArrayList<>();
     private final List<String> searchType = new ArrayList<>();
@@ -68,28 +69,26 @@ public class SelectNumberParameters implements Serializable{
     private  String selectedTimeType;
 
 
-    private long result;
+    private long result ;
     private String hql;
     private final List<String> filteringType = new ArrayList<>();
     private String selectedFilteringType;
 
 
     public SelectNumberParameters(){
-        persistenceObjects.add("GLA_Entity");
+        persistenceObjects.add("GLAEntity");
         persistenceObjects.add("H");
-        persistenceObjectsRelation.put("GLA_Entity", "GLAEntity");
-        persistenceObjectsRelation.put("GLA_Entity.key","key");
-        persistenceObjectsRelation.put("GLA_Entity.value","value");
-        persistenceObjectsRelation.put("GLA_Entity.action","glaEvent.action");
-        persistenceObjectsRelation.put("GLA_Entity.source","glaEvent.source");
-        persistenceObjectsRelation.put("GLA_Entity.platform","glaEvent.platform");
-        persistenceObjectsRelation.put("GLA_Entity.major","glaEvent.glaCategory.major");
-        persistenceObjectsRelation.put("GLA_Entity.minor","glaEvent.glaCategory.minor");
-        persistenceObjectsRelation.put("GLA_Entity.type","glaEvent.glaCategory.type");
-        new ArrayList<String>().add("j");
-        retrievableObjects.put("GLA_Entity", new ArrayList<String>());
-        retrievableObjects.get("GLA_Entity").add(" COUNT(*) ");
-        retrievableObjects.get("GLA_Entity").add(" ALL ");
+        persistenceObjectsRelation.put("GLAEntity", "GLAEntity");
+        persistenceObjectsRelation.put("GLAEntity.key","key");
+        persistenceObjectsRelation.put("GLAEntity.value","value");
+        persistenceObjectsRelation.put("GLAEntity.action","glaEvent.action");
+        persistenceObjectsRelation.put("GLAEntity.source","glaEvent.source");
+        persistenceObjectsRelation.put("GLAEntity.platform","glaEvent.platform");
+        persistenceObjectsRelation.put("GLAEntity.major","glaEvent.glaCategory.major");
+        persistenceObjectsRelation.put("GLAEntity.minor","glaEvent.glaCategory.minor");
+        persistenceObjectsRelation.put("GLAEntity.type","glaEvent.glaCategory.type");
+        retrievableObjects.put("GLAEntity", new ArrayList<String>());
+        retrievableObjects.get("GLAEntity").add(" COUNT(*) ");
         entityValueTypes.add("Text");
         entityValueTypes.add("Number");
         entityValueTypes.add("Regex");
@@ -107,6 +106,14 @@ public class SelectNumberParameters implements Serializable{
         filteringType.add("AND");
         filteringType.add("OR");
 
+    }
+
+    public String getSelectedUserString() {
+        return selectedUserString;
+    }
+
+    public void setSelectedUserString(String selectedUserString) {
+        this.selectedUserString = selectedUserString;
     }
 
     public List<String> getSource() {

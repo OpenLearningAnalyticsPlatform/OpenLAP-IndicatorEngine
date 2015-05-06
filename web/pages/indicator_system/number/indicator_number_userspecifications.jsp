@@ -137,7 +137,7 @@
                                                 <div class="row">
                                                     <div class="col-md-6 margin-bottom-15">
                                                         <label for="multipleSelect">Search Results </label>
-                                                        <form:select multiple="true" class="form-control" path="selectedSearchStrings" name="multipleSelect">
+                                                        <form:select class="form-control" path="selectedUserString" name="multipleSelect">
                                                             <form:options items="${selectNumberParameters.searchResults}" />
                                                         </form:select>
                                                     </div>

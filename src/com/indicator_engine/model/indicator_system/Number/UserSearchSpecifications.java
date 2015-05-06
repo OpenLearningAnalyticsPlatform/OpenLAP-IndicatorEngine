@@ -11,10 +11,10 @@ import java.util.List;
 public class UserSearchSpecifications implements Serializable {
     private String userSearchType;
     private String searchPattern;
-    private List<String> userSearch = new ArrayList<>();
+    private String userSearch ;
 
     public UserSearchSpecifications() {}
-    public UserSearchSpecifications(String userSearchType, List<String> userSearch, String searchPattern){
+    public UserSearchSpecifications(String userSearchType, String userSearch, String searchPattern){
         this.userSearchType = userSearchType;
         this.userSearch = userSearch;
         this.searchPattern =searchPattern;
@@ -28,11 +28,11 @@ public class UserSearchSpecifications implements Serializable {
         this.userSearchType = userSearchType;
     }
 
-    public List<String> getUserSearch() {
+    public String getUserSearch() {
         return userSearch;
     }
 
-    public void setUserSearch(List<String> userSearch) {
+    public void setUserSearch(String userSearch) {
         this.userSearch = userSearch;
     }
 

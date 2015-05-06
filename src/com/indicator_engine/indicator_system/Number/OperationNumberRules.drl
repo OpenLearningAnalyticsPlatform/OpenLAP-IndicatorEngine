@@ -18,15 +18,17 @@ when
                                              $major : selectedMajor,
                                              $minor : selectedMinor,
                                              $type : selectedType,
-                                             $key : entityValues)
+                                             $key : entityValues,
+                                             $pobject: selectedPersistenceObject,
+                                             $robject : selectedRetrievableObjects)
 then
 
+    $userParameter.setHql("SELECT " + $robject + " FROM " + $pobject + " WHERE glaEvent.action ='"+$action+"'"
+                                     +" AND glaEvent.source = '"+ $source+"'"+ " AND glaEvent.platform = '"
+                                     + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
+                                     +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
+                                     +$type+"'"+" AND key = '"+ $key.get(0).getKey()+"'");
 
-   $userParameter.setHql("SELECT COUNT(*) FROM GLAEntity WHERE glaEvent.action ='"+$action+"'"
-                             +" AND glaEvent.source = '"+ $source+"'"+ " AND glaEvent.platform = '"
-                             + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
-                             +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
-                             +$type+"'"+" AND key = '"+ $key.get(0).getKey()+"'");
 end
 
 rule "When Only Entity Filtering (more than 2) is Present"
@@ -45,23 +47,25 @@ when
                                               $minor : selectedMinor,
                                               $type : selectedType,
                                               $key : entityValues,
-                                              $filter : selectedFilteringType)
+                                              $filter : selectedFilteringType,
+                                              $pobject: selectedPersistenceObject,
+                                              $robject : selectedRetrievableObjects)
 
 then
 
-    $userParameter.setHql("SELECT COUNT(*) FROM GLAEntity WHERE glaEvent.action ='"+$action+"'"
+    $userParameter.setHql("SELECT " + "kite."+$robject+ " FROM " + $pobject + "kite" + " WHERE glaEvent.action ='"+$action+"'"
                                  +" AND glaEvent.source = '"+ $source+"'"+ " AND glaEvent.platform = '"
                                  + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
                                  +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
                                  +$type+"'"+ " AND key IN " + $pFilter.processEntities($key,$filter));
 end
 
-rule "When Only User Filtering is Present"
+rule "When Only User Filtering and Entity Filtering are Present"
 when
     SelectNumberParameters ( userSpecifications.isEmpty() == false,
                              timeSpecifications.isEmpty() == true,
                              sessionSpecifications.isEmpty() == true,
-                             entityValues.isEmpty() == true)
+                             entityValues.isEmpty() == false)
 
     $pFilter : ProcessUserFilters()
     $userParameter : SelectNumberParameters( $source : selectedSource,
@@ -70,6 +74,7 @@ when
                                               $major : selectedMajor,
                                               $minor : selectedMinor,
                                               $type : selectedType,
+                                              $key : entityValues,
                                               $user : userSpecifications,
                                               $filter : selectedFilteringType)
 
@@ -78,6 +83,7 @@ then
                                  +" AND glaEvent.source = '"+ $source+"'"+ " AND glaEvent.platform = '"
                                  + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
                                  +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
-                                 +$type+"'"+ " AND"   + $pFilter.processUsers($user,$filter));
+                                 +$type+"'"+ " AND key IN " + $pFilter.processEntities($key,$filter) + $pFilter.processUsers($user, $filter));
+                                 // " AND  glaEvent.glaUser.username = 'Chris Nichols'  " );
 end
 

@@ -110,7 +110,7 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
 
     @Override
     public void specifyNewUser(SelectNumberParameters selectNumberParameters) {
-        selectNumberParameters.getUserSpecifications().add(new UserSearchSpecifications(selectNumberParameters.getSelecteduserSearchTypes(), selectNumberParameters.getSelectedSearchStrings(), selectNumberParameters.getSelectedSearchType()));
+        selectNumberParameters.getUserSpecifications().add(new UserSearchSpecifications(selectNumberParameters.getSelecteduserSearchTypes(), selectNumberParameters.getSelectedUserString(), selectNumberParameters.getSelectedSearchType()));
     }
 
     @Override

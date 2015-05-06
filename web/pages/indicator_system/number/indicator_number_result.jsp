@@ -28,6 +28,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     if ((session.getAttribute("loggedIn") == null) || (session.getAttribute("loggedIn") == ""))
         response.sendRedirect("/login");
@@ -112,6 +113,7 @@
                             <div class="col-md-6 margin-bottom-15">
                                 <label for="result">is </label>
                                 <input type="text" class="form-control" name ="result" id="result" value="${selectNumberParameters.result}" disabled>
+
                             </div>
                             <div class="col-md-6 margin-bottom-15">
                                 <label for="hql">HQL </label>

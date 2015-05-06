@@ -18,6 +18,7 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
         String key, type, eValue;
         key = type = eValue = null;
         int counter = 1;
+        int queryCounter = 0;
         int totalLength = entityValues.size();
         for (EntityValues eV : entityValues)
         {
@@ -28,13 +29,19 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
             {
                 if(eValue.equals("ALL"))
                 {
-                    if(counter == 1){
-                        hibernateQuery += " ( SELECT key FROM GLAEntity WHERE key = '"+key +"' OR  ";
+                    if(totalLength == 1) {
+                        hibernateQuery += " ( SELECT key FROM GLAEntity WHERE  key = '"+key +"' )";
                     }
-                    else if(counter == totalLength)
-                        hibernateQuery += "  key = '"+key +"' ) ";
-                    else
-                        hibernateQuery += "  key = '"+key +"' OR  ";
+                    else{
+                        if(counter == 1){
+                            hibernateQuery += " ( SELECT key FROM GLAEntity WHERE key = '"+key +"' OR  ";
+                        }
+                        else if(counter == totalLength)
+                            hibernateQuery += "  key = '"+key +"' ) ";
+                        else
+                            hibernateQuery += "  key = '"+key +"' OR  ";
+                    }
+
                 }
                 else
                 {
@@ -94,9 +101,15 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
     @Override
     public String processUsers( List<UserSearchSpecifications>  userSpecifications, String filter){
         String hibernateQuery = "(";
+        String hibernateUserNameQuery =" AND glaEvent.glaUser.username IN (";
+        String hibernateUserEmailQuery = " AND glaEvent.glaUser.email IN (";
+        // For keeping track of how many queries are generated for each case
+        int counterUserName = 0;
+        int counterEmail = 0;
+        // For individual members of each UserSearchSpecifications
         String pattern, type;
-        List<String> user;
-        pattern = type = null;
+        String user;
+        pattern = type = user = null;
         int counter = 1;
         int totalLength = userSpecifications.size();
         for(UserSearchSpecifications userSpec : userSpecifications){
@@ -105,11 +118,18 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
             pattern = userSpec.getSearchPattern();
             if(pattern.equals("EXACT")) {
                 if(type.equals("UserName")) {
-
+                    if(counterUserName == 0) {
+                        hibernateUserNameQuery += " ( SELECT username FROM GLAUser " +
+                                " WHERE username =  '"+ user + "' ";
+                    }
+                    if(counterUserName >= 1 )
+                        hibernateUserNameQuery += "OR username = '"+ user + "' ";
+                    counterUserName++;
                 }
             }
         }
-        hibernateQuery += " )";
+        hibernateUserNameQuery += " ) )";
+        hibernateQuery = hibernateUserNameQuery;
         return hibernateQuery;
 
     }
