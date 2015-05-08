@@ -259,8 +259,21 @@
     </action-state>
 
     <view-state id="displayResult" view="indicator_system/number/indicator_number_result" model="selectNumberParameters">
-        <transition to="definitionEnd" />
+       <binder>
+            <binding property="questionName" required="true"/>
+        </binder>
+        <transition  on="addnewSelected" to="definitionHome">
+            <evaluate expression="indicatorPreProcessor.addQuestion(selectNumberParameters,indicatorName)"/>
+        </transition>
+        <transition  on="saveSelected" to="saveIndicator">
+            <evaluate expression="indicatorPreProcessor.addQuestion(selectNumberParameters,indicatorName)"/>
+        </transition>
     </view-state>
+
+    <action-state id="saveIndicator">
+        <evaluate expression="indicatorPreProcessor.saveIndicator(indicatorName)"/>
+        <transition to="definitionEnd" />
+    </action-state>
 
 	<end-state id="definitionEnd" view="externalRedirect:contextRelative:/welcome"/>
 

@@ -1,6 +1,8 @@
 package com.indicator_engine.indicator_system;
 
 import com.indicator_engine.dao.*;
+import com.indicator_engine.datamodel.GLAIndicator;
+import com.indicator_engine.datamodel.GLAQueries;
 import com.indicator_engine.model.indicator_system.Number.*;
 import com.indicator_engine.model.indicator_system.IndicatorDefnOperationForm;
 import org.apache.log4j.Logger;
@@ -163,6 +165,34 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
     public void clearSearchSettings(SelectNumberParameters selectNumberParameters) {
         selectNumberParameters.getSearchResults().clear();
         selectNumberParameters.setSelectedSearchType("");
+
+    }
+    @Override
+    public void addQuestion(SelectNumberParameters selectNumberParameters, IndicatorNaming indicatorName){
+        indicatorName.getGenQueries().add(new GenQuery(selectNumberParameters.getHql(), selectNumberParameters.getQuestionName()));
+        log.info("Dumping Questions : \n");
+        for(GenQuery gQ : indicatorName.getGenQueries()){
+            log.info(gQ.getQueryID() + "\t" + gQ.getQuery()+ "\n");
+        }
+
+    }
+    @Override
+    public void saveIndicator(IndicatorNaming indicatorName){
+        log.info("Saving Indicator and all its Questions/Queries : STARTED");
+        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
+        GLAQueriesDao glaQueriesBean = (GLAQueriesDao) appContext.getBean("glaQueries");
+        GLAIndicator glaIndicator = new GLAIndicator();
+        GLAQueries glaQueries = new GLAQueries();
+        glaIndicator.setIndicator_name(indicatorName.getIndicatorName());
+        glaQueries.setHql(indicatorName.getGenQueries().get(0).getQuery());
+        glaQueries.setQuestion_name(indicatorName.getGenQueries().get(0).getQuestionName());
+        glaIndicatorBean.add(glaIndicator,glaQueries);
+        for(int i =1 ; i < indicatorName.getGenQueries().size(); i++) {
+            glaQueriesBean.addWithExistingIndicator(new GLAQueries(indicatorName.getGenQueries().get(i).getQuery(),indicatorName.getGenQueries().get(i).getQuestionName()),
+                    glaIndicator.getId());
+        }
+        log.info("Saving Indicator and all its Questions/Queries : ENDED");
+
 
     }
 }

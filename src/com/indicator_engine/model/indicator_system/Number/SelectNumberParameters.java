@@ -3,6 +3,7 @@ package com.indicator_engine.model.indicator_system.Number;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.mail.Session;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,6 +72,8 @@ public class SelectNumberParameters implements Serializable{
 
     private long result ;
     private String hql;
+    @Size(min=3, max=50, message="Question Name must be between 3 and 50 characters")
+    private String questionName;
     private final List<String> filteringType = new ArrayList<>();
     private String selectedFilteringType;
 
@@ -437,7 +440,13 @@ public class SelectNumberParameters implements Serializable{
         this.selectedRetrievableObjects = selectedRetrievableObjects;
     }
 
+    public String getQuestionName() {
+        return questionName;
+    }
 
+    public void setQuestionName(String questionName) {
+        this.questionName = questionName;
+    }
 }
 
 

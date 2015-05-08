@@ -123,6 +123,12 @@
     <bean id="glaOperations"
           class="com.indicator_engine.dao.GLAOperationsDaoImpl">
     </bean>
+    <bean id="glaIndicator"
+          class="com.indicator_engine.dao.GLAIndicatorDaoImpl">
+    </bean>
+    <bean id="glaQueries"
+          class="com.indicator_engine.dao.GLAQueriesDaoImpl">
+    </bean>
     <bean id="encoder"
           class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
     </bean>

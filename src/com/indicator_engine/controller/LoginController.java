@@ -93,7 +93,7 @@ public class LoginController {
                 if (encoder.matches(password, eachuser.getPassword())) {
                     authid = true;
                     sessionUserName = username;
-                    if (eachuser.getActivation_status() == true) {
+                    if (eachuser.getActivation_status()) {
                         activation_status = true;
                         List<SecurityRoleEntity> roleEntity = securityRoleEntityBean.searchRolesByID(eachuser.getUid());
                         for (SecurityRoleEntity roles : roleEntity)
@@ -124,7 +124,7 @@ public class LoginController {
             model.addObject("role", user_role);
             model.addObject("admin_access", admin_role);
         }
-        else if (authid && activation_status == false) {
+        else if (authid && !activation_status) {
             String sid = session.getId();
             model = new ModelAndView("app/activate");
             model.addObject("sid", sid);

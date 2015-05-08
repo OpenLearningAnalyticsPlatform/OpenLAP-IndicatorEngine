@@ -1,6 +1,7 @@
 package com.indicator_engine.indicator_system;
 
 import com.indicator_engine.model.indicator_system.IndicatorDefnOperationForm;
+import com.indicator_engine.model.indicator_system.Number.IndicatorNaming;
 import com.indicator_engine.model.indicator_system.Number.SelectNumberParameters;
 
 import java.util.List;
@@ -31,4 +32,6 @@ public interface IndicatorPreProcessingDao {
     public void clearTimeSpecifications(SelectNumberParameters selectNumberParameters);
     public void searchTime(SelectNumberParameters selectNumberParameters);
     public void addDefaultEValues(SelectNumberParameters selectNumberParameters);
+    public void addQuestion(SelectNumberParameters selectNumberParameters, IndicatorNaming indicatorName);
+    public void saveIndicator(IndicatorNaming indicatorName);
 }

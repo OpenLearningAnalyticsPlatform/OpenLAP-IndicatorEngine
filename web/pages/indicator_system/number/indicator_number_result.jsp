@@ -120,11 +120,23 @@
                                 <form:textarea class="form-control" path="hql" name ="hql" id="hql" value="${selectNumberParameters.hql}" rows="5" cols="30" />
 
                             </div>
+                            <div class="row">
+                                <div class="col-md-6 margin-bottom-15">
+                                    <label for="QuestionNaming">Enter Question Name </label>
+                                    <form:input path="questionName" type="text" class="form-control" name ="QuestionNaming" id="QuestionNaming" />
+                                </div>
+                            </div>
                         </div>
                         <div class="row templatemo-form-buttons">
                             <div class="col-md-12">
-                                <input type="submit" name="_eventId_resultSelected"
-                                       value="Finish" />
+                                <input type="submit" name="_eventId_addnewSelected"
+                                       value="Add a New Question to this Indicator" />
+                            </div>
+                        </div>
+                        <div class="row templatemo-form-buttons">
+                            <div class="col-md-12">
+                                <input type="submit" name="_eventId_saveSelected"
+                                       value="Save" />
                             </div>
                         </div>
                     </form:form>

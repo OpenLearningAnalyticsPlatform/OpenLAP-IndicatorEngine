@@ -351,11 +351,34 @@
       <foreign-key name="FK_fivpjb9k6sonbeajhj1hhbu4" columns="user_id" ref-table="gla_User" ref-schema="dbo" ref-catalog="Goal_LA" ref-columns="user_id" update-rule="1" delete-rule="1" deferrability="2"/>
       <exported-key name="FK_pakxrnaetyba5m28vxeaa4mrq" table="gla_Entity" schema="dbo" catalog="Goal_LA" columns="event_id"/>
     </table>
+    <table name="gla_Indicator" schema="dbo" catalog="Goal_LA" type="TABLE">
+      <column name="indicator_id" sqlType="numeric() identity" precision="19" scale="0" nullable="false" jdbcType="2" autoIncrement="true"/>
+      <column name="indicator_name" sqlType="varchar" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="short_name" sqlType="varchar" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PK__gla_Indi__C365415045C92CC9" columns="indicator_id"/>
+      <exported-key name="FK_k5ompy0eqdqiuaei9qi0oep7e" table="gla_Queries" schema="dbo" catalog="Goal_LA" columns="indicator_id"/>
+      <index name="UK_8bkc3d1wqk0ljdc6rqot03bp3" unique="true" columns="indicator_name"/>
+    </table>
+    <table name="gla_IndicatorProps" schema="dbo" catalog="Goal_LA" type="TABLE">
+      <column name="props_id" sqlType="numeric() identity" precision="19" scale="0" nullable="false" jdbcType="2" autoIncrement="true"/>
+      <column name="lex_time" sqlType="datetime" precision="23" scale="3" nullable="false" jdbcType="93"/>
+      <column name="short_name" sqlType="varchar" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="execution_counter" sqlType="int" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PK__gla_Indi__E52ACE4CEECB2611" columns="props_id"/>
+    </table>
     <table name="gla_Operations" schema="dbo" catalog="Goal_LA" type="TABLE">
       <column name="operation_id" sqlType="numeric() identity" precision="19" scale="0" nullable="false" jdbcType="2" autoIncrement="true"/>
       <column name="operations" sqlType="varchar" precision="255" scale="0" nullable="false" jdbcType="12"/>
-      <primary-key name="PK__gla_Oper__9DE171236CAA1EF5" columns="operation_id"/>
+      <primary-key name="PK__gla_Oper__9DE171230815300D" columns="operation_id"/>
       <index name="UK_swn0y6ybck9ix9akohfnnjxt8" unique="true" columns="operations"/>
+    </table>
+    <table name="gla_Queries" schema="dbo" catalog="Goal_LA" type="TABLE">
+      <column name="query_id" sqlType="numeric() identity" precision="19" scale="0" nullable="false" jdbcType="2" autoIncrement="true"/>
+      <column name="hql" sqlType="text" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="question_name" sqlType="varchar" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="indicator_id" sqlType="numeric" precision="19" scale="0" nullable="false" jdbcType="2"/>
+      <primary-key name="PK__gla_Quer__E793E349CC231B3F" columns="query_id"/>
+      <foreign-key name="FK_k5ompy0eqdqiuaei9qi0oep7e" columns="indicator_id" ref-table="gla_Indicator" ref-schema="dbo" ref-catalog="Goal_LA" ref-columns="indicator_id" update-rule="1" delete-rule="1" deferrability="2"/>
     </table>
     <table name="gla_User" schema="dbo" catalog="Goal_LA" type="TABLE">
       <column name="user_id" sqlType="numeric() identity" precision="19" scale="0" nullable="false" jdbcType="2" autoIncrement="true"/>
