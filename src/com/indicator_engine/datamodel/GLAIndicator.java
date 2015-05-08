@@ -28,6 +28,9 @@ public class GLAIndicator implements Serializable {
     @Column(name = "short_name", nullable = false)
     private String short_name;
 
+    @OneToOne(cascade=CascadeType.ALL, mappedBy="glaIndicator")
+    private GLAIndicatorProps  glaIndicatorProps;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "glaIndicator")
     private Set<GLAQueries> queries = new HashSet<GLAQueries>(0);
 
@@ -47,6 +50,14 @@ public class GLAIndicator implements Serializable {
 
     public long getId() {
         return id;
+    }
+
+    public GLAIndicatorProps getGlaIndicatorProps() {
+        return glaIndicatorProps;
+    }
+
+    public void setGlaIndicatorProps(GLAIndicatorProps glaIndicatorProps) {
+        this.glaIndicatorProps = glaIndicatorProps;
     }
 
     public void setId(long id) {

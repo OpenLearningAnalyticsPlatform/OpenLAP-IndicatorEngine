@@ -24,11 +24,8 @@ public class GLAIndicatorProps implements Serializable {
     @Column(name = "execution_counter", nullable = false)
     private int totalExecutions;
 
-    @Column(name = "short_name", nullable = false)
-    private String short_name;
-
     @OneToOne(fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn
+    @JoinColumn(name = "indicator_id", nullable = false)
     private GLAIndicator glaIndicator;
 
     public long getId() {
@@ -53,14 +50,6 @@ public class GLAIndicatorProps implements Serializable {
 
     public void setTotalExecutions(int totalExecutions) {
         this.totalExecutions = totalExecutions;
-    }
-
-    public String getShort_name() {
-        return short_name;
-    }
-
-    public void setShort_name(String short_name) {
-        this.short_name = short_name;
     }
 
     public GLAIndicator getGlaIndicator() {

@@ -6,7 +6,7 @@
 		http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
 
-    <var name="indicatorName" class="com.indicator_engine.model.indicator_system.Number.IndicatorNaming"/>
+    <var name="numberIndicator" class="com.indicator_engine.model.indicator_system.Number.NumberIndicator"/>
 
     <on-start>
         <evaluate expression="indicatorPreProcessor.initSelectNumberParametersObject()"
@@ -17,7 +17,7 @@
 
     <!-- By default, the first state is the start state. -->
 
-    <view-state id="indicatorName" view="indicator_system/indicator_name" model="indicatorName">
+    <view-state id="indicatorName" view="indicator_system/indicator_name" model="numberIndicator">
         <binder>
             <binding property="indicatorName" required="true" />
         </binder>
@@ -262,19 +262,40 @@
        <binder>
             <binding property="questionName" required="true"/>
         </binder>
-        <transition  on="addnewSelected" to="definitionHome">
-            <evaluate expression="indicatorPreProcessor.addQuestion(selectNumberParameters,indicatorName)"/>
+        <transition  on="addnewSelected" to="flushPrevRuns">
+            <evaluate expression="indicatorPreProcessor.addQuestion(selectNumberParameters,numberIndicator)"/>
         </transition>
         <transition  on="saveSelected" to="saveIndicator">
-            <evaluate expression="indicatorPreProcessor.addQuestion(selectNumberParameters,indicatorName)"/>
+            <evaluate expression="indicatorPreProcessor.addQuestion(selectNumberParameters,numberIndicator)"/>
         </transition>
     </view-state>
 
-    <action-state id="saveIndicator">
-        <evaluate expression="indicatorPreProcessor.saveIndicator(indicatorName)"/>
-        <transition to="definitionEnd" />
+    <action-state id="flushPrevRuns">
+        <evaluate expression="indicatorPreProcessor.flushPrevQnData(selectNumberParameters)"/>
+        <transition to="definitionHome" />
     </action-state>
 
-	<end-state id="definitionEnd" view="externalRedirect:contextRelative:/welcome"/>
+    <action-state id="saveIndicator">
+        <evaluate expression="indicatorPreProcessor.saveIndicator(numberIndicator)"/>
+        <transition to="retrievefromDB" />
+    </action-state>
+
+    <action-state id="retrievefromDB">
+        <evaluate expression="indicatorPreProcessor.retreiveFromDB(numberIndicator)"/>
+        <transition to="saveSummary" />
+    </action-state>
+
+    <view-state id="saveSummary" view="indicator_system/number/indicator_number_savedsummary" model="numberIndicator" >
+
+        <transition  on="summaryOK" to="definitionEnd"/>
+        <transition  on="newIndicator" to="flushAll"/>
+    </view-state>
+
+    <action-state id="flushAll">
+        <evaluate expression="indicatorPreProcessor.flushAll(numberIndicator, selectNumberParameters, availableOperations)"/>
+        <transition to="indicatorName" />
+    </action-state>
+
+    <end-state id="definitionEnd" view="externalRedirect:contextRelative:/indicators/home"/>
 
 </flow>

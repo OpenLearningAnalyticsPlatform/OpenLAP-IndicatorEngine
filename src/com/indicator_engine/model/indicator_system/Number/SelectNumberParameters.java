@@ -77,37 +77,102 @@ public class SelectNumberParameters implements Serializable{
     private final List<String> filteringType = new ArrayList<>();
     private String selectedFilteringType;
 
+    public void reset(){
+        // Reset everything to your default values
+        this.persistenceObjects.clear();
+        this.persistenceObjectsRelation.clear();
+        this.retrievableObjects.clear();
+        this.selectedPersistenceObject = null;
+        this.selectedRetrievableObjects = null;
+
+        this.selectedSource = null;
+        this.selectedPlatform  =null;
+        this.selectedAction = null;
+        this.source.clear();
+        this.platform.clear();
+        this.action.clear();
+
+        this.majors.clear();
+        this.minors.clear();
+        this.type.clear();
+        this.selectedMajor = null;
+        this.selectedMinor = null;
+        this.selectedType = null;
+        this.selectedKeys = null;
+
+        this.evalue = null;
+        this.selectedentityValueTypes = null;
+        this.entityValues.clear();
+        this.entityValueTypes.clear();
+        this.keys.clear();
+
+        this.userSpecifications.clear();
+        this.userSearchTypes.clear();
+        this.selecteduserSearchTypes = null;
+        this.searchUserString =null;
+        this.selectedUserString = null;
+        this.searchResults.clear();
+        this.searchType.clear();
+        this.selectedSearchType = null;
+
+        this.sessionSpecifications.clear();
+        this.sessionSearchType.clear();
+        this.selectedsessionSearchType = null;
+        this.sessionSearch = null;
+
+        this.timeSpecifications.clear();
+        this.timeSearchType.clear();
+        this.timeType.clear();
+        this.selectedTimeType = null;
+        this.TimeSearch = null;
+        this.selectedTimeSearchType = null;
+
+        this.result = 0;
+        this.hql = null;
+        this.questionName = null;
+
+        this.filteringType.clear();
+        this.selectedFilteringType = null;
+
+        buildDefault();
+    }
+
+    public void buildDefault() {
+        this.persistenceObjects.add("GLAEntity");
+        this.persistenceObjects.add("H");
+        this.persistenceObjectsRelation.put("GLAEntity", "GLAEntity");
+        this.persistenceObjectsRelation.put("GLAEntity.key","key");
+        this.persistenceObjectsRelation.put("GLAEntity.value","value");
+        this.persistenceObjectsRelation.put("GLAEntity.action","glaEvent.action");
+        this.persistenceObjectsRelation.put("GLAEntity.source","glaEvent.source");
+        this.persistenceObjectsRelation.put("GLAEntity.platform","glaEvent.platform");
+        this.persistenceObjectsRelation.put("GLAEntity.major","glaEvent.glaCategory.major");
+        this.persistenceObjectsRelation.put("GLAEntity.minor","glaEvent.glaCategory.minor");
+        this.persistenceObjectsRelation.put("GLAEntity.type","glaEvent.glaCategory.type");
+        this.retrievableObjects.put("GLAEntity", new ArrayList<String>());
+        this.retrievableObjects.get("GLAEntity").add(" COUNT(*) ");
+        this.entityValueTypes.add("Text");
+        this.entityValueTypes.add("Number");
+        this.entityValueTypes.add("Regex");
+        this.userSearchTypes.add("UserName");
+        this.userSearchTypes.add("UserEmail");
+        this.sessionSearchType.add("ALL");
+        this.sessionSearchType.add("SEARCH LIKE");
+        this.timeSearchType.add("ALL");
+        this.timeSearchType.add("LIKE");
+        this.timeSearchType.add("EXACT");
+        this.timeType.add("EXACT");
+        this.timeType.add("RANGE");
+        this.searchType.add("EXACT");
+        this.searchType.add("REGEX");
+        this.filteringType.add("AND");
+        this.filteringType.add("OR");
+
+    }
 
     public SelectNumberParameters(){
-        persistenceObjects.add("GLAEntity");
-        persistenceObjects.add("H");
-        persistenceObjectsRelation.put("GLAEntity", "GLAEntity");
-        persistenceObjectsRelation.put("GLAEntity.key","key");
-        persistenceObjectsRelation.put("GLAEntity.value","value");
-        persistenceObjectsRelation.put("GLAEntity.action","glaEvent.action");
-        persistenceObjectsRelation.put("GLAEntity.source","glaEvent.source");
-        persistenceObjectsRelation.put("GLAEntity.platform","glaEvent.platform");
-        persistenceObjectsRelation.put("GLAEntity.major","glaEvent.glaCategory.major");
-        persistenceObjectsRelation.put("GLAEntity.minor","glaEvent.glaCategory.minor");
-        persistenceObjectsRelation.put("GLAEntity.type","glaEvent.glaCategory.type");
-        retrievableObjects.put("GLAEntity", new ArrayList<String>());
-        retrievableObjects.get("GLAEntity").add(" COUNT(*) ");
-        entityValueTypes.add("Text");
-        entityValueTypes.add("Number");
-        entityValueTypes.add("Regex");
-        userSearchTypes.add("UserName");
-        userSearchTypes.add("UserEmail");
-        sessionSearchType.add("ALL");
-        sessionSearchType.add("SEARCH LIKE");
-        timeSearchType.add("ALL");
-        timeSearchType.add("LIKE");
-        timeSearchType.add("EXACT");
-        timeType.add("EXACT");
-        timeType.add("RANGE");
-        searchType.add("EXACT");
-        searchType.add("REGEX");
-        filteringType.add("AND");
-        filteringType.add("OR");
+
+        buildDefault();
 
     }
 

@@ -1,10 +1,17 @@
 package com.indicator_engine.controller.webflow_validators;
 
+import com.indicator_engine.dao.GLAIndicatorDao;
+import com.indicator_engine.datamodel.GLAIndicator;
+import com.indicator_engine.model.indicator_system.Number.NumberIndicator;
 import com.indicator_engine.model.indicator_system.Number.SelectNumberParameters;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.binding.validation.ValidationContext;
 import org.springframework.binding.message.MessageBuilder;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * Created by Tanmaya Mahapatra on 28-04-2015.
@@ -12,6 +19,9 @@ import org.springframework.stereotype.Component;
 @Component
 @SuppressWarnings({"unused", "unchecked"})
 public class SelectNumberParametersValidator {
+    @Autowired
+    private ApplicationContext appContext;
+
 
     public void validatePersistenceObjectSelection(SelectNumberParameters selectNumberParameters, ValidationContext context) {
         MessageContext messages = context.getMessageContext();
@@ -55,36 +65,5 @@ public class SelectNumberParametersValidator {
             messages.addMessage(new MessageBuilder().error().source("Minor").
                     defaultText("Please Select a Minor").build());
     }
-    public void validateSelectEntities(SelectNumberParameters selectNumberParameters, ValidationContext context) {
-
-        MessageContext messages = context.getMessageContext();
-    }
-
-    public void validateUserSpecifications(SelectNumberParameters selectNumberParameters, ValidationContext context) {
-
-        MessageContext messages = context.getMessageContext();
-    }
-
-    public void validateSessionSpecifications(SelectNumberParameters selectNumberParameters, ValidationContext context) {
-
-        MessageContext messages = context.getMessageContext();
-    }
-
-    public void validateOtherSpecifications(SelectNumberParameters selectNumberParameters, ValidationContext context) {
-
-        MessageContext messages = context.getMessageContext();
-    }
-
-    public void validateSelectFiltering(SelectNumberParameters selectNumberParameters, ValidationContext context) {
-
-        MessageContext messages = context.getMessageContext();
-    }
-
-
-
-
-
-
-
 
 }

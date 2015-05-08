@@ -1,4 +1,3 @@
-<%@ page import="com.indicator_engine.datamodel.UserProfile" %>
 <%--
   ~ /*
   ~  * Copyright (C) 2015  Tanmaya Mahapatra
@@ -28,6 +27,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     if ((session.getAttribute("loggedIn") == null) || (session.getAttribute("loggedIn") == ""))
         response.sendRedirect("/login");
@@ -42,19 +43,19 @@
 <head>
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-    <title>Indicator Naming</title>
+    <title>Indicator Save Summary </title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
     <script type="javascript" src="${pageContext.request.contextPath}/js/user_profile_checks.js"> </script>
+    <script type="text/javascript" src="/dynamiclists/js/jquery-1.3.2.min.js"></script>
 
 </head>
 <body>
 <div class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <div class="logo"><h1>Indicator Naming</h1></div>
+        <div class="logo"><h1>Indicator Save Summary </h1></div>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -96,24 +97,71 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Name for the New Indicator</h1>
-            <p>Please Enter a Name for the to be defined Indicator</p>
+            <h1>Indicator Save Summary </h1>
+            <p>Indicator Successfully Saved. Here are the Details.</p>
             <div class="row">
                 <div class="col-md-12">
-                    <form:form role="form" id="indicatorNaming"  method="post" modelAttribute="numberIndicator" action="${flowExecutionUrl}">
-                        <div class="row">
-                            <div class="col-md-6 margin-bottom-15">
-                                <label for="indicatorNaming">Enter Indicator Name </label>
-                                <form:input path="indicatorName" type="text" class="form-control" name ="indicatorNaming" id="indicatorNaming" />
+                    <form:form role="form" id="userSelection"  method="POST" commandName="numberIndicator" action="${flowExecutionUrl}">
+                        <div class="col-md-6 col-sm-6 margin-bottom-30">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">Indicator Details</div>
+                                <div class="panel-body">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Last Execution Time</th>
+                                            <th>Number of Times Executed</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        <tr>
+                                            <td><c:out value="${numberIndicator.indicator_id}"/></td>
+                                            <td><c:out value="${numberIndicator.indicatorName}"/></td>
+                                            <td><c:out value="${numberIndicator.genIndicatorProps.last_executionTime}"/></td>
+                                            <td><c:out value="${numberIndicator.genIndicatorProps.totalExecutions}"/></td>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                        <p>
-                            <form:errors path="*" cssClass="errorblock" element="div" />
-                        </p>
+                        <div class="col-md-6 col-sm-6 margin-bottom-30">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">Question Details</div>
+                                <div class="panel-body">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Question Name</th>
+                                            <th>Equivalent HQL</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach var="entityVal" items="${numberIndicator.genQueries}"  varStatus="loop">
+                                            <tr>
+                                                <td><c:out value="${entityVal.queryID}"/></td>
+                                                <td><c:out value="${entityVal.questionName}"/></td>
+                                                <td><c:out value="${entityVal.query}"/></td>
+                                            </tr>
+                                        </c:forEach>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row templatemo-form-buttons">
                             <div class="col-md-12">
-                                <input type="submit" name="_eventId_indicatorNameEntered"
-                                       value="Next" />
+                                <input cclass="btn btn-default" type="submit" name="_eventId_newIndicator"
+                                       value="New Indicator" />
+                                <input class="btn btn-primary" type="submit" name="_eventId_summaryOK"
+                                       value="Finish" />
                             </div>
                         </div>
                     </form:form>

@@ -16,6 +16,11 @@ public class IndicatorDefnOperationForm implements Serializable{
     @NotEmpty(message = "Please Select an Operation")
     private String selectedOperation;
 
+    public void reset() {
+        this.selectedOperation = null;
+        this.operation.clear();
+    }
+
     public List<String> getOperation() {
         return operation;
     }
