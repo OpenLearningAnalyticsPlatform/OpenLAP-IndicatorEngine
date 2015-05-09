@@ -1,4 +1,6 @@
 package com.indicator_engine.datamodel;
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -15,8 +17,10 @@ public final class GLAOperations implements Serializable {
     @Id
     @Column(name = "operation_id",unique = true, nullable = false)
     @GeneratedValue(strategy = IDENTITY)
+    @Expose
     private long id;
     @Column(name = "operations", nullable = false, unique = true)
+    @Expose
     private String operations;
 
     public GLAOperations() {}

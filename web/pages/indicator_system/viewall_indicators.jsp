@@ -50,6 +50,7 @@
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.0/css/jquery.dataTables.css">
     <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
     <script type="text/javascript">
 
         (function($) {
@@ -149,6 +150,50 @@
             <p>Here you can define view all Existing Indicators.</p>
             <div class="row">
                 <div class="col-md-12">
+                    <form:form role="form" id="searchIndicatorForm"  method="post" modelAttribute="searchIndicatorForm" action="/indicators/viewall">
+                        <div class="row">
+                            <div class="col-md-6 margin-bottom-15">
+                                <label for="searchTypeSelection">Select Search Type </label>
+                                <form:select class="form-control margin-bottom-15" path="selectedSearchType" items="${searchIndicatorForm.searchType}" name ="searchTypeSelection" id="searchTypeSelection" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 margin-bottom-15">
+                                <label for="searchString" class="control-label">Search String</label>
+                                <form:input class="form-control" path="searchField"  name="searchString" id ="searchString"/>
+                            </div>
+                        </div>
+                        <div class="row templatemo-form-buttons">
+                            <div class="col-md-12">
+                                <input cclass="btn btn-default" type="submit" name="action"
+                                       value="search"  />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 margin-bottom-15">
+                                <label for="multipleSelect">Search Results </label>
+                                <form:select class="form-control" path="selectedIndicatorName" name="multipleSelect">
+                                    <form:options items="${searchIndicatorForm.searchResults}" />
+                                </form:select>
+                            </div>
+                        </div>
+                        <div class="row templatemo-form-buttons">
+                            <div class="col-md-12">
+                                <input class="btn btn-primary" type="submit" name="action"
+                                       value="load" />
+                            </div>
+                        </div>
+
+                        <p>
+                            <form:errors path="*" cssClass="errorblock" element="div" />
+                        </p>
+
+                    </form:form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
                     <form:form action="" method="GET">
                         <h2 >Listing of All Existing Indicators<br><br></h2>
                         <table width="70%" style="border: 3px;background: rgb(243, 244, 248);"><tr><td>
@@ -166,9 +211,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-
         </div>
     </div>
     <!-- Modal -->

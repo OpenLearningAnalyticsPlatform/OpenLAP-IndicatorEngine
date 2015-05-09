@@ -20,6 +20,8 @@
 
 package com.indicator_engine.datamodel;
 
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 
 import java.io.Serializable;
@@ -38,15 +40,19 @@ public final class GLACategory implements Serializable {
     @Id
     @Column(name = "category_id",unique = true, nullable = false)
     @GeneratedValue(strategy = IDENTITY)
+    @Expose
     private long id;
     @Column(name = "major", nullable = false)
+    @Expose
     private String major;
     @Column(name = "minor", nullable = false)
+    @Expose
     private String minor;
     @Column(name = "type", nullable = false)
+    @Expose
     private String type;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "glaCategory")
-    private transient Set<GLAEvent> events = new HashSet<GLAEvent>(0);
+    private Set<GLAEvent> events = new HashSet<GLAEvent>(0);
 
     public GLACategory(){}
 

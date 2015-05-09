@@ -99,7 +99,6 @@ public class GLAUserDaoImpl implements  GLAUserDao{
         return  criteria.list();
     }
 
-
     @Override
     @Transactional
     public GLAUser loaduserByName(String username)
@@ -108,10 +107,6 @@ public class GLAUserDaoImpl implements  GLAUserDao{
         GLAUser glaUser = null;
         Criteria criteria = session.createCriteria(GLAUser.class)
                 .add(Restrictions.eq("username", username));
-
-        // Convenience method to return a single instance that matches the
-        // query, or null if the query returns no results.
-        //
         Object result = criteria.uniqueResult();
         if (result != null) {
              glaUser = (GLAUser) result;

@@ -179,7 +179,7 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
     }
     @Override
     public void addQuestion(SelectNumberParameters selectNumberParameters, NumberIndicator numberIndicator){
-        numberIndicator.getGenQueries().add(new GenQuery(selectNumberParameters.getHql(), selectNumberParameters.getQuestionName()));
+        numberIndicator.getGenQueries().add(new GenQuery(selectNumberParameters.getHql(), selectNumberParameters.getQuestionName(),0));
         log.info("Dumping Questions : \n");
         for(GenQuery gQ : numberIndicator.getGenQueries()){
             log.info(gQ.getQueryID() + "\t" + gQ.getQuery()+ "\n");
@@ -210,33 +210,35 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
     public void retreiveFromDB(NumberIndicator numberIndicator){
 
         GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
-        List<GLAIndicator> glaIndicators = glaIndicatorBean.loadByIndicatorID(numberIndicator.getIndicator_id());
-        for(GLAIndicator glaIndicator : glaIndicators){
+        log.info("Retreive From DB : STARTED \n");
+        log.info("ID : \t"+ numberIndicator.getIndicator_id());
+
+        GLAIndicator glaIndicator = glaIndicatorBean.loadByIndicatorID(numberIndicator.getIndicator_id());
+            log.info("GLA INDICATOR FROM DB : ID : \t"+ glaIndicator.getId());
+            log.info("GLA INDICATOR FROM DB : Name : \t"+ glaIndicator.getIndicator_name());
+            log.info("GLA INDICATOR FROM DB : PROPS ID : \t"+ glaIndicator.getGlaIndicatorProps().getId());
+            log.info("GLA INDICATOR FROM DB : LEX TIME : \t"+ glaIndicator.getGlaIndicatorProps().getLast_executionTime());
+            log.info("GLA INDICATOR FROM DB : EXEC COUNTER : \t"+ glaIndicator.getGlaIndicatorProps().getTotalExecutions());
             numberIndicator.reset();
             numberIndicator.setIndicator_id(glaIndicator.getId());
             numberIndicator.setIndicatorName(glaIndicator.getIndicator_name());
-            numberIndicator.setGenIndicatorProps(new GenIndicatorProps());
-            numberIndicator.getGenIndicatorProps().setLast_executionTime(glaIndicator.getGlaIndicatorProps().getLast_executionTime());
-            numberIndicator.getGenIndicatorProps().setProps_id(glaIndicator.getGlaIndicatorProps().getId());
-            numberIndicator.getGenIndicatorProps().setTotalExecutions(glaIndicator.getGlaIndicatorProps().getTotalExecutions());
+            numberIndicator.setGenIndicatorProps(glaIndicator.getGlaIndicatorProps().getId(),
+                    glaIndicator.getGlaIndicatorProps().getLast_executionTime(),
+                    glaIndicator.getGlaIndicatorProps().getTotalExecutions());
             Set<GLAQueries> genQueries = glaIndicator.getQueries();
             for (GLAQueries gQ : genQueries) {
-                numberIndicator.getGenQueries().add(new GenQuery(gQ.getHql(),gQ.getQuestion_name()));
+                numberIndicator.getGenQueries().add(new GenQuery(gQ.getHql(),gQ.getQuestion_name(), gQ.getId()));
             }
-        }
     }
-
     @Override
     public void flushAll(NumberIndicator numberIndicator, SelectNumberParameters selectNumberParameters,
                                  IndicatorDefnOperationForm availableOperations){
 
         GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
         GLAOperationsDao glaOperationsBean = (GLAOperationsDao) appContext.getBean("glaOperations");
-
         numberIndicator.reset();
         selectNumberParameters.reset();
         availableOperations.reset();
-
         selectNumberParameters.setSource(glaEventBean.selectAll("source"));
         selectNumberParameters.setPlatform(glaEventBean.selectAll("platform"));
         selectNumberParameters.setAction(glaEventBean.selectAll("action"));
@@ -250,7 +252,5 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
         selectNumberParameters.setSource(glaEventBean.selectAll("source"));
         selectNumberParameters.setPlatform(glaEventBean.selectAll("platform"));
         selectNumberParameters.setAction(glaEventBean.selectAll("action"));
-
-
     }
 }

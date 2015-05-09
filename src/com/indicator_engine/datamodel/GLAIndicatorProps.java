@@ -1,5 +1,7 @@
 package com.indicator_engine.datamodel;
 
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -16,12 +18,15 @@ public class GLAIndicatorProps implements Serializable {
     @Id
     @Column(name = "props_id", unique = true, nullable = false)
     @GeneratedValue(strategy = IDENTITY)
+    @Expose
     private long id;
 
     @Column(name = "lex_time", nullable = false)
+    @Expose
     private Timestamp last_executionTime;
 
     @Column(name = "execution_counter", nullable = false)
+    @Expose
     private int totalExecutions;
 
     @OneToOne(fetch = FetchType.LAZY)

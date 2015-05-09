@@ -20,6 +20,8 @@
 
 package com.indicator_engine.datamodel;
 
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -34,13 +36,17 @@ public final class GLAEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "entity_id", unique = true, nullable = false)
+    @Expose
     private Integer entityId;
     @Column(name = "keys",nullable = false)
+    @Expose
     private String key;
     @Column(name = "value",nullable = false, columnDefinition="TEXT")
+    @Expose
     private String value;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)
+    @Expose
     private GLAEvent glaEvent;
 
     public GLAEntity() {}

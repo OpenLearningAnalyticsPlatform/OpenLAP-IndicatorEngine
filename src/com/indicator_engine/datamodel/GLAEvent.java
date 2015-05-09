@@ -19,6 +19,8 @@
  */
 
 package com.indicator_engine.datamodel;
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -36,24 +38,32 @@ public final class GLAEvent implements Serializable {
     @Id
     @Column(name = "event_id",unique = true, nullable = false)
     @GeneratedValue(strategy = IDENTITY)
+    @Expose
     private long id;
     @Column(name = "action", nullable = false)
+    @Expose
     private String action;
     @Column(name = "session", nullable = false)
+    @Expose
     private String session;
     @Column(name = "platform",nullable = false)
+    @Expose
     private String platform;
     @Column(name = "timestamp", nullable = false)
+    @Expose
     private Timestamp timestamp;
     @Column(name = "source", nullable = false)
+    @Expose
     private String source;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "glaEvent")
-    private  transient Set<GLAEntity> entities = new HashSet<GLAEntity>(0);
+    private Set<GLAEntity> entities = new HashSet<GLAEntity>(0);
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @Expose
     private GLAUser glaUser;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
+    @Expose
     private GLACategory glaCategory;
 
     public GLAEvent(){}

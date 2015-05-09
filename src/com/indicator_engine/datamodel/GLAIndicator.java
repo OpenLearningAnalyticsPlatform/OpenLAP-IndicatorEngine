@@ -6,8 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
-
+import com.google.gson.annotations.Expose;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -20,19 +19,22 @@ public class GLAIndicator implements Serializable {
     @Id
     @Column(name = "indicator_id", unique = true, nullable = false)
     @GeneratedValue(strategy = IDENTITY)
+    @Expose
     private long id;
 
     @Column(name = "indicator_name", nullable = false, unique = true)
+    @Expose
     private String indicator_name;
 
     @Column(name = "short_name", nullable = false)
+    @Expose
     private String short_name;
 
     @OneToOne(cascade=CascadeType.ALL, mappedBy="glaIndicator")
-    private transient GLAIndicatorProps  glaIndicatorProps;
+    private GLAIndicatorProps  glaIndicatorProps;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "glaIndicator")
-    private  transient Set<GLAQueries> queries = new HashSet<GLAQueries>(0);
+    private  Set<GLAQueries> queries = new HashSet<GLAQueries>(0);
 
     public GLAIndicator() {
         this.short_name = "";

@@ -11,9 +11,11 @@ import java.util.List;
  */
 public interface GLAIndicatorDao {
     public long  add(GLAIndicator glaIndicator, GLAQueries glaQueries);
-    public List<GLAIndicator> loadByIndicatorID(long ID);
+    public GLAIndicator loadByIndicatorID(long ID);
     public List<GLAIndicator> displayall();
     public List<GLAIndicator> loadIndicatorsRange(long startRange, long endRange);
     public List<GLAIndicator> searchIndicatorsName(String searchParameter);
     public int getTotalIndicators();
+    public List<GLAIndicator>  loadByIndicatorByName(String indicatorName);
+    public long findIndicatorID(String indicatorName);
 }

@@ -20,6 +20,8 @@
 
 package com.indicator_engine.datamodel;
 
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -36,15 +38,19 @@ public final class GLAUser implements Serializable {
     @Id
     @Column(name = "user_id",unique = true, nullable = false)
     @GeneratedValue(strategy = IDENTITY)
+    @Expose
     private long id;
     @Column(name = "username", nullable = false)
+    @Expose
     private String username;
     @Column(name = "password", nullable = false)
+    @Expose
     private String password;
     @Column(name = "email", nullable = false)
+    @Expose
     private String email;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "glaUser")
-    private transient Set<GLAEvent> events = new HashSet<GLAEvent>(0);
+    private Set<GLAEvent> events = new HashSet<GLAEvent>(0);
 
     public GLAUser(){}
 

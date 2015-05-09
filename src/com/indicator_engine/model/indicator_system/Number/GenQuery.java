@@ -9,21 +9,21 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class GenQuery implements Serializable {
     private static final AtomicInteger count = new AtomicInteger(0);
-    private final int queryID;
+    private final long queryID;
     private final String query;
     private final String questionName;
 
-    public GenQuery(String query, String questionName) {
+    public GenQuery(String query, String questionName,long qid ) {
         this.query = query;
         this.questionName = questionName;
-        queryID = count.incrementAndGet();
+        queryID = qid;
     }
 
     public static AtomicInteger getCount() {
         return count;
     }
 
-    public int getQueryID() {
+    public long getQueryID() {
         return queryID;
     }
 

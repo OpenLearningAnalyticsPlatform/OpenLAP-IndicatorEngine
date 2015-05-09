@@ -23,6 +23,7 @@ package com.indicator_engine.model.admin;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 import com.indicator_engine.datamodel.GLAOperations;
 
 import java.util.List;
@@ -33,13 +34,18 @@ import java.util.List;
 @SuppressWarnings({"unused", "unchecked"})
 public class GLAOperationsJSONObj {
 
+    @Expose
     int iTotalRecords;
 
+    @Expose
     int iTotalDisplayRecords;
 
+    @Expose
     String sEcho;
 
+    @Expose
     String sColumns;
+    @Expose
     List<GLAOperations> aaData;
 
     public int getiTotalRecords() {

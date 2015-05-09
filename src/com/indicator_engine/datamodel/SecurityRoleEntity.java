@@ -20,6 +20,8 @@
 
 package com.indicator_engine.datamodel;
 
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 import java.io.Serializable;
 

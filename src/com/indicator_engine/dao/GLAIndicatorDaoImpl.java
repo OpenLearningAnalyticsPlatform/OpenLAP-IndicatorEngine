@@ -48,14 +48,33 @@ public class GLAIndicatorDaoImpl implements GLAIndicatorDao {
     }
     @Override
     @Transactional
-    public List<GLAIndicator> loadByIndicatorID(long ID){
+    public GLAIndicator loadByIndicatorID(long ID){
         Session session = factory.getCurrentSession();
+        GLAIndicator glaIndicator = null;
         Criteria criteria = session.createCriteria(GLAIndicator.class);
         criteria.setFetchMode("queries", FetchMode.JOIN);
         criteria.setFetchMode("glaIndicatorProps", FetchMode.JOIN);
-        criteria.add(Restrictions.eq("id", ID)).uniqueResult();
-        return  criteria.list();
+        criteria.add(Restrictions.eq("id", ID));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        Object result = criteria.uniqueResult();
+        if (result != null) {
+            glaIndicator = (GLAIndicator) result;
+        }
+        return glaIndicator;
 
+    }
+    @Override
+    @Transactional
+    public List<GLAIndicator> loadByIndicatorByName(String indicatorName) {
+        Session session = factory.getCurrentSession();
+        indicatorName = "%"+indicatorName+"%";
+        GLAIndicator glaIndicator = null;
+        Criteria criteria = session.createCriteria(GLAIndicator.class);
+        criteria.setFetchMode("queries", FetchMode.JOIN);
+        criteria.setFetchMode("glaIndicatorProps", FetchMode.JOIN);
+        criteria.add(Restrictions.ilike("indicator_name", indicatorName));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        return  criteria.list();
     }
 
     @Override
@@ -72,6 +91,7 @@ public class GLAIndicatorDaoImpl implements GLAIndicatorDao {
         criteria.setFetchMode("glaIndicatorProps", FetchMode.JOIN);
         criteria.add(Restrictions.ge("id", startRange));
         criteria.add(Restrictions.le("id", endRange));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return  criteria.list();
 
     }
@@ -94,5 +114,23 @@ public class GLAIndicatorDaoImpl implements GLAIndicatorDao {
         Session session = factory.getCurrentSession();
         return ((Number) session.createCriteria(GLAIndicator.class).setProjection(Projections.rowCount()).uniqueResult()).intValue();
 
+    }
+
+    @Override
+    @Transactional
+    public long findIndicatorID(String indicatorName) {
+        Session session = factory.getCurrentSession();
+        long indicatorID = 0;
+        Criteria criteria = session.createCriteria(GLAIndicator.class);
+        criteria.setFetchMode("queries", FetchMode.JOIN);
+        criteria.setFetchMode("glaIndicatorProps", FetchMode.JOIN);
+        criteria.setProjection(Projections.property("id"));
+        criteria.add(Restrictions.eq("indicator_name", indicatorName));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        Object result = criteria.uniqueResult();
+        if (result != null) {
+            indicatorID = (long) result;
+        }
+        return indicatorID;
     }
 }

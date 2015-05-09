@@ -3,6 +3,7 @@ package com.indicator_engine.model.indicator_system.Number;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +20,7 @@ public class NumberIndicator implements Serializable{
     private long indicator_id ;
 
     private List<GenQuery> genQueries = new ArrayList<>();
-    private GenIndicatorProps genIndicatorProps;
+    private GenIndicatorProps genIndicatorProps = new GenIndicatorProps();
 
     public NumberIndicator(){
     }
@@ -27,8 +28,10 @@ public class NumberIndicator implements Serializable{
     public void reset(){
         // Reset everything to your default values
         this.indicatorName = null;
-        this.genIndicatorProps = null;
-        this.getGenQueries().clear();
+        this.genQueries.clear();
+        this.genIndicatorProps.setProps_id(0);
+        this.genIndicatorProps.setTotalExecutions(0);
+        this.genIndicatorProps.setLast_executionTime(null);
     }
 
     public long getIndicator_id() {
@@ -47,8 +50,10 @@ public class NumberIndicator implements Serializable{
         this.genQueries = genQueries;
     }
 
-    public void setGenIndicatorProps(GenIndicatorProps genIndicatorProps) {
-        this.genIndicatorProps = genIndicatorProps;
+    public void setGenIndicatorProps(long props_id, Timestamp last_executionTime, int totalExecutions) {
+        this.genIndicatorProps.setProps_id(props_id);
+        this.genIndicatorProps.setTotalExecutions(totalExecutions);
+        this.genIndicatorProps.setLast_executionTime(last_executionTime);
     }
 
     public List<GenQuery> getGenQueries() {

@@ -237,7 +237,7 @@ public class ToolkitAdminController {
         //Set Total record
         userJsonObject.setiTotalRecords(glauserBean.getTotalUsers());
         userJsonObject.setAaData(glaUserList);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String json2 = gson.toJson(userJsonObject);
         return json2;
     }
@@ -278,7 +278,7 @@ public class ToolkitAdminController {
         //Set Total record
         operationsJsonObject.setiTotalRecords(glaOperationsBean.getTotalOperations());
         operationsJsonObject.setAaData(glaOperationsList);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String json2 = gson.toJson(operationsJsonObject);
         return json2;
     }
@@ -319,7 +319,7 @@ public class ToolkitAdminController {
         //Set Total record
         glaCategoryJsonObject.setiTotalRecords(glaEventBean.getTotalEvents());
         glaCategoryJsonObject.setAaData(glaEventList);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String json2 = gson.toJson(glaCategoryJsonObject);
         return json2;
     }
@@ -360,7 +360,7 @@ public class ToolkitAdminController {
         //Set Total record
         glaCategoryJsonObject.setiTotalRecords(glacategoryBean.getTotalCategories());
         glaCategoryJsonObject.setAaData(glaCategoryList);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String json2 = gson.toJson(glaCategoryJsonObject);
         return json2;
     }
@@ -401,7 +401,7 @@ public class ToolkitAdminController {
         //Set Total record
         glaEntityJsonObject.setiTotalRecords(glaEntityBean.getTotalEntities());
         glaEntityJsonObject.setAaData(glaEntityList);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String json2 = gson.toJson(glaEntityJsonObject);
         return json2;
     }

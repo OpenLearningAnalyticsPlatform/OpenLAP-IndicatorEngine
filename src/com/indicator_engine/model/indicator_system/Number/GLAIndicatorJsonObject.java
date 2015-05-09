@@ -1,5 +1,6 @@
 package com.indicator_engine.model.indicator_system.Number;
 
+import com.google.gson.annotations.Expose;
 import com.indicator_engine.datamodel.GLAIndicator;
 
 import java.util.List;
@@ -9,13 +10,17 @@ import java.util.List;
  */
 @SuppressWarnings({"unused", "unchecked"})
 public class GLAIndicatorJsonObject {
+    @Expose
     int iTotalRecords;
-
+    @Expose
     int iTotalDisplayRecords;
 
+    @Expose
     String sEcho;
 
+    @Expose
     String sColumns;
+    @Expose
     List<GLAIndicator> aaData;
 
     public int getiTotalRecords() {

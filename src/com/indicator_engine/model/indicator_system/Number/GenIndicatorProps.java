@@ -12,6 +12,13 @@ public class GenIndicatorProps implements Serializable {
     private Timestamp last_executionTime;
     private int totalExecutions;
 
+    public GenIndicatorProps(){}
+    public GenIndicatorProps(long props_id, Timestamp last_executionTime, int totalExecutions){
+        this.props_id = props_id;
+        this.last_executionTime = last_executionTime;
+        this.totalExecutions = totalExecutions;
+    }
+
     public long getProps_id() {
         return props_id;
     }

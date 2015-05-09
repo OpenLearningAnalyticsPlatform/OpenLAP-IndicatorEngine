@@ -20,6 +20,7 @@
 
 package com.indicator_engine.model.admin;
 
+import com.google.gson.annotations.Expose;
 import com.indicator_engine.datamodel.GLACategory;
 
 import java.util.List;
@@ -30,13 +31,18 @@ import java.util.List;
 @SuppressWarnings({"unused", "unchecked"})
 public class GLACategoryJsonObject {
 
+    @Expose
     int iTotalRecords;
 
+    @Expose
     int iTotalDisplayRecords;
 
+    @Expose
     String sEcho;
 
+    @Expose
     String sColumns;
+    @Expose
     List<GLACategory> aaData;
 
     public int getiTotalRecords() {

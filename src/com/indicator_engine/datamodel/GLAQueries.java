@@ -1,5 +1,7 @@
 package com.indicator_engine.datamodel;
 
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -15,16 +17,20 @@ public class GLAQueries implements Serializable {
     @Id
     @Column(name = "query_id",unique = true, nullable = false)
     @GeneratedValue(strategy = IDENTITY)
+    @Expose
     private long id;
 
     @Column(name = "question_name", unique = true, nullable = false)
+    @Expose
     private String question_name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "indicator_id", nullable = false)
+    @Expose
     private GLAIndicator glaIndicator;
 
     @Column(name = "hql", nullable = false, columnDefinition="TEXT")
+    @Expose
     private String hql;
 
 

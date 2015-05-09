@@ -20,6 +20,7 @@
 
 package com.indicator_engine.model.admin;
 
+import com.google.gson.annotations.Expose;
 import com.indicator_engine.datamodel.GLAEntity;
 
 
@@ -31,13 +32,18 @@ import java.util.List;
 @SuppressWarnings({"unused", "unchecked"})
 public class GLAEntityJsonObject {
 
+    @Expose
     int iTotalRecords;
 
+    @Expose
     int iTotalDisplayRecords;
 
+    @Expose
     String sEcho;
 
+    @Expose
     String sColumns;
+    @Expose
     List<GLAEntity> aaData;
 
     public int getiTotalRecords() {
