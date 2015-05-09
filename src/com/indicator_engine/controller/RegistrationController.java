@@ -72,7 +72,6 @@ public class RegistrationController {
         // like CustomNumberEditor for Integers and Longs, or StringTrimmerEditor for Strings
     }
 
-
     @RequestMapping(value="/register",method = RequestMethod.GET)
     public String getRegister(Map<String, Object> model){
 

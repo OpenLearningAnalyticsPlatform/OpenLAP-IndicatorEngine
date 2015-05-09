@@ -47,7 +47,57 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
-    <script type="javascript" src="${pageContext.request.contextPath}/js/user_profile_checks.js"> </script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.0/css/jquery.dataTables.css">
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
+    <script type="text/javascript">
+
+        (function($) {
+            //Plug-in to fetch page data
+            jQuery.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
+            {
+                return {
+                    "iStart":         oSettings._iDisplayStart,
+                    "iEnd":           oSettings.fnDisplayEnd(),
+                    "iLength":        oSettings._iDisplayLength,
+                    "iTotal":         oSettings.fnRecordsTotal(),
+                    "iFilteredTotal": oSettings.fnRecordsDisplay(),
+                    "iPage":          oSettings._iDisplayLength === -1 ?
+                            0 : Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength ),
+                    "iTotalPages":    oSettings._iDisplayLength === -1 ?
+                            0 : Math.ceil( oSettings.fnRecordsDisplay() / oSettings._iDisplayLength )
+                };
+            };
+
+            $(document).ready(function() {
+
+                $("#indicatorData").dataTable( {
+                    "bProcessing": true,
+                    "bServerSide": true,
+                    "sort": "position",
+                    //bStateSave variable you can use to save state on client cookies: set value "true"
+                    "bStateSave": false,
+                    //Default: Page display length
+                    "iDisplayLength": 10,
+                    //We will use below variable to track page number on server side(For more information visit: http://legacy.datatables.net/usage/options#iDisplayStart)
+                    "iDisplayStart": 0,
+                    "fnDrawCallback": function () {
+                        //Get page numer on client. Please note: number start from 0 So
+                        //for the first page you will see 0 second page 1 third page 2...
+                        //Un-comment below alert to see page number
+                        //alert("Current page number: "+this.fnPagingInfo().iPage);
+                    },
+                    "sAjaxSource": "/indicators/fetchExistingIndicatorsData.web",
+                    "aoColumns": [
+                        { "mData": "id" },
+                        { "mData": "indicator_name" },
+                        { "mData": "short_name" },
+                    ]
+                } );
+
+            } );
+        })(jQuery);
+    </script>
 
 </head>
 <body>
@@ -96,7 +146,28 @@
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
             <h1>Indicator Control Panel</h1>
-            <p>Here you can define new Indicators, modify or view existing ones.</p>
+            <p>Here you can define view all Existing Indicators.</p>
+            <div class="row">
+                <div class="col-md-12">
+                    <form:form action="" method="GET">
+                        <h2 >Listing of All Existing Indicators<br><br></h2>
+                        <table width="70%" style="border: 3px;background: rgb(243, 244, 248);"><tr><td>
+                            <table id="indicatorData" class="display" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Indicator ID</th>
+                                    <th>Indicator Name</th>
+                                    <th>Short Name</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </td></tr></table>
+                    </form:form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
         </div>
     </div>

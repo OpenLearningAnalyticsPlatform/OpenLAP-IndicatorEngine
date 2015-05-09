@@ -17,7 +17,7 @@ public class GLAQueries implements Serializable {
     @GeneratedValue(strategy = IDENTITY)
     private long id;
 
-    @Column(name = "question_name", nullable = false)
+    @Column(name = "question_name", unique = true, nullable = false)
     private String question_name;
 
     @ManyToOne(fetch = FetchType.LAZY)

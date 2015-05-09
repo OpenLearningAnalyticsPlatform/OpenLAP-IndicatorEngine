@@ -207,33 +207,36 @@ public class ToolkitAdminController {
     @RequestMapping(value = "/fetchGlauserData.web", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
     String fetchglaUserData(HttpServletRequest request) throws IOException {
-        //Fetch the page number from client
+
+        GLAUserDao glauserBean = (GLAUserDao) appContext.getBean("glaUser");
+        List<GLAUser> glaUserList = null;
         Integer pageNumber = 0;
         if (null != request.getParameter("iDisplayStart"))
             pageNumber = (Integer.valueOf(request.getParameter("iDisplayStart"))/10)+1;
-
         //Fetch search parameter
         String searchParameter = request.getParameter("sSearch");
-
         //Fetch Page display length
-        Integer pageDisplayLength = Integer.valueOf(request.getParameter("iDisplayLength"));
+        Integer pageDisplayLength = Integer.parseInt(request.getParameter("iDisplayLength"));
 
         //Create page list data
-        GLAUserDao glauserBean = (GLAUserDao) appContext.getBean("glaUser");
-        List<GLAUser> glaUserListList = glauserBean.loadUsersRange(pageDisplayLength);
-        //Here is server side pagination logic. Based on the page number you could make call
-        //to the data base create new list and send back to the client. For demo IndicatorPreProcessing am shuffling
-        //the same list to show data randomly
-        // Paging & searching Logic still has to be done
+        if(searchParameter == null || searchParameter.isEmpty()) {
+            glaUserList = glauserBean.loadAll();
+        }
+        else {
+            glaUserList = glauserBean.searchLikeUsers(searchParameter);
+        }
+        if(pageNumber !=-1){
+            Integer startRange = ((pageNumber-1)*pageDisplayLength)+1;
+            Integer endRange = pageDisplayLength;
+            glaUserList = glauserBean.loadUsersRange(startRange,endRange);
+        }
 
-        //Search functionality: Returns filtered list based on search parameter
-        //personsList = getListBasedOnSearchParameter(searchParameter,personsList);
         glaUserJsonObject userJsonObject = new glaUserJsonObject();
         //Set Total display record
         userJsonObject.setiTotalDisplayRecords(glauserBean.getTotalUsers());
         //Set Total record
         userJsonObject.setiTotalRecords(glauserBean.getTotalUsers());
-        userJsonObject.setAaData(glaUserListList);
+        userJsonObject.setAaData(glaUserList);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json2 = gson.toJson(userJsonObject);
         return json2;

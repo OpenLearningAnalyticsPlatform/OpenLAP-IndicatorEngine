@@ -50,12 +50,23 @@ public class GLAUserDaoImpl implements  GLAUserDao{
     }
     @Override
     @Transactional
-    public List<GLAUser> loadUsersRange(long maxId) {
+    public List<GLAUser> loadUsersRange(long startRange, long endRange) {
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAUser.class);
         criteria.setFetchMode("events", FetchMode.JOIN);
-        criteria.add(Restrictions.le("id", maxId));
+        criteria.add(Restrictions.ge("id", startRange));
+        criteria.add(Restrictions.le("id", endRange));
         return  criteria.list();
+
+    }
+
+    @Override
+    @Transactional
+    public List<GLAUser> loadAll() {
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAUser.class);
+        criteria.setFetchMode("events", FetchMode.JOIN);
+        return criteria.list();
 
     }
 
@@ -76,6 +87,18 @@ public class GLAUserDaoImpl implements  GLAUserDao{
         return criteria.list();
 
     }
+
+    @Override
+    @Transactional
+    public List<GLAUser> searchLikeUsers(String searchParameter){
+        searchParameter = "%"+searchParameter+"%";
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAUser.class);
+        criteria.setFetchMode("events", FetchMode.JOIN);
+        criteria.add(Restrictions.ilike("username", searchParameter));
+        return  criteria.list();
+    }
+
 
     @Override
     @Transactional

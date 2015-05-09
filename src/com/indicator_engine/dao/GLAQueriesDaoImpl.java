@@ -10,6 +10,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -45,6 +46,12 @@ public class GLAQueriesDaoImpl implements GLAQueriesDao {
         glaQueries.setGlaIndicator(glaIndicator);
         glaIndicator.getQueries().add(glaQueries);
         factory.getCurrentSession().save(glaQueries);
+    }
+
+    @Override
+    @Transactional
+    public List<GLAQueries> displayall(){
+        return factory.openSession().createQuery("from GLAQueries gQ").list();
     }
 
 }

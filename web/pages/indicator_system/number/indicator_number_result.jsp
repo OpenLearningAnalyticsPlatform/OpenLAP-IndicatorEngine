@@ -48,7 +48,7 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
-    <script type="javascript" src="${pageContext.request.contextPath}/js/user_profile_checks.js"> </script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
 
 </head>
 <body>
@@ -127,6 +127,9 @@
                                 </div>
                             </div>
                         </div>
+                        <p>
+                            <form:errors path="*" cssClass="errorblock" element="div" />
+                        </p>
                         <div class="row templatemo-form-buttons">
                             <div class="col-md-12">
                                 <input type="submit" name="_eventId_addnewSelected"

@@ -45,7 +45,6 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
-    <script type="javascript" src="${pageContext.request.contextPath}/js/user_profile_checks.js"> </script>
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.0/css/jquery.dataTables.css">
     <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>

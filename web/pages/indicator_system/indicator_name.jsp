@@ -48,7 +48,6 @@
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
-    <script type="javascript" src="${pageContext.request.contextPath}/js/user_profile_checks.js"> </script>
 
 </head>
 <body>

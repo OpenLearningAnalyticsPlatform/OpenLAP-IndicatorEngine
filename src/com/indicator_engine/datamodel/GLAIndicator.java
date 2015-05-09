@@ -29,10 +29,10 @@ public class GLAIndicator implements Serializable {
     private String short_name;
 
     @OneToOne(cascade=CascadeType.ALL, mappedBy="glaIndicator")
-    private GLAIndicatorProps  glaIndicatorProps;
+    private transient GLAIndicatorProps  glaIndicatorProps;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "glaIndicator")
-    private Set<GLAQueries> queries = new HashSet<GLAQueries>(0);
+    private  transient Set<GLAQueries> queries = new HashSet<GLAQueries>(0);
 
     public GLAIndicator() {
         this.short_name = "";

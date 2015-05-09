@@ -8,6 +8,7 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,5 +62,37 @@ public class GLAIndicatorDaoImpl implements GLAIndicatorDao {
     @Transactional
     public List<GLAIndicator> displayall(){
         return factory.openSession().createQuery("from GLAIndicator gI").list();
+    }
+    @Override
+    @Transactional
+    public List<GLAIndicator> loadIndicatorsRange(long startRange, long endRange){
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAIndicator.class);
+        criteria.setFetchMode("queries", FetchMode.JOIN);
+        criteria.setFetchMode("glaIndicatorProps", FetchMode.JOIN);
+        criteria.add(Restrictions.ge("id", startRange));
+        criteria.add(Restrictions.le("id", endRange));
+        return  criteria.list();
+
+    }
+
+    @Override
+    @Transactional
+    public List<GLAIndicator> searchIndicatorsName(String searchParameter){
+        searchParameter = "%"+searchParameter+"%";
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAIndicator.class);
+        criteria.setFetchMode("queries", FetchMode.JOIN);
+        criteria.setFetchMode("glaIndicatorProps", FetchMode.JOIN);
+        criteria.add(Restrictions.ilike("indicator_name", searchParameter));
+        return  criteria.list();
+    }
+
+    @Override
+    @Transactional
+    public int getTotalIndicators() {
+        Session session = factory.getCurrentSession();
+        return ((Number) session.createCriteria(GLAIndicator.class).setProjection(Projections.rowCount()).uniqueResult()).intValue();
+
     }
 }

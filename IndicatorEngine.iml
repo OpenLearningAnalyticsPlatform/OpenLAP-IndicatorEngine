@@ -66,5 +66,7 @@
     <orderEntry type="library" name="javax.servlet.jsp.jstl-api-1.2.1" level="project" />
     <orderEntry type="library" name="org.hibernate:hibernate-validator:5.1.2.Final" level="project" />
     <orderEntry type="library" name="javax.validation:validation-api:1.1.0.Final" level="project" />
+    <orderEntry type="library" name="jquery.dataTables" level="application" />
+    <orderEntry type="library" name="jquery-1.10.2" level="application" />
   </component>
 </module>

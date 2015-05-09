@@ -31,9 +31,11 @@ import java.util.List;
 public interface GLAUserDao {
 
     public long add(GLAUser glaUser);
-    public List<GLAUser> loadUsersRange(long maxId);
+    public List<GLAUser> loadUsersRange(long startRange, long endRange);
     public int getTotalUsers();
     public List<String> selectAllUsers();
     public List<String> searchSimilarUserDetails(String userDetail, String searchCriteria);
     public GLAUser loaduserByName(String username);
+    public List<GLAUser> searchLikeUsers(String searchParameter);
+    public List<GLAUser> loadAll();
 }
