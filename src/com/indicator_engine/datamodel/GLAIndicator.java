@@ -111,4 +111,5 @@ public class GLAIndicator implements Serializable {
     public void setQueries(Set<GLAQueries> queries) {
         this.queries = queries;
     }
+
 }

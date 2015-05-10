@@ -98,4 +98,5 @@ public class GLAQueries implements Serializable {
     public void setQuestion_name(String question_name) {
         this.question_name = question_name;
     }
+
 }

@@ -26,11 +26,13 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -89,6 +91,65 @@ public class GLAQueriesDaoImpl implements GLAQueriesDao {
             criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         }
         return  criteria.list();
+    }
+
+    @Override
+    @Transactional
+    public long findQuestionID(String questionName) {
+        Session session = factory.getCurrentSession();
+        long indicatorID = 0;
+        Criteria criteria = session.createCriteria(GLAQueries.class);
+        criteria.setFetchMode("glaIndicator", FetchMode.JOIN);
+        criteria.setProjection(Projections.property("id"));
+        criteria.add(Restrictions.eq("question_name", questionName));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        Object result = criteria.uniqueResult();
+        if (result != null) {
+            indicatorID = (long) result;
+        }
+        return indicatorID;
+    }
+
+    @Override
+    @Transactional
+    public void deleteQuestion(long question_id){
+        long indicatorId = 0 ;
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAQueries.class);
+        criteria.createAlias("glaIndicator", "indicator");
+        criteria.setFetchMode("indicator", FetchMode.JOIN);
+        criteria.setProjection(Projections.property("indicator.id"));
+        criteria.add(Restrictions.eq("id", question_id));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        Object result = criteria.uniqueResult();
+        if (result != null) {
+            indicatorId = (Long) result;
+        }
+        if(indicatorId !=0){
+            GLAIndicator glaIndicator = null;
+            Set<GLAQueries> glaQuery;
+            Criteria indCriteria = session.createCriteria(GLAIndicator.class);
+            indCriteria.setFetchMode("queries", FetchMode.JOIN);
+            indCriteria.setFetchMode("glaIndicatorProps", FetchMode.JOIN);
+            indCriteria.add(Restrictions.eq("id", indicatorId));
+            indCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+            result = indCriteria.uniqueResult();
+            if (result != null) {
+                glaIndicator = (GLAIndicator) result;
+            }
+            if(glaIndicator != null) {
+                glaQuery = glaIndicator.getQueries();
+                for (GLAQueries gQ : glaQuery) {
+                    if (gQ.getId() == question_id){
+                        glaIndicator.getQueries().remove(gQ);
+                        gQ.setGlaIndicator(null);
+                        session.delete(gQ);
+                    }
+                }
+                if(glaIndicator.getQueries().size() == 0)
+                    session.delete(glaIndicator);
+            }
+        }
     }
 
 }

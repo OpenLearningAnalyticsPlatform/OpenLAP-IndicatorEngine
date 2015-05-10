@@ -172,24 +172,21 @@ public class GAIndicatorSystemController {
                 log.info("Selected Deletion Name :in  indicatorDeletionForm.getSelectedList()\t" + name+ "\n");
                 List<GLAIndicator> glaIndicatorList = glaIndicatorBean.searchIndicatorsName(name,true, null, null, false);
                 log.info("Searching for Name : in  Indicator List\t" + glaIndicatorList.size()+ "\n");
-                if(!glaIndicatorList.isEmpty()){
+                if(glaIndicatorList.size() > 0){
                     log.info("Dumping Name : in  Indicator List\t" + glaIndicatorList.get(0).getIndicator_name()+ "\n");
                     long indicator_id = glaIndicatorBean.findIndicatorID(glaIndicatorList.get(0).getIndicator_name());
-                    glaIndicatorBean.deleteIndicator(indicator_id);
+                    if(indicator_id != 0 )
+                        glaIndicatorBean.deleteIndicator(indicator_id);
                 }
                 else{
                     GLAQueriesDao glaQueriesBean = (GLAQueriesDao) appContext.getBean("glaQueries");
                     List<GLAQueries> glaQueriesList = glaQueriesBean.searchQuestionsName(name, true);
-                    if(!glaQueriesList.isEmpty()){
-                        //long question_id = glaQueriesBean.findQuestionID(glaIndicatorList.get(0).getIndicator_name());
+                    if(glaQueriesList.size() > 0){
+                        long question_id = glaQueriesBean.findQuestionID(glaQueriesList.get(0).getQuestion_name());
+                        if(question_id != 0 )
+                            glaQueriesBean.deleteQuestion(question_id);
 
                     }
-                            /*
-                            Parent p = (Parent)session.load(Parent.class, id);
-                            Child c = p.getChildren(0);
-                            p.getChildren().remove(c);
-                            c.setParent(null);
-                             */
                 }
             }
         }

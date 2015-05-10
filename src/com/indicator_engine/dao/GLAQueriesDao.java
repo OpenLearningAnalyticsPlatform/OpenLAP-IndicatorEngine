@@ -32,4 +32,7 @@ public interface GLAQueriesDao {
     public void addWithExistingIndicator(GLAQueries glaQueries, long id);
     public List<GLAQueries> displayall();
     public List<GLAQueries> searchQuestionsName(String searchParameter,boolean exactSearch);
+    public long findQuestionID(String questionName);
+    public void deleteQuestion(long question_id);
+
 }
