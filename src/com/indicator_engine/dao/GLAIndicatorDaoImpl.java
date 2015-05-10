@@ -56,13 +56,13 @@ public class GLAIndicatorDaoImpl implements GLAIndicatorDao {
         glaQueries.setGlaIndicator(glaIndicator);
         glaIndicator.getQueries().add(glaQueries);
         log.info("Finished Saving associated Qeries \n");
-        factory.getCurrentSession().save(glaQueries);
+        factory.getCurrentSession().save(glaIndicator);
         GLAIndicatorProps glaIndicatorProps  = new GLAIndicatorProps();
         glaIndicatorProps.setTotalExecutions(1);
         glaIndicatorProps.setLast_executionTime(new java.sql.Timestamp(now.getTime()));
         glaIndicatorProps.setGlaIndicator(glaIndicator);
         glaIndicator.setGlaIndicatorProps(glaIndicatorProps);
-        factory.getCurrentSession().save(glaIndicatorProps);
+        factory.getCurrentSession().save(glaIndicator);
         return glaIndicator.getId();
     }
     @Override
@@ -117,14 +117,36 @@ public class GLAIndicatorDaoImpl implements GLAIndicatorDao {
 
     @Override
     @Transactional
-    public List<GLAIndicator> searchIndicatorsName(String searchParameter){
-        searchParameter = "%"+searchParameter+"%";
+    public List<GLAIndicator> searchIndicatorsName(String searchParameter, boolean exactSearch){
+        if(!exactSearch)
+            searchParameter = "%"+searchParameter+"%";
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAIndicator.class);
         criteria.setFetchMode("queries", FetchMode.JOIN);
         criteria.setFetchMode("glaIndicatorProps", FetchMode.JOIN);
-        criteria.add(Restrictions.ilike("indicator_name", searchParameter));
+        if(!exactSearch)
+            criteria.add(Restrictions.ilike("indicator_name", searchParameter));
+        else
+            criteria.add(Restrictions.eq("indicator_name", searchParameter));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return  criteria.list();
+    }
+
+    @Override
+    @Transactional
+    public void deleteIndicator(long indicator_id){
+        GLAIndicator glaIndicator = null;
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAIndicator.class);
+        criteria.setFetchMode("queries", FetchMode.JOIN);
+        criteria.setFetchMode("glaIndicatorProps", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", indicator_id));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        Object result = criteria.uniqueResult();
+        if (result != null) {
+            glaIndicator = (GLAIndicator) result;
+        }
+        session.delete(glaIndicator);
     }
 
     @Override

@@ -31,4 +31,6 @@ public interface GLAOperationsDao {
     public List<String> selectAllOperations();
     public int getTotalOperations();
     public List<GLAOperations> loadOperationsRange(long maxId);
+    public List<GLAOperations> loadAllOperations();
+    public List<GLAOperations> searchOperationsByName(String searchParameter, boolean exactSearch);
 }

@@ -23,6 +23,7 @@ import com.indicator_engine.datamodel.GLAIndicator;
 import com.indicator_engine.datamodel.GLAQueries;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -71,6 +72,23 @@ public class GLAQueriesDaoImpl implements GLAQueriesDao {
     @Transactional
     public List<GLAQueries> displayall(){
         return factory.openSession().createQuery("from GLAQueries gQ").list();
+    }
+
+    @Override
+    @Transactional
+    public List<GLAQueries> searchQuestionsName(String searchParameter,boolean exactSearch) {
+        if(!exactSearch)
+            searchParameter = "%"+searchParameter+"%";
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAQueries.class);
+        criteria.setFetchMode("glaIndicator", FetchMode.JOIN);
+        if(!exactSearch)
+            criteria.add(Restrictions.ilike("question_name", searchParameter));
+        else {
+            criteria.add(Restrictions.eq("question_name", searchParameter));
+            criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        }
+        return  criteria.list();
     }
 
 }

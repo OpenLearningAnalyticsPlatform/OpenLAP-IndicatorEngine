@@ -60,13 +60,13 @@ public class GLAEventDaoImpl implements GLAEventDao {
 
     @Override
     @Transactional
-    public List<GLAEvent> loadEventRange(long maxId){
+    public List<GLAEvent> loadAllEvents(){
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAEvent.class);
         criteria.setFetchMode("entities", FetchMode.JOIN);
         criteria.setFetchMode("glaUser", FetchMode.JOIN);
         criteria.setFetchMode("glaCategory", FetchMode.JOIN);
-        criteria.add(Restrictions.le("id", maxId));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return  criteria.list();
 
     }
@@ -188,6 +188,25 @@ public class GLAEventDaoImpl implements GLAEventDao {
         final PrintWriter pw = new PrintWriter(sw, true);
         throwable.printStackTrace(pw);
         return sw.getBuffer().toString();
+    }
+
+    @Override
+    @Transactional
+    public List<GLAEvent> searchEventsByAction(String searchParameter, boolean exactSearch){
+        if(!exactSearch)
+            searchParameter = "%"+searchParameter+"%";
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAEvent.class);
+        criteria.setFetchMode("entities", FetchMode.JOIN);
+        criteria.setFetchMode("glaUser", FetchMode.JOIN);
+        criteria.setFetchMode("glaCategory", FetchMode.JOIN);
+        if(!exactSearch)
+            criteria.add(Restrictions.ilike("action", searchParameter));
+        else
+            criteria.add(Restrictions.eq("action", searchParameter));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+        return  criteria.list();
     }
 
 

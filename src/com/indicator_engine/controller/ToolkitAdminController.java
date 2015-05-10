@@ -210,33 +210,52 @@ public class ToolkitAdminController {
 
         GLAUserDao glauserBean = (GLAUserDao) appContext.getBean("glaUser");
         List<GLAUser> glaUserList = null;
-        Integer pageNumber = 0;
-        if (null != request.getParameter("iDisplayStart"))
-            pageNumber = (Integer.valueOf(request.getParameter("iDisplayStart"))/10)+1;
+        List<GLAUser> pageGlaUserList = new ArrayList<>();
+        Integer idisplayStart = 0;
+        glaUserJsonObject userJsonObject = new glaUserJsonObject();
+        if (null != request.getParameter("iDisplayStart")) {
+            idisplayStart = Integer.valueOf(request.getParameter("iDisplayStart"));
+        }
         //Fetch search parameter
         String searchParameter = request.getParameter("sSearch");
         //Fetch Page display length
         Integer pageDisplayLength = Integer.parseInt(request.getParameter("iDisplayLength"));
-
         //Create page list data
         if(searchParameter == null || searchParameter.isEmpty()) {
             glaUserList = glauserBean.loadAll();
+            if(idisplayStart != -1){
+                Integer endRange = idisplayStart+pageDisplayLength;
+                if(endRange >glaUserList.size())
+                    endRange = glaUserList.size();
+                for(int i=idisplayStart; i<endRange; i++){
+                    pageGlaUserList.add(glaUserList.get(i));
+                }
+            }
+            //Set Total display record
+            userJsonObject.setiTotalDisplayRecords(glauserBean.getTotalUsers());
+            //Set Total record
+            userJsonObject.setiTotalRecords(glauserBean.getTotalUsers());
+            userJsonObject.setAaData(pageGlaUserList);
         }
         else {
             glaUserList = glauserBean.searchLikeUsers(searchParameter);
+            if(idisplayStart != -1) {
+                Integer endRange = idisplayStart+pageDisplayLength;
+                Integer startRange = idisplayStart;
+                if(startRange > glaUserList.size())
+                    startRange = 0;
+                if (endRange > glaUserList.size())
+                    endRange = glaUserList.size();
+                for (int i = startRange; i <endRange; i++) {
+                    pageGlaUserList.add(glaUserList.get(i));
+                }
+            }
+            //Set Total display record
+            userJsonObject.setiTotalDisplayRecords(glaUserList.size());
+            //Set Total record
+            userJsonObject.setiTotalRecords(glaUserList.size());
+            userJsonObject.setAaData(pageGlaUserList);
         }
-        if(pageNumber !=-1){
-            Integer startRange = ((pageNumber-1)*pageDisplayLength)+1;
-            Integer endRange = pageDisplayLength;
-            glaUserList = glauserBean.loadUsersRange(startRange,endRange);
-        }
-
-        glaUserJsonObject userJsonObject = new glaUserJsonObject();
-        //Set Total display record
-        userJsonObject.setiTotalDisplayRecords(glauserBean.getTotalUsers());
-        //Set Total record
-        userJsonObject.setiTotalRecords(glauserBean.getTotalUsers());
-        userJsonObject.setAaData(glaUserList);
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String json2 = gson.toJson(userJsonObject);
         return json2;
@@ -245,39 +264,51 @@ public class ToolkitAdminController {
     @RequestMapping(value = "/fetchGlaOperationsData.web", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
     String fetchglaOperations(HttpServletRequest request) throws IOException {
-        //Fetch the page number from client
-        Integer pageNumber = 0;
-        if (null != request.getParameter("iDisplayStart"))
-            pageNumber = (Integer.valueOf(request.getParameter("iDisplayStart"))/10)+1;
 
-        //Fetch search parameter
-        String searchParameter = request.getParameter("sSearch");
-
-        //Fetch Page display length
-        Integer pageDisplayLength = Integer.valueOf(request.getParameter("iDisplayLength"));
-
-        //Create page list data
         GLAOperationsDao glaOperationsBean = (GLAOperationsDao) appContext.getBean("glaOperations");
-        List<GLAOperations> glaOperationsList = glaOperationsBean.loadOperationsRange(pageDisplayLength);
-        //Here is server side pagination logic. Based on the page number you could make call
-        //to the data base create new list and send back to the client. For demo IndicatorPreProcessing am shuffling
-        //the same list to show data randomly
-        // Paging & searching Logic still has to be done
-        if (pageNumber == 1) {
-            Collections.shuffle(glaOperationsList);
-        }else if (pageNumber == 2) {
-            Collections.shuffle(glaOperationsList);
-        }else {
-            Collections.shuffle(glaOperationsList);
-        }
-        //Search functionality: Returns filtered list based on search parameter
-        //personsList = getListBasedOnSearchParameter(searchParameter,personsList);
         GLAOperationsJSONObj operationsJsonObject = new GLAOperationsJSONObj();
-        //Set Total display record
-        operationsJsonObject.setiTotalDisplayRecords(glaOperationsBean.getTotalOperations());
-        //Set Total record
-        operationsJsonObject.setiTotalRecords(glaOperationsBean.getTotalOperations());
-        operationsJsonObject.setAaData(glaOperationsList);
+        List<GLAOperations>  glaOperationsList = null;
+        List<GLAOperations>  pageGlaOperationsList = new ArrayList<>();
+        Integer idisplayStart = 0;
+        if (null != request.getParameter("iDisplayStart"))
+            idisplayStart = Integer.valueOf(request.getParameter("iDisplayStart"));
+        String searchParameter = request.getParameter("sSearch");
+        Integer pageDisplayLength = Integer.parseInt(request.getParameter("iDisplayLength"));
+        if(searchParameter == null || searchParameter.isEmpty()) {
+            glaOperationsList = glaOperationsBean.loadAllOperations();
+            if(idisplayStart != -1){
+                Integer endRange = idisplayStart+pageDisplayLength;
+                if(endRange >glaOperationsList.size())
+                    endRange = glaOperationsList.size();
+                for(int i=idisplayStart; i<endRange; i++){
+                    pageGlaOperationsList.add(glaOperationsList.get(i));
+                }
+            }
+            //Set Total display record
+            operationsJsonObject.setiTotalDisplayRecords(glaOperationsBean.getTotalOperations());
+            //Set Total record
+            operationsJsonObject.setiTotalRecords(glaOperationsBean.getTotalOperations());
+            operationsJsonObject.setAaData(pageGlaOperationsList);
+        }
+        else {
+            glaOperationsList = glaOperationsBean.searchOperationsByName(searchParameter, false);
+            if(idisplayStart != -1) {
+                Integer endRange = idisplayStart+pageDisplayLength;
+                Integer startRange = idisplayStart;
+                if(startRange > glaOperationsList.size())
+                    startRange = 0;
+                if (endRange > glaOperationsList.size())
+                    endRange = glaOperationsList.size();
+                for (int i = startRange; i <endRange; i++) {
+                    pageGlaOperationsList.add(glaOperationsList.get(i));
+                }
+            }
+            //Set Total display record
+            operationsJsonObject.setiTotalDisplayRecords(glaOperationsList.size());
+            //Set Total record
+            operationsJsonObject.setiTotalRecords(glaOperationsList.size());
+            operationsJsonObject.setAaData(pageGlaOperationsList);
+        }
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String json2 = gson.toJson(operationsJsonObject);
         return json2;
@@ -286,39 +317,56 @@ public class ToolkitAdminController {
     @RequestMapping(value = "/fetchGlaEventData.web", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
     String fetchglaEventData(HttpServletRequest request) throws IOException {
-        //Fetch the page number from client
-        Integer pageNumber = 0;
-        if (null != request.getParameter("iDisplayStart"))
-            pageNumber = (Integer.valueOf(request.getParameter("iDisplayStart"))/10)+1;
 
+        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
+        List<GLAEvent> glaEventList = null;
+        List<GLAEvent> pageGlaEventList = new ArrayList<>();
+        Integer idisplayStart = 0;
+        GLAEventJsonObject glaCategoryJsonObject = new GLAEventJsonObject();
+        if (null != request.getParameter("iDisplayStart")) {
+            idisplayStart = Integer.valueOf(request.getParameter("iDisplayStart"));
+        }
         //Fetch search parameter
         String searchParameter = request.getParameter("sSearch");
-
+        log.info("sSearch : \t"+ searchParameter+"\n");
         //Fetch Page display length
-        Integer pageDisplayLength = Integer.valueOf(request.getParameter("iDisplayLength"));
-
+        Integer pageDisplayLength = Integer.parseInt(request.getParameter("iDisplayLength"));
         //Create page list data
-        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
-        List<GLAEvent> glaEventList = glaEventBean.loadEventRange(pageDisplayLength);
-        //Here is server side pagination logic. Based on the page number you could make call
-        //to the data base create new list and send back to the client. For demo IndicatorPreProcessing am shuffling
-        //the same list to show data randomly
-        // Paging & searching Logic still has to be done
-        if (pageNumber == 1) {
-            Collections.shuffle(glaEventList);
-        }else if (pageNumber == 2) {
-            Collections.shuffle(glaEventList);
-        }else {
-            Collections.shuffle(glaEventList);
+        if(searchParameter == null || searchParameter.isEmpty()) {
+            glaEventList = glaEventBean.loadAllEvents();
+            if(idisplayStart != -1){
+                Integer endRange = idisplayStart+pageDisplayLength;
+                if(endRange >glaEventList.size())
+                    endRange = glaEventList.size();
+                for(int i=idisplayStart; i<endRange; i++){
+                    pageGlaEventList.add(glaEventList.get(i));
+                }
+            }
+            //Set Total display record
+            glaCategoryJsonObject.setiTotalDisplayRecords(glaEventBean.getTotalEvents());
+            //Set Total record
+            glaCategoryJsonObject.setiTotalRecords(glaEventBean.getTotalEvents());
+            glaCategoryJsonObject.setAaData(pageGlaEventList);
         }
-        //Search functionality: Returns filtered list based on search parameter
-        //personsList = getListBasedOnSearchParameter(searchParameter,personsList);
-        GLAEventJsonObject glaCategoryJsonObject = new GLAEventJsonObject();
-        //Set Total display record
-        glaCategoryJsonObject.setiTotalDisplayRecords(glaEventBean.getTotalEvents());
-        //Set Total record
-        glaCategoryJsonObject.setiTotalRecords(glaEventBean.getTotalEvents());
-        glaCategoryJsonObject.setAaData(glaEventList);
+        else {
+            glaEventList = glaEventBean.searchEventsByAction(searchParameter, false);
+            if(idisplayStart != -1) {
+                Integer endRange = idisplayStart+pageDisplayLength;
+                Integer startRange = idisplayStart;
+                if(startRange > glaEventList.size())
+                    startRange = 0;
+                if (endRange > glaEventList.size())
+                    endRange = glaEventList.size();
+                for (int i = startRange; i <endRange; i++) {
+                    pageGlaEventList.add(glaEventList.get(i));
+                }
+            }
+            //Set Total display record
+            glaCategoryJsonObject.setiTotalDisplayRecords(glaEventList.size());
+            //Set Total record
+            glaCategoryJsonObject.setiTotalRecords(glaEventList.size());
+            glaCategoryJsonObject.setAaData(pageGlaEventList);
+        }
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String json2 = gson.toJson(glaCategoryJsonObject);
         return json2;
@@ -368,39 +416,54 @@ public class ToolkitAdminController {
     @RequestMapping(value = "/fetchGlaEntityData.web", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
     String fetchglaEntityData(HttpServletRequest request) throws IOException {
-        //Fetch the page number from client
-        Integer pageNumber = 0;
-        if (null != request.getParameter("iDisplayStart"))
-            pageNumber = (Integer.valueOf(request.getParameter("iDisplayStart"))/10)+1;
-
+        GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
+        List<GLAEntity> glaEntityList = null;
+        List<GLAEntity> pageGlaEntityList = new ArrayList<>();
+        Integer idisplayStart = 0;
+        GLAEntityJsonObject glaEntityJsonObject = new GLAEntityJsonObject();
+        if (null != request.getParameter("iDisplayStart")) {
+            idisplayStart = Integer.valueOf(request.getParameter("iDisplayStart"));
+        }
         //Fetch search parameter
         String searchParameter = request.getParameter("sSearch");
-
         //Fetch Page display length
-        Integer pageDisplayLength = Integer.valueOf(request.getParameter("iDisplayLength"));
-
+        Integer pageDisplayLength = Integer.parseInt(request.getParameter("iDisplayLength"));
         //Create page list data
-        GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
-        List<GLAEntity> glaEntityList = glaEntityBean.loadEntitesRange(pageDisplayLength);
-        //Here is server side pagination logic. Based on the page number you could make call
-        //to the data base create new list and send back to the client. For demo IndicatorPreProcessing am shuffling
-        //the same list to show data randomly
-        // Paging & searching Logic still has to be done
-        if (pageNumber == 1) {
-            Collections.shuffle(glaEntityList);
-        }else if (pageNumber == 2) {
-            Collections.shuffle(glaEntityList);
-        }else {
-            Collections.shuffle(glaEntityList);
+        if(searchParameter == null || searchParameter.isEmpty()) {
+            glaEntityList = glaEntityBean.loadAll();
+            if(idisplayStart != -1){
+                Integer endRange = idisplayStart+pageDisplayLength;
+                if(endRange >glaEntityList.size())
+                    endRange = glaEntityList.size();
+                for(int i=idisplayStart; i<endRange; i++){
+                    pageGlaEntityList.add(glaEntityList.get(i));
+                }
+            }
+            //Set Total display record
+            glaEntityJsonObject.setiTotalDisplayRecords(glaEntityBean.getTotalEntities());
+            //Set Total record
+            glaEntityJsonObject.setiTotalRecords(glaEntityBean.getTotalEntities());
+            glaEntityJsonObject.setAaData(pageGlaEntityList);
         }
-        //Search functionality: Returns filtered list based on search parameter
-        //personsList = getListBasedOnSearchParameter(searchParameter,personsList);
-        GLAEntityJsonObject glaEntityJsonObject = new GLAEntityJsonObject();
-        //Set Total display record
-        glaEntityJsonObject.setiTotalDisplayRecords(glaEntityBean.getTotalEntities());
-        //Set Total record
-        glaEntityJsonObject.setiTotalRecords(glaEntityBean.getTotalEntities());
-        glaEntityJsonObject.setAaData(glaEntityList);
+        else {
+            glaEntityList = glaEntityBean.searchEntitiesByKey(searchParameter,false);
+            if(idisplayStart != -1) {
+                Integer endRange = idisplayStart+pageDisplayLength;
+                Integer startRange = idisplayStart;
+                if(startRange > glaEntityList.size())
+                    startRange = 0;
+                if (endRange > glaEntityList.size())
+                    endRange = glaEntityList.size();
+                for (int i = startRange; i <endRange; i++) {
+                    pageGlaEntityList.add(glaEntityList.get(i));
+                }
+            }
+            //Set Total display record
+            glaEntityJsonObject.setiTotalDisplayRecords(glaEntityList.size());
+            //Set Total record
+            glaEntityJsonObject.setiTotalRecords(glaEntityList.size());
+            glaEntityJsonObject.setAaData(pageGlaEntityList);
+        }
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String json2 = gson.toJson(glaEntityJsonObject);
         return json2;

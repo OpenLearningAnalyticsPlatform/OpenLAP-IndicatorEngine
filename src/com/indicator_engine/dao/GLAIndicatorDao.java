@@ -33,8 +33,9 @@ public interface GLAIndicatorDao {
     public GLAIndicator loadByIndicatorID(long ID);
     public List<GLAIndicator> displayall();
     public List<GLAIndicator> loadIndicatorsRange(long startRange, long endRange);
-    public List<GLAIndicator> searchIndicatorsName(String searchParameter);
+    public List<GLAIndicator> searchIndicatorsName(String searchParameter,boolean exactSearch);
     public int getTotalIndicators();
     public List<GLAIndicator>  loadByIndicatorByName(String indicatorName);
     public long findIndicatorID(String indicatorName);
+    public void deleteIndicator(long indicator_id);
 }

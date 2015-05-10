@@ -68,12 +68,12 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
 
     @Override
     @Transactional
-    public List<GLAEntity> loadEntitesRange(Integer maxId) {
+    public List<GLAEntity> loadAll() {
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAEntity.class);
         criteria.setFetchMode("glaEvent", FetchMode.JOIN);
-        criteria.add(Restrictions.le("id", maxId));
-        return  criteria.list();
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        return criteria.list();
 
     }
 
@@ -120,6 +120,22 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
         Session session = factory.getCurrentSession();
         Query query = session.createQuery(hql);
         return ((Long) query.uniqueResult()).longValue();
+    }
+
+    @Override
+    @Transactional
+    public List<GLAEntity> searchEntitiesByKey(String searchParameter, boolean exactSearch){
+        if(!exactSearch)
+            searchParameter = "%"+searchParameter+"%";
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAEntity.class);
+        criteria.setFetchMode("glaEvent", FetchMode.JOIN);
+        if(!exactSearch)
+            criteria.add(Restrictions.ilike("key", searchParameter));
+        else
+            criteria.add(Restrictions.eq("key", searchParameter));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        return  criteria.list();
     }
 
 }

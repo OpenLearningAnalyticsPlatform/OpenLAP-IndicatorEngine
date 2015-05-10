@@ -19,6 +19,7 @@
 
 package com.indicator_engine.datamodel;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -49,10 +50,12 @@ public class GLAIndicator implements Serializable {
     @Expose
     private String short_name;
 
-    @OneToOne(cascade=CascadeType.ALL, mappedBy="glaIndicator")
+    @OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL,
+            mappedBy="glaIndicator", orphanRemoval=true)
     private GLAIndicatorProps  glaIndicatorProps;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "glaIndicator")
+    @OneToMany(fetch = FetchType.LAZY,cascade=CascadeType.ALL,
+            mappedBy = "glaIndicator", orphanRemoval=true)
     private  Set<GLAQueries> queries = new HashSet<GLAQueries>(0);
 
     public GLAIndicator() {

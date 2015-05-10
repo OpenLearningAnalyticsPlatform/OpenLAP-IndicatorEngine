@@ -65,8 +65,8 @@ public class GLAUserDaoImpl implements  GLAUserDao{
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAUser.class);
         criteria.setFetchMode("events", FetchMode.JOIN);
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return criteria.list();
-
     }
 
     @Override

@@ -31,4 +31,5 @@ public interface GLAQueriesDao {
     public long add(GLAQueries glaQueries);
     public void addWithExistingIndicator(GLAQueries glaQueries, long id);
     public List<GLAQueries> displayall();
+    public List<GLAQueries> searchQuestionsName(String searchParameter,boolean exactSearch);
 }

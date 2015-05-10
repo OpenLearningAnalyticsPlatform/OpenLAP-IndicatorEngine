@@ -61,6 +61,15 @@ public class GLAOperationsDaoImpl implements GLAOperationsDao {
 
     @Override
     @Transactional
+    public List<GLAOperations> loadAllOperations(){
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAOperations.class);
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        return criteria.list();
+    }
+
+    @Override
+    @Transactional
     public List<GLAOperations> loadOperationsRange(long maxId) {
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAOperations.class);
@@ -75,6 +84,21 @@ public class GLAOperationsDaoImpl implements GLAOperationsDao {
         Session session = factory.getCurrentSession();
         return ((Number) session.createCriteria(GLAOperations.class).setProjection(Projections.rowCount()).uniqueResult()).intValue();
 
+    }
+    @Override
+    @Transactional
+    public List<GLAOperations> searchOperationsByName(String searchParameter, boolean exactSearch){
+        if(!exactSearch)
+            searchParameter = "%"+searchParameter+"%";
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAOperations.class);
+        if(!exactSearch)
+            criteria.add(Restrictions.ilike("operations", searchParameter));
+        else
+            criteria.add(Restrictions.eq("operations", searchParameter));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+        return  criteria.list();
     }
 
 }

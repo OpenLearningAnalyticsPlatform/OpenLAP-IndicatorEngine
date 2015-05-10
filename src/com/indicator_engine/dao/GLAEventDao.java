@@ -31,7 +31,7 @@ import java.util.List;
  */
 public interface GLAEventDao {
     public void add(GLAEvent gEvent, GLAEntity entity);
-    public List<GLAEvent> loadEventRange(long maxId);
+    public List<GLAEvent> loadAllEvents();
     public int getTotalEvents();
     public List<String> selectAllEvents();
     public List<String> loadEventByCategoryID(Long categoryID);
@@ -40,4 +40,5 @@ public interface GLAEventDao {
     public long findCategoryId(String action, String source, String platform);
     public List<String> searchSimilarSessionDetails(String searchType, String searchCriteria);
     public List<String> searchSimilarTimeDetails(String searchType, String searchCriteria);
+    public List<GLAEvent> searchEventsByAction(String searchParameter, boolean exactSearch);
 }

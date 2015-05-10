@@ -202,7 +202,7 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
                 }
                 if(type.equals("UserEmail")) {
                     if(counterLikeEmail == 0) {
-                        hibernateLikeEmailQuery += " ( SELECT username FROM GLAUser " +
+                        hibernateLikeEmailQuery += " ( SELECT email FROM GLAUser " +
                                 " WHERE email LIKE  '%"+ user + "%' ";
                         counterLikeEmail++;
                         continue;

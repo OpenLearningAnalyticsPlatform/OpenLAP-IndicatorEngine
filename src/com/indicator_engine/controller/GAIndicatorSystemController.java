@@ -23,6 +23,7 @@ package com.indicator_engine.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.indicator_engine.dao.GLAIndicatorDao;
+import com.indicator_engine.dao.GLAQueriesDao;
 import com.indicator_engine.datamodel.GLAIndicator;
 import com.indicator_engine.datamodel.GLAQueries;
 import com.indicator_engine.misc.NumberChecks;
@@ -42,6 +43,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -151,6 +153,7 @@ public class GAIndicatorSystemController {
     public ModelAndView processDeletion( @ModelAttribute("indicatorDeletionForm") IndicatorDeletionForm indicatorDeletionForm) {
 
         ModelAndView model = null;
+        log.info("processDeletion : STARTED \n");
         if (indicatorDeletionForm.getSelectedList()== null ){
             NumberIndicator numberIndicator = reteriveIndicator(indicatorDeletionForm.getIndName());
             indicatorDeletionForm.getDeletionList().add(numberIndicator.getIndicatorName());
@@ -163,7 +166,32 @@ public class GAIndicatorSystemController {
             return model;
         }
         else{
-            //TODO Write the Record Deletion Logic Here.
+            log.info("processDeletion : Working With Deletion Logic \n");
+            GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
+            for(String name : indicatorDeletionForm.getSelectedList()){
+                log.info("Selected Deletion Name :in  indicatorDeletionForm.getSelectedList()\t" + name+ "\n");
+                List<GLAIndicator> glaIndicatorList = glaIndicatorBean.searchIndicatorsName(name,true);
+                log.info("Searching for Name : in  Indicator List\t" + glaIndicatorList.size()+ "\n");
+                if(!glaIndicatorList.isEmpty()){
+                    log.info("Dumping Name : in  Indicator List\t" + glaIndicatorList.get(0).getIndicator_name()+ "\n");
+                    long indicator_id = glaIndicatorBean.findIndicatorID(glaIndicatorList.get(0).getIndicator_name());
+                    glaIndicatorBean.deleteIndicator(indicator_id);
+                }
+                else{
+                    GLAQueriesDao glaQueriesBean = (GLAQueriesDao) appContext.getBean("glaQueries");
+                    List<GLAQueries> glaQueriesList = glaQueriesBean.searchQuestionsName(name, true);
+                    if(!glaQueriesList.isEmpty()){
+                        //long question_id = glaQueriesBean.findQuestionID(glaIndicatorList.get(0).getIndicator_name());
+
+                    }
+                            /*
+                            Parent p = (Parent)session.load(Parent.class, id);
+                            Child c = p.getChildren(0);
+                            p.getChildren().remove(c);
+                            c.setParent(null);
+                             */
+                }
+            }
         }
         return model;
     }
@@ -179,33 +207,61 @@ public class GAIndicatorSystemController {
 
         GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
         List<GLAIndicator> glaIndicatorList = null;
-        //Fetch the page number from client
-        Integer pageNumber = 0;
-        if (null != request.getParameter("iDisplayStart"))
-            pageNumber = (Integer.valueOf(request.getParameter("iDisplayStart"))/10)+1;
+        List<GLAIndicator> pageGLAindicatorList = new ArrayList<>();
+        Integer idisplayStart = 0;
+        GLAIndicatorJsonObject glaIndicatorJsonObject = new GLAIndicatorJsonObject();
+        if (null != request.getParameter("iDisplayStart")) {
+            idisplayStart = Integer.valueOf(request.getParameter("iDisplayStart"));
+            log.info("iDisplayStart : \t" + request.getParameter("iDisplayStart") + "\n");
+        }
         //Fetch search parameter
         String searchParameter = request.getParameter("sSearch");
+        log.info("sSearch : \t"+ searchParameter+"\n");
         //Fetch Page display length
         Integer pageDisplayLength = Integer.parseInt(request.getParameter("iDisplayLength"));
-        Integer startRange = ((pageNumber-1)*pageDisplayLength)+1;
-        Integer endRange = pageDisplayLength-1;
+        log.info("iDisplayLength : \t"+ pageDisplayLength+"\n");
         //Create page list data
         if(searchParameter == null || searchParameter.isEmpty()) {
-            glaIndicatorList = glaIndicatorBean.loadIndicatorsRange(startRange, endRange);
+            glaIndicatorList = glaIndicatorBean.displayall();
+            if(idisplayStart != -1){
+                Integer endRange = idisplayStart+pageDisplayLength;
+                if(endRange >glaIndicatorList.size())
+                    endRange = glaIndicatorList.size();
+                for(int i=idisplayStart; i<endRange; i++){
+                    pageGLAindicatorList.add(glaIndicatorList.get(i));
+                }
+            }
+            //Set Total display record
+            glaIndicatorJsonObject.setiTotalDisplayRecords(glaIndicatorBean.getTotalIndicators());
+            //Set Total record
+            glaIndicatorJsonObject.setiTotalRecords(glaIndicatorBean.getTotalIndicators());
+            glaIndicatorJsonObject.setAaData(pageGLAindicatorList);
         }
-        else
-            glaIndicatorList = glaIndicatorBean.searchIndicatorsName(searchParameter);
-        GLAIndicatorJsonObject glaIndicatorJsonObject = new GLAIndicatorJsonObject();
-        //Set Total display record
-        glaIndicatorJsonObject.setiTotalDisplayRecords(glaIndicatorBean.getTotalIndicators());
-        //Set Total record
-        glaIndicatorJsonObject.setiTotalRecords(glaIndicatorBean.getTotalIndicators());
-        glaIndicatorJsonObject.setAaData(glaIndicatorList);
+        else {
+            glaIndicatorList = glaIndicatorBean.searchIndicatorsName(searchParameter, false);
+            if(idisplayStart != -1) {
+                Integer endRange = idisplayStart+pageDisplayLength;
+                Integer startRange = idisplayStart;
+                if(startRange > glaIndicatorList.size())
+                    startRange = 0;
+                if (endRange > glaIndicatorList.size())
+                    endRange = glaIndicatorList.size();
+                for (int i = startRange; i <endRange; i++) {
+                    pageGLAindicatorList.add(glaIndicatorList.get(i));
+                }
+            }
+            //Set Total display record
+            glaIndicatorJsonObject.setiTotalDisplayRecords(glaIndicatorList.size());
+            //Set Total record
+            glaIndicatorJsonObject.setiTotalRecords(glaIndicatorList.size());
+            glaIndicatorJsonObject.setAaData(pageGLAindicatorList);
+        }
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         return gson.toJson(glaIndicatorJsonObject);
     }
 
     private NumberIndicator reteriveIndicator(String indicatorName){
+        log.info("reteriveIndicator : STARTED \n");
         GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
         log.info("Retreive From DB : STARTED \n");
         log.info("Name : \t"+ indicatorName);
@@ -226,10 +282,12 @@ public class GAIndicatorSystemController {
         for (GLAQueries gQ : genQueries) {
             numberIndicator.getGenQueries().add(new GenQuery(gQ.getHql(),gQ.getQuestion_name(),gQ.getId()));
         }
+        log.info("reteriveIndicator : ENDED \n");
         return numberIndicator;
 
     }
     private void processSearchParams(SearchIndicatorForm searchIndicatorForm){
+        log.info("processSearchParams : STARTED \n");
         GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
         GLAIndicator glaIndicator = null;
         List<GLAIndicator> glaIndicatorList;
@@ -249,5 +307,6 @@ public class GAIndicatorSystemController {
                 }
             }
         }
+        log.info("processSearchParams : ENDED \n");
     }
 }
