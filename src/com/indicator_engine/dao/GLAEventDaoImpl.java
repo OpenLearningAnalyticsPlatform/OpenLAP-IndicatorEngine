@@ -26,6 +26,7 @@ import com.indicator_engine.datamodel.GLAEntity;
 import com.indicator_engine.datamodel.GLAEvent;
 import org.apache.log4j.Logger;
 import org.hibernate.*;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -60,13 +61,19 @@ public class GLAEventDaoImpl implements GLAEventDao {
 
     @Override
     @Transactional
-    public List<GLAEvent> loadAllEvents(){
+    public List<GLAEvent> loadAllEvents(String colName, String sortDirection, boolean sort){
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAEvent.class);
         criteria.setFetchMode("entities", FetchMode.JOIN);
         criteria.setFetchMode("glaUser", FetchMode.JOIN);
         criteria.setFetchMode("glaCategory", FetchMode.JOIN);
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        if(sort) {
+            if(sortDirection.equals("asc"))
+                criteria.addOrder(Order.asc(colName));
+            else
+                criteria.addOrder(Order.desc(colName));
+        }
         return  criteria.list();
 
     }
@@ -192,7 +199,8 @@ public class GLAEventDaoImpl implements GLAEventDao {
 
     @Override
     @Transactional
-    public List<GLAEvent> searchEventsByAction(String searchParameter, boolean exactSearch){
+    public List<GLAEvent> searchEventsByAction(String searchParameter, boolean exactSearch,
+                                               String colName, String sortDirection, boolean sort){
         if(!exactSearch)
             searchParameter = "%"+searchParameter+"%";
         Session session = factory.getCurrentSession();
@@ -205,7 +213,12 @@ public class GLAEventDaoImpl implements GLAEventDao {
         else
             criteria.add(Restrictions.eq("action", searchParameter));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-
+        if(sort) {
+            if(sortDirection.equals("asc"))
+                criteria.addOrder(Order.asc(colName));
+            else
+                criteria.addOrder(Order.desc(colName));
+        }
         return  criteria.list();
     }
 

@@ -22,6 +22,7 @@ package com.indicator_engine.dao;
 import com.indicator_engine.datamodel.GLAUser;
 import org.apache.log4j.Logger;
 import org.hibernate.*;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,11 +62,17 @@ public class GLAUserDaoImpl implements  GLAUserDao{
 
     @Override
     @Transactional
-    public List<GLAUser> loadAll() {
+    public List<GLAUser> loadAll(String colName, String sortDirection, boolean sort) {
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAUser.class);
         criteria.setFetchMode("events", FetchMode.JOIN);
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        if(sort) {
+            if(sortDirection.equals("asc"))
+                criteria.addOrder(Order.asc(colName));
+            else
+                criteria.addOrder(Order.desc(colName));
+        }
         return criteria.list();
     }
 
@@ -89,12 +96,21 @@ public class GLAUserDaoImpl implements  GLAUserDao{
 
     @Override
     @Transactional
-    public List<GLAUser> searchLikeUsers(String searchParameter){
+    public List<GLAUser> searchLikeUsers(String searchParameter,
+                                         String colName,
+                                         String sortDirection,
+                                         boolean sort){
         searchParameter = "%"+searchParameter+"%";
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAUser.class);
         criteria.setFetchMode("events", FetchMode.JOIN);
         criteria.add(Restrictions.ilike("username", searchParameter));
+        if(sort) {
+            if(sortDirection.equals("asc"))
+                criteria.addOrder(Order.asc(colName));
+            else
+                criteria.addOrder(Order.desc(colName));
+        }
         return  criteria.list();
     }
 

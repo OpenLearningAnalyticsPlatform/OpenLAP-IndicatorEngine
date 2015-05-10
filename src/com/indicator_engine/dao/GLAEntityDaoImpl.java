@@ -25,6 +25,7 @@ import com.indicator_engine.datamodel.GLAEntity;
 import com.indicator_engine.datamodel.GLAEvent;
 import org.apache.log4j.Logger;
 import org.hibernate.*;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
@@ -68,11 +69,22 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
 
     @Override
     @Transactional
-    public List<GLAEntity> loadAll() {
+    public List<GLAEntity> loadAll(String colName, String sortDirection, boolean sort) {
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAEntity.class);
-        criteria.setFetchMode("glaEvent", FetchMode.JOIN);
+        criteria.createAlias("glaEvent", "events");
+        criteria.setFetchMode("events", FetchMode.JOIN);
+        criteria.createAlias("events.glaCategory", "category");
+        criteria.setFetchMode("category", FetchMode.JOIN);
+        criteria.createAlias("events.glaUser", "users");
+        criteria.setFetchMode("users", FetchMode.JOIN);
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        if(sort) {
+            if(sortDirection.equals("asc"))
+                criteria.addOrder(Order.asc(colName));
+            else
+                criteria.addOrder(Order.desc(colName));
+        }
         return criteria.list();
 
     }
@@ -124,17 +136,29 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
 
     @Override
     @Transactional
-    public List<GLAEntity> searchEntitiesByKey(String searchParameter, boolean exactSearch){
+    public List<GLAEntity> searchEntitiesByKey(String searchParameter, boolean exactSearch,
+                                               String colName, String sortDirection, boolean sort){
         if(!exactSearch)
             searchParameter = "%"+searchParameter+"%";
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAEntity.class);
-        criteria.setFetchMode("glaEvent", FetchMode.JOIN);
+        criteria.createAlias("glaEvent", "events");
+        criteria.setFetchMode("events", FetchMode.JOIN);
+        criteria.createAlias("events.glaCategory", "category");
+        criteria.setFetchMode("category", FetchMode.JOIN);
+        criteria.createAlias("events.glaUser", "users");
+        criteria.setFetchMode("users", FetchMode.JOIN);
         if(!exactSearch)
             criteria.add(Restrictions.ilike("key", searchParameter));
         else
             criteria.add(Restrictions.eq("key", searchParameter));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        if(sort) {
+            if(sortDirection.equals("asc"))
+                criteria.addOrder(Order.asc(colName));
+            else
+                criteria.addOrder(Order.desc(colName));
+        }
         return  criteria.list();
     }
 

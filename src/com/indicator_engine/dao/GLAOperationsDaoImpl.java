@@ -26,6 +26,7 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,10 +62,16 @@ public class GLAOperationsDaoImpl implements GLAOperationsDao {
 
     @Override
     @Transactional
-    public List<GLAOperations> loadAllOperations(){
+    public List<GLAOperations> loadAllOperations(String colName, String sortDirection, boolean sort){
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAOperations.class);
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        if(sort) {
+            if(sortDirection.equals("asc"))
+                criteria.addOrder(Order.asc(colName));
+            else
+                criteria.addOrder(Order.desc(colName));
+        }
         return criteria.list();
     }
 
@@ -87,7 +94,7 @@ public class GLAOperationsDaoImpl implements GLAOperationsDao {
     }
     @Override
     @Transactional
-    public List<GLAOperations> searchOperationsByName(String searchParameter, boolean exactSearch){
+    public List<GLAOperations> searchOperationsByName(String searchParameter, boolean exactSearch, String colName, String sortDirection, boolean sort){
         if(!exactSearch)
             searchParameter = "%"+searchParameter+"%";
         Session session = factory.getCurrentSession();
@@ -97,7 +104,12 @@ public class GLAOperationsDaoImpl implements GLAOperationsDao {
         else
             criteria.add(Restrictions.eq("operations", searchParameter));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-
+        if(sort) {
+            if(sortDirection.equals("asc"))
+                criteria.addOrder(Order.asc(colName));
+            else
+                criteria.addOrder(Order.desc(colName));
+        }
         return  criteria.list();
     }
 

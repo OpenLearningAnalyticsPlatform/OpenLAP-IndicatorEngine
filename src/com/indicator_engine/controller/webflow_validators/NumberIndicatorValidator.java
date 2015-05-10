@@ -45,7 +45,7 @@ public class NumberIndicatorValidator {
         MessageContext messages = context.getMessageContext();
         boolean status = true;
         GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
-        List<GLAIndicator> glaIndicators = glaIndicatorBean.displayall();
+        List<GLAIndicator> glaIndicators = glaIndicatorBean.displayall(null,null,false);
         for (GLAIndicator indicator : glaIndicators) {
             if (numberIndicator.getIndicatorName().equals(indicator.getIndicator_name())) {
                 status = false;

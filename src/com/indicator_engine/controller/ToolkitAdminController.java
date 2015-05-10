@@ -212,6 +212,9 @@ public class ToolkitAdminController {
         List<GLAUser> glaUserList = null;
         List<GLAUser> pageGlaUserList = new ArrayList<>();
         Integer idisplayStart = 0;
+        Integer iSortingCols =0;
+        if(null != request.getParameter("iSortingCols"))
+            iSortingCols = Integer.valueOf(request.getParameter("iSortingCols"));
         glaUserJsonObject userJsonObject = new glaUserJsonObject();
         if (null != request.getParameter("iDisplayStart")) {
             idisplayStart = Integer.valueOf(request.getParameter("iDisplayStart"));
@@ -222,7 +225,23 @@ public class ToolkitAdminController {
         Integer pageDisplayLength = Integer.parseInt(request.getParameter("iDisplayLength"));
         //Create page list data
         if(searchParameter == null || searchParameter.isEmpty()) {
-            glaUserList = glauserBean.loadAll();
+            String colName = null;
+            String sortDirection =null;
+            if(iSortingCols == 1 ) {
+                Integer isortCol = Integer.valueOf(request.getParameter("iSortCol_0"));
+                sortDirection = request.getParameter("sSortDir_0");
+                if(isortCol == 0)
+                    colName = "id";
+                else if(isortCol == 1)
+                    colName = "username";
+                else if(isortCol == 2)
+                    colName = "password";
+                else if(isortCol == 3)
+                    colName = "email";
+                glaUserList = glauserBean.loadAll(colName, sortDirection,true);
+            }
+            else
+                glaUserList = glauserBean.loadAll(colName, sortDirection,false);
             if(idisplayStart != -1){
                 Integer endRange = idisplayStart+pageDisplayLength;
                 if(endRange >glaUserList.size())
@@ -238,7 +257,23 @@ public class ToolkitAdminController {
             userJsonObject.setAaData(pageGlaUserList);
         }
         else {
-            glaUserList = glauserBean.searchLikeUsers(searchParameter);
+            String colName = null;
+            String sortDirection =null;
+            if(iSortingCols == 1 ) {
+                Integer isortCol = Integer.valueOf(request.getParameter("iSortCol_0"));
+                sortDirection = request.getParameter("sSortDir_0");
+                if (isortCol == 0)
+                    colName = "id";
+                else if (isortCol == 1)
+                    colName = "username";
+                else if (isortCol == 2)
+                    colName = "password";
+                else if (isortCol == 3)
+                    colName = "email";
+                glaUserList = glauserBean.searchLikeUsers(searchParameter,colName, sortDirection,true);
+            }
+            else
+                glaUserList = glauserBean.searchLikeUsers(searchParameter,colName, sortDirection,false);
             if(idisplayStart != -1) {
                 Integer endRange = idisplayStart+pageDisplayLength;
                 Integer startRange = idisplayStart;
@@ -270,12 +305,27 @@ public class ToolkitAdminController {
         List<GLAOperations>  glaOperationsList = null;
         List<GLAOperations>  pageGlaOperationsList = new ArrayList<>();
         Integer idisplayStart = 0;
+        Integer iSortingCols =0;
+        if(null != request.getParameter("iSortingCols"))
+            iSortingCols = Integer.valueOf(request.getParameter("iSortingCols"));
         if (null != request.getParameter("iDisplayStart"))
             idisplayStart = Integer.valueOf(request.getParameter("iDisplayStart"));
         String searchParameter = request.getParameter("sSearch");
         Integer pageDisplayLength = Integer.parseInt(request.getParameter("iDisplayLength"));
         if(searchParameter == null || searchParameter.isEmpty()) {
-            glaOperationsList = glaOperationsBean.loadAllOperations();
+            String colName = null;
+            String sortDirection =null;
+            if(iSortingCols == 1 ) {
+                Integer isortCol = Integer.valueOf(request.getParameter("iSortCol_0"));
+                sortDirection = request.getParameter("sSortDir_0");
+                if (isortCol == 0)
+                    colName = "id";
+                else if (isortCol == 1)
+                    colName = "operations";
+                glaOperationsList = glaOperationsBean.loadAllOperations(colName, sortDirection,true);
+            }
+            else
+                glaOperationsList = glaOperationsBean.loadAllOperations(colName, sortDirection,false);
             if(idisplayStart != -1){
                 Integer endRange = idisplayStart+pageDisplayLength;
                 if(endRange >glaOperationsList.size())
@@ -291,7 +341,19 @@ public class ToolkitAdminController {
             operationsJsonObject.setAaData(pageGlaOperationsList);
         }
         else {
-            glaOperationsList = glaOperationsBean.searchOperationsByName(searchParameter, false);
+            String colName = null;
+            String sortDirection =null;
+            if(iSortingCols == 1 ) {
+                Integer isortCol = Integer.valueOf(request.getParameter("iSortCol_0"));
+                sortDirection = request.getParameter("sSortDir_0");
+                if (isortCol == 0)
+                    colName = "id";
+                else if (isortCol == 1)
+                    colName = "operations";
+                glaOperationsList = glaOperationsBean.searchOperationsByName(searchParameter, false,colName, sortDirection,true);
+            }
+            else
+                glaOperationsList = glaOperationsBean.searchOperationsByName(searchParameter, false,colName, sortDirection,false);
             if(idisplayStart != -1) {
                 Integer endRange = idisplayStart+pageDisplayLength;
                 Integer startRange = idisplayStart;
@@ -322,18 +384,44 @@ public class ToolkitAdminController {
         List<GLAEvent> glaEventList = null;
         List<GLAEvent> pageGlaEventList = new ArrayList<>();
         Integer idisplayStart = 0;
+        Integer iSortingCols =0;
+        if(null != request.getParameter("iSortingCols"))
+            iSortingCols = Integer.valueOf(request.getParameter("iSortingCols"));
         GLAEventJsonObject glaCategoryJsonObject = new GLAEventJsonObject();
         if (null != request.getParameter("iDisplayStart")) {
             idisplayStart = Integer.valueOf(request.getParameter("iDisplayStart"));
         }
         //Fetch search parameter
         String searchParameter = request.getParameter("sSearch");
-        log.info("sSearch : \t"+ searchParameter+"\n");
         //Fetch Page display length
         Integer pageDisplayLength = Integer.parseInt(request.getParameter("iDisplayLength"));
         //Create page list data
         if(searchParameter == null || searchParameter.isEmpty()) {
-            glaEventList = glaEventBean.loadAllEvents();
+            String colName = null;
+            String sortDirection =null;
+            if(iSortingCols == 1 ) {
+                Integer isortCol = Integer.valueOf(request.getParameter("iSortCol_0"));
+                sortDirection = request.getParameter("sSortDir_0");
+                if (isortCol == 0)
+                    colName = "id";
+                else if (isortCol == 1)
+                    colName = "action";
+                else if (isortCol == 2)
+                    colName = "session";
+                else if (isortCol == 3)
+                    colName = "platform";
+                else if (isortCol == 4)
+                    colName = "timestamp";
+                else if(isortCol == 5)
+                    colName = "source";
+                else if(isortCol == 6)
+                    colName = "glaCategory.id";
+                else if(isortCol == 7)
+                    colName = "glaUser.id";
+                glaEventList = glaEventBean.loadAllEvents(colName, sortDirection,true);
+            }
+            else
+                glaEventList = glaEventBean.loadAllEvents(colName, sortDirection,false);
             if(idisplayStart != -1){
                 Integer endRange = idisplayStart+pageDisplayLength;
                 if(endRange >glaEventList.size())
@@ -349,7 +437,31 @@ public class ToolkitAdminController {
             glaCategoryJsonObject.setAaData(pageGlaEventList);
         }
         else {
-            glaEventList = glaEventBean.searchEventsByAction(searchParameter, false);
+            String colName = null;
+            String sortDirection =null;
+            if(iSortingCols == 1 ) {
+                Integer isortCol = Integer.valueOf(request.getParameter("iSortCol_0"));
+                sortDirection = request.getParameter("sSortDir_0");
+                if (isortCol == 0)
+                    colName = "id";
+                else if (isortCol == 1)
+                    colName = "action";
+                else if (isortCol == 2)
+                    colName = "session";
+                else if (isortCol == 3)
+                    colName = "platform";
+                else if (isortCol == 4)
+                    colName = "timestamp";
+                else if(isortCol == 5)
+                    colName = "source";
+                else if(isortCol == 6)
+                    colName = "glaCategory.id";
+                else if(isortCol == 7)
+                    colName = "glaUser.id";
+                glaEventList = glaEventBean.searchEventsByAction(searchParameter, false,colName, sortDirection,true);
+            }
+            else
+                glaEventList = glaEventBean.searchEventsByAction(searchParameter, false,colName, sortDirection,false);
             if(idisplayStart != -1) {
                 Integer endRange = idisplayStart+pageDisplayLength;
                 Integer startRange = idisplayStart;
@@ -375,39 +487,84 @@ public class ToolkitAdminController {
     @RequestMapping(value = "/fetchGlaCategoryData.web", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
     String fetchglaCategoryData(HttpServletRequest request) throws IOException {
-        //Fetch the page number from client
-        Integer pageNumber = 0;
-        if (null != request.getParameter("iDisplayStart"))
-            pageNumber = (Integer.valueOf(request.getParameter("iDisplayStart"))/10)+1;
-
-        //Fetch search parameter
-        String searchParameter = request.getParameter("sSearch");
-
-        //Fetch Page display length
-        Integer pageDisplayLength = Integer.valueOf(request.getParameter("iDisplayLength"));
-
-        //Create page list data
         GLACategoryDao glacategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
-        List<GLACategory> glaCategoryList = glacategoryBean.loadCategoryRange(pageDisplayLength);
-        //Here is server side pagination logic. Based on the page number you could make call
-        //to the data base create new list and send back to the client. For demo IndicatorPreProcessing am shuffling
-        //the same list to show data randomly
-        // Paging & searching Logic still has to be done
-        if (pageNumber == 1) {
-            Collections.shuffle(glaCategoryList);
-        }else if (pageNumber == 2) {
-            Collections.shuffle(glaCategoryList);
-        }else {
-            Collections.shuffle(glaCategoryList);
-        }
-        //Search functionality: Returns filtered list based on search parameter
-        //personsList = getListBasedOnSearchParameter(searchParameter,personsList);
+        List<GLACategory> glaCategoryList =null;
+        List<GLACategory> pageGlaCategoryList = new ArrayList<>();
+        Integer idisplayStart = 0;
+        Integer iSortingCols =0;
+        if(null != request.getParameter("iSortingCols"))
+            iSortingCols = Integer.valueOf(request.getParameter("iSortingCols"));
         GLACategoryJsonObject glaCategoryJsonObject = new GLACategoryJsonObject();
-        //Set Total display record
-        glaCategoryJsonObject.setiTotalDisplayRecords(glacategoryBean.getTotalCategories());
-        //Set Total record
-        glaCategoryJsonObject.setiTotalRecords(glacategoryBean.getTotalCategories());
-        glaCategoryJsonObject.setAaData(glaCategoryList);
+        if (null != request.getParameter("iDisplayStart")) {
+            idisplayStart = Integer.valueOf(request.getParameter("iDisplayStart"));
+        }
+        String searchParameter = request.getParameter("sSearch");
+        Integer pageDisplayLength = Integer.parseInt(request.getParameter("iDisplayLength"));
+        if(searchParameter == null || searchParameter.isEmpty()) {
+            String colName = null;
+            String sortDirection =null;
+            if(iSortingCols == 1 ) {
+                Integer isortCol = Integer.valueOf(request.getParameter("iSortCol_0"));
+                sortDirection = request.getParameter("sSortDir_0");
+                if (isortCol == 0)
+                    colName = "id";
+                else if (isortCol == 1)
+                    colName = "type";
+                else if (isortCol == 2)
+                    colName = "major";
+                else if (isortCol == 3)
+                    colName = "minor";
+                glaCategoryList = glacategoryBean.loadAll(colName, sortDirection,true);
+            }
+            else
+                glaCategoryList = glacategoryBean.loadAll(colName, sortDirection,false);
+            if(idisplayStart != -1){
+                Integer endRange = idisplayStart+pageDisplayLength;
+                if(endRange >glaCategoryList.size())
+                    endRange = glaCategoryList.size();
+                for(int i=idisplayStart; i<endRange; i++){
+                    pageGlaCategoryList.add(glaCategoryList.get(i));
+                }
+            }
+            //Set Total display record
+            glaCategoryJsonObject.setiTotalDisplayRecords(glacategoryBean.getTotalCategories());
+            //Set Total record
+            glaCategoryJsonObject.setiTotalRecords(glacategoryBean.getTotalCategories());
+            glaCategoryJsonObject.setAaData(pageGlaCategoryList);
+        }
+        else {
+            String colName = null;
+            String sortDirection =null;
+            if(iSortingCols == 1 ) {
+                Integer isortCol = Integer.valueOf(request.getParameter("iSortCol_0"));
+                sortDirection = request.getParameter("sSortDir_0");
+                if (isortCol == 0)
+                    colName = "id";
+                else if (isortCol == 1)
+                    colName = "type";
+                else if (isortCol == 2)
+                    colName = "major";
+                else if (isortCol == 3)
+                    colName = "minor";
+                glaCategoryList = glacategoryBean.searchCategoryByMinor(searchParameter,false,colName, sortDirection,true);
+            }
+            else
+                glaCategoryList = glacategoryBean.searchCategoryByMinor(searchParameter,false,colName, sortDirection,false);
+            if(idisplayStart != -1) {
+                Integer endRange = idisplayStart+pageDisplayLength;
+                Integer startRange = idisplayStart;
+                if(startRange > glaCategoryList.size())
+                    startRange = 0;
+                if (endRange > glaCategoryList.size())
+                    endRange = glaCategoryList.size();
+                for (int i = startRange; i <endRange; i++) {
+                    pageGlaCategoryList.add(glaCategoryList.get(i));
+                }
+            }
+            glaCategoryJsonObject.setiTotalDisplayRecords(glaCategoryList.size());
+            glaCategoryJsonObject.setiTotalRecords(glaCategoryList.size());
+            glaCategoryJsonObject.setAaData(pageGlaCategoryList);
+        }
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String json2 = gson.toJson(glaCategoryJsonObject);
         return json2;
@@ -420,6 +577,9 @@ public class ToolkitAdminController {
         List<GLAEntity> glaEntityList = null;
         List<GLAEntity> pageGlaEntityList = new ArrayList<>();
         Integer idisplayStart = 0;
+        Integer iSortingCols =0;
+        if(null != request.getParameter("iSortingCols"))
+            iSortingCols = Integer.valueOf(request.getParameter("iSortingCols"));
         GLAEntityJsonObject glaEntityJsonObject = new GLAEntityJsonObject();
         if (null != request.getParameter("iDisplayStart")) {
             idisplayStart = Integer.valueOf(request.getParameter("iDisplayStart"));
@@ -430,7 +590,30 @@ public class ToolkitAdminController {
         Integer pageDisplayLength = Integer.parseInt(request.getParameter("iDisplayLength"));
         //Create page list data
         if(searchParameter == null || searchParameter.isEmpty()) {
-            glaEntityList = glaEntityBean.loadAll();
+            String colName = null;
+            String sortDirection =null;
+            if(iSortingCols == 1 ) {
+                Integer isortCol = Integer.valueOf(request.getParameter("iSortCol_0"));
+                sortDirection = request.getParameter("sSortDir_0");
+                if (isortCol == 0)
+                    colName = "entityId";
+                else if (isortCol == 1)
+                    colName = "key";
+                else if (isortCol == 2)
+                    colName = "value";
+                else if (isortCol == 3)
+                    colName = "events.id";
+                else if (isortCol == 4)
+                    colName = "users.id";
+                else if (isortCol == 5)
+                    colName = "category.id";
+                if(colName == "value")
+                    glaEntityList = glaEntityBean.loadAll(colName,sortDirection,false);
+                else
+                    glaEntityList = glaEntityBean.loadAll(colName,sortDirection,true);
+            }
+            else
+                glaEntityList = glaEntityBean.loadAll(colName,sortDirection,false);
             if(idisplayStart != -1){
                 Integer endRange = idisplayStart+pageDisplayLength;
                 if(endRange >glaEntityList.size())
@@ -446,7 +629,30 @@ public class ToolkitAdminController {
             glaEntityJsonObject.setAaData(pageGlaEntityList);
         }
         else {
-            glaEntityList = glaEntityBean.searchEntitiesByKey(searchParameter,false);
+            String colName = null;
+            String sortDirection =null;
+            if(iSortingCols == 1 ) {
+                Integer isortCol = Integer.valueOf(request.getParameter("iSortCol_0"));
+                sortDirection = request.getParameter("sSortDir_0");
+                if (isortCol == 0)
+                    colName = "entityId";
+                else if (isortCol == 1)
+                    colName = "key";
+                else if (isortCol == 2)
+                    colName = "value";
+                else if (isortCol == 3)
+                    colName = "events.id";
+                else if (isortCol == 4)
+                    colName = "users.id";
+                else if (isortCol == 5)
+                    colName = "category.id";
+                if(colName == "value")
+                    glaEntityList = glaEntityBean.searchEntitiesByKey(searchParameter, false,colName,sortDirection,false);
+                else
+                    glaEntityList = glaEntityBean.searchEntitiesByKey(searchParameter, false,colName,sortDirection,true);
+            }
+            else
+                glaEntityList = glaEntityBean.searchEntitiesByKey(searchParameter, false,colName,sortDirection,false);
             if(idisplayStart != -1) {
                 Integer endRange = idisplayStart+pageDisplayLength;
                 Integer startRange = idisplayStart;
@@ -689,7 +895,3 @@ class GLAEVENTDTO
         return CATEGORY;
     }
 }
-
-
-
-

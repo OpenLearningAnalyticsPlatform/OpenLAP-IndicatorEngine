@@ -22,6 +22,7 @@ package com.indicator_engine.dao;
 import com.indicator_engine.datamodel.GLACategory;
 import org.apache.log4j.Logger;
 import org.hibernate.*;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,13 +51,18 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
 
     @Override
     @Transactional
-    public List<GLACategory> loadCategoryRange(long maxId) {
+    public List<GLACategory> loadAll(String colName, String sortDirection, boolean sort) {
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLACategory.class);
         criteria.setFetchMode("events", FetchMode.JOIN);
-        criteria.add(Restrictions.le("id", maxId));
-        return  criteria.list();
-
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        if(sort) {
+            if(sortDirection.equals("asc"))
+                criteria.addOrder(Order.asc(colName));
+            else
+                criteria.addOrder(Order.desc(colName));
+        }
+        return criteria.list();
     }
 
     @Override
@@ -115,4 +121,28 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
         Query query = session.createQuery(hql);
         return query.list();
     }
+
+    @Override
+    @Transactional
+    public List<GLACategory> searchCategoryByMinor(String searchParameter, boolean exactSearch,
+                                                   String colName, String sortDirection, boolean sort){
+        if(!exactSearch)
+            searchParameter = "%"+searchParameter+"%";
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLACategory.class);
+        criteria.setFetchMode("events", FetchMode.JOIN);
+        if(!exactSearch)
+            criteria.add(Restrictions.ilike("minor", searchParameter));
+        else
+            criteria.add(Restrictions.eq("minor", searchParameter));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        if(sort) {
+            if(sortDirection.equals("asc"))
+                criteria.addOrder(Order.asc(colName));
+            else
+                criteria.addOrder(Order.desc(colName));
+        }
+        return  criteria.list();
+    }
+
 }

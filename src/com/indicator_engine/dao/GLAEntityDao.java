@@ -32,11 +32,12 @@ public interface GLAEntityDao {
     public long add(GLAEntity glaEntity);
     public void addWithExistingEvent(GLAEntity glaEntity, String id);
     public int getTotalEntities();
-    public List<GLAEntity> loadAll();
+    public List<GLAEntity> loadAll(String colName, String sortDirection, boolean sort);
     public List<String> loadEntitiesByCategoryID(Long categoryID);
     public List<String> loadEntitiesByCategoryIDName(Long categoryID, String name);
     public long findNumber(String hql);
-    public List<GLAEntity> searchEntitiesByKey(String searchParameter, boolean exactSearch);
+    public List<GLAEntity> searchEntitiesByKey(String searchParameter, boolean exactSearch,
+                                               String colName, String sortDirection, boolean sort);
 
 }
 

@@ -27,6 +27,7 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +88,6 @@ public class GLAIndicatorDaoImpl implements GLAIndicatorDao {
     public List<GLAIndicator> loadByIndicatorByName(String indicatorName) {
         Session session = factory.getCurrentSession();
         indicatorName = "%"+indicatorName+"%";
-        GLAIndicator glaIndicator = null;
         Criteria criteria = session.createCriteria(GLAIndicator.class);
         criteria.setFetchMode("queries", FetchMode.JOIN);
         criteria.setFetchMode("glaIndicatorProps", FetchMode.JOIN);
@@ -98,8 +98,19 @@ public class GLAIndicatorDaoImpl implements GLAIndicatorDao {
 
     @Override
     @Transactional
-    public List<GLAIndicator> displayall(){
-        return factory.openSession().createQuery("from GLAIndicator gI").list();
+    public List<GLAIndicator> displayall(String colName, String sortDirection, boolean sort){
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAIndicator.class);
+        criteria.setFetchMode("queries", FetchMode.JOIN);
+        criteria.setFetchMode("glaIndicatorProps", FetchMode.JOIN);
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        if(sort) {
+            if(sortDirection.equals("asc"))
+                criteria.addOrder(Order.asc(colName));
+            else
+                criteria.addOrder(Order.desc(colName));
+        }
+        return criteria.list();
     }
     @Override
     @Transactional
@@ -117,7 +128,8 @@ public class GLAIndicatorDaoImpl implements GLAIndicatorDao {
 
     @Override
     @Transactional
-    public List<GLAIndicator> searchIndicatorsName(String searchParameter, boolean exactSearch){
+    public List<GLAIndicator> searchIndicatorsName(String searchParameter, boolean exactSearch,
+                                                   String colName, String sortDirection, boolean sort){
         if(!exactSearch)
             searchParameter = "%"+searchParameter+"%";
         Session session = factory.getCurrentSession();
@@ -129,7 +141,13 @@ public class GLAIndicatorDaoImpl implements GLAIndicatorDao {
         else
             criteria.add(Restrictions.eq("indicator_name", searchParameter));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        return  criteria.list();
+        if(sort) {
+            if(sortDirection.equals("asc"))
+                criteria.addOrder(Order.asc(colName));
+            else
+                criteria.addOrder(Order.desc(colName));
+        }
+        return criteria.list();
     }
 
     @Override

@@ -35,6 +35,8 @@ public interface GLAUserDao {
     public List<String> selectAllUsers();
     public List<String> searchSimilarUserDetails(String userDetail, String searchCriteria);
     public GLAUser loaduserByName(String username);
-    public List<GLAUser> searchLikeUsers(String searchParameter);
-    public List<GLAUser> loadAll();
+    public List<GLAUser> searchLikeUsers(String searchParameter, String colName,
+                                         String sortDirection,
+                                         boolean sort);
+    public List<GLAUser> loadAll(String colName, String sortDirection, boolean sort);
 }

@@ -30,11 +30,13 @@ import java.util.List;
  */
 public interface GLACategoryDao {
     public long add(GLACategory glaCategory);
-    public List<GLACategory> loadCategoryRange(long maxId);
+    public List<GLACategory> loadAll(String colName, String sortDirection, boolean sort);
     public int getTotalCategories();
     public List<String> selectAllMinors();
     public GLACategory  loadcategoryByname(String categoryname);
     public long findCategoryID(String minor);
     public List<String> findCategoryByID(Long category_id,String sentity);
+    public List<GLACategory> searchCategoryByMinor(String searchParameter, boolean exactSearch,
+                                                   String colName, String sortDirection, boolean sort);
 
 }

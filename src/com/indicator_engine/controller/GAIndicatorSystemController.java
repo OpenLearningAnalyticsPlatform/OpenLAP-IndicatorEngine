@@ -170,7 +170,7 @@ public class GAIndicatorSystemController {
             GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
             for(String name : indicatorDeletionForm.getSelectedList()){
                 log.info("Selected Deletion Name :in  indicatorDeletionForm.getSelectedList()\t" + name+ "\n");
-                List<GLAIndicator> glaIndicatorList = glaIndicatorBean.searchIndicatorsName(name,true);
+                List<GLAIndicator> glaIndicatorList = glaIndicatorBean.searchIndicatorsName(name,true, null, null, false);
                 log.info("Searching for Name : in  Indicator List\t" + glaIndicatorList.size()+ "\n");
                 if(!glaIndicatorList.isEmpty()){
                     log.info("Dumping Name : in  Indicator List\t" + glaIndicatorList.get(0).getIndicator_name()+ "\n");
@@ -209,6 +209,9 @@ public class GAIndicatorSystemController {
         List<GLAIndicator> glaIndicatorList = null;
         List<GLAIndicator> pageGLAindicatorList = new ArrayList<>();
         Integer idisplayStart = 0;
+        Integer iSortingCols =0;
+        if(null != request.getParameter("iSortingCols"))
+            iSortingCols = Integer.valueOf(request.getParameter("iSortingCols"));
         GLAIndicatorJsonObject glaIndicatorJsonObject = new GLAIndicatorJsonObject();
         if (null != request.getParameter("iDisplayStart")) {
             idisplayStart = Integer.valueOf(request.getParameter("iDisplayStart"));
@@ -222,7 +225,21 @@ public class GAIndicatorSystemController {
         log.info("iDisplayLength : \t"+ pageDisplayLength+"\n");
         //Create page list data
         if(searchParameter == null || searchParameter.isEmpty()) {
-            glaIndicatorList = glaIndicatorBean.displayall();
+            String colName = null;
+            String sortDirection =null;
+            if(iSortingCols == 1 ) {
+                Integer isortCol = Integer.valueOf(request.getParameter("iSortCol_0"));
+                sortDirection = request.getParameter("sSortDir_0");
+                if (isortCol == 0)
+                    colName = "id";
+                else if (isortCol == 1)
+                    colName = "indicator_name";
+                else if (isortCol == 2)
+                    colName = "short_name";
+                glaIndicatorList = glaIndicatorBean.displayall(colName,sortDirection,true);
+            }
+            else
+                glaIndicatorList = glaIndicatorBean.displayall(colName,sortDirection,false);
             if(idisplayStart != -1){
                 Integer endRange = idisplayStart+pageDisplayLength;
                 if(endRange >glaIndicatorList.size())
@@ -238,7 +255,21 @@ public class GAIndicatorSystemController {
             glaIndicatorJsonObject.setAaData(pageGLAindicatorList);
         }
         else {
-            glaIndicatorList = glaIndicatorBean.searchIndicatorsName(searchParameter, false);
+            String colName = null;
+            String sortDirection =null;
+            if(iSortingCols == 1 ) {
+                Integer isortCol = Integer.valueOf(request.getParameter("iSortCol_0"));
+                sortDirection = request.getParameter("sSortDir_0");
+                if (isortCol == 0)
+                    colName = "id";
+                else if (isortCol == 1)
+                    colName = "indicator_name";
+                else if (isortCol == 2)
+                    colName = "short_name";
+                glaIndicatorList = glaIndicatorBean.searchIndicatorsName(searchParameter, false,colName,sortDirection,true);
+            }
+            else
+                glaIndicatorList = glaIndicatorBean.searchIndicatorsName(searchParameter, false,colName,sortDirection,false);
             if(idisplayStart != -1) {
                 Integer endRange = idisplayStart+pageDisplayLength;
                 Integer startRange = idisplayStart;
