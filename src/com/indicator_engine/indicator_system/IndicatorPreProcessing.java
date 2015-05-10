@@ -40,34 +40,65 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
 
     @Override
     public List<String> initPopulateMinors(SelectNumberParameters selectNumberParameters) {
+        log.info("initPopulateMinors : STARTED");
         GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
         GLACategoryDao glacategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
-        List<String> minor = null;
-        long category_id = glaEventBean.findCategoryId(selectNumberParameters.getSelectedAction(), selectNumberParameters.getSelectedSource(),
-                selectNumberParameters.getSelectedPlatform());
-        minor = glacategoryBean.findCategoryByID(category_id, "minor");
+        List<String> minor = new ArrayList<>();
+        for(String source : selectNumberParameters.getSelectedSource()) {
+            log.info("initPopulateMinors : Selected Source : \t" + source + "\n");
+            long category_id = glaEventBean.findCategoryId(selectNumberParameters.getSelectedAction(),source,
+                    selectNumberParameters.getSelectedPlatform());
+            log.info("initPopulateMinors : Category ID : \t" + category_id + "\n");
+            for(String values : glacategoryBean.findCategoryByID(category_id, "minor")) {
+                if(values != null)
+                    minor.add(values);
+            }
+        }
+        log.info("initPopulateMinors : Computed Minor : \t" + minor + "\n");
+        log.info("initPopulateMinors : ENDED");
         return minor;
     }
 
     @Override
     public List<String> initPopulateMajors(SelectNumberParameters selectNumberParameters) {
+        log.info("initPopulateMajors : STARTED");
         GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
         GLACategoryDao glacategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
-        List<String> major = null;
-        long category_id = glaEventBean.findCategoryId(selectNumberParameters.getSelectedAction(), selectNumberParameters.getSelectedSource(),
-                selectNumberParameters.getSelectedPlatform());
-        major = glacategoryBean.findCategoryByID(category_id, "major");
+        List<String> major = new ArrayList<>();
+        for(String source : selectNumberParameters.getSelectedSource()) {
+            log.info("initPopulateMajors : Selected Source : \t" + source + "\n");
+            long category_id = glaEventBean.findCategoryId(selectNumberParameters.getSelectedAction(), source,
+                    selectNumberParameters.getSelectedPlatform());
+            log.info("initPopulateMajors : Category ID : \t" + category_id + "\n");
+            for(String values : glacategoryBean.findCategoryByID(category_id, "major")){
+                if(values != null)
+                    major.add(values);
+            }
+        }
+        log.info("initPopulateMajors : Computed Major : \t" + major + "\n");
+        log.info("initPopulateMajors : ENDED");
         return major;
     }
 
     @Override
     public List<String> initPopulateTypes(SelectNumberParameters selectNumberParameters) {
+        log.info("initPopulateTypes : STARTED");
         GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
         GLACategoryDao glacategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
-        List<String> types = null;
-        long category_id = glaEventBean.findCategoryId(selectNumberParameters.getSelectedAction(), selectNumberParameters.getSelectedSource(),
-                selectNumberParameters.getSelectedPlatform());
-        types = glacategoryBean.findCategoryByID(category_id, "type");
+        List<String> types = new ArrayList<>();
+        for(String source : selectNumberParameters.getSelectedSource()) {
+            log.info("initPopulateTypes : Selected Source : \t" + source + "\n");
+            long category_id = glaEventBean.findCategoryId(selectNumberParameters.getSelectedAction(), source,
+                    selectNumberParameters.getSelectedPlatform());
+            log.info("initPopulateTypes : Category ID : \t" + category_id + "\n");
+            for(String values : glacategoryBean.findCategoryByID(category_id, "type")){
+                log.info("initPopulateTypes : Values for Category ID : \t" + values + "\n");
+                if(values != null)
+                    types.add(values);
+            }
+        }
+        log.info("initPopulateTypes : Computed Types : \t" + types + "\n");
+        log.info("initPopulateTypes : ENDED");
         return types;
     }
 
@@ -133,6 +164,7 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
         GLAUserDao glauserBean = (GLAUserDao) appContext.getBean("glaUser");
         selectNumberParameters.setSearchResults(glauserBean.searchSimilarUserDetails(
                 selectNumberParameters.getSelecteduserSearchTypes(), selectNumberParameters.getSearchUserString()));
+        selectNumberParameters.getSearchResults().add(selectNumberParameters.getSearchUserString());
 
     }
     @Override
@@ -151,6 +183,7 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
         GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
         selectNumberParameters.setSearchResults(glaEventBean.searchSimilarSessionDetails(selectNumberParameters.getSelectedsessionSearchType(),
                 selectNumberParameters.getSessionSearch()));
+        selectNumberParameters.getSearchResults().add(selectNumberParameters.getSessionSearch());
 
 
     }
@@ -230,6 +263,7 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
                 numberIndicator.getGenQueries().add(new GenQuery(gQ.getHql(),gQ.getQuestion_name(), gQ.getId()));
             }
     }
+
     @Override
     public void flushAll(NumberIndicator numberIndicator, SelectNumberParameters selectNumberParameters,
                                  IndicatorDefnOperationForm availableOperations){

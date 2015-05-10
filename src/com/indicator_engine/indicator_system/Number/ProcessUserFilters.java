@@ -14,6 +14,26 @@ import java.util.List;
 public class ProcessUserFilters implements ProcessUserFiltersDao {
 
     @Override
+    public String processSource( List<String> sources , String filter){
+        String hibenateQuery ="(";
+        int counter = 0;
+        for(String source : sources){
+            if(counter == 0) {
+                hibenateQuery += "'"+ source + "' ";
+                counter++;
+                continue;
+            }
+            if(counter >= 1 ) {
+                hibenateQuery += ", '"+ source + "' ";
+                counter++;
+                continue;
+            }
+        }
+        hibenateQuery += ")";
+        return hibenateQuery;
+    }
+
+    @Override
     public String processEntities( List<EntityValues> entityValues , String filter){
         String hibernateQuery = "(";
         String key, type, eValue;

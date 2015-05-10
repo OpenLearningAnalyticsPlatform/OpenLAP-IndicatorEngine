@@ -27,6 +27,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     if ((session.getAttribute("loggedIn") == null) || (session.getAttribute("loggedIn") == ""))
         response.sendRedirect("/login");
@@ -41,20 +43,18 @@
 <head>
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-    <title>Modify an Indicator</title>
+    <title>Delete Indicator : From DB </title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.0/css/jquery.dataTables.css">
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}js/jquery-1.3.2.min.js"></script>
+
 </head>
 <body>
 <div class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <div class="logo"><h1>Modify an Indicator</h1></div>
+        <div class="logo"><h1>Indicator Details </h1></div>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -96,75 +96,105 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Modify an Indicator</h1>
-            <p>Here you can edit a specific Indicator. First search for an indicator and load it to start the editor.</p>
+            <h1>Delete Indicator : From DB </h1>
+            <p>Indicator Successfully Retrieved. Here are the Details.</p>
+            <div class="table-responsive">
+                <h4 class="margin-bottom-15">Indicator Details</h4>
+                <table class="table table-striped table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Indicator ID</th>
+                        <th>Name</th>
+                        <th>Number of Questions</th>
+                        <th>Last Executed on</th>
+                        <th>Execution Counter</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><c:out value="${numberIndicator.indicator_id}"/></td>
+                        <td><c:out value="${numberIndicator.indicatorName}"/></td>
+                        <td><c:out value="${numberIndicator.genQueries.size()}"/></td>
+                        <td><c:out value="${numberIndicator.genIndicatorProps.last_executionTime}"/></td>
+                        <td><c:out value="${numberIndicator.genIndicatorProps.totalExecutions}"/></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-responsive">
+                <h4 class="margin-bottom-15">Associated Questions</h4>
+                <table class="table table-striped table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Question ID</th>
+                        <th>Question Name</th>
+                        <th>Hibernate Query</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="entityVal" items="${numberIndicator.genQueries}"  varStatus="loop">
+                        <tr>
+                            <td><c:out value="${entityVal.queryID}"/></td>
+                            <td><c:out value="${entityVal.questionName}"/></td>
+                            <td><c:out value="${entityVal.query}"/></td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        <div class="row">
+        <div class="col-md-12">
+        <form:form role="form" id="searchIndicatorForm"  method="post" modelAttribute="indicatorDeletionForm" action="/indicators/processdelete">
+            <div class="row">
+                <div class="col-md-6 margin-bottom-15">
+                    <label for="deletionList">Select Search Type </label>
+                    <form:checkboxes items="${indicatorDeletionForm.deletionList}" path="selectedList" name="deletionList" />
+                </div>
+            </div>
+            <td><form:hidden path="indName" /></td>
+            <div class="row templatemo-form-buttons">
+                <div class="col-md-12">
+                    <input class="btn btn-primary" type="submit" name="action" value="delete" />
+                </div>
+            </div>
+            <p>
+                <form:errors path="*" cssClass="errorblock" element="div" />
+            </p>
+        </form:form>
+        </div>
+        </div>
+        <div class="margin-bottom-30">
             <div class="row">
                 <div class="col-md-12">
-                    <form:form role="form" id="searchIndicatorForm"  method="post" modelAttribute="searchIndicatorForm" action="/indicators/viewall">
-                        <div class="row">
-                            <div class="col-md-6 margin-bottom-15">
-                                <label for="searchTypeSelection">Select Search Type </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedSearchType" items="${searchIndicatorForm.searchType}" name ="searchTypeSelection" id="searchTypeSelection" />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 margin-bottom-15">
-                                <label for="searchString" class="control-label">Search String</label>
-                                <form:input class="form-control" path="searchField"  name="searchString" id ="searchString"/>
-                            </div>
-                        </div>
-                        <div class="row templatemo-form-buttons">
-                            <div class="col-md-12">
-                                <input cclass="btn btn-default" type="submit" name="action"
-                                       value="search"  />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 margin-bottom-15">
-                                <label for="multipleSelect">Search Results </label>
-                                <form:select class="form-control" path="selectedIndicatorName" name="multipleSelect">
-                                    <form:options items="${searchIndicatorForm.searchResults}" />
-                                </form:select>
-                            </div>
-                        </div>
-                        <div class="row templatemo-form-buttons">
-                            <div class="col-md-12">
-                                <input class="btn btn-primary" type="submit" name="action"
-                                       value="load" />
-                            </div>
-                        </div>
-
-                        <p>
-                            <form:errors path="*" cssClass="errorblock" element="div" />
-                        </p>
-
-                    </form:form>
+                    <ul class="nav nav-pills">
+                    <li class="active"><a href="/indicators/delete">Back<span class="badge"></span></a></li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">Are you sure you want to sign out?</h4>
-            </div>
-            <div class="modal-footer">
-                <a href="/logoff" class="btn btn-primary">Yes</a>
-                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Are you sure you want to sign out?</h4>
+                </div>
+                <div class="modal-footer">
+                    <a href="/logoff" class="btn btn-primary">Yes</a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<footer class="templatemo-footer">
-    <div class="templatemo-copyright">
-        <p>Copyright &copy; 2015 Learning Technologies Group, RWTH</p>
-    </div>
-</footer>
+    <footer class="templatemo-footer">
+        <div class="templatemo-copyright">
+            <p>Copyright &copy; 2015 Learning Technologies Group, RWTH</p>
+        </div>
+    </footer>
 </div>
 
 <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>

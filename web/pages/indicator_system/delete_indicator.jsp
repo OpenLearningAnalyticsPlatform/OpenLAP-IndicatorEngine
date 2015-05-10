@@ -1,4 +1,3 @@
-<%@ page import="com.indicator_engine.datamodel.UserProfile" %>
 <%--
   ~ /*
   ~  * Copyright (C) 2015  Tanmaya Mahapatra
@@ -42,18 +41,20 @@
 <head>
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-    <title>Indicator Control Panel</title>
+    <title>Delete an Indicator</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
-    <script type="javascript" src="${pageContext.request.contextPath}/js/user_profile_checks.js"> </script>
-
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.0/css/jquery.dataTables.css">
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
 </head>
 <body>
 <div class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <div class="logo"><h1>Indicator Control Panel</h1></div>
+        <div class="logo"><h1>Delete an Indicator</h1></div>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -95,31 +96,75 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Indicator Control Panel</h1>
-            <p>Here you can define new Indicators, modify or view existing ones.</p>
+            <h1>Delete an Indicator</h1>
+            <p>Here you can delete a specific Indicator. First search for an indicator and load it to start the deletion process.</p>
+            <div class="row">
+                <div class="col-md-12">
+                    <form:form role="form" id="searchIndicatorForm"  method="post" modelAttribute="searchIndicatorForm" action="/indicators/delete">
+                        <div class="row">
+                            <div class="col-md-6 margin-bottom-15">
+                                <label for="searchTypeSelection">Select Search Type </label>
+                                <form:select class="form-control margin-bottom-15" path="selectedSearchType" items="${searchIndicatorForm.searchType}" name ="searchTypeSelection" id="searchTypeSelection" />
+                            </div>
+                        </div>
 
-        </div>
-    </div>
-    <!-- Modal -->
-    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Are you sure you want to sign out?</h4>
-                </div>
-                <div class="modal-footer">
-                    <a href="/logoff" class="btn btn-primary">Yes</a>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                        <div class="row">
+                            <div class="col-md-6 margin-bottom-15">
+                                <label for="searchString" class="control-label">Search String</label>
+                                <form:input class="form-control" path="searchField"  name="searchString" id ="searchString"/>
+                            </div>
+                        </div>
+                        <div class="row templatemo-form-buttons">
+                            <div class="col-md-12">
+                                <input cclass="btn btn-default" type="submit" name="action"
+                                       value="search"  />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 margin-bottom-15">
+                                <label for="multipleSelect">Search Results </label>
+                                <form:select class="form-control" path="selectedIndicatorName" name="multipleSelect">
+                                    <form:options items="${searchIndicatorForm.searchResults}" />
+                                </form:select>
+                            </div>
+                        </div>
+                        <div class="row templatemo-form-buttons">
+                            <div class="col-md-12">
+                                <input class="btn btn-primary" type="submit" name="action"
+                                       value="load" />
+                            </div>
+                        </div>
+
+                        <p>
+                            <form:errors path="*" cssClass="errorblock" element="div" />
+                        </p>
+
+                    </form:form>
                 </div>
             </div>
         </div>
     </div>
-    <footer class="templatemo-footer">
-        <div class="templatemo-copyright">
-            <p>Copyright &copy; 2015 Learning Technologies Group, RWTH</p>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Are you sure you want to sign out?</h4>
+            </div>
+            <div class="modal-footer">
+                <a href="/logoff" class="btn btn-primary">Yes</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            </div>
         </div>
-    </footer>
+    </div>
+</div>
+<footer class="templatemo-footer">
+    <div class="templatemo-copyright">
+        <p>Copyright &copy; 2015 Learning Technologies Group, RWTH</p>
+    </div>
+</footer>
 </div>
 
 <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>

@@ -12,6 +12,7 @@ when
                              sessionSpecifications.isEmpty() == true,
                              entityValues.size()== 1,
                              entityValues.get(0).geteValues() ==  "ALL")
+    $pFilter : ProcessUserFilters()
     $userParameter : SelectNumberParameters( $source : selectedSource,
                                              $platform : selectedPlatform,
                                              $action : selectedAction,
@@ -20,11 +21,12 @@ when
                                              $type : selectedType,
                                              $key : entityValues,
                                              $pobject: selectedPersistenceObject,
+                                             $filter : selectedFilteringType,
                                              $robject : selectedRetrievableObjects)
 then
 
     $userParameter.setHql("SELECT " + $robject + " FROM " + $pobject + " WHERE glaEvent.action ='"+$action+"'"
-                                     +" AND glaEvent.source = '"+ $source+"'"+ " AND glaEvent.platform = '"
+                                     +" AND glaEvent.source IN "+$pFilter.processSource($source,$filter) + " AND glaEvent.platform = '"
                                      + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
                                      +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
                                      +$type+"'"+" AND key = '"+ $key.get(0).getKey()+"'");
@@ -53,7 +55,7 @@ when
 then
 
     $userParameter.setHql("SELECT " + $robject + " FROM " + $pobject + " WHERE glaEvent.action ='"+$action+"'"
-                           +" AND glaEvent.source = '"+ $source+"'"+ " AND glaEvent.platform = '"
+                           +" AND glaEvent.source IN "+$pFilter.processSource($source,$filter) + " AND glaEvent.platform = '"
                            + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
                            +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
                            +$type+"'"+ " AND key IN " + $pFilter.processEntities($key,$filter));
@@ -81,7 +83,7 @@ when
 
 then
     $userParameter.setHql("SELECT " + $robject + " FROM " + $pobject + " WHERE glaEvent.action ='"+$action+"'"
-                                 +" AND glaEvent.source = '"+ $source+"'"+ " AND glaEvent.platform = '"
+                                 +" AND glaEvent.source IN "+$pFilter.processSource($source,$filter) + " AND glaEvent.platform = '"
                                  + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
                                  +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
                                  +$type+"'"+ " AND key IN " + $pFilter.processEntities($key,$filter) + $pFilter.processUsers($user, $filter));
@@ -109,7 +111,7 @@ when
 
 then
     $userParameter.setHql("SELECT " + $robject + " FROM " + $pobject + " WHERE glaEvent.action ='"+$action+"'"
-                                 +" AND glaEvent.source = '"+ $source+"'"+ " AND glaEvent.platform = '"
+                                 +" AND glaEvent.source IN "+$pFilter.processSource($source,$filter) +" AND glaEvent.platform = '"
                                  + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
                                  +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
                                  +$type+"'"+ " AND key IN " + $pFilter.processEntities($key,$filter)+ $pFilter.processSessions($session,$filter));
@@ -139,7 +141,7 @@ when
 
 then
     $userParameter.setHql("SELECT " + $robject + " FROM " + $pobject + " WHERE glaEvent.action ='"+$action+"'"
-                                 +" AND glaEvent.source = '"+ $source+"'"+ " AND glaEvent.platform = '"
+                                 +" AND glaEvent.source IN "+$pFilter.processSource($source,$filter) + " AND glaEvent.platform = '"
                                  + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
                                  +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
                                  +$type+"'"+ " AND key IN " + $pFilter.processEntities($key,$filter) + $pFilter.processUsers($user, $filter) + $pFilter.processSessions($session,$filter));

@@ -26,7 +26,7 @@ public class SelectNumberParameters implements Serializable{
     List<String> source =  new ArrayList<>();
     List<String> platform =  new ArrayList<>();
     List<String> action =  new ArrayList<>();
-    private String selectedSource;
+    private List<String> selectedSource;
     private String selectedPlatform;
     private String selectedAction;
 
@@ -50,6 +50,7 @@ public class SelectNumberParameters implements Serializable{
     private List<UserSearchSpecifications>  userSpecifications = new ArrayList<UserSearchSpecifications>();
     private final List<String> userSearchTypes = new ArrayList<>();
     private String selecteduserSearchTypes;
+    /** Holds the User Name specified for Querying in the Database. */
     private String searchUserString;
     private String selectedUserString;
     private List<String> selectedSearchStrings = new ArrayList<>();
@@ -85,7 +86,7 @@ public class SelectNumberParameters implements Serializable{
         this.selectedPersistenceObject = null;
         this.selectedRetrievableObjects = null;
 
-        this.selectedSource = null;
+        this.selectedSource.clear();
         this.selectedPlatform  =null;
         this.selectedAction = null;
         this.source.clear();
@@ -196,7 +197,7 @@ public class SelectNumberParameters implements Serializable{
         return action;
     }
 
-    public String getSelectedSource() {
+    public List<String> getSelectedSource() {
         return selectedSource;
     }
 
@@ -377,7 +378,7 @@ public class SelectNumberParameters implements Serializable{
         this.action = action;
     }
 
-    public void setSelectedSource(String selectedSource) {
+    public void setSelectedSource(List<String> selectedSource) {
         this.selectedSource = selectedSource;
     }
 

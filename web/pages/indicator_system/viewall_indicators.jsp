@@ -1,4 +1,3 @@
-<%@ page import="com.indicator_engine.datamodel.UserProfile" %>
 <%--
   ~ /*
   ~  * Copyright (C) 2015  Tanmaya Mahapatra

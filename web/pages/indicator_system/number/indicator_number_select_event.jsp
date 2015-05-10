@@ -103,7 +103,7 @@
                         <div class="row">
                             <div class="col-md-6 margin-bottom-15">
                                 <label for="sourceSelection">Select a Source </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedSource" items="${selectNumberParameters.source}" name ="sourceSelection" id="sourceSelection" />
+                                <form:select multiple="true" class="form-control margin-bottom-15" path="selectedSource" items="${selectNumberParameters.source}" name ="sourceSelection" id="sourceSelection" />
                             </div>
                         </div>
                         <div class="row">

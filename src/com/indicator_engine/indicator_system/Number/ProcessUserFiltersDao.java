@@ -12,4 +12,5 @@ public interface ProcessUserFiltersDao {
 
     public String processEntities( List<EntityValues> entityValues , String filter);
     public String processUsers( List<UserSearchSpecifications>  userSpecifications, String filter);
+    public String processSource( List<String> sources , String filter);
 }
