@@ -76,7 +76,7 @@ then
                            +" AND glaEvent.source IN "+$pFilter.processSource($source,$filter) + " AND glaEvent.platform = '"
                            + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
                            +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
-                           +$type+"'"+ " AND key IN " + $pFilter.processEntities($key,$filter));
+                           +$type+"' "+ $pFilter.processEntities($key,$filter));
 end
 
 rule "When Only User Filtering and Entity Filtering are Present"
@@ -104,7 +104,7 @@ then
                                  +" AND glaEvent.source IN "+$pFilter.processSource($source,$filter) + " AND glaEvent.platform = '"
                                  + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
                                  +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
-                                 +$type+"'"+ " AND key IN " + $pFilter.processEntities($key,$filter) + $pFilter.processUsers($user, $filter));
+                                 +$type+"' "+ $pFilter.processEntities($key,$filter) + $pFilter.processUsers($user, $filter));
 end
 
 rule "When Session & Entity Filtering are Present"
@@ -132,7 +132,7 @@ then
                                  +" AND glaEvent.source IN "+$pFilter.processSource($source,$filter) +" AND glaEvent.platform = '"
                                  + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
                                  +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
-                                 +$type+"'"+ " AND key IN " + $pFilter.processEntities($key,$filter)+ $pFilter.processSessions($session,$filter));
+                                 +$type+"' "+  $pFilter.processEntities($key,$filter)+ $pFilter.processSessions($session,$filter));
 end
 
 
@@ -162,6 +162,6 @@ then
                                  +" AND glaEvent.source IN "+$pFilter.processSource($source,$filter) + " AND glaEvent.platform = '"
                                  + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
                                  +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
-                                 +$type+"'"+ " AND key IN " + $pFilter.processEntities($key,$filter) + $pFilter.processUsers($user, $filter) + $pFilter.processSessions($session,$filter));
+                                 +$type+"' "+ $pFilter.processEntities($key,$filter) + $pFilter.processUsers($user, $filter) + $pFilter.processSessions($session,$filter));
 end
 

@@ -27,7 +27,9 @@ import org.drools.definition.process.*;
 import java.util.List;
 
 /**
- * Created by Tanmaya Mahapatra on 26-04-2015.
+ * Parses the User Input given during Indicator Definition process and generates equivalent Hibernate Queries.
+ * @author Tanmaya Mahapatra
+ * @since 26/04/2015
  */
 @SuppressWarnings({"unused", "unchecked"})
 public class ProcessUserFilters implements ProcessUserFiltersDao {
@@ -54,11 +56,17 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
 
     @Override
     public String processEntities( List<EntityValues> entityValues , String filter){
-        String hibernateQuery = "(";
+        String entityTextAllQuery = "AND key IN (";
+        String entityTextValueQuery = "AND key IN (";
+        String entityRegexAllQuery = "AND key IN (";
+        String entityRegexValueQuery = "AND key IN (";
+        String hibernateQuery = " ";
+        int entityTextAllCounter = 0;
+        int entityTextValueCounter = 0;
+        int entityRegexAllCounter = 0;
+        int entityRegexValueCounter = 0;
         String key, type, eValue;
         key = type = eValue = null;
-        int counter = 1;
-        int queryCounter = 0;
         int totalLength = entityValues.size();
         for (EntityValues eV : entityValues)
         {
@@ -69,72 +77,75 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
             {
                 if(eValue.equals("ALL"))
                 {
-                    if(totalLength == 1) {
-                        hibernateQuery += " ( SELECT key FROM GLAEntity WHERE  key = '"+key +"' )";
+                    if(entityTextAllCounter == 0 ) {
+                        entityTextAllQuery += " ( SELECT key FROM GLAEntity WHERE  key = '"+key +"' ";
+                        entityTextAllCounter++;
                     }
                     else{
-                        if(counter == 1){
-                            hibernateQuery += " ( SELECT key FROM GLAEntity WHERE key = '"+key +"' OR  ";
-                        }
-                        else if(counter == totalLength)
-                            hibernateQuery += "  key = '"+key +"' ) ";
-                        else
-                            hibernateQuery += "  key = '"+key +"' OR  ";
+                        entityTextAllQuery += "  OR key = '"+key +"' ";
+                        entityTextAllCounter++;
                     }
 
                 }
                 else
                 {
-                    if(totalLength == 1)
+                    if(entityTextValueCounter == 0)
                     {
-                        hibernateQuery += " ( SELECT key FROM GLAEntity WHERE ( key = '"+key +"' "+ filter + " value LIKE'"+eValue+"' ) ) ";
+                        entityTextValueQuery += " ( SELECT key FROM GLAEntity WHERE ( key = '"+key +"' "+ filter + " value LIKE'"+eValue+"' ) ";
+                        entityTextValueCounter++;
                     }
                     else
                     {
-                        if(counter == 1){
-                            hibernateQuery += " ( SELECT key FROM GLAEntity WHERE ( key = '"+key +"' "+ filter + " value LIKE '"+eValue+"' ) OR ";
-                        }
-                        else if(counter == totalLength)
-                            hibernateQuery += " (  key = '"+key +"' "+ filter + " value LIKE '"+eValue+"' ) ) ";
-                        else
-                            hibernateQuery += " (  key = '"+key +"' "+ filter + " value LIKE '"+eValue+"' ) OR";
+                        entityTextValueQuery += " OR (  key = '"+key +"' "+ filter + " value LIKE '"+eValue+"' ) ";
+                        entityTextValueCounter++;
                     }
                 }
             }
-            if(type.equals("REGEX"))
+            else if(type.equals("REGEX"))
             {
                 if(eValue.equals("ALL"))
                 {
-                    if(counter == 1){
-                        hibernateQuery += " ( SELECT key FROM GLAEntity WHERE key LIKE '%"+key +"%' OR  ";
+                    if(entityRegexAllCounter == 0)
+                    {
+                        entityRegexAllQuery += " ( SELECT key FROM GLAEntity WHERE  key LIKE '%"+key +"%' " ;
+                        entityRegexAllCounter++;
                     }
-                    else if(counter == totalLength)
-                        hibernateQuery += "  key LIKE '%"+key +"%' ) ";
                     else
-                        hibernateQuery += "  key LIKE '%"+key +"%' OR  ";
+                    {
+                        entityRegexAllQuery += " OR key LIKE '%"+key +"%'  ";
+                        entityRegexAllCounter++;
+                    }
+
+
                 }
                 else
                 {
-                    if(totalLength == 1)
+                    if(entityRegexValueCounter == 0)
                     {
-                        hibernateQuery += " ( SELECT key FROM GLAEntity WHERE ( key LIKE '%"+key +"%' " + filter + " value LIKE '%"+eValue+"%' ) ) ";
+                        entityRegexValueQuery += " ( SELECT key FROM GLAEntity WHERE ( key LIKE '%"+key +"%' " + filter + " value LIKE '%"+eValue+"%' ) ";
+                        entityRegexValueCounter++;
                     }
                     else
                     {
-                        if(counter == 1){
-                            hibernateQuery += " ( SELECT key FROM GLAEntity WHERE ( key LIKE '%"+ key +"%' " + filter + " value LIKE '%"+eValue+"%' ) OR ";
-                        }
-                        else if(counter == totalLength)
-                            hibernateQuery += " (  key LIKE '%"+key +"%' " + filter + " value LIKE '%"+eValue+"%' ) ) ";
-                        else
-                            hibernateQuery += " (  key LIKE '%"+key +"%' " + filter + " value LIKE '%"+eValue+"%' ) OR";
+                        entityRegexValueQuery += " OR (  key LIKE '%"+key +"%' " + filter + " value LIKE '%"+eValue+"%' ) ";
+                        entityRegexValueCounter++;
                     }
                 }
             }
-
-            counter++;
         }
-        hibernateQuery += " )";
+        entityTextAllQuery += ") )";
+        entityTextValueQuery += ") )";
+        entityRegexAllQuery += ") )";
+        entityRegexValueQuery += ") )";
+
+        if(entityTextAllCounter > 0)
+            hibernateQuery += entityTextAllQuery;
+        if(entityTextValueCounter > 0)
+            hibernateQuery += entityTextValueQuery;
+        if(entityRegexAllCounter > 0)
+            hibernateQuery += entityRegexAllQuery;
+        if(entityRegexValueCounter > 0)
+            hibernateQuery += entityRegexValueQuery;
         return hibernateQuery;
     }
 
