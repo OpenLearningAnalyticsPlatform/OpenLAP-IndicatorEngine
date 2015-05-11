@@ -85,18 +85,20 @@
     </bean>
 
     <!-- Mail Bean : For Sending Emails-->
-    <bean id="mail"
-          class="com.indicator_engine.email.MailPackage">
-        <constructor-arg value="${mail.id}" />
-        <constructor-arg value="${mail.password}"/>
-        <property name="toEmail"><null/></property>
-        <property name="mailServerProperties">
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${mail.host}"/>
+        <property name="port" value="${mail.port}"/>
+        <property name="protocol" value="${mail.protocol}"/>
+        <property name="username" value="${mail.id}"/>
+        <property name="password" value="${mail.password}"/>
+        <property name="javaMailProperties">
             <props>
-                <prop key="mail.smtp.host">smtp.gmail.com</prop>
-                <prop key="mail.smtp.socketFactory.port">465</prop>
-                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
                 <prop key="mail.smtp.auth">true</prop>
-                <prop key="mail.smtp.port">465</prop>
+                <prop key="mail.smtp.starttls.enable">false</prop>
+                <prop key="mail.smtp.quitwait">false</prop>
+                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+                <prop key="mail.smtp.socketFactory.fallback">false</prop>
+                <prop key="mail.debug">true</prop>
             </props>
         </property>
     </bean>

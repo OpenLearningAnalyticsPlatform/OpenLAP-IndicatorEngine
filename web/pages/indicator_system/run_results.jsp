@@ -1,4 +1,3 @@
-
 <%--
   ~ Open Platform Learning Analytics : Indicator Engine
   ~ Copyright (C) 2015  Learning Technologies Group, RWTH
@@ -21,8 +20,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Tanmaya Mahapatra
-  Date: 16-03-2015
-  Time: 04:33
+  Date: 11-05-2015
+  Time: 11:18
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -46,15 +45,11 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
-    <script type="javascript" src="${pageContext.request.contextPath}/js/user_profile_checks.js"> </script>
-    <link href="${pageContext.request.contextPath}/lib/select2/css/select2.min.css" rel="stylesheet" />
-    <script src="${pageContext.request.contextPath}/lib/select2/js/select2.min.js"></script>
-
 </head>
 <body>
 <div class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <div class="logo"><h1>Indicator Execution</h1></div>
+        <div class="logo"><h1>Execution Results</h1></div>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -96,53 +91,44 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Indicator Execution</h1>
-            <p>Please select an Indicator to run.</p>
-            <div class="row">
-                <div class="col-md-12">
-                    <form:form role="form" id="indicatorSelection"  method="post" modelAttribute="indicatorRun" action="/indicators/trialrun">
-                        <div class="row">
-                            <div class="col-md-6 margin-bottom-15">
-                                <label for="indRun">Select an Indicator to Run </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedIndicator" items="${indicatorRun.availableIndicators}" name ="indRun" id="indRun" />
-                            </div>
-                        </div>
-                        <p>
-                            <form:errors path="*" cssClass="errorblock" element="div" />
-                        </p>
-                        <div class="row templatemo-form-buttons">
-                            <div class="col-md-12">
-                                <input class="btn btn-primary" type="submit" name="action"
-                                       value="Run" />
-                            </div>
-                        </div>
-                    </form:form>
+            <h1>Execution Results</h1>
+            <p>Here is the result of execution.</p>
+            <div class="col-md-6 col-sm-6">
+                <div class="panel panel-success">
+                    <div class="panel-heading">Line Chart</div>
+                    <canvas id="templatemo-line-chart"></canvas>
                 </div>
             </div>
-        </div>
+            <div class="col-md-6 col-sm-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Bar Chart</div>
+                    <canvas id="templatemo-bar-chart"></canvas>
+                </div>
+            </div>
+
 
         </div>
-    </div>
-    <!-- Modal -->
-    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Are you sure you want to sign out?</h4>
-                </div>
-                <div class="modal-footer">
-                    <a href="/logoff" class="btn btn-primary">Yes</a>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Are you sure you want to sign out?</h4>
+            </div>
+            <div class="modal-footer">
+                <a href="/logoff" class="btn btn-primary">Yes</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
             </div>
         </div>
     </div>
-    <footer class="templatemo-footer">
-        <div class="templatemo-copyright">
-            <p>Copyright &copy; 2015 Learning Technologies Group, RWTH</p>
-        </div>
-    </footer>
+</div>
+<footer class="templatemo-footer">
+    <div class="templatemo-copyright">
+        <p>Copyright &copy; 2015 Learning Technologies Group, RWTH</p>
+    </div>
+</footer>
 </div>
 
 <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
@@ -150,6 +136,46 @@
 <script src="${pageContext.request.contextPath}/js/Chart.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/templatemo_script.js"></script>
 <script type="text/javascript">
+    // Line chart
+    var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
+    var lineChartData = {
+        labels : ["January","February","March","April","May","June","July"],
+        datasets : [
+            {
+                label: "My First dataset",
+                fillColor : "rgba(220,220,220,0.2)",
+                strokeColor : "rgba(220,220,220,1)",
+                pointColor : "rgba(220,220,220,1)",
+                pointStrokeColor : "#fff",
+                pointHighlightFill : "#fff",
+                pointHighlightStroke : "rgba(220,220,220,1)",
+                data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+            },
+            {
+                label: "My Second dataset",
+                fillColor : "rgba(151,187,205,0.2)",
+                strokeColor : "rgba(151,187,205,1)",
+                pointColor : "rgba(151,187,205,1)",
+                pointStrokeColor : "#fff",
+                pointHighlightFill : "#fff",
+                pointHighlightStroke : "rgba(151,187,205,1)",
+                data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+            }
+        ]
+
+    } // lineChartData
+    window.onload = function(){
+        var ctx_line = document.getElementById("templatemo-line-chart").getContext("2d");
+        var ctx_bar = document.getElementById("templatemo-bar-chart").getContext("2d");
+
+        window.myLine = new Chart(ctx_line).Line(lineChartData, {
+            responsive: true
+        });
+        window.myBar = new Chart(ctx_bar).Bar(lineChartData, {
+            responsive: true
+        });
+    }
+
 </script>
 </body>
 </html>

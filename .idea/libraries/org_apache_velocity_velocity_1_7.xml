@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="org.apache.velocity:velocity:1.7" type="repository">
+    <properties maven-id="org.apache.velocity:velocity:1.7" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/velocity-1.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-collections-3.2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-lang-2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jdom-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-logging-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/logkit-2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/log4j-1.2.12.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/servlet-api-2.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ant-1.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/werken-xpath-0.9.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

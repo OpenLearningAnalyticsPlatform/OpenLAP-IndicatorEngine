@@ -27,6 +27,7 @@ import com.indicator_engine.dao.GLAQueriesDao;
 import com.indicator_engine.datamodel.GLAIndicator;
 import com.indicator_engine.datamodel.GLAQueries;
 import com.indicator_engine.misc.NumberChecks;
+import com.indicator_engine.model.app.IndicatorRun;
 import com.indicator_engine.model.app.SearchIndicatorForm;
 import com.indicator_engine.model.indicator_system.IndicatorDeletionForm;
 import com.indicator_engine.model.indicator_system.Number.GLAIndicatorJsonObject;
@@ -193,9 +194,27 @@ public class GAIndicatorSystemController {
         return model;
     }
     @RequestMapping(value = "/trialrun", method = RequestMethod.GET)
-    public ModelAndView getIndicatorsTrialRun() {
+    public String getIndicatorsTrialRun(Map<String, Object> model) {
+        IndicatorRun indicatorRun = new IndicatorRun();
+        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
+        List<GLAIndicator> glaIndicatorList = glaIndicatorBean.displayall(null,null,false);
+        for(GLAIndicator gI : glaIndicatorList){
+            indicatorRun.getAvailableIndicators().add(gI.getIndicator_name());
+        }
+        model.put("indicatorRun",indicatorRun);
 
-        return new ModelAndView("indicator_system/trial_run").addObject("");
+        return "indicator_system/trial_run";
+    }
+
+    @RequestMapping(value = "/trialrun", method = RequestMethod.POST)
+    public ModelAndView processTrialRun( @Valid @ModelAttribute("indicatorRun") IndicatorRun indicatorRun, BindingResult bindingResult) {
+
+        ModelAndView model = null;
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("indicator_system/viewall_indicators");
+        }
+        model = new ModelAndView("indicator_system/run_results");
+        return model;
     }
 
     @RequestMapping(value = "/fetchExistingIndicatorsData.web", method = RequestMethod.GET, produces = "application/json")
