@@ -22,7 +22,7 @@ package com.indicator_engine.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.indicator_engine.cewolf_graphgenerator.PageViewCountData;
+import com.indicator_engine.graphgenerator.cewolf.PageViewCountData;
 import com.indicator_engine.dao.GLAIndicatorDao;
 import com.indicator_engine.dao.GLAQueriesDao;
 import com.indicator_engine.datamodel.GLAIndicator;

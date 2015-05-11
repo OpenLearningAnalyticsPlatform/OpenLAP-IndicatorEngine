@@ -52,7 +52,7 @@
     <bean id="applicationContextProvider" class="com.indicator_engine.misc.ApplicationContextProvider"></bean>
 
     <bean id="pageViews"
-          class="com.indicator_engine.cewolf_graphgenerator.PageViewCountData">
+          class="com.indicator_engine.graphgenerator.cewolf.PageViewCountData">
     </bean>
     <bean id="indicatorPreProcessor"
           class="com.indicator_engine.indicator_system.IndicatorPreProcessing">

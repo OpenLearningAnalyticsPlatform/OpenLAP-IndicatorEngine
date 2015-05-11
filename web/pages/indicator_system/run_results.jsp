@@ -110,7 +110,7 @@
                 <cewolf:img chartid="line" renderer="/cewolf" width="400" height="300"/>
             <P>
 
-            <img src="/graphs/piechart?title=ty" />
+            <img src="/graphs/jgraph?title=ty" />
 
 
         </div>

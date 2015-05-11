@@ -38,6 +38,7 @@ import java.util.UUID;
 /**
  * Created by Tanmaya Mahapatra on 08-05-2015.
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class GLAQueriesDaoImpl implements GLAQueriesDao {
 
     static Logger log = Logger.getLogger(GLAQueriesDaoImpl.class.getName());

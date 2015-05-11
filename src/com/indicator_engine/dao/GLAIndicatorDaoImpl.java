@@ -22,6 +22,7 @@ package com.indicator_engine.dao;
 import com.indicator_engine.datamodel.GLAIndicator;
 import com.indicator_engine.datamodel.GLAIndicatorProps;
 import com.indicator_engine.datamodel.GLAQueries;
+import org.antlr.stringtemplate.language.Cat;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -34,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -122,6 +124,7 @@ public class GLAIndicatorDaoImpl implements GLAIndicatorDao {
         criteria.add(Restrictions.ilike("indicator_name", indicatorName));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return  criteria.list();
+
     }
 
     /**

@@ -26,7 +26,6 @@ import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.util.Rotation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,7 +41,7 @@ import java.io.IOException;
 
 public class GraphController {
 
-    @RequestMapping(value = "/piechart", method = RequestMethod.GET)
+    @RequestMapping(value = "/jgraph", method = RequestMethod.GET)
     public void drawPieChart(HttpServletRequest request,
                              HttpServletResponse response) {
         response.setContentType("image/png");
