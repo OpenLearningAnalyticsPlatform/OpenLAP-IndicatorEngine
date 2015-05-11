@@ -22,6 +22,7 @@ package com.indicator_engine.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.indicator_engine.cewolf_graphgenerator.PageViewCountData;
 import com.indicator_engine.dao.GLAIndicatorDao;
 import com.indicator_engine.dao.GLAQueriesDao;
 import com.indicator_engine.datamodel.GLAIndicator;
@@ -59,6 +60,8 @@ public class GAIndicatorSystemController {
 
     @Autowired
     private ApplicationContext appContext;
+    @Autowired
+    private PageViewCountData PageViews;
     static Logger log = Logger.getLogger(GAIndicatorSystemController.class.getName());
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
@@ -214,6 +217,7 @@ public class GAIndicatorSystemController {
             return new ModelAndView("indicator_system/viewall_indicators");
         }
         model = new ModelAndView("indicator_system/run_results");
+        model.addObject("pageViews", PageViews);
         return model;
     }
 

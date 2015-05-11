@@ -32,8 +32,9 @@
           <element id="library" level="project" name="javax.servlet.jsp.jstl-api-1.2.1" />
           <element id="library" level="project" name="org.hibernate:hibernate-validator:5.1.2.Final" />
           <element id="library" level="project" name="javax.validation:validation-api:1.1.0.Final" />
-          <element id="library" level="project" name="jfreechart-1.0.1" />
           <element id="library" level="project" name="jcommon-1.0.0" />
+          <element id="library" level="project" name="cewolf-1.2.4" />
+          <element id="library" level="project" name="cewolf-support" />
         </element>
       </element>
     </root>

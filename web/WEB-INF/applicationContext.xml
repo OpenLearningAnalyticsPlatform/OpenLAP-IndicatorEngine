@@ -133,11 +133,5 @@
     <bean id="encoder"
           class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
     </bean>
-    <bean id="indicatorPreProcessor"
-          class="com.indicator_engine.indicator_system.IndicatorPreProcessing">
-    </bean>
-    <bean id="operationNumberProcessor"
-          class="com.indicator_engine.indicator_system.Number.OperationNumberProcessor">
-    </bean>
 
 </beans>

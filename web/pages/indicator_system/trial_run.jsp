@@ -98,6 +98,10 @@
             </ol>
             <h1>Indicator Execution</h1>
             <p>Please select an Indicator to run.</p>
+            <select class="js-example-basic-single">
+                <option value="AL">Alabama</option>
+                <option value="WY">Wyoming</option>
+            </select>
             <div class="row">
                 <div class="col-md-12">
                     <form:form role="form" id="indicatorSelection"  method="post" modelAttribute="indicatorRun" action="/indicators/trialrun">

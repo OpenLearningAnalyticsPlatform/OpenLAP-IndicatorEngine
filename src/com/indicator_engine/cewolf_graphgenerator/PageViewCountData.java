@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package com.indicator_engine.controller;
+package com.indicator_engine.cewolf_graphgenerator;
 
 import java.io.Serializable;
 import java.util.Date;

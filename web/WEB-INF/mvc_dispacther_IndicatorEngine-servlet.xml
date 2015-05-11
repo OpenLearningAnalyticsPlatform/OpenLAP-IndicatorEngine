@@ -51,6 +51,16 @@
     </bean>
     <bean id="applicationContextProvider" class="com.indicator_engine.misc.ApplicationContextProvider"></bean>
 
+    <bean id="pageViews"
+          class="com.indicator_engine.cewolf_graphgenerator.PageViewCountData">
+    </bean>
+    <bean id="indicatorPreProcessor"
+          class="com.indicator_engine.indicator_system.IndicatorPreProcessing">
+    </bean>
+    <bean id="operationNumberProcessor"
+          class="com.indicator_engine.indicator_system.Number.OperationNumberProcessor">
+    </bean>
+
 
     <!-- Spring WEb FLOW - START -->
     <!-- Maps flow requests from DispatcherServlet to flowController -->

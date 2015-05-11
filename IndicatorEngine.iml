@@ -69,8 +69,7 @@
     <orderEntry type="library" name="jquery.dataTables" level="application" />
     <orderEntry type="library" name="jquery-1.10.2" level="application" />
     <orderEntry type="library" name="jcommon-1.0.0" level="project" />
-    <orderEntry type="library" name="jfreechart-1.0.1" level="project" />
     <orderEntry type="library" name="cewolf-1.2.4" level="project" />
-    <orderEntry type="library" name="batik-awt-util-1.6" level="project" />
+    <orderEntry type="library" name="cewolf-support" level="project" />
   </component>
 </module>

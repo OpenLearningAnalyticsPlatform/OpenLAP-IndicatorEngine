@@ -25,6 +25,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib uri='/WEB-INF/cewolf.tld' prefix='cewolf' %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%
     if ((session.getAttribute("loggedIn") == null) || (session.getAttribute("loggedIn") == ""))
@@ -93,18 +94,23 @@
             </ol>
             <h1>Execution Results</h1>
             <p>Here is the result of execution.</p>
-            <div class="col-md-6 col-sm-6">
-                <div class="panel panel-success">
-                    <div class="panel-heading">Line Chart</div>
-                    <canvas id="templatemo-line-chart"></canvas>
-                </div>
-            </div>
-            <div class="col-md-6 col-sm-6">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">Bar Chart</div>
-                    <canvas id="templatemo-bar-chart"></canvas>
-                </div>
-            </div>
+
+
+            <cewolf:chart
+                    id="line"
+                    title="Page View Statistics"
+                    type="line"
+                    xaxislabel="Page"
+                    yaxislabel="Views">
+                <cewolf:data>
+                    <cewolf:producer id="pageViews"/>
+                </cewolf:data>
+            </cewolf:chart>
+            <p>
+                <cewolf:img chartid="line" renderer="/cewolf" width="400" height="300"/>
+            <P>
+
+            <img src="/graphs/piechart?title=ty" />
 
 
         </div>
@@ -135,48 +141,6 @@
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/Chart.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/templatemo_script.js"></script>
-<script type="text/javascript">
-    // Line chart
-    var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
-    var lineChartData = {
-        labels : ["January","February","March","April","May","June","July"],
-        datasets : [
-            {
-                label: "My First dataset",
-                fillColor : "rgba(220,220,220,0.2)",
-                strokeColor : "rgba(220,220,220,1)",
-                pointColor : "rgba(220,220,220,1)",
-                pointStrokeColor : "#fff",
-                pointHighlightFill : "#fff",
-                pointHighlightStroke : "rgba(220,220,220,1)",
-                data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-            },
-            {
-                label: "My Second dataset",
-                fillColor : "rgba(151,187,205,0.2)",
-                strokeColor : "rgba(151,187,205,1)",
-                pointColor : "rgba(151,187,205,1)",
-                pointStrokeColor : "#fff",
-                pointHighlightFill : "#fff",
-                pointHighlightStroke : "rgba(151,187,205,1)",
-                data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-            }
-        ]
-
-    } // lineChartData
-    window.onload = function(){
-        var ctx_line = document.getElementById("templatemo-line-chart").getContext("2d");
-        var ctx_bar = document.getElementById("templatemo-bar-chart").getContext("2d");
-
-        window.myLine = new Chart(ctx_line).Line(lineChartData, {
-            responsive: true
-        });
-        window.myBar = new Chart(ctx_bar).Bar(lineChartData, {
-            responsive: true
-        });
-    }
-
-</script>
 </body>
 </html>
 <%
