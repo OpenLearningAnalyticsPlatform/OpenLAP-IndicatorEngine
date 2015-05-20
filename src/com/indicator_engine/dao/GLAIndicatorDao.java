@@ -36,7 +36,7 @@ public interface GLAIndicatorDao {
     public List<GLAIndicator> searchIndicatorsName(String searchParameter,boolean exactSearch,
                                                    String colName, String sortDirection, boolean sort);
     public int getTotalIndicators();
-    public List<GLAIndicator>  loadByIndicatorByName(String indicatorName);
+    public List<GLAIndicator>  loadByIndicatorByName(String indicatorName, boolean exact);
     public long findIndicatorID(String indicatorName);
     public void deleteIndicator(long indicator_id);
 }

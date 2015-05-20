@@ -1,4 +1,3 @@
-
 <%--
   ~ Open Platform Learning Analytics : Indicator Engine
   ~ Copyright (C) 2015  Learning Technologies Group, RWTH
@@ -21,12 +20,14 @@
 <%--
   Created by IntelliJ IDEA.
   User: Tanmaya Mahapatra
-  Date: 16-03-2015
-  Time: 04:33
+  Date: 11-05-2015
+  Time: 11:18
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib uri='/WEB-INF/cewolf.tld' prefix='cewolf' %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     if ((session.getAttribute("loggedIn") == null) || (session.getAttribute("loggedIn") == ""))
         response.sendRedirect("/login");
@@ -46,15 +47,11 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
-    <script type="javascript" src="${pageContext.request.contextPath}/js/user_profile_checks.js"> </script>
-    <link href="${pageContext.request.contextPath}/lib/select2/css/select2.min.css" rel="stylesheet" />
-    <script src="${pageContext.request.contextPath}/lib/select2/js/select2.min.js"></script>
-
 </head>
 <body>
 <div class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <div class="logo"><h1>Indicator Execution</h1></div>
+        <div class="logo"><h1>Execution Results</h1></div>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -96,42 +93,24 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Indicator Execution</h1>
-            <p>Please select an Indicator to run.</p>
-            <div class="row">
-                <div class="col-md-12">
-                    <form:form role="form" id="indicatorSelection"  method="post" modelAttribute="indicatorRun" action="/indicators/trialrun">
-                        <div class="row">
-                            <div class="col-md-6 margin-bottom-15">
-                                <label for="indRun">Select an Indicator to Run </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedIndicator" items="${indicatorRun.availableIndicators}" name ="indRun" id="indRun" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 margin-bottom-15">
-                                <label for="chartSelect">Select a Chart Type </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedChartType" items="${indicatorRun.chartTypes}" name ="chartSelect" id="chartSelect" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 margin-bottom-15">
-                                <label for="EngineSelect">Select an Engine </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedChartEngine" items="${indicatorRun.chartEngines}" name ="EngineSelect" id="EngineSelect" />
-                            </div>
-                        </div>
-                        <p>
-                            <form:errors path="*" cssClass="errorblock" element="div" />
-                        </p>
-                        <div class="row templatemo-form-buttons">
-                            <div class="col-md-12">
-                                <input class="btn btn-primary" type="submit" name="action"
-                                       value="Run" />
-                            </div>
-                        </div>
-                    </form:form>
-                </div>
-            </div>
-        </div>
+            <h1>Execution Results</h1>
+            <p>Here is the result of execution.</p>
+
+
+            <cewolf:chart
+                    id="line"
+                    title="Page View Statistics"
+                    type="line"
+                    xaxislabel="Page"
+                    yaxislabel="Views">
+                <cewolf:data>
+                    <cewolf:producer id="pageViews"/>
+                </cewolf:data>
+            </cewolf:chart>
+            <p>
+                <cewolf:img chartid="line" renderer="/cewolf" width="400" height="300"/>
+            <P>
+
 
         </div>
     </div>
@@ -156,13 +135,13 @@
         </div>
     </footer>
 </div>
+</div>
+
 
 <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/Chart.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/templatemo_script.js"></script>
-<script type="text/javascript">
-</script>
 </body>
 </html>
 <%

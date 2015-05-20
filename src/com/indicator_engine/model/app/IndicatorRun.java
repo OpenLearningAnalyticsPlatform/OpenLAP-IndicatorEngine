@@ -20,6 +20,7 @@
 package com.indicator_engine.model.app;
 
 import javax.validation.constraints.NotNull;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +30,56 @@ import java.util.List;
 public class IndicatorRun {
 
     private List<String> availableIndicators = new ArrayList<>();
+    private List<String> chartTypes = new ArrayList<>();
+    private List<String> chartEngines = new ArrayList<>();
+    @NotNull
+    private String selectedChartType;
     @NotNull
     private String selectedIndicator;
+    @NotNull
+    private String selectedChartEngine;
+
+    public IndicatorRun(){
+        chartTypes.add("Bar");
+        chartTypes.add("Pie");
+        chartEngines.add("JFreeGraph");
+        chartEngines.add("CEWOLF");
+    }
+
+
+    public List<String> getChartEngines() {
+        return chartEngines;
+    }
+
+    public void setChartEngines(List<String> chartEngines) {
+        this.chartEngines = chartEngines;
+    }
+
+    public String getSelectedChartEngine() {
+        return selectedChartEngine;
+    }
+
+    public void setSelectedChartEngine(String selectedChartEngine) {
+        this.selectedChartEngine = selectedChartEngine;
+    }
+
+    public List<String> getChartTypes() {
+        return chartTypes;
+    }
+
+    public void setChartTypes(List<String> chartTypes) {
+        this.chartTypes = chartTypes;
+    }
+
+    public String getSelectedChartType() {
+        return selectedChartType;
+    }
+
+    public void setSelectedChartType(String selectedChartType) {
+        this.selectedChartType = selectedChartType;
+    }
+
+
 
     public List<String> getAvailableIndicators() {
         return availableIndicators;

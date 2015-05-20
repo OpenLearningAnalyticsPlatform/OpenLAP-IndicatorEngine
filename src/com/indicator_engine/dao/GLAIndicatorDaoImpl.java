@@ -115,13 +115,17 @@ public class GLAIndicatorDaoImpl implements GLAIndicatorDao {
      */
     @Override
     @Transactional
-    public List<GLAIndicator> loadByIndicatorByName(String indicatorName) {
+    public List<GLAIndicator> loadByIndicatorByName(String indicatorName, boolean exact) {
         Session session = factory.getCurrentSession();
         indicatorName = "%"+indicatorName+"%";
         Criteria criteria = session.createCriteria(GLAIndicator.class);
         criteria.setFetchMode("queries", FetchMode.JOIN);
         criteria.setFetchMode("glaIndicatorProps", FetchMode.JOIN);
-        criteria.add(Restrictions.ilike("indicator_name", indicatorName));
+        if(exact)
+            criteria.add(Restrictions.eq("indicator_name", indicatorName));
+        else
+            criteria.add(Restrictions.ilike("indicator_name", indicatorName));
+
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return  criteria.list();
 

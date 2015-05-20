@@ -25,8 +25,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib uri='/WEB-INF/cewolf.tld' prefix='cewolf' %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     if ((session.getAttribute("loggedIn") == null) || (session.getAttribute("loggedIn") == ""))
         response.sendRedirect("/login");
@@ -95,22 +95,11 @@
             <h1>Execution Results</h1>
             <p>Here is the result of execution.</p>
 
-
-            <cewolf:chart
-                    id="line"
-                    title="Page View Statistics"
-                    type="line"
-                    xaxislabel="Page"
-                    yaxislabel="Views">
-                <cewolf:data>
-                    <cewolf:producer id="pageViews"/>
-                </cewolf:data>
-            </cewolf:chart>
             <p>
                 <cewolf:img chartid="line" renderer="/cewolf" width="400" height="300"/>
             <P>
 
-            <img src="/graphs/jgraph?title=ty" />
+            <img src="/graphs/jgraph?indicator=${indicatorName}&type=${chartType}" />
 
 
         </div>
@@ -136,6 +125,8 @@
     </div>
 </footer>
 </div>
+    </div>
+
 
 <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>

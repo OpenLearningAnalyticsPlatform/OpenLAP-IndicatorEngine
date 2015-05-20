@@ -205,20 +205,29 @@ public class GAIndicatorSystemController {
             indicatorRun.getAvailableIndicators().add(gI.getIndicator_name());
         }
         model.put("indicatorRun",indicatorRun);
-
         return "indicator_system/trial_run";
     }
 
     @RequestMapping(value = "/trialrun", method = RequestMethod.POST)
-    public ModelAndView processTrialRun( @Valid @ModelAttribute("indicatorRun") IndicatorRun indicatorRun, BindingResult bindingResult) {
+    public String processTrialRun( @Valid @ModelAttribute("indicatorRun") IndicatorRun indicatorRun,
+                                         BindingResult bindingResult,
+                                         Map<String, Object> model) {
 
-        ModelAndView model = null;
         if (bindingResult.hasErrors()) {
-            return new ModelAndView("indicator_system/viewall_indicators");
+            return "indicator_system/trial_run";
         }
-        model = new ModelAndView("indicator_system/run_results");
-        model.addObject("pageViews", PageViews);
-        return model;
+
+        if(indicatorRun.getSelectedChartEngine().equals("JFreeGraph")) {
+            model.put("chartType", indicatorRun.getSelectedChartType());
+            model.put("indicatorName", indicatorRun.getSelectedIndicator());
+            return "indicator_system/run_results";
+        }
+        else if (indicatorRun.getSelectedChartEngine().equals("CEWOLF")) {
+            model.put("pageViews", PageViews);
+            return "indicator_system/run_results_cewolf";
+        }
+
+       return null;
     }
 
     @RequestMapping(value = "/fetchExistingIndicatorsData.web", method = RequestMethod.GET, produces = "application/json")
@@ -350,7 +359,7 @@ public class GAIndicatorSystemController {
             }
         }
         else if (!NumberChecks.isNumeric(searchIndicatorForm.getSearchField()) && searchIndicatorForm.getSelectedSearchType().equals("Indicator Name")) {
-            glaIndicatorList = glaIndicatorBean.loadByIndicatorByName(searchIndicatorForm.getSearchField());
+            glaIndicatorList = glaIndicatorBean.loadByIndicatorByName(searchIndicatorForm.getSearchField(),false);
             if(glaIndicatorList != null) {
                 for(GLAIndicator gI : glaIndicatorList){
                     log.info("GLA INDICATOR FROM DB SEARCH: NAME : \t"+ gI.getIndicator_name());
