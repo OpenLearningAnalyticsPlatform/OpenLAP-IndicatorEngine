@@ -121,8 +121,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6 margin-bottom-15">
-                                    <label for="QuestionNaming">Enter Question Name </label>
-                                    <form:input path="questionName" type="text" class="form-control" name ="QuestionNaming" id="QuestionNaming" />
+                                    <label for="QuestionNaming">Enter Indicator Name </label>
+                                    <form:input path="indicatorName" type="text" class="form-control" name ="QuestionNaming" id="QuestionNaming" />
                                 </div>
                             </div>
                         </div>
@@ -132,7 +132,7 @@
                         <div class="row templatemo-form-buttons">
                             <div class="col-md-12">
                                 <input type="submit" name="_eventId_addnewSelected"
-                                       value="Add a New Question to this Indicator" />
+                                       value="Add a New Indicator to this Question" />
                             </div>
                         </div>
                         <div class="row templatemo-form-buttons">

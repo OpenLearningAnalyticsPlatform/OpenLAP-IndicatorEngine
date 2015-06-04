@@ -73,8 +73,8 @@ public class SelectNumberParameters implements Serializable{
 
     private long result ;
     private String hql;
-    @Size(min=3, max=50, message="Question Name must be between 3 and 50 characters")
-    private String questionName;
+    @Size(min=3, max=50, message="Indicator Name must be between 3 and 50 characters")
+    private String indicatorName;
     private final List<String> filteringType = new ArrayList<>();
     private String selectedFilteringType;
 
@@ -130,7 +130,7 @@ public class SelectNumberParameters implements Serializable{
 
         this.result = 0;
         this.hql = null;
-        this.questionName = null;
+        this.indicatorName = null;
 
         this.filteringType.clear();
         this.selectedFilteringType = null;
@@ -506,12 +506,12 @@ public class SelectNumberParameters implements Serializable{
         this.selectedRetrievableObjects = selectedRetrievableObjects;
     }
 
-    public String getQuestionName() {
-        return questionName;
+    public String getIndicatorName() {
+        return indicatorName;
     }
 
-    public void setQuestionName(String questionName) {
-        this.questionName = questionName;
+    public void setIndicatorName(String indicatorName) {
+        this.indicatorName = indicatorName;
     }
 }
 

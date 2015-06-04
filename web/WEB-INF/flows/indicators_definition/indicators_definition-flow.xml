@@ -25,7 +25,7 @@
 		http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
 
-    <var name="numberIndicator" class="com.indicator_engine.model.indicator_system.Number.NumberIndicator"/>
+    <var name="questions" class="com.indicator_engine.model.indicator_system.Number.Questions"/>
 
     <on-start>
         <evaluate expression="indicatorPreProcessor.initSelectNumberParametersObject()"
@@ -36,9 +36,9 @@
 
     <!-- By default, the first state is the start state. -->
 
-    <view-state id="indicatorName" view="indicator_system/indicator_name" model="numberIndicator">
+    <view-state id="questionName" view="indicator_system/indicator_name" model="questions">
         <binder>
-            <binding property="indicatorName" required="true" />
+            <binding property="questionName" required="true" />
         </binder>
         <transition on="indicatorNameEntered" bind="true" validate="true" to="definitionHome" />
     </view-state>
@@ -47,7 +47,7 @@
         <binder>
             <binding property="selectedOperation" required="true" />
         </binder>
-        <transition  on="prevScreen" to="indicatorName"/>
+        <transition  on="prevScreen" to="questionName"/>
         <transition on="operationSelected" bind="true" validate="true" to="retrieveOperation" />
 	</view-state>
 
@@ -279,13 +279,13 @@
 
     <view-state id="displayResult" view="indicator_system/number/indicator_number_result" model="selectNumberParameters">
        <binder>
-            <binding property="questionName" required="true"/>
+            <binding property="indicatorName" required="true"/>
         </binder>
         <transition  on="addnewSelected" to="flushPrevRuns">
-            <evaluate expression="indicatorPreProcessor.addQuestion(selectNumberParameters,numberIndicator)"/>
+            <evaluate expression="indicatorPreProcessor.addIndicator(selectNumberParameters,questions)"/>
         </transition>
         <transition  on="saveSelected" to="saveIndicator">
-            <evaluate expression="indicatorPreProcessor.addQuestion(selectNumberParameters,numberIndicator)"/>
+            <evaluate expression="indicatorPreProcessor.addIndicator(selectNumberParameters,questions)"/>
         </transition>
     </view-state>
 
@@ -295,24 +295,24 @@
     </action-state>
 
     <action-state id="saveIndicator">
-        <evaluate expression="indicatorPreProcessor.saveIndicator(numberIndicator)"/>
+        <evaluate expression="indicatorPreProcessor.saveIndicator(questions)"/>
         <transition to="retrievefromDB" />
     </action-state>
 
     <action-state id="retrievefromDB">
-        <evaluate expression="indicatorPreProcessor.retreiveFromDB(numberIndicator)"/>
+        <evaluate expression="indicatorPreProcessor.retrieveQuestion(questions)"/>
         <transition to="saveSummary" />
     </action-state>
 
-    <view-state id="saveSummary" view="indicator_system/number/indicator_number_savedsummary" model="numberIndicator" >
+    <view-state id="saveSummary" view="indicator_system/number/indicator_number_savedsummary" model="questions" >
 
         <transition  on="summaryOK" to="definitionEnd"/>
         <transition  on="newIndicator" to="flushAll"/>
     </view-state>
 
     <action-state id="flushAll">
-        <evaluate expression="indicatorPreProcessor.flushAll(numberIndicator, selectNumberParameters, availableOperations)"/>
-        <transition to="indicatorName" />
+        <evaluate expression="indicatorPreProcessor.flushAll(questions, selectNumberParameters, availableOperations)"/>
+        <transition to="questionName" />
     </action-state>
 
     <end-state id="definitionEnd" view="externalRedirect:contextRelative:/indicators/home"/>

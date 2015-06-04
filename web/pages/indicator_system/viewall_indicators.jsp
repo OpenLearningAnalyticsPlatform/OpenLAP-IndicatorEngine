@@ -145,7 +145,7 @@
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
             <h1>Indicator Control Panel</h1>
-            <p>Here you can define view all Existing Indicators.</p>
+            <p>Here you can define view all Existing Questions.</p>
             <div class="row">
                 <div class="col-md-12">
                     <form:form role="form" id="searchIndicatorForm"  method="post" modelAttribute="searchIndicatorForm" action="/indicators/viewall">
@@ -171,7 +171,7 @@
                         <div class="row">
                             <div class="col-md-6 margin-bottom-15">
                                 <label for="multipleSelect">Search Results </label>
-                                <form:select class="form-control" path="selectedIndicatorName" name="multipleSelect">
+                                <form:select class="form-control" path="selectedQuestionName" name="multipleSelect">
                                     <form:options items="${searchIndicatorForm.searchResults}" />
                                 </form:select>
                             </div>
@@ -193,13 +193,13 @@
             <div class="row">
                 <div class="col-md-12">
                     <form:form action="" method="GET">
-                        <h2 >Listing of All Existing Indicators<br><br></h2>
+                        <h2 >Listing of All Existing Questions<br><br></h2>
                         <table width="70%" style="border: 3px;background: rgb(243, 244, 248);"><tr><td>
                             <table id="indicatorData" class="display" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
-                                    <th>Indicator ID</th>
-                                    <th>Indicator Name</th>
+                                    <th>Question ID</th>
+                                    <th>Question Name</th>
                                     <th>Short Name</th>
                                 </tr>
                                 </thead>

@@ -96,14 +96,14 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Indicator Save Summary </h1>
-            <p>Indicator Successfully Saved. Here are the Details.</p>
+            <h1>Question Save Summary </h1>
+            <p>Question Successfully Saved. Here are the Details.</p>
             <div class="row">
                 <div class="col-md-12">
-                    <form:form role="form" id="userSelection"  method="POST" commandName="numberIndicator" action="${flowExecutionUrl}">
+                    <form:form role="form" id="userSelection"  method="POST" commandName="questions" action="${flowExecutionUrl}">
                         <div class="col-md-6 col-sm-6 margin-bottom-30">
                             <div class="panel panel-primary">
-                                <div class="panel-heading">Indicator Details</div>
+                                <div class="panel-heading">Question Details</div>
                                 <div class="panel-body">
                                     <table class="table table-striped">
                                         <thead>
@@ -117,10 +117,10 @@
                                         <tbody>
 
                                         <tr>
-                                            <td><c:out value="${numberIndicator.indicator_id}"/></td>
-                                            <td><c:out value="${numberIndicator.indicatorName}"/></td>
-                                            <td><c:out value="${numberIndicator.genIndicatorProps.last_executionTime}"/></td>
-                                            <td><c:out value="${numberIndicator.genIndicatorProps.totalExecutions}"/></td>
+                                            <td><c:out value="${questions.questionId}"/></td>
+                                            <td><c:out value="${questions.questionName}"/></td>
+                                            <td><c:out value="${questions.last_executionTime}"/></td>
+                                            <td><c:out value="${questions.totalExecutions}"/></td>
                                         </tr>
 
                                         </tbody>
@@ -130,21 +130,21 @@
                         </div>
                         <div class="col-md-6 col-sm-6 margin-bottom-30">
                             <div class="panel panel-primary">
-                                <div class="panel-heading">Question Details</div>
+                                <div class="panel-heading">Indicator Details</div>
                                 <div class="panel-body">
                                     <table class="table table-striped">
                                         <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Question Name</th>
+                                            <th>Indicator Name</th>
                                             <th>Equivalent HQL</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <c:forEach var="entityVal" items="${numberIndicator.genQueries}"  varStatus="loop">
+                                        <c:forEach var="entityVal" items="${questions.genQueries}"  varStatus="loop">
                                             <tr>
                                                 <td><c:out value="${entityVal.queryID}"/></td>
-                                                <td><c:out value="${entityVal.questionName}"/></td>
+                                                <td><c:out value="${entityVal.indicatorName}"/></td>
                                                 <td><c:out value="${entityVal.query}"/></td>
                                             </tr>
                                         </c:forEach>

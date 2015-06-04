@@ -19,9 +19,6 @@
 
 package com.indicator_engine.datamodel;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -50,13 +47,17 @@ public class GLAIndicator implements Serializable {
     @Expose
     private String short_name;
 
+    @Column(name = "hql", nullable = false, columnDefinition="TEXT")
+    @Expose
+    private String hql;
+
     @OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL,
             mappedBy="glaIndicator", orphanRemoval=true)
     private GLAIndicatorProps  glaIndicatorProps;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade=CascadeType.ALL,
-            mappedBy = "glaIndicator", orphanRemoval=true)
-    private  Set<GLAQueries> queries = new HashSet<GLAQueries>(0);
+    @ManyToMany(mappedBy = "glaIndicators")
+    private Set<GLAQuestion> glaQuestions = new HashSet<GLAQuestion>();
+
 
     public GLAIndicator() {
         this.short_name = "";
@@ -67,9 +68,9 @@ public class GLAIndicator implements Serializable {
         this.short_name = "";
     }
 
-    public GLAIndicator( String indicator_name, Set<GLAQueries> queries) {
+    public GLAIndicator( String indicator_name, Set<GLAQuestion> glaQuestions) {
         this.indicator_name = indicator_name;
-        this.queries = queries;
+        this.glaQuestions = glaQuestions;
     }
 
     public long getId() {
@@ -104,12 +105,19 @@ public class GLAIndicator implements Serializable {
         this.short_name = short_name;
     }
 
-    public Set<GLAQueries> getQueries() {
-        return queries;
+    public String getHql() {
+        return hql;
     }
 
-    public void setQueries(Set<GLAQueries> queries) {
-        this.queries = queries;
+    public void setHql(String hql) {
+        this.hql = hql;
     }
 
+    public Set<GLAQuestion> getGlaQuestions() {
+        return glaQuestions;
+    }
+
+    public void setGlaQuestions(Set<GLAQuestion> glaQuestions) {
+        this.glaQuestions = glaQuestions;
+    }
 }

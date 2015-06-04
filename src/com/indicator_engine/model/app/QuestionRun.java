@@ -27,19 +27,19 @@ import java.util.List;
 /**
  * Created by Tanmaya Mahapatra on 11-05-2015.
  */
-public class IndicatorRun {
+public class QuestionRun {
 
-    private List<String> availableIndicators = new ArrayList<>();
+    private List<String> availableQuestions = new ArrayList<>();
     private List<String> chartTypes = new ArrayList<>();
     private List<String> chartEngines = new ArrayList<>();
     @NotNull
     private String selectedChartType;
     @NotNull
-    private String selectedIndicator;
+    private String selectedQuestion;
     @NotNull
     private String selectedChartEngine;
 
-    public IndicatorRun(){
+    public QuestionRun(){
         chartTypes.add("Bar");
         chartTypes.add("Pie");
         chartEngines.add("JFreeGraph");
@@ -79,21 +79,19 @@ public class IndicatorRun {
         this.selectedChartType = selectedChartType;
     }
 
-
-
-    public List<String> getAvailableIndicators() {
-        return availableIndicators;
+    public List<String> getAvailableQuestions() {
+        return availableQuestions;
     }
 
-    public void setAvailableIndicators(List<String> availableIndicators) {
-        this.availableIndicators = availableIndicators;
+    public void setAvailableQuestions(List<String> availableQuestions) {
+        this.availableQuestions = availableQuestions;
     }
 
-    public String getSelectedIndicator() {
-        return selectedIndicator;
+    public String getSelectedQuestion() {
+        return selectedQuestion;
     }
 
-    public void setSelectedIndicator(String selectedIndicator) {
-        this.selectedIndicator = selectedIndicator;
+    public void setSelectedQuestion(String selectedQuestion) {
+        this.selectedQuestion = selectedQuestion;
     }
 }

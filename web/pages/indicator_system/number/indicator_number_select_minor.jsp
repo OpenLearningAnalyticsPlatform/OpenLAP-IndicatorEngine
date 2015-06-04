@@ -93,8 +93,8 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Name for the New Indicator</h1>
-            <p>Please Enter a Name for the to be defined Indicator</p>
+            <h1>Category Specification</h1>
+            <p>Please select appropriate Category Settings </p>
             <div class="row">
                 <div class="col-md-12">
                     <form:form role="form" id="entitySelection"  method="post" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">

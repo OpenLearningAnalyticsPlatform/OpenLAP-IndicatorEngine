@@ -19,20 +19,18 @@
 
 package com.indicator_engine.dao;
 
-import com.indicator_engine.datamodel.GLAQueries;
+import com.indicator_engine.datamodel.GLAIndicator;
+import com.indicator_engine.datamodel.GLAQuestion;
 
 import java.util.List;
 
 /**
- * Created by Tanmaya Mahapatra on 08-05-2015.
+ * Created by Tanmaya Mahapatra on 03-06-2015.
  */
-public interface GLAQueriesDao {
-
-    public long add(GLAQueries glaQueries);
-    public void addWithExistingIndicator(GLAQueries glaQueries, long id);
-    public List<GLAQueries> displayall();
-    public List<GLAQueries> searchQuestionsName(String searchParameter,boolean exactSearch);
+public interface GLAQuestionDao {
+    public long add(GLAQuestion glaQuestion, List<GLAIndicator> glaIndicator);
+    public List<GLAQuestion> displayAll(String colName, String sortDirection, boolean sort);
     public long findQuestionID(String questionName);
-    public void deleteQuestion(long question_id);
-
+    public GLAQuestion loadByQuestionID(long ID);
+    public void updateStatistics(long ID);
 }

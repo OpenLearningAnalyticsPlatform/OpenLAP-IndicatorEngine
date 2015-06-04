@@ -122,7 +122,7 @@
                         <div class="row">
                             <div class="col-md-6 margin-bottom-15">
                                 <label for="multipleSelect">Search Results </label>
-                                <form:select class="form-control" path="selectedIndicatorName" name="multipleSelect">
+                                <form:select class="form-control" path="selectedQuestionName" name="multipleSelect">
                                     <form:options items="${searchIndicatorForm.searchResults}" />
                                 </form:select>
                             </div>

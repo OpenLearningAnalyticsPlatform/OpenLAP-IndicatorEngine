@@ -36,14 +36,14 @@ public class SearchIndicatorForm {
     @NotNull(message = "selectedSearchType of Birth cannot be Null")
     private String selectedSearchType;
     private List<String> searchResults = new ArrayList<>();
-    private String selectedIndicatorName;
+    private String selectedQuestionName;
 
-    public String getSelectedIndicatorName() {
-        return selectedIndicatorName;
+    public String getSelectedQuestionName() {
+        return selectedQuestionName;
     }
 
-    public void setSelectedIndicatorName(String selectedIndicatorName) {
-        this.selectedIndicatorName = selectedIndicatorName;
+    public void setSelectedQuestionName(String selectedQuestionName) {
+        this.selectedQuestionName = selectedQuestionName;
     }
 
     public SearchIndicatorForm(){

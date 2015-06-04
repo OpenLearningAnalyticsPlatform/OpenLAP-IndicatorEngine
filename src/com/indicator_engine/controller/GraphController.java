@@ -21,8 +21,10 @@ package com.indicator_engine.controller;
 
 import com.indicator_engine.dao.GLAEntityDao;
 import com.indicator_engine.dao.GLAIndicatorDao;
+import com.indicator_engine.dao.GLAQuestionDao;
 import com.indicator_engine.datamodel.GLAIndicator;
-import com.indicator_engine.datamodel.GLAQueries;
+import com.indicator_engine.datamodel.GLAQuestion;
+import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -49,7 +51,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -62,74 +63,74 @@ public class GraphController {
 
     @Autowired
     private ApplicationContext appContext;
+    static Logger log = Logger.getLogger(GraphController.class.getName());
 
     @RequestMapping(value = "/jgraph", method = RequestMethod.GET)
     public void processGraphRequests(@RequestParam(value="type", defaultValue="bar") String gType,
-                                     @RequestParam(value="indicator", required = true)String indicatorName,
+                                     @RequestParam(value="question", required = true)String questionName,
                                      HttpServletRequest request,
                                      HttpServletResponse response) {
 
 
         response.setContentType("image/png");
-        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
-
-        long indicator_id = glaIndicatorBean.findIndicatorID(indicatorName);
-        GLAIndicator glaIndicator = glaIndicatorBean.loadByIndicatorID(indicator_id);
-
+        GLAQuestionDao glaQuestionsBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
+        long question_id = glaQuestionsBean.findQuestionID(questionName);
+        GLAQuestion glaQuestion = glaQuestionsBean.loadByQuestionID(question_id);
         if(gType.equals("Pie")) {
-            PieDataset pdSet = createDataSet(glaIndicator);
-            JFreeChart chart = createPieChart(pdSet, glaIndicator.getIndicator_name());
+            PieDataset pdSet = createDataSet(glaQuestion);
+            JFreeChart chart = createPieChart(pdSet, glaQuestion.getQuestion_name());
             try {
                 ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart,
                         750, 400);
+                glaQuestionsBean.updateStatistics(question_id);
                 response.getOutputStream().close();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
         else if(gType.equals("Bar")) {
-            CategoryDataset dataset = createCategoryDataset(glaIndicator);
-            JFreeChart chart = createBarChart(dataset, glaIndicator.getIndicator_name());
+            CategoryDataset dataset = createCategoryDataset(glaQuestion);
+            JFreeChart chart = createBarChart(dataset, glaQuestion.getQuestion_name());
             try {
                 ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart,
                         750, 400);
+                glaQuestionsBean.updateStatistics(question_id);
                 response.getOutputStream().close();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-
         }
-
-
     }
 
-    private PieDataset createDataSet(GLAIndicator glaIndicator) {
-        GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
+    private PieDataset createDataSet(GLAQuestion glaQuestion) {
         DefaultPieDataset dpd = new DefaultPieDataset();
-        Set<GLAQueries> queries = glaIndicator.getQueries();
-        for(GLAQueries glaQuery : queries){
-            dpd.setValue(glaQuery.getQuestion_name(), glaEntityBean.findNumber(glaQuery.getHql()));
+        GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
+        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
+        log.info("PIE CHART DATA : STARTED \n" + glaQuestion.getGlaIndicators());
+        for( GLAIndicator glaIndicator : glaQuestion.getGlaIndicators()){
+
+            dpd.setValue(glaIndicator.getIndicator_name(), glaEntityBean.findNumber(glaIndicator.getHql()));
+            glaIndicatorBean.updateStatistics(glaIndicator.getId());
         }
         return dpd;
     }
 
-    private CategoryDataset createCategoryDataset(GLAIndicator glaIndicator) {
+    private CategoryDataset createCategoryDataset(GLAQuestion glaQuestion) {
 
         GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
+        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
         long total = 0;
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        Set<GLAQueries> queries = glaIndicator.getQueries();
-        for(GLAQueries glaQuery : queries){
-            total += glaEntityBean.findNumber(glaQuery.getHql());
+        for( GLAIndicator glaIndicator : glaQuestion.getGlaIndicators()){
+            total += glaEntityBean.findNumber(glaIndicator.getHql());
         }
-        for(GLAQueries glaQuery : queries) {
-            dataset.setValue((glaEntityBean.findNumber(glaQuery.getHql())*100)/total, glaIndicator.getIndicator_name(),
-                    glaQuery.getQuestion_name());
+        for( GLAIndicator glaIndicator : glaQuestion.getGlaIndicators()){
+            dataset.setValue((glaEntityBean.findNumber(glaIndicator.getHql())*100)/total, glaIndicator.getIndicator_name(),
+                    glaIndicator.getIndicator_name());
+            glaIndicatorBean.updateStatistics(glaIndicator.getId());
         }
         return dataset;
-
     }
-
 
     private JFreeChart createPieChart(final PieDataset pdSet, final String chartTitle) {
 
@@ -147,7 +148,7 @@ public class GraphController {
         // create the chart...
         final JFreeChart chart = ChartFactory.createBarChart(
                 chartTitle,         // chart title
-                "Questions",               // domain axis label
+                "Indicators",               // domain axis label
                 "Percentage",                  // range axis label
                 dataset,                  // data
                 PlotOrientation.VERTICAL, // orientation

@@ -21,7 +21,8 @@ package com.indicator_engine.indicator_system;
 
 import com.indicator_engine.dao.*;
 import com.indicator_engine.datamodel.GLAIndicator;
-import com.indicator_engine.datamodel.GLAQueries;
+import com.indicator_engine.datamodel.GLAQuestion;
+import com.indicator_engine.datamodel.GLAQuestionProps;
 import com.indicator_engine.model.indicator_system.Number.*;
 import com.indicator_engine.model.indicator_system.IndicatorDefnOperationForm;
 import org.apache.log4j.Logger;
@@ -30,7 +31,6 @@ import org.springframework.context.ApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Tanmaya Mahapatra on 31-03-2015.
@@ -230,66 +230,73 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
 
     }
     @Override
-    public void addQuestion(SelectNumberParameters selectNumberParameters, NumberIndicator numberIndicator){
-        numberIndicator.getGenQueries().add(new GenQuery(selectNumberParameters.getHql(), selectNumberParameters.getQuestionName(),0));
+    public void addIndicator(SelectNumberParameters selectNumberParameters, Questions questions){
+        questions.getGenQueries().add(new GenQuery(selectNumberParameters.getHql(), selectNumberParameters.getIndicatorName(),0));
         log.info("Dumping Questions : \n");
-        for(GenQuery gQ : numberIndicator.getGenQueries()){
+        for(GenQuery gQ : questions.getGenQueries()){
             log.info(gQ.getQueryID() + "\t" + gQ.getQuery()+ "\n");
         }
 
     }
     @Override
-    public void saveIndicator(NumberIndicator numberIndicator){
-        log.info("Saving Indicator and all its Questions/Queries : STARTED");
+    public void saveIndicator(Questions questions){
+        log.info("Saving Indicator and all its Questions/Queries : STARTED " + questions.getQuestionName());
         GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
-        GLAQueriesDao glaQueriesBean = (GLAQueriesDao) appContext.getBean("glaQueries");
-        GLAIndicator glaIndicator = new GLAIndicator();
-        GLAQueries glaQueries = new GLAQueries();
-        glaIndicator.setIndicator_name(numberIndicator.getIndicatorName());
-        glaQueries.setHql(numberIndicator.getGenQueries().get(0).getQuery());
-        glaQueries.setQuestion_name(numberIndicator.getGenQueries().get(0).getQuestionName());
-        numberIndicator.setIndicator_id(glaIndicatorBean.add(glaIndicator, glaQueries));
-        for(int i =1 ; i < numberIndicator.getGenQueries().size(); i++) {
-            glaQueriesBean.addWithExistingIndicator(new GLAQueries(numberIndicator.getGenQueries().get(i).getQuery(),
-                            numberIndicator.getGenQueries().get(i).getQuestionName()),glaIndicator.getId());
+        GLAQuestionDao glaQuestionBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
+        List<GLAIndicator> glaIndicator = new ArrayList<>();
+        GLAQuestion glaQuestion = new GLAQuestion();
+        glaQuestion.setQuestion_name(questions.getQuestionName());
+        glaQuestion.setIndicators_num(questions.getGenQueries().size());
+        glaQuestion.setGlaQuestionProps(new GLAQuestionProps());
+        for(int i = 0 ; i < questions.getGenQueries().size(); i++) {
+            GLAIndicator gI = new GLAIndicator();
+            gI.setHql(questions.getGenQueries().get(i).getQuery());
+            gI.setIndicator_name(questions.getGenQueries().get(i).getIndicatorName());
+            glaIndicator.add(gI);
         }
+        questions.setQuestionId(glaQuestionBean.add(glaQuestion, glaIndicator));
         log.info("Saving Indicator and all its Questions/Queries : ENDED");
 
 
     }
 
     @Override
-    public void retreiveFromDB(NumberIndicator numberIndicator){
-
-        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
-        log.info("Retreive From DB : STARTED \n");
-        log.info("ID : \t"+ numberIndicator.getIndicator_id());
-
-        GLAIndicator glaIndicator = glaIndicatorBean.loadByIndicatorID(numberIndicator.getIndicator_id());
-            log.info("GLA INDICATOR FROM DB : ID : \t"+ glaIndicator.getId());
-            log.info("GLA INDICATOR FROM DB : Name : \t"+ glaIndicator.getIndicator_name());
-            log.info("GLA INDICATOR FROM DB : PROPS ID : \t"+ glaIndicator.getGlaIndicatorProps().getId());
-            log.info("GLA INDICATOR FROM DB : LEX TIME : \t"+ glaIndicator.getGlaIndicatorProps().getLast_executionTime());
-            log.info("GLA INDICATOR FROM DB : EXEC COUNTER : \t"+ glaIndicator.getGlaIndicatorProps().getTotalExecutions());
-            numberIndicator.reset();
-            numberIndicator.setIndicator_id(glaIndicator.getId());
-            numberIndicator.setIndicatorName(glaIndicator.getIndicator_name());
-            numberIndicator.setGenIndicatorProps(glaIndicator.getGlaIndicatorProps().getId(),
-                    glaIndicator.getGlaIndicatorProps().getLast_executionTime(),
-                    glaIndicator.getGlaIndicatorProps().getTotalExecutions());
-            Set<GLAQueries> genQueries = glaIndicator.getQueries();
-            for (GLAQueries gQ : genQueries) {
-                numberIndicator.getGenQueries().add(new GenQuery(gQ.getHql(),gQ.getQuestion_name(), gQ.getId()));
-            }
+    public void retrieveQuestion(Questions questions){
+        log.info("retrieveQuestion : STARTED \n");
+        GLAQuestionDao glaQuestionsBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
+        log.info("RetrieveQuestion From DB : STARTED \n");
+        GLAQuestion glaQuestion = glaQuestionsBean.loadByQuestionID(questions.getQuestionId());
+        questions.reset();
+        questions.setQuestionId(glaQuestion.getId());
+        questions.setQuestionName(glaQuestion.getQuestion_name());
+        questions.setLast_executionTime(glaQuestion.getGlaQuestionProps().getLast_executionTime());
+        questions.setTotalExecutions(glaQuestion.getGlaQuestionProps().getTotalExecutions());
+        log.info("GLA QUESTION FROM DB : ID : \t"+ glaQuestion.getId());
+        log.info("GLA QUESTION FROM DB : Name : \t"+ glaQuestion.getQuestion_name());
+        for( GLAIndicator glaIndicators : glaQuestion.getGlaIndicators()){
+            log.info("GLA Indicator FROM DB : Name : \t"+ glaIndicators.getIndicator_name());
+            log.info("GLA Indicator FROM DB : ID : \t"+ glaIndicators.getId());
+            log.info("GLA Indicator FROM DB : HQL : \t"+ glaIndicators.getHql());
+            log.info("GLA Indicator FROM DB : Short Name : \t"+ glaIndicators.getShort_name());
+            log.info("GLA Indicator FROM DB : PROPS ID : \t"+ glaIndicators.getGlaIndicatorProps().getId());
+            log.info("GLA INDICATOR FROM DB : LEX TIME : \t"+ glaIndicators.getGlaIndicatorProps().getLast_executionTime());
+            log.info("GLA INDICATOR FROM DB : EXEC COUNTER : \t"+ glaIndicators.getGlaIndicatorProps().getTotalExecutions());
+            GenQuery genQuery = new GenQuery(glaIndicators.getHql(),glaIndicators.getIndicator_name(),
+                    glaIndicators.getId());
+            genQuery.setGenIndicatorProps(glaIndicators.getGlaIndicatorProps().getId(),glaIndicators.getGlaIndicatorProps().getLast_executionTime(),
+                    glaIndicators.getGlaIndicatorProps().getTotalExecutions());
+            questions.getGenQueries().add(genQuery);
+        }
+        log.info("reteriveQuestion : ENDED \n");
     }
 
     @Override
-    public void flushAll(NumberIndicator numberIndicator, SelectNumberParameters selectNumberParameters,
+    public void flushAll(Questions questions, SelectNumberParameters selectNumberParameters,
                                  IndicatorDefnOperationForm availableOperations){
 
         GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
         GLAOperationsDao glaOperationsBean = (GLAOperationsDao) appContext.getBean("glaOperations");
-        numberIndicator.reset();
+        questions.reset();
         selectNumberParameters.reset();
         availableOperations.reset();
         selectNumberParameters.setSource(glaEventBean.selectAll("source"));

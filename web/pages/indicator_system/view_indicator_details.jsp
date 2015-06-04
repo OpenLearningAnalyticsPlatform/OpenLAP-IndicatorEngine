@@ -95,14 +95,14 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Indicator Details : From DB </h1>
-            <p>Indicator Successfully Retrieved. Here are the Details.</p>
+            <h1>Question Details : From DB </h1>
+            <p>Question Successfully Retrieved. Here are the Details.</p>
             <div class="table-responsive">
-                <h4 class="margin-bottom-15">Indicator Details</h4>
+                <h4 class="margin-bottom-15">Question Details</h4>
                 <table class="table table-striped table-hover table-bordered">
                     <thead>
                     <tr>
-                        <th>Indicator ID</th>
+                        <th>Question ID</th>
                         <th>Name</th>
                         <th>Number of Questions</th>
                         <th>Last Executed on</th>
@@ -121,12 +121,12 @@
                 </table>
             </div>
             <div class="table-responsive">
-                <h4 class="margin-bottom-15">Associated Questions</h4>
+                <h4 class="margin-bottom-15">Associated Indicators</h4>
                 <table class="table table-striped table-hover table-bordered">
                     <thead>
                     <tr>
-                        <th>Question ID</th>
-                        <th>Question Name</th>
+                        <th>Indicator ID</th>
+                        <th>Indicator Name</th>
                         <th>Hibernate Query</th>
                     </tr>
                     </thead>

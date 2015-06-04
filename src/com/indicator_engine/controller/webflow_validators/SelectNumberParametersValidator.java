@@ -20,10 +20,7 @@
 package com.indicator_engine.controller.webflow_validators;
 
 import com.indicator_engine.dao.GLAIndicatorDao;
-import com.indicator_engine.dao.GLAQueriesDao;
 import com.indicator_engine.datamodel.GLAIndicator;
-import com.indicator_engine.datamodel.GLAQueries;
-import com.indicator_engine.model.indicator_system.Number.NumberIndicator;
 import com.indicator_engine.model.indicator_system.Number.SelectNumberParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.binding.message.MessageContext;
@@ -90,20 +87,20 @@ public class SelectNumberParametersValidator {
     public void validateDisplayResult(SelectNumberParameters selectNumberParameters, ValidationContext context) {
         MessageContext messages = context.getMessageContext();
         boolean status = true;
-        GLAQueriesDao glaQueryBean = (GLAQueriesDao) appContext.getBean("glaQueries");
-        List<GLAQueries> glaQueries = glaQueryBean.displayall();
-        for (GLAQueries glaQuery : glaQueries) {
-            if (selectNumberParameters.getQuestionName().equals(glaQuery.getQuestion_name())) {
+        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
+        List<GLAIndicator> glaIndicatorList = glaIndicatorBean.displayall(null, null, false);
+        for (GLAIndicator glaIndicator : glaIndicatorList) {
+            if (selectNumberParameters.getIndicatorName().equals(glaIndicator.getIndicator_name())) {
                 status = false;
                 break;
             }
         }
-        if (selectNumberParameters.getQuestionName().isEmpty())
-            messages.addMessage(new MessageBuilder().error().source("Question Name").
-                    defaultText("Question name cannot be empty.").build());
+        if (selectNumberParameters.getIndicatorName().isEmpty())
+            messages.addMessage(new MessageBuilder().error().source("Indicator Name").
+                    defaultText("Indicator name cannot be empty.").build());
         if(!status){
-            messages.addMessage(new MessageBuilder().error().source("Question Name").
-                    defaultText("Question name already Existing. Duplicate names not allowed.").build());
+            messages.addMessage(new MessageBuilder().error().source("Indicator Name").
+                    defaultText("Indicator name already Existing. Duplicate names not allowed.").build());
         }
     }
 

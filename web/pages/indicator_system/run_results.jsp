@@ -95,11 +95,8 @@
             <h1>Execution Results</h1>
             <p>Here is the result of execution.</p>
 
-            <p>
-                <cewolf:img chartid="line" renderer="/cewolf" width="400" height="300"/>
-            <P>
+            <img src="/graphs/jgraph?question=${questionName}&type=${chartType}" />
 
-            <img src="/graphs/jgraph?indicator=${indicatorName}&type=${chartType}" />
 
 
         </div>

@@ -20,7 +20,7 @@
 package com.indicator_engine.indicator_system;
 
 import com.indicator_engine.model.indicator_system.IndicatorDefnOperationForm;
-import com.indicator_engine.model.indicator_system.Number.NumberIndicator;
+import com.indicator_engine.model.indicator_system.Number.Questions;
 import com.indicator_engine.model.indicator_system.Number.SelectNumberParameters;
 
 import java.util.List;
@@ -51,9 +51,9 @@ public interface IndicatorPreProcessingDao {
     public void clearTimeSpecifications(SelectNumberParameters selectNumberParameters);
     public void searchTime(SelectNumberParameters selectNumberParameters);
     public void addDefaultEValues(SelectNumberParameters selectNumberParameters);
-    public void addQuestion(SelectNumberParameters selectNumberParameters, NumberIndicator indicatorName);
-    public void saveIndicator(NumberIndicator indicatorName);
+    public void addIndicator(SelectNumberParameters selectNumberParameters, Questions indicatorName);
+    public void saveIndicator(Questions indicatorName);
     public void flushPrevQnData(SelectNumberParameters selectNumberParameters);
-    public void flushAll(NumberIndicator numberIndicator, SelectNumberParameters selectNumberParameters, IndicatorDefnOperationForm availableOperations);
-    public void retreiveFromDB(NumberIndicator numberIndicator);
+    public void flushAll(Questions questions, SelectNumberParameters selectNumberParameters, IndicatorDefnOperationForm availableOperations);
+    public void retrieveQuestion(Questions questions);
 }

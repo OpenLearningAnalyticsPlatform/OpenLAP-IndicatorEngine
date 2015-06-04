@@ -94,14 +94,14 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Define a New Indicator</h1>
-            <p>Called from Web Flow</p>
+            <h1>Indicator Type Selection</h1>
+            <p>Select a Kind of Quantitative Indicator</p>
             <div class="row">
                 <div class="col-md-12">
                     <form:form role="form" id="operationSelection"  method="post" modelAttribute="availableOperations" action="${flowExecutionUrl}">
                         <div class="row">
                             <div class="col-md-6 margin-bottom-15">
-                                <label for="_operation">Select an Operation </label>
+                                <label for="_operation">Select Quantitative Indicator Type </label>
                                 <form:select class="form-control margin-bottom-15" path="selectedOperation" items="${availableOperations.operation}" name ="_operation" id="_operation" />
                             </div>
                         </div>

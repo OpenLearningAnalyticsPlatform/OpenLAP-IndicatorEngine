@@ -127,8 +127,8 @@
     <bean id="glaIndicator"
           class="com.indicator_engine.dao.GLAIndicatorDaoImpl">
     </bean>
-    <bean id="glaQueries"
-          class="com.indicator_engine.dao.GLAQueriesDaoImpl">
+    <bean id="glaQuestions"
+          class="com.indicator_engine.dao.GLAQuestionDaoImpl">
     </bean>
     <bean id="encoder"
           class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">

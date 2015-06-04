@@ -22,18 +22,18 @@ package com.indicator_engine.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.indicator_engine.dao.GLAQuestionDao;
+import com.indicator_engine.datamodel.GLAQuestion;
 import com.indicator_engine.graphgenerator.cewolf.PageViewCountData;
 import com.indicator_engine.dao.GLAIndicatorDao;
-import com.indicator_engine.dao.GLAQueriesDao;
 import com.indicator_engine.datamodel.GLAIndicator;
-import com.indicator_engine.datamodel.GLAQueries;
 import com.indicator_engine.misc.NumberChecks;
-import com.indicator_engine.model.app.IndicatorRun;
+import com.indicator_engine.model.app.QuestionRun;
 import com.indicator_engine.model.app.SearchIndicatorForm;
 import com.indicator_engine.model.indicator_system.IndicatorDeletionForm;
 import com.indicator_engine.model.indicator_system.Number.GLAIndicatorJsonObject;
 import com.indicator_engine.model.indicator_system.Number.GenQuery;
-import com.indicator_engine.model.indicator_system.Number.NumberIndicator;
+import com.indicator_engine.model.indicator_system.Number.Questions;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -48,7 +48,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Tanmaya Mahapatra on 23-03-2015.
@@ -91,13 +90,13 @@ public class GAIndicatorSystemController {
             model.addObject("searchIndicatorForm", searchIndicatorForm);
         }
         else if(action.equals("load")){
-            if(searchIndicatorForm.getSelectedIndicatorName() == null || searchIndicatorForm.getSelectedIndicatorName().isEmpty()) {
+            if(searchIndicatorForm.getSelectedQuestionName() == null || searchIndicatorForm.getSelectedQuestionName().isEmpty()) {
                 model = new ModelAndView("indicator_system/viewall_indicators");
                 model.addObject("searchIndicatorForm", searchIndicatorForm);
             }
             else{
                 model = new ModelAndView("indicator_system/view_indicator_details");
-                model.addObject("numberIndicator", reteriveIndicator(searchIndicatorForm.getSelectedIndicatorName()));
+                model.addObject("numberIndicator", retrieveQuestion(searchIndicatorForm.getSelectedQuestionName()));
             }
         }
         return model;
@@ -117,10 +116,10 @@ public class GAIndicatorSystemController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public ModelAndView processIndicatorDeleteForm( @RequestParam String action,
-                                                    @Valid @ModelAttribute("searchIndicatorForm") SearchIndicatorForm searchIndicatorForm,
-                                                    BindingResult bindingResult,
-                                                    HttpSession session) {
+    public ModelAndView processQuestionDeleteForm(@RequestParam String action,
+                                                  @Valid @ModelAttribute("searchIndicatorForm") SearchIndicatorForm searchIndicatorForm,
+                                                  BindingResult bindingResult,
+                                                  HttpSession session) {
 
         ModelAndView model = null;
         if (bindingResult.hasErrors()) {
@@ -132,22 +131,22 @@ public class GAIndicatorSystemController {
             model.addObject("searchIndicatorForm", searchIndicatorForm);
         }
         else if(action.equals("load")) {
-            if (searchIndicatorForm.getSelectedIndicatorName() == null || searchIndicatorForm.getSelectedIndicatorName().isEmpty()) {
+            if (searchIndicatorForm.getSelectedQuestionName() == null || searchIndicatorForm.getSelectedQuestionName().isEmpty()) {
                 model = new ModelAndView("indicator_system/delete_indicator");
                 model.addObject("searchIndicatorForm", searchIndicatorForm);
             }
             else {
 
-                NumberIndicator numberIndicator = reteriveIndicator(searchIndicatorForm.getSelectedIndicatorName());
+                Questions questions = retrieveQuestion(searchIndicatorForm.getSelectedQuestionName());
                 IndicatorDeletionForm indicatorDeletionForm = new IndicatorDeletionForm();
-                indicatorDeletionForm.getDeletionList().add(numberIndicator.getIndicatorName());
-                indicatorDeletionForm.setIndName(numberIndicator.getIndicatorName());
-                for(GenQuery gQ  : numberIndicator.getGenQueries()) {
-                    indicatorDeletionForm.getDeletionList().add(gQ.getQuestionName());
+                indicatorDeletionForm.getDeletionList().add(questions.getQuestionName());
+                indicatorDeletionForm.setIndName(questions.getQuestionName());
+                for(GenQuery gQ  : questions.getGenQueries()) {
+                    indicatorDeletionForm.getDeletionList().add(gQ.getIndicatorName());
                 }
                 model = new ModelAndView("indicator_system/delete_indicator_details");
                 model.addObject("indicatorDeletionForm", indicatorDeletionForm);
-                model.addObject("numberIndicator", numberIndicator);
+                model.addObject("numberIndicator", questions);
             }
         }
         return model;
@@ -159,14 +158,14 @@ public class GAIndicatorSystemController {
         ModelAndView model = null;
         log.info("processDeletion : STARTED \n");
         if (indicatorDeletionForm.getSelectedList()== null ){
-            NumberIndicator numberIndicator = reteriveIndicator(indicatorDeletionForm.getIndName());
-            indicatorDeletionForm.getDeletionList().add(numberIndicator.getIndicatorName());
-            for(GenQuery gQ  : numberIndicator.getGenQueries()) {
-                indicatorDeletionForm.getDeletionList().add(gQ.getQuestionName());
+            Questions questions = retrieveQuestion(indicatorDeletionForm.getIndName());
+            indicatorDeletionForm.getDeletionList().add(questions.getQuestionName());
+            for(GenQuery gQ  : questions.getGenQueries()) {
+                indicatorDeletionForm.getDeletionList().add(gQ.getIndicatorName());
             }
             model = new ModelAndView("indicator_system/delete_indicator_details");
             model.addObject("indicatorDeletionForm", indicatorDeletionForm);
-            model.addObject("numberIndicator", numberIndicator);
+            model.addObject("numberIndicator", questions);
             return model;
         }
         else{
@@ -182,7 +181,7 @@ public class GAIndicatorSystemController {
                     if(indicator_id != 0 )
                         glaIndicatorBean.deleteIndicator(indicator_id);
                 }
-                else{
+                /*else{
                     GLAQueriesDao glaQueriesBean = (GLAQueriesDao) appContext.getBean("glaQueries");
                     List<GLAQueries> glaQueriesList = glaQueriesBean.searchQuestionsName(name, true);
                     if(glaQueriesList.size() > 0){
@@ -191,25 +190,25 @@ public class GAIndicatorSystemController {
                             glaQueriesBean.deleteQuestion(question_id);
 
                     }
-                }
+                }*/
             }
         }
         return model;
     }
     @RequestMapping(value = "/trialrun", method = RequestMethod.GET)
-    public String getIndicatorsTrialRun(Map<String, Object> model) {
-        IndicatorRun indicatorRun = new IndicatorRun();
-        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
-        List<GLAIndicator> glaIndicatorList = glaIndicatorBean.displayall(null,null,false);
-        for(GLAIndicator gI : glaIndicatorList){
-            indicatorRun.getAvailableIndicators().add(gI.getIndicator_name());
+    public String getQuestionsTrialRun(Map<String, Object> model) {
+        QuestionRun questionRun = new QuestionRun();
+        GLAQuestionDao glaQuestionsBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
+        List<GLAQuestion> glaQuestionList = glaQuestionsBean.displayAll(null, null, false);
+        for(GLAQuestion gQ : glaQuestionList){
+            questionRun.getAvailableQuestions().add(gQ.getQuestion_name());
         }
-        model.put("indicatorRun",indicatorRun);
+        model.put("questionRun", questionRun);
         return "indicator_system/trial_run";
     }
 
     @RequestMapping(value = "/trialrun", method = RequestMethod.POST)
-    public String processTrialRun( @Valid @ModelAttribute("indicatorRun") IndicatorRun indicatorRun,
+    public String processTrialRun( @Valid @ModelAttribute("questionRun") QuestionRun questionRun,
                                          BindingResult bindingResult,
                                          Map<String, Object> model) {
 
@@ -217,12 +216,12 @@ public class GAIndicatorSystemController {
             return "indicator_system/trial_run";
         }
 
-        if(indicatorRun.getSelectedChartEngine().equals("JFreeGraph")) {
-            model.put("chartType", indicatorRun.getSelectedChartType());
-            model.put("indicatorName", indicatorRun.getSelectedIndicator());
+        if(questionRun.getSelectedChartEngine().equals("JFreeGraph")) {
+            model.put("chartType", questionRun.getSelectedChartType());
+            model.put("questionName", questionRun.getSelectedQuestion());
             return "indicator_system/run_results";
         }
-        else if (indicatorRun.getSelectedChartEngine().equals("CEWOLF")) {
+        else if (questionRun.getSelectedChartEngine().equals("CEWOLF")) {
             model.put("pageViews", PageViews);
             return "indicator_system/run_results_cewolf";
         }
@@ -320,30 +319,34 @@ public class GAIndicatorSystemController {
         return gson.toJson(glaIndicatorJsonObject);
     }
 
-    private NumberIndicator reteriveIndicator(String indicatorName){
-        log.info("reteriveIndicator : STARTED \n");
-        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
+    private Questions retrieveQuestion(String questionName){
+        log.info("reteriveQuestion : STARTED \n");
+        GLAQuestionDao glaQuestionsBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
         log.info("Retreive From DB : STARTED \n");
-        log.info("Name : \t"+ indicatorName);
-        long indicator_id = glaIndicatorBean.findIndicatorID(indicatorName);
-        GLAIndicator glaIndicator = glaIndicatorBean.loadByIndicatorID(indicator_id);
-        log.info("GLA INDICATOR FROM DB : ID : \t"+ glaIndicator.getId());
-        log.info("GLA INDICATOR FROM DB : Name : \t"+ glaIndicator.getIndicator_name());
-        log.info("GLA INDICATOR FROM DB : PROPS ID : \t"+ glaIndicator.getGlaIndicatorProps().getId());
-        log.info("GLA INDICATOR FROM DB : LEX TIME : \t"+ glaIndicator.getGlaIndicatorProps().getLast_executionTime());
-        log.info("GLA INDICATOR FROM DB : EXEC COUNTER : \t"+ glaIndicator.getGlaIndicatorProps().getTotalExecutions());
-        NumberIndicator numberIndicator = new NumberIndicator();
-        numberIndicator.setIndicator_id(glaIndicator.getId());
-        numberIndicator.setIndicatorName(glaIndicator.getIndicator_name());
-        numberIndicator.setGenIndicatorProps(glaIndicator.getGlaIndicatorProps().getId(),
-                glaIndicator.getGlaIndicatorProps().getLast_executionTime(),
-                glaIndicator.getGlaIndicatorProps().getTotalExecutions());
-        Set<GLAQueries> genQueries = glaIndicator.getQueries();
-        for (GLAQueries gQ : genQueries) {
-            numberIndicator.getGenQueries().add(new GenQuery(gQ.getHql(),gQ.getQuestion_name(),gQ.getId()));
+        log.info("Name : \t"+ questionName);
+        long question_id = glaQuestionsBean.findQuestionID(questionName);
+        GLAQuestion glaQuestion = glaQuestionsBean.loadByQuestionID(question_id);
+        Questions questions = new Questions();
+        questions.setQuestionId(glaQuestion.getId());
+        questions.setQuestionName(glaQuestion.getQuestion_name());
+        log.info("GLA QUESTION FROM DB : ID : \t"+ glaQuestion.getId());
+        log.info("GLA QUESTION FROM DB : Name : \t"+ glaQuestion.getQuestion_name());
+        for( GLAIndicator glaIndicators : glaQuestion.getGlaIndicators()){
+            log.info("GLA Indicator FROM DB : Name : \t"+ glaIndicators.getIndicator_name());
+            log.info("GLA Indicator FROM DB : ID : \t"+ glaIndicators.getId());
+            log.info("GLA Indicator FROM DB : HQL : \t"+ glaIndicators.getHql());
+            log.info("GLA Indicator FROM DB : Short Name : \t"+ glaIndicators.getShort_name());
+            log.info("GLA Indicator FROM DB : PROPS ID : \t"+ glaIndicators.getGlaIndicatorProps().getId());
+            log.info("GLA INDICATOR FROM DB : LEX TIME : \t"+ glaIndicators.getGlaIndicatorProps().getLast_executionTime());
+            log.info("GLA INDICATOR FROM DB : EXEC COUNTER : \t"+ glaIndicators.getGlaIndicatorProps().getTotalExecutions());
+            GenQuery genQuery = new GenQuery(glaIndicators.getHql(),glaIndicators.getIndicator_name(),
+                    glaIndicators.getId());
+            genQuery.setGenIndicatorProps(glaIndicators.getGlaIndicatorProps().getId(),glaIndicators.getGlaIndicatorProps().getLast_executionTime(),
+                    glaIndicators.getGlaIndicatorProps().getTotalExecutions());
+            questions.getGenQueries().add(genQuery);
         }
-        log.info("reteriveIndicator : ENDED \n");
-        return numberIndicator;
+        log.info("reteriveQuestion : ENDED \n");
+        return questions;
 
     }
     private void processSearchParams(SearchIndicatorForm searchIndicatorForm){

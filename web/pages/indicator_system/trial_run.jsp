@@ -100,23 +100,23 @@
             <p>Please select an Indicator to run.</p>
             <div class="row">
                 <div class="col-md-12">
-                    <form:form role="form" id="indicatorSelection"  method="post" modelAttribute="indicatorRun" action="/indicators/trialrun">
+                    <form:form role="form" id="indicatorSelection"  method="post" modelAttribute="questionRun" action="/indicators/trialrun">
                         <div class="row">
                             <div class="col-md-6 margin-bottom-15">
                                 <label for="indRun">Select an Indicator to Run </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedIndicator" items="${indicatorRun.availableIndicators}" name ="indRun" id="indRun" />
+                                <form:select class="form-control margin-bottom-15" path="selectedQuestion" items="${questionRun.availableQuestions}" name ="indRun" id="indRun" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 margin-bottom-15">
                                 <label for="chartSelect">Select a Chart Type </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedChartType" items="${indicatorRun.chartTypes}" name ="chartSelect" id="chartSelect" />
+                                <form:select class="form-control margin-bottom-15" path="selectedChartType" items="${questionRun.chartTypes}" name ="chartSelect" id="chartSelect" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 margin-bottom-15">
                                 <label for="EngineSelect">Select an Engine </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedChartEngine" items="${indicatorRun.chartEngines}" name ="EngineSelect" id="EngineSelect" />
+                                <form:select class="form-control margin-bottom-15" path="selectedChartEngine" items="${questionRun.chartEngines}" name ="EngineSelect" id="EngineSelect" />
                             </div>
                         </div>
                         <p>

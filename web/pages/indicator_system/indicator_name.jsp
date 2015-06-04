@@ -93,15 +93,15 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Name for the New Indicator</h1>
-            <p>Please Enter a Name for the to be defined Indicator</p>
+            <h1>Name for the New Question</h1>
+            <p>Please Enter a Name for the Question</p>
             <div class="row">
                 <div class="col-md-12">
-                    <form:form role="form" id="indicatorNaming"  method="post" modelAttribute="numberIndicator" action="${flowExecutionUrl}">
+                    <form:form role="form" id="indicatorNaming"  method="post" modelAttribute="questions" action="${flowExecutionUrl}">
                         <div class="row">
                             <div class="col-md-6 margin-bottom-15">
-                                <label for="indicatorNaming">Enter Indicator Name </label>
-                                <form:input path="indicatorName" type="text" class="form-control" name ="indicatorNaming" id="indicatorNaming" />
+                                <label for="indicatorNaming">Enter Question Name </label>
+                                <form:input path="questionName" type="text" class="form-control" name ="indicatorNaming" id="indicatorNaming" />
                             </div>
                         </div>
                         <p>

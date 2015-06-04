@@ -20,7 +20,6 @@
 package com.indicator_engine.dao;
 
 import com.indicator_engine.datamodel.GLAIndicator;
-import com.indicator_engine.datamodel.GLAQueries;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -29,7 +28,7 @@ import java.util.List;
  * Created by Tanmaya Mahapatra on 08-05-2015.
  */
 public interface GLAIndicatorDao {
-    public long  add(GLAIndicator glaIndicator, GLAQueries glaQueries);
+    //public long  add(GLAIndicator glaIndicator, GLAQueries glaQueries);
     public GLAIndicator loadByIndicatorID(long ID);
     public List<GLAIndicator> displayall(String colName, String sortDirection, boolean sort);
     public List<GLAIndicator> loadIndicatorsRange(long startRange, long endRange);
@@ -39,4 +38,5 @@ public interface GLAIndicatorDao {
     public List<GLAIndicator>  loadByIndicatorByName(String indicatorName, boolean exact);
     public long findIndicatorID(String indicatorName);
     public void deleteIndicator(long indicator_id);
+    public void updateStatistics(long ID);
 }
