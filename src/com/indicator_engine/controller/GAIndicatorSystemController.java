@@ -67,7 +67,7 @@ public class GAIndicatorSystemController {
         return new ModelAndView("indicator_system/indicators_home");
     }
 
-    @RequestMapping(value = "/new", method = RequestMethod.GET)
+    @RequestMapping(value = "/indicators_definition", method = RequestMethod.GET)
     public String getNewIndicatorDefinitionHome(Map<String, Object> model) {
         IndicatorPreProcessing indicatorPreProcessor = (IndicatorPreProcessing) appContext.getBean("indicatorPreProcessor");
         model.put("selectNumberParameters",indicatorPreProcessor.initSelectNumberParametersObject());
