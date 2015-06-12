@@ -31,6 +31,7 @@ import java.util.List;
 public interface IndicatorPreProcessingDao {
 
     public String retrieveOperation(IndicatorDefnOperationForm indicatorDefnOperationForm);
+    public String retrieveUIFlow(SelectNumberParameters selectNumberParameters);
     public List<String> initAvailableEntities_DB(String minor);
     public List<String> initAvailableEvents_DB(String minor);
     public IndicatorDefnOperationForm initAvailableOperations_DB();

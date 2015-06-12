@@ -27,13 +27,12 @@ import com.indicator_engine.datamodel.GLAQuestion;
 import com.indicator_engine.graphgenerator.cewolf.PageViewCountData;
 import com.indicator_engine.dao.GLAIndicatorDao;
 import com.indicator_engine.datamodel.GLAIndicator;
+import com.indicator_engine.indicator_system.IndicatorPreProcessing;
 import com.indicator_engine.misc.NumberChecks;
 import com.indicator_engine.model.app.QuestionRun;
 import com.indicator_engine.model.app.SearchIndicatorForm;
 import com.indicator_engine.model.indicator_system.IndicatorDeletionForm;
-import com.indicator_engine.model.indicator_system.Number.GLAIndicatorJsonObject;
-import com.indicator_engine.model.indicator_system.Number.GenQuery;
-import com.indicator_engine.model.indicator_system.Number.Questions;
+import com.indicator_engine.model.indicator_system.Number.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -66,6 +65,49 @@ public class GAIndicatorSystemController {
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public ModelAndView getIndicatorsHome() {
         return new ModelAndView("indicator_system/indicators_home");
+    }
+
+    @RequestMapping(value = "/new", method = RequestMethod.GET)
+    public String getNewIndicatorDefinitionHome(Map<String, Object> model) {
+        IndicatorPreProcessing indicatorPreProcessor = (IndicatorPreProcessing) appContext.getBean("indicatorPreProcessor");
+        model.put("selectNumberParameters",indicatorPreProcessor.initSelectNumberParametersObject());
+        return "indicator_system/number/new_ui";
+    }
+
+    @RequestMapping(value = "/addEntities", method = RequestMethod.GET)
+    public String getAddEntities(Map<String, Object> model) {
+        EntitySpecification entitySpecification = new EntitySpecification();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        entitySpecification.setKeys(entitySpecificationBean.getKeys());
+        model.put("entitySpecifications", entitySpecification);
+        return "indicator_system/number/indicator_number_select_entity";
+    }
+
+    @RequestMapping(value = "/addEntities", method = RequestMethod.POST)
+    public String processAddEntities(@RequestParam String action,
+                                     @Valid @ModelAttribute("entitySpecifications") EntitySpecification entitySpecifications,
+                                     BindingResult bindingResult,
+                                     Map<String, Object> model) {
+
+        if(action.equals("Add")){
+            EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+            entitySpecificationBean.getEntityValues().add(new EntityValues(entitySpecifications.getSelectedKeys(),
+                    entitySpecifications.getSelectedentityValueTypes(), entitySpecifications.getEvalue()));
+            entitySpecifications.setSelectedKeys(null);
+            entitySpecifications.setSelectedentityValueTypes(null);
+            entitySpecifications.setEvalue(null);
+            entitySpecifications.setEntityValues(entitySpecificationBean.getEntityValues());
+            model.put("entitySpecifications", entitySpecifications);
+        }
+
+        if(action.equals("Delete")){
+            EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+            entitySpecificationBean.getEntityValues().clear();
+            EntitySpecification entitySpecification = new EntitySpecification();
+            model.put("entitySpecifications", entitySpecification);
+        }
+
+        return "indicator_system/number/indicator_number_select_entity";
     }
 
 

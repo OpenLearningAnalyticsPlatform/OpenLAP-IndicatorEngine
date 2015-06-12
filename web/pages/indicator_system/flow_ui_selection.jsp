@@ -45,58 +45,8 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.0/css/jquery.dataTables.css">
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
+    <script type="javascript" src="${pageContext.request.contextPath}/js/user_profile_checks.js"> </script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
-    <script type="text/javascript">
-
-        (function($) {
-            //Plug-in to fetch page data
-            jQuery.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
-            {
-                return {
-                    "iStart":         oSettings._iDisplayStart,
-                    "iEnd":           oSettings.fnDisplayEnd(),
-                    "iLength":        oSettings._iDisplayLength,
-                    "iTotal":         oSettings.fnRecordsTotal(),
-                    "iFilteredTotal": oSettings.fnRecordsDisplay(),
-                    "iPage":          oSettings._iDisplayLength === -1 ?
-                            0 : Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength ),
-                    "iTotalPages":    oSettings._iDisplayLength === -1 ?
-                            0 : Math.ceil( oSettings.fnRecordsDisplay() / oSettings._iDisplayLength )
-                };
-            };
-
-            $(document).ready(function() {
-
-                $("#indicatorData").dataTable( {
-                    "bProcessing": true,
-                    "bServerSide": true,
-                    "sort": "position",
-                    //bStateSave variable you can use to save state on client cookies: set value "true"
-                    "bStateSave": false,
-                    //Default: Page display length
-                    "iDisplayLength": 10,
-                    //We will use below variable to track page number on server side(For more information visit: http://legacy.datatables.net/usage/options#iDisplayStart)
-                    "iDisplayStart": 0,
-                    "fnDrawCallback": function () {
-                        //Get page numer on client. Please note: number start from 0 So
-                        //for the first page you will see 0 second page 1 third page 2...
-                        //Un-comment below alert to see page number
-                        //alert("Current page number: "+this.fnPagingInfo().iPage);
-                    },
-                    "sAjaxSource": "/indicators/fetchExistingIndicatorsData.web",
-                    "aoColumns": [
-                        { "mData": "id" },
-                        { "mData": "indicator_name" },
-                        { "mData": "short_name" },
-                    ]
-                } );
-
-            } );
-        })(jQuery);
-    </script>
 
 </head>
 <body>
@@ -144,71 +94,29 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Indicator Control Panel</h1>
-            <p>Here you can define view all Existing Questions.</p>
+            <h1>User Interface Selection</h1>
+            <p>Select the UI</p>
             <div class="row">
                 <div class="col-md-12">
-                    <form:form role="form" id="searchIndicatorForm"  method="post" modelAttribute="searchIndicatorForm" action="/indicators/viewall">
+                    <form:form role="form" id="operationSelection"  method="post" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">
                         <div class="row">
                             <div class="col-md-6 margin-bottom-15">
-                                <label for="searchTypeSelection">Select Search Type </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedSearchType" items="${searchIndicatorForm.searchType}" name ="searchTypeSelection" id="searchTypeSelection" />
+                                <label for="_operation">Select UI Type </label>
+                                <form:select class="form-control margin-bottom-15" path="selectedUIFlow" items="${selectNumberParameters.uiFlow}" name ="_operation" id="_operation" />
                             </div>
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-6 margin-bottom-15">
-                                <label for="searchString" class="control-label">Search String</label>
-                                <form:input class="form-control" path="searchField"  name="searchString" id ="searchString"/>
-                            </div>
-                        </div>
-                        <div class="row templatemo-form-buttons">
-                            <div class="col-md-12">
-                                <input class="btn btn-default" type="submit" name="action"
-                                       value="search"  />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 margin-bottom-15">
-                                <label for="multipleSelect">Search Results </label>
-                                <form:select class="form-control" path="selectedQuestionName" name="multipleSelect">
-                                    <form:options items="${searchIndicatorForm.searchResults}" />
-                                </form:select>
-                            </div>
-                        </div>
-                        <div class="row templatemo-form-buttons">
-                            <div class="col-md-12">
-                                <input class="btn btn-primary" type="submit" name="action"
-                                       value="load" />
-                            </div>
-                        </div>
-
                         <p>
                             <form:errors path="*" cssClass="errorblock" element="div" />
                         </p>
-
+                        <div class="row templatemo-form-buttons">
+                            <div class="col-md-12">
+                                <input class="btn btn-primary" type="submit" name="_eventId_uiSelected"
+                                       value="Next" />
+                            </div>
+                        </div>
                     </form:form>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <form:form action="" method="GET">
-                        <h2 >Listing of All Existing Questions<br><br></h2>
-                        <table width="70%" style="border: 3px;background: rgb(243, 244, 248);"><tr><td>
-                            <table id="indicatorData" class="display" cellspacing="0" width="100%">
-                                <thead>
-                                <tr>
-                                    <th>Question ID</th>
-                                    <th>Question Name</th>
-                                    <th>Short Name</th>
-                                </tr>
-                                </thead>
-                            </table>
-                        </td></tr></table>
-                    </form:form>
-                </div>
-            </div>
-        </div>
         </div>
     </div>
     <!-- Modal -->

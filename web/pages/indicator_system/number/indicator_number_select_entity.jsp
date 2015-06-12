@@ -1,4 +1,3 @@
-<%@ page import="com.indicator_engine.datamodel.UserProfile" %>
 <%--
   ~ Open Platform Learning Analytics : Indicator Engine
   ~ Copyright (C) 2015  Learning Technologies Group, RWTH
@@ -102,7 +101,7 @@
                specify upto 10 search criteria here.</p>
             <div class="row">
                 <div class="col-md-12">
-                    <form:form role="form" id="entitySelection"  method="POST" commandName="selectNumberParameters" action="${flowExecutionUrl}">
+                    <form:form role="form" id="entitySelection"  method="POST" modelAttribute="entitySpecifications" action="/indicators/addEntities">
             <div class="col-md-6 col-sm-6 margin-bottom-30">
                 <div class="panel panel-primary">
                     <div class="panel-heading">Entity Selection & Filtering</div>
@@ -113,7 +112,7 @@
                                 <div class="row">
                                     <div class="col-md-6 margin-bottom-15">
                                         <label for="entityKeySelection">Select an Entity </label>
-                                        <form:select class="form-control margin-bottom-15" path="selectedKeys" items="${selectNumberParameters.keys}" name ="entityKeySelection" id="entityKeySelection" />
+                                        <form:select class="form-control margin-bottom-15" path="selectedKeys" items="${entitySpecifications.keys}" name ="entityKeySelection" id="entityKeySelection" />
                                     </div>
                                 </div>
                             </tr>
@@ -121,7 +120,7 @@
                                 <div class="row">
                                     <div class="col-md-6 margin-bottom-15">
                                         <label for="specificationType">Select Specification Type </label>
-                                        <form:select class="form-control margin-bottom-15" path="selectedentityValueTypes" items="${selectNumberParameters.entityValueTypes}" name ="specificationType" id="specificationType" />
+                                        <form:select class="form-control margin-bottom-15" path="selectedentityValueTypes" items="${entitySpecifications.entityValueTypes}" name ="specificationType" id="specificationType" />
                                     </div>
                                 </div>
                             </tr>
@@ -136,16 +135,16 @@
                             <tr>
                                 <div class="row templatemo-form-buttons">
                                     <div class="col-md-12">
-                                        <input type="submit" name="_eventId_specifyEValues"
-                                               value="Add Entity Specifcation" />
+                                        <input class="btn btn-default" type="submit" name="action"
+                                               value="Add"  />
                                     </div>
                                 </div>
                             </tr>
                             <tr>
                                 <div class="row templatemo-form-buttons">
                                     <div class="col-md-12">
-                                        <input type="submit" name="_eventId_clearEValues"
-                                               value="Delete All Specifcations" />
+                                        <input class="btn btn-default" type="submit" name="action"
+                                               value="Delete"  />
                                     </div>
                                 </div>
                             </tr>
@@ -168,7 +167,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach var="entityVal" items="${selectNumberParameters.entityValues}"  varStatus="loop">
+                            <c:forEach var="entityVal" items="${entitySpecifications.entityValues}"  varStatus="loop">
                                 <tr>
                                     <td>${loop.count}</td>
                                     <td><c:out value="${entityVal.key}"/></td>
@@ -179,14 +178,6 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-            </div>
-            <div class="row templatemo-form-buttons">
-                <div class="col-md-12">
-                    <input cclass="btn btn-default" type="submit" name="_eventId_prevScreen"
-                           value="Previous" />
-                    <input class="btn btn-primary" type="submit" name="_eventId_entitySelected"
-                           value="Next" />
                 </div>
             </div>
 

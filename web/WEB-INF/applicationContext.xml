@@ -130,6 +130,15 @@
     <bean id="glaQuestions"
           class="com.indicator_engine.dao.GLAQuestionDaoImpl">
     </bean>
+    <bean id="indicatorPreProcessor"
+          class="com.indicator_engine.indicator_system.IndicatorPreProcessing">
+    </bean>
+    <bean id="entitySpecifications"
+          class="com.indicator_engine.model.indicator_system.Number.EntitySpecification">
+    </bean>
+    <bean id="operationNumberProcessor"
+          class="com.indicator_engine.indicator_system.Number.OperationNumberProcessor">
+    </bean>
     <bean id="encoder"
           class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
     </bean>

@@ -20,7 +20,10 @@
 package com.indicator_engine.controller.webflow_validators;
 
 import com.indicator_engine.dao.GLAIndicatorDao;
+import com.indicator_engine.dao.GLAQuestionDao;
 import com.indicator_engine.datamodel.GLAIndicator;
+import com.indicator_engine.datamodel.GLAQuestion;
+import com.indicator_engine.model.indicator_system.Number.Questions;
 import com.indicator_engine.model.indicator_system.Number.SelectNumberParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.binding.message.MessageContext;
@@ -101,6 +104,30 @@ public class SelectNumberParametersValidator {
         if(!status){
             messages.addMessage(new MessageBuilder().error().source("Indicator Name").
                     defaultText("Indicator name already Existing. Duplicate names not allowed.").build());
+        }
+    }
+
+    public void validateNewUIFlowHome(SelectNumberParameters selectNumberParameters, ValidationContext context) {
+
+        MessageContext messages = context.getMessageContext();
+        boolean status = true;
+        GLAQuestionDao glaQuestionBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
+        List<GLAQuestion> glaQuestions = glaQuestionBean.displayAll(null, null, false);
+
+        if (selectNumberParameters.getQuestionsContainer().getQuestionName() == null)
+            messages.addMessage(new MessageBuilder().error().source("Question Name").
+                    defaultText("Question name cannot be empty.").build());
+        else{
+            for (GLAQuestion gQuestion : glaQuestions) {
+                if (selectNumberParameters.getQuestionsContainer().getQuestionName().equals(gQuestion.getQuestion_name())) {
+                    status = false;
+                    break;
+                }
+            }
+        }
+        if(!status){
+            messages.addMessage(new MessageBuilder().error().source("Question Name").
+                    defaultText("Question name already Existing. Duplicate names not allowed.").build());
         }
     }
 

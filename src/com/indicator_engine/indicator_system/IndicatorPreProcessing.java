@@ -47,6 +47,11 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
     }
 
     @Override
+    public String retrieveUIFlow(SelectNumberParameters selectNumberParameters){
+        return selectNumberParameters.getSelectedUIFlow();
+    }
+
+    @Override
     public SelectNumberParameters initSelectNumberParametersObject() {
         SelectNumberParameters obj = new SelectNumberParameters();
         //obj.getEntityValues().add(new EntityValues());
@@ -96,6 +101,7 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
         }
         log.info("initPopulateMajors : Computed Major : \t" + major + "\n");
         log.info("initPopulateMajors : ENDED");
+
         return major;
     }
 
@@ -135,6 +141,8 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
         GLACategoryDao glacategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
         long category_id = glacategoryBean.findCategoryID(minor);
         GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        entitySpecificationBean.setKeys(glaEntityBean.loadEntitiesByCategoryID(category_id));
         return glaEntityBean.loadEntitiesByCategoryID(category_id);
     }
 

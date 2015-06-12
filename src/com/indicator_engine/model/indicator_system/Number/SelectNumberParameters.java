@@ -1,8 +1,6 @@
 package com.indicator_engine.model.indicator_system.Number;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
-import javax.mail.Session;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,18 +14,23 @@ import java.util.Map;
 @SuppressWarnings({"unused", "unchecked"})
 public class SelectNumberParameters implements Serializable{
 
+    private final List<String> uiFlow = new ArrayList<>();
+    private String selectedUIFlow;
+
     private final List<String> persistenceObjects = new ArrayList<>();
     private final Map persistenceObjectsRelation = new HashMap();
     private final HashMap<String, ArrayList<String>> retrievableObjects = new HashMap<String, ArrayList<String>>();
-    @NotEmpty(message = "Please Select a Persistence Object ")
     private String selectedPersistenceObject;
     private String selectedRetrievableObjects;
 
     List<String> source =  new ArrayList<>();
     List<String> platform =  new ArrayList<>();
     List<String> action =  new ArrayList<>();
+    @NotNull
     private List<String> selectedSource;
+    @NotNull
     private String selectedPlatform;
+    @NotNull
     private String selectedAction;
 
 
@@ -77,6 +80,15 @@ public class SelectNumberParameters implements Serializable{
     private String indicatorName;
     private final List<String> filteringType = new ArrayList<>();
     private String selectedFilteringType;
+
+    private List<String> chartTypes = new ArrayList<>();
+    private List<String> chartEngines = new ArrayList<>();
+    @NotNull
+    private String selectedChartType;
+    @NotNull
+    private String selectedChartEngine;
+
+    private Questions questionsContainer = new Questions();
 
     public void reset(){
         // Reset everything to your default values
@@ -135,6 +147,15 @@ public class SelectNumberParameters implements Serializable{
         this.filteringType.clear();
         this.selectedFilteringType = null;
 
+        this.questionsContainer.reset();
+
+        this.uiFlow.clear();
+        this.chartEngines.clear();
+        this.chartTypes.clear();
+        this.selectedChartType = null;
+        this.selectedChartEngine = null;
+        //this.selectedUIFlow = null;
+
         buildDefault();
     }
 
@@ -168,6 +189,13 @@ public class SelectNumberParameters implements Serializable{
         this.searchType.add("REGEX");
         this.filteringType.add("AND");
         this.filteringType.add("OR");
+        this.uiFlow.add("New");
+        this.uiFlow.add("Old");
+        chartTypes.add("Bar");
+        chartTypes.add("Pie");
+        chartEngines.add("JFreeGraph");
+        chartEngines.add("CEWOLF");
+        this.questionsContainer = new Questions();
 
     }
 
@@ -512,6 +540,58 @@ public class SelectNumberParameters implements Serializable{
 
     public void setIndicatorName(String indicatorName) {
         this.indicatorName = indicatorName;
+    }
+
+    public List<String> getUiFlow() {
+        return uiFlow;
+    }
+
+    public String getSelectedUIFlow() {
+        return selectedUIFlow;
+    }
+
+    public void setSelectedUIFlow(String selectedUIFlow) {
+        this.selectedUIFlow = selectedUIFlow;
+    }
+
+    public Questions getQuestionsContainer() {
+        return questionsContainer;
+    }
+
+    public void setQuestionsContainer(Questions questionsContainer) {
+        this.questionsContainer = questionsContainer;
+    }
+
+    public List<String> getChartTypes() {
+        return chartTypes;
+    }
+
+    public void setChartTypes(List<String> chartTypes) {
+        this.chartTypes = chartTypes;
+    }
+
+    public List<String> getChartEngines() {
+        return chartEngines;
+    }
+
+    public void setChartEngines(List<String> chartEngines) {
+        this.chartEngines = chartEngines;
+    }
+
+    public String getSelectedChartType() {
+        return selectedChartType;
+    }
+
+    public void setSelectedChartType(String selectedChartType) {
+        this.selectedChartType = selectedChartType;
+    }
+
+    public String getSelectedChartEngine() {
+        return selectedChartEngine;
+    }
+
+    public void setSelectedChartEngine(String selectedChartEngine) {
+        this.selectedChartEngine = selectedChartEngine;
     }
 }
 

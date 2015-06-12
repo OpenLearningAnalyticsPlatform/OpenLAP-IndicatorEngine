@@ -54,13 +54,6 @@
     <bean id="pageViews"
           class="com.indicator_engine.graphgenerator.cewolf.PageViewCountData">
     </bean>
-    <bean id="indicatorPreProcessor"
-          class="com.indicator_engine.indicator_system.IndicatorPreProcessing">
-    </bean>
-    <bean id="operationNumberProcessor"
-          class="com.indicator_engine.indicator_system.Number.OperationNumberProcessor">
-    </bean>
-
 
     <!-- Spring WEb FLOW - START -->
     <!-- Maps flow requests from DispatcherServlet to flowController -->
@@ -82,7 +75,8 @@
     </bean>
     <flow:flow-registry id="flowRegistry"
                         base-path="/WEB-INF/flows" flow-builder-services="flowBuilderServices">
-    <flow:flow-location-pattern value="/**/*-flow.xml" />
+    <flow:flow-location path="indicators_definition/indicators_definition-flow.xml" id="indicators_definition"/>
+    <flow:flow-location path="indicators_definition/entity-flow.xml" id="entity_subflow"/>
     </flow:flow-registry>
 
     <flow:flow-builder-services id="flowBuilderServices" view-factory-creator="viewFactoryCreator" validator="validator"/>

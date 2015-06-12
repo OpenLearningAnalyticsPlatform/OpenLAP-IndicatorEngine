@@ -25,6 +25,7 @@
 		http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
 
+
     <var name="questions" class="com.indicator_engine.model.indicator_system.Number.Questions"/>
 
     <on-start>
@@ -36,6 +37,19 @@
 
     <!-- By default, the first state is the start state. -->
 
+    <view-state id="uiSelector" view="indicator_system/flow_ui_selection" model="selectNumberParameters">
+        <binder>
+            <binding property="selectedUIFlow" required="true" />
+        </binder>
+        <transition on="uiSelected" bind="true" validate="true" to="uiProcessor" />
+    </view-state>
+
+    <action-state id="uiProcessor">
+        <evaluate expression="indicatorPreProcessor.retrieveUIFlow(selectNumberParameters)" />
+        <transition on="Old" to="questionName" />
+        <transition on="New" to="newUIFlowHome" />
+    </action-state>
+
     <view-state id="questionName" view="indicator_system/indicator_name" model="questions">
         <binder>
             <binding property="questionName" required="true" />
@@ -43,13 +57,13 @@
         <transition on="indicatorNameEntered" bind="true" validate="true" to="definitionHome" />
     </view-state>
 
-	<view-state id="definitionHome" view="indicator_system/new_indicator" model="availableOperations">
+    <view-state id="definitionHome" view="indicator_system/new_indicator" model="availableOperations">
         <binder>
             <binding property="selectedOperation" required="true" />
         </binder>
         <transition  on="prevScreen" to="questionName"/>
         <transition on="operationSelected" bind="true" validate="true" to="retrieveOperation" />
-	</view-state>
+    </view-state>
 
     <action-state id="retrieveOperation">
         <evaluate expression="indicatorPreProcessor.retrieveOperation(availableOperations)" />
@@ -59,7 +73,7 @@
 
     <view-state id="persistenceObjectSelection" view="indicator_system/number/indicator_persistence_object" model="selectNumberParameters">
         <binder>
-        <binding property="selectedPersistenceObject" required="true" />
+            <binding property="selectedPersistenceObject" required="true" />
         </binder>
         <transition  on="prevScreen" to="definitionHome"/>
         <transition on="objectSelected" bind="true" validate="true" to="objectPropertySelection" />
@@ -82,23 +96,7 @@
         <transition  on="prevScreen" to="objectPropertySelection"/>
         <transition on="eventSelected" bind="true" validate="true" to="populateCategoryTypes" />
     </view-state>
-    <action-state id="populateCategoryTypes">
-        <evaluate expression="indicatorPreProcessor.initPopulateTypes(selectNumberParameters)"
-                  result="selectNumberParameters.type" />
-        <transition to="populateCategoryMajors" />
-    </action-state>
 
-    <action-state id="populateCategoryMajors">
-        <evaluate expression="indicatorPreProcessor.initPopulateMajors(selectNumberParameters)"
-                  result="selectNumberParameters.majors" />
-        <transition to="populateCategoryMinors" />
-    </action-state>
-
-    <action-state id="populateCategoryMinors">
-        <evaluate expression="indicatorPreProcessor.initPopulateMinors(selectNumberParameters)"
-                  result="selectNumberParameters.minors" />
-        <transition to="specifyCategory" />
-    </action-state>
 
     <view-state id="specifyCategory" view="indicator_system/number/indicator_number_select_minor" model="selectNumberParameters">
         <binder>
@@ -110,11 +108,7 @@
         <transition on="minorSelected" bind="true" validate="true" to="populateEntities" />
     </view-state>
 
-    <action-state id="populateEntities">
-        <evaluate expression="indicatorPreProcessor.initAvailableEntities_DB(selectNumberParameters.selectedMinor)"
-                  result="selectNumberParameters.keys" />
-        <transition to="selectEntities" />
-    </action-state>
+
 
     <view-state id="selectEntities" view="indicator_system/number/indicator_number_select_entity" model="selectNumberParameters">
         <binder>
@@ -259,7 +253,7 @@
 
     <view-state id="selectFiltering" view="indicator_system/number/indicator_number_filteringtype" model="selectNumberParameters" >
         <binder>
-        <binding property="selectedFilteringType" required="true"/>
+            <binding property="selectedFilteringType" required="true"/>
         </binder>
         <transition  on="prevScreen" to="otherSpecifications"/>
         <transition  on="filterSpecified" bind="true" validate="true" to="displaySummary"/>
@@ -278,7 +272,7 @@
     </action-state>
 
     <view-state id="displayResult" view="indicator_system/number/indicator_number_result" model="selectNumberParameters">
-       <binder>
+        <binder>
             <binding property="indicatorName" required="true"/>
         </binder>
         <transition  on="addnewSelected" to="flushPrevRuns">
@@ -314,6 +308,46 @@
         <evaluate expression="indicatorPreProcessor.flushAll(questions, selectNumberParameters, availableOperations)"/>
         <transition to="questionName" />
     </action-state>
+
+
+    <view-state id="newUIFlowHome" view="indicator_system/number/new_ui"
+                model="selectNumberParameters" popup="true" redirect="true">
+        <binder>
+            <binding property="selectedSource" required="true" />
+            <binding property="selectedAction" required="true" />
+            <binding property="selectedPlatform" required="true" />
+            <binding property="selectedMinor" required="true" />
+            <binding property="questionsContainer.questionName" required="true" />
+        </binder>
+        <transition on="prelims" to="populateCategoryTypes" />
+        <transition on="final" to="populateEntities" />
+    </view-state>
+
+    <action-state id="populateCategoryTypes">
+        <evaluate expression="indicatorPreProcessor.initPopulateTypes(selectNumberParameters)"
+                  result="selectNumberParameters.type" />
+        <transition to="populateCategoryMajors" />
+    </action-state>
+
+    <action-state id="populateCategoryMajors">
+        <evaluate expression="indicatorPreProcessor.initPopulateMajors(selectNumberParameters)"
+                  result="selectNumberParameters.majors" />
+        <transition to="populateCategoryMinors" />
+    </action-state>
+
+    <action-state id="populateCategoryMinors">
+        <evaluate expression="indicatorPreProcessor.initPopulateMinors(selectNumberParameters)"
+                  result="selectNumberParameters.minors" />
+        <transition to="newUIFlowHome" />
+    </action-state>
+
+    <action-state id="populateEntities">
+        <evaluate expression="indicatorPreProcessor.initAvailableEntities_DB(selectNumberParameters.selectedMinor)"
+                  result="selectNumberParameters.keys" />
+        <transition to="newUIFlowHome" />
+    </action-state>
+
+
 
     <end-state id="definitionEnd" view="externalRedirect:contextRelative:/indicators/home"/>
 

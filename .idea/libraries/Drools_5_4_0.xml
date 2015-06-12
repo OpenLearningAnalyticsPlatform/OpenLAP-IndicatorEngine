@@ -26,11 +26,7 @@
       <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.6.4.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/stringtemplate-3.2.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jxl-2.6.10.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/xpp3_min-1.1.4c.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/protobuf-java-2.4.1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/xml-apis-1.3.04.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/mvel2-2.1.0.drools16.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/xstream-1.4.1.jar!/" />
       <root url="file://$PROJECT_DIR$/lib/droolsjbpm-introduction-docs-5.4.0.Final.jdocbook" />
       <root url="jar://$PROJECT_DIR$/lib/antlr-2.7.7.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/dom4j-1.6.1.jar!/" />

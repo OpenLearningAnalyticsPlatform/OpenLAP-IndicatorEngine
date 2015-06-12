@@ -46,10 +46,15 @@ public class QuestionsValidator {
         boolean status = true;
         GLAQuestionDao glaQuestionBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
         List<GLAQuestion> glaQuestions = glaQuestionBean.displayAll(null, null, false);
-        for (GLAQuestion gQuestion : glaQuestions) {
-            if (questions.getQuestionName().equals(gQuestion.getQuestion_name())) {
-                status = false;
-                break;
+        if (questions.getQuestionName() == null)
+            messages.addMessage(new MessageBuilder().error().source("Question Name").
+                    defaultText("Question name cannot be empty.").build());
+        else {
+            for (GLAQuestion gQuestion : glaQuestions) {
+                if (questions.getQuestionName().equals(gQuestion.getQuestion_name())) {
+                    status = false;
+                    break;
+                }
             }
         }
         if(!status){
