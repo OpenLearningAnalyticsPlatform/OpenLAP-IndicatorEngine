@@ -148,26 +148,10 @@
                                         </div>
                                     </tr>
                                     <tr>
-                                        <div class="row templatemo-form-buttons">
-                                            <div class="col-md-12">
-                                                <input class="btn btn-primary" type="submit" name="_eventId_prelims"
-                                                       value="Finalize Prelims" />
-                                            </div>
-                                        </div>
-                                    </tr>
-                                    <tr>
                                         <div class="row">
                                             <div class="col-md-6 margin-bottom-15">
                                                 <label for="entitySelection">Select Number of  </label>
                                                 <form:select class="form-control margin-bottom-15" path="selectedMinor" items="${selectNumberParameters.minors}" name ="entitySelection" id="entitySelection" />
-                                            </div>
-                                        </div>
-                                    </tr>
-                                    <tr>
-                                        <div class="row templatemo-form-buttons">
-                                            <div class="col-md-12">
-                                                <input class="btn btn-primary" type="submit" name="_eventId_final"
-                                                       value="Run Visualization" />
                                             </div>
                                         </div>
                                     </tr>
@@ -183,52 +167,196 @@
                     </div>
 
                     <form:form role="form" id="indicatorSelection"  method="post" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">
-                    <div class="col-md-6 col-sm-6 margin-bottom-30">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">Additional Information</div>
-                            <div class="panel-body">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>Filters</th>
-                                        <th>Additional Operations</th>
-                                        <th>Graph Options</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>
-                                            <a href="javascript:new_window=window.open('/indicators/addEntities','SearchByDescription','height=500,width=700,resizable=yes,scrollbars=yes') ;calendar_window.focus()">Entity Filters
-                                            </a>
-                                        </td>
-                                        <td> View Indicator Summary</td>
-                                        <td> <form:select class="form-control margin-bottom-15" path="selectedChartType" items="${selectNumberParameters.chartTypes}" name ="indRun" id="indRun" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="javascript:new_window=window.open('/indicators/addUsers','SearchByDescription','height=500,width=700,resizable=yes,scrollbars=yes') ;calendar_window.focus()">User Filters
-                                            </a>
-                                        </td>
-                                        <td> View Question Summary</td>
-                                        <td> <form:select class="form-control margin-bottom-15" path="selectedChartEngine" items="${selectNumberParameters.chartEngines}" name ="EngineSelect" id="EngineSelect" /></td>
-
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="javascript:new_window=window.open('/indicators/addSessions','SearchByDescription','height=500,width=700,resizable=yes,scrollbars=yes') ;calendar_window.focus()">Session Filters
-                                            </a>
-                                        </td>
-                                        <td> <input class="btn btn-primary" type="submit" name="_eventId_indicatorNameEntered"
-                                                    value="Update Selections" /></td>
-                                        <td> <input class="btn btn-primary" type="submit" name="_eventId_indicatorNameEntered"
-                                                    value="Refresh Graph" /></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                        </form:form>
-                            </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" role="tablist" id="templatemo-tabs">
+                                <li class="active"><a href="#home" role="tab" data-toggle="tab">Filters</a></li>
+                                <li><a href="#profile" role="tab" data-toggle="tab">Graph Options</a></li>
+                                <li><a href="#messages" role="tab" data-toggle="tab">Summary</a></li>
+                                <li><a href="#settings" role="tab" data-toggle="tab">Other Settings</a></li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="home">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                                        Attribute Settings
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseOne" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                         <label for="entityKeySelection">Select an Entity </label>
+                                                         <form:select class="form-control margin-bottom-15" path="selectedKeys" items="${entitySpecifications.keys}" name ="entityKeySelection" id="entityKeySelection" />
+                                                         <label for="specificationType">Select Specification Type </label>
+                                                         <form:select class="form-control margin-bottom-15" path="selectedentityValueTypes" items="${entitySpecifications.entityValueTypes}" name ="specificationType" id="specificationType" />
+                                                         <label for="entityValue" class="control-label">Filter Specification</label>
+                                                         <form:input class="form-control" path="evalue"  name="entityValue" id ="entityValue"/>
+                                                         <br/>
+                                                         <input class="btn btn-primary" type="submit" name="action"
+                                                           value="Add"  />
+                                                          <input class="btn btn-primary" type="submit" name="action"
+                                                           value="Delete"  />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                                            User Settings
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo" class="panel-collapse collapse">
+                                                    <div class="panel-body">
+                                                        <label for="userType">Select User Type </label>
+                                                        <form:select class="form-control margin-bottom-15" path="selecteduserSearchTypes" items="${selectNumberParameters.userSearchTypes}" name ="userType" id="userType" />
+                                                        <label for="searchString" class="control-label">Filter Specification</label>
+                                                        <form:input class="form-control" path="searchUserString"  name="searchString" id ="searchString"/>
+                                                        <br/>
+                                                        <input type="submit" class="btn btn-primary" name="_eventId_searchUser"
+                                                               value="Search" />
+                                                        <br/>
+                                                        <label for="multipleSelect">Search Results </label>
+                                                        <form:select class="form-control" path="selectedUserString" name="multipleSelect">
+                                                            <form:options items="${selectNumberParameters.searchResults}" />
+                                                        </form:select>
+                                                        <label for="searchType">Select Search Type Type </label>
+                                                        <form:select class="form-control margin-bottom-15" path="selectedSearchType" items="${selectNumberParameters.searchType}" name ="searchType" id="searchType" />
+                                                        <input class="btn btn-primary" type="submit" name="_eventId_specifyUser"
+                                                               value="Add" />
+                                                        <input type="submit" class="btn btn-primary" name="_eventId_clearUserValues"
+                                                               value="Delete All" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                                            Session Settings
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseThree" class="panel-collapse collapse">
+                                                    <div class="panel-body">
+                                                        <label for="sessionSearchType">Select Session Search Type </label>
+                                                        <form:select class="form-control margin-bottom-15" path="selectedsessionSearchType" items="${selectNumberParameters.sessionSearchType}" name ="sessionSearchType" id="sessionSearchType" />
+                                                        <label for="searchString" class="control-label">Filter Specification</label>
+                                                        <form:input class="form-control" path="sessionSearch"  name="searchString" id ="searchString"/>
+                                                        <br/>
+                                                        <input type="submit" class="btn btn-primary" name="_eventId_searchSession"
+                                                               value="Search" />
+                                                        <br/>
+                                                        <label for="multipleSelect">Search Results </label>
+                                                        <form:select class="form-control"  path="selectedUserString" name="multipleSelect">
+                                                            <form:options items="${selectNumberParameters.searchResults}" />
+                                                        </form:select>
+                                                        <label for="searchType">Select Search Type Type </label>
+                                                        <form:select class="form-control margin-bottom-15" path="selectedSearchType" items="${selectNumberParameters.searchType}" name ="searchType" id="searchType" />
+                                                        <input type="submit" class="btn btn-primary" name="_eventId_specifySession"
+                                                                   value="Add" />
+                                                        <input type="submit" class="btn btn-primary" name="_eventId_clearSessionValues"
+                                                               value="Delete All" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                                                            Date & Time Settings
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseFour" class="panel-collapse collapse">
+                                                    <div class="panel-body">
+                                                        <label for="timeSearchType">Select TimeStamp Search Type </label>
+                                                        <form:select class="form-control margin-bottom-15" path="selectedTimeSearchType" items="${selectNumberParameters.timeSearchType}" name ="timeSearchType" id="timeSearchType" />
+                                                        <label for="searchString" class="control-label">Filter Specification</label>
+                                                        <form:input class="form-control" path="timeSearch"  name="searchString" id ="searchString"/>
+                                                        <br/>
+                                                        <input type="submit" class="btn btn-primary" name="_eventId_searchTime"
+                                                               value="Search" />
+                                                        <br/>
+                                                        <label for="multipleSelect">Search Results </label>
+                                                        <form:select size="2" class="form-control" path="selectedSearchStrings" name="multipleSelect">
+                                                            <form:options items="${selectNumberParameters.searchResults}" />
+                                                        </form:select>
+                                                        <label for="timeSelectionType">Select TimeStamp Search Type </label>
+                                                        <form:select class="form-control margin-bottom-15" path="selectedTimeType" items="${selectNumberParameters.timeType}" name ="timeSelectionType" id="timeSelectionType" />
+                                                        <input  type="submit" class="btn btn-primary" name="_eventId_specifyTime"
+                                                                value="Add" />
+                                                        <input  type="submit" class="btn btn-primary"name="_eventId_clearTimeValues"
+                                                                value="Delete All" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-pane fade" id="profile">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+                                                            Graph Settings
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseFive" class="panel-collapse collapse">
+                                                    <div class="panel-body">
+                                                        <label for="entityKeySelection">Select Graph Type </label>
+                                                        <form:select class="form-control margin-bottom-15" path="selectedChartType" items="${selectNumberParameters.chartTypes}" name ="indRun" id="indRun" />
+                                                        <label for="specificationType">Select Graph Engine </label>
+                                                        <form:select class="form-control margin-bottom-15" path="selectedChartEngine" items="${selectNumberParameters.chartEngines}" name ="EngineSelect" id="EngineSelect" />
+                                                        <input class="btn btn-primary" type="submit" name="_eventId_indicatorNameEntered"
+                                                               value="Refresh Graph" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-pane fade" id="messages">
+                                    <div class="list-group">
+                                        <a href="#" class="list-group-item active">
+                                            Morbi convallis sed nisi suscipit
+                                        </a>
+                                        <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
+                                        <a href="#" class="list-group-item">Morbi leo risus</a>
+                                        <a href="#" class="list-group-item">Porta ac consectetur ac</a>
+                                        <a href="#" class="list-group-item">Vestibulum at eros</a>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="settings">
+                                    <div class="list-group">
+                                        <a href="#" class="list-group-item disabled">
+                                            Vivamus dictum posuere odio
+                                        </a>
+                                        <a href="#" class="list-group-item">Porta ac consectetur ac</a>
+                                        <a href="#" class="list-group-item">Vestibulum at eros</a>
+                                        <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
+                                        <a href="#" class="list-group-item">Morbi leo risus</a>
+                                    </div>
+                                </div>
+                                </form:form>
+                            </div> <!-- tab-content -->
                         </div>
-                    </div>
                     <img src="/graphs/jgraph?question=Hello&type=Pie" />
                     <div class="row templatemo-form-buttons">
                         <div class="row templatemo-form-buttons">
@@ -241,7 +369,7 @@
                             </div>
                         </div>
                     </div>
-                </form:form>
+                    </form:form>
             </div>
 
         </div>
@@ -285,6 +413,7 @@
 <script src="${pageContext.request.contextPath}/js/templatemo_script.js"></script>
 <script type="text/javascript">
 </script>
+    </div>
 </body>
 </html>
 <%
