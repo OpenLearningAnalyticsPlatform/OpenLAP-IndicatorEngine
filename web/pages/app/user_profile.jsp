@@ -78,7 +78,6 @@
                 <ul class="templatemo-submenu">
                     <li><a href="/toolkit/admin"><i class="fa fa-cogs"></i><span class="badge pull-right"></span>Toolkit Admin</a></li>
                     <li><a href="/indicators/home"><i class="fa fa-road"></i><span class="badge pull-right"></span>Indicators</a></li>
-                    <li><a href="/visualisation/home"><i class="fa fa-bar-chart-o"></i><span class="badge pull-right"></span>Visualisation</a></li>
                 </ul>
             </li>
             <li class="sub open">
@@ -87,7 +86,6 @@
                 </a>
                 <ul class="templatemo-submenu">
                     <li><a href="/home/user_profile"><i class="fa fa-user"></i>Preferences</a></li>
-                    <li><a href="#"><i class="fa fa-envelope"></i>Messages</a></li>
                 </ul>
             </li>
             <li><a href="javascript:;" data-toggle="modal" data-target="#confirmModal"><i class="fa fa-sign-out"></i>Sign Out</a></li>

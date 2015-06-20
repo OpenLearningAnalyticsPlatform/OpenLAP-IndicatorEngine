@@ -22,6 +22,7 @@ package com.indicator_engine.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.indicator_engine.dao.GLAQuestionDao;
 import com.indicator_engine.datamodel.GLAQuestion;
 import com.indicator_engine.graphgenerator.cewolf.PageViewCountData;
@@ -34,9 +35,12 @@ import com.indicator_engine.model.app.SearchIndicatorForm;
 import com.indicator_engine.model.indicator_system.IndicatorDeletionForm;
 import com.indicator_engine.model.indicator_system.Number.*;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -44,6 +48,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -70,46 +75,144 @@ public class GAIndicatorSystemController {
     @RequestMapping(value = "/indicators_definition", method = RequestMethod.GET)
     public String getNewIndicatorDefinitionHome(Map<String, Object> model) {
         IndicatorPreProcessing indicatorPreProcessor = (IndicatorPreProcessing) appContext.getBean("indicatorPreProcessor");
-        model.put("selectNumberParameters",indicatorPreProcessor.initSelectNumberParametersObject());
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        SelectNumberParameters selectNumberParameters = indicatorPreProcessor.initSelectNumberParametersObject();
+        model.put("selectNumberParameters",selectNumberParameters);
+        entitySpecificationBean.setSource(selectNumberParameters.getSource());
+        entitySpecificationBean.setPlatform(selectNumberParameters.getPlatform());
+        entitySpecificationBean.setAction(selectNumberParameters.getAction());
         return "indicator_system/number/new_ui";
     }
 
-    @RequestMapping(value = "/addEntities", method = RequestMethod.GET)
-    public String getAddEntities(Map<String, Object> model) {
-        EntitySpecification entitySpecification = new EntitySpecification();
+    @RequestMapping(value = "/validateQName", method = RequestMethod.GET)
+    public @ResponseBody
+    String processAJAXRequest_validateQuestionName(
+            @RequestParam(value="qname", required = true) String questionName, Model model) {
+
+        String status = null;
+        GLAQuestionDao glaQuestionBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
+        List<GLAQuestion> glaQuestions = glaQuestionBean.displayAll(null, null, false);
+        if (questionName == null)
+           status = "null";
+        else{
+            if(questionName.length() < 3) {
+                status = "short";
+            }
+            else {
+
+                for (GLAQuestion gQuestion : glaQuestions) {
+                    if (questionName.equals(gQuestion.getQuestion_name())) {
+                        status = "exists";
+                        break;
+                    }
+                }
+            }
+        }
+        return  status;
+    }
+
+    @RequestMapping(value = "/validateIndName", method = RequestMethod.GET)
+    public @ResponseBody
+    String processAJAXRequest_validateIndicatorName(
+            @RequestParam(value="indname", required = true) String indicatorName, Model model) {
+
+        String status = null;
+        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
+        List<GLAIndicator> glaIndicatorList = glaIndicatorBean.displayall(null, null, false);
+        if (indicatorName.isEmpty())
+            status = "null";
+        else{
+            if(indicatorName.length() < 3) {
+                status = "short";
+            }
+            else {
+                for (GLAIndicator glaIndicator : glaIndicatorList) {
+                    if (indicatorName.equals(glaIndicator.getIndicator_name())) {
+                        status = "exists";
+                        break;
+                    }
+                }
+            }
+        }
+
+        return status;
+
+    }
+
+    @RequestMapping(value = "/populateCategories", method = RequestMethod.GET)
+    public @ResponseBody
+    String processAJAXRequest_populateCategoryTypes(@RequestParam(value="action", required = true) String action,
+                                                      @RequestParam(value="platform", required = true) String platform,
+                                                      @RequestParam(value="sources", required = true) List<String> sources,
+                                                      Model model) {
+
+        IndicatorPreProcessing indicatorPreProcessor = (IndicatorPreProcessing)
+                appContext.getBean("indicatorPreProcessor");
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        entitySpecification.setKeys(entitySpecificationBean.getKeys());
-        model.put("entitySpecifications", entitySpecification);
-        return "indicator_system/number/indicator_number_select_entity";
+        List<Categories> categoriesList = new ArrayList<>();
+        Gson gson = new Gson();
+
+        entitySpecificationBean.setSelectedAction(action);
+        entitySpecificationBean.setSelectedPlatform(platform);
+        entitySpecificationBean.setSelectedSource(sources);
+
+        List<String> types = indicatorPreProcessor.initPopulateTypes(sources, action, platform);
+        List<String> majors = indicatorPreProcessor.initPopulateMajors(sources, action, platform);
+        List<String> minors = indicatorPreProcessor.initPopulateMinors(sources, action, platform);
+
+        entitySpecificationBean.setMajors(majors);
+        entitySpecificationBean.setMinors(minors);
+        entitySpecificationBean.setType(types);
+
+        for ( int i =0 ; i < minors.size();i++ ){
+            categoriesList.add(new Categories(types.get(i),majors.get(i), minors.get(i)));
+        }
+        return gson.toJson(categoriesList);
     }
 
-    @RequestMapping(value = "/addEntities", method = RequestMethod.POST)
-    public String processAddEntities(@RequestParam String action,
-                                     @Valid @ModelAttribute("entitySpecifications") EntitySpecification entitySpecifications,
-                                     BindingResult bindingResult,
-                                     Map<String, Object> model) {
-
-        if(action.equals("Add")){
-            EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-            entitySpecificationBean.getEntityValues().add(new EntityValues(entitySpecifications.getSelectedKeys(),
-                    entitySpecifications.getSelectedentityValueTypes(), entitySpecifications.getEvalue()));
-            entitySpecifications.setSelectedKeys(null);
-            entitySpecifications.setSelectedentityValueTypes(null);
-            entitySpecifications.setEvalue(null);
-            entitySpecifications.setEntityValues(entitySpecificationBean.getEntityValues());
-            model.put("entitySpecifications", entitySpecifications);
-        }
-
-        if(action.equals("Delete")){
-            EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-            entitySpecificationBean.getEntityValues().clear();
-            EntitySpecification entitySpecification = new EntitySpecification();
-            model.put("entitySpecifications", entitySpecification);
-        }
-
-        return "indicator_system/number/indicator_number_select_entity";
+    @RequestMapping(value = "/populateEntities", method = RequestMethod.GET)
+    public @ResponseBody
+    String processAJAXRequest_populateEntities(@RequestParam(value="minor", required = true) String minor,
+                                                    Model model) {
+        IndicatorPreProcessing indicatorPreProcessor = (IndicatorPreProcessing)
+                appContext.getBean("indicatorPreProcessor");
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        entitySpecificationBean.setSelectedMinor(minor);
+        List<String> keys = indicatorPreProcessor.initAvailableEntities_DB(minor);
+        entitySpecificationBean.setKeys(keys);
+        return gson.toJson(keys);
     }
 
+        @RequestMapping(value = "/addEntity", method = RequestMethod.GET)
+        public @ResponseBody
+        String  addEntity(@RequestParam(value="key", required = true) String key,
+                          @RequestParam(value="search", required = true) String search,
+                          @RequestParam(value="value", required = true) String value,
+                          Model model) {
+            Gson gson = new Gson();
+            EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+            entitySpecificationBean.getEntityValues().add(new EntityValues(key,
+                    search, value));
+            return gson.toJson(entitySpecificationBean.getEntityValues());
+
+    }
+
+    @RequestMapping(value = "/getEntities", method = RequestMethod.GET)
+    public @ResponseBody
+    String  getEntities(Model model) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        return gson.toJson(entitySpecificationBean.getEntityValues());
+    }
+    @RequestMapping(value = "/deleteEntities", method = RequestMethod.GET)
+    public @ResponseBody
+    String  deleteEntities(Model model) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        entitySpecificationBean.getEntityValues().clear();
+        return gson.toJson(entitySpecificationBean.getEntityValues());
+    }
 
     @RequestMapping(value = "/viewall", method = RequestMethod.GET)
     public String getIndicatorsViewAll(Map<String, Object> model) {
@@ -413,5 +516,41 @@ public class GAIndicatorSystemController {
             }
         }
         log.info("processSearchParams : ENDED \n");
+    }
+}
+
+class Categories {
+
+    String type;
+    String major;
+    String minor;
+
+    Categories(String type, String major, String minor){
+        this.major = major;
+        this.minor = minor;
+        this.type = type;
+    }
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
+    public String getMinor() {
+        return minor;
+    }
+
+    public void setMinor(String minor) {
+        this.minor = minor;
     }
 }

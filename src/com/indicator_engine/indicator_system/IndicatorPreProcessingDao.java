@@ -31,14 +31,13 @@ import java.util.List;
 public interface IndicatorPreProcessingDao {
 
     public String retrieveOperation(IndicatorDefnOperationForm indicatorDefnOperationForm);
-    public String retrieveUIFlow(SelectNumberParameters selectNumberParameters);
     public List<String> initAvailableEntities_DB(String minor);
     public List<String> initAvailableEvents_DB(String minor);
     public IndicatorDefnOperationForm initAvailableOperations_DB();
     public SelectNumberParameters initSelectNumberParametersObject();
-    public List<String> initPopulateMinors(SelectNumberParameters selectNumberParameters);
-    public List<String> initPopulateTypes(SelectNumberParameters selectNumberParameters);
-    public List<String> initPopulateMajors(SelectNumberParameters selectNumberParameters);
+    public List<String> initPopulateMinors(List<String> sources, String action, String platform);
+    public List<String> initPopulateTypes(List<String> sources, String action, String platform);
+    public List<String> initPopulateMajors(List<String> sources, String action, String platform);
     public void manageEValues(SelectNumberParameters obj);
     public void clearEValuesSpecifications(SelectNumberParameters selectNumberParameters );
     public void specifyNewUser(SelectNumberParameters selectNumberParameters);

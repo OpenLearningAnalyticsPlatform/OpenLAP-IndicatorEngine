@@ -42,11 +42,11 @@
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
     <title>Indicator Definition Home</title>
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Goal Oriented LA ToolKit : Indicator Definition" />
+    <meta name="author" content="Tanmaya Mahapatra" />
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/indicator_definition.js"> </script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
-    <script type="javascript" src="${pageContext.request.contextPath}/js/user_profile_checks.js"> </script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
 
 </head>
@@ -109,7 +109,7 @@
                                         <div class="row">
                                             <div class="col-md-6 margin-bottom-15">
                                                 <label for="questionNaming">Enter Question Name </label>
-                                                <form:input path="questionsContainer.questionName" type="text" class="form-control" name ="questionNaming" id="questionNaming" />
+                                                <form:input path="questionsContainer.questionName" type="text" class="form-control" name ="questionNaming" id="questionNaming" onchange="validateQuestionName()" required="required" placeholder="Type your Question Name" />
                                             </div>
                                         </div>
                                     </tr>
@@ -118,7 +118,7 @@
                                         <div class="row">
                                             <div class="col-md-6 margin-bottom-15">
                                                 <label for="indicatornaming">Enter Indicator Name </label>
-                                                <form:input path="indicatorName" type="text" class="form-control" name ="indicatornaming" id="indicatornaming" />
+                                                <form:input path="indicatorName" type="text" class="form-control" name ="indicatornaming" id="indicatornaming" onchange="validateIndicatorName()" required="required" placeholder="Type your Indicator Name"/>
                                             </div>
                                         </div>
                                     </tr>
@@ -142,16 +142,16 @@
                                     <tr>
                                         <div class="row">
                                             <div class="col-md-6 margin-bottom-15">
-                                                <label for="PlatformSelection">Select an Action </label>
-                                                <form:select class="form-control margin-bottom-15" path="selectedAction" items="${selectNumberParameters.action}" name ="PlatformSelection" id="PlatformSelection" />
+                                                <label for="actionSelection">Select an Action </label>
+                                                <form:select class="form-control margin-bottom-15" path="selectedAction" items="${selectNumberParameters.action}" name ="actionSelection" id="actionSelection"  onchange="populateCategories();" onfocus="this.selectedIndex = -1;"/>
                                             </div>
                                         </div>
                                     </tr>
                                     <tr>
                                         <div class="row">
                                             <div class="col-md-6 margin-bottom-15">
-                                                <label for="entitySelection">Select Number of  </label>
-                                                <form:select class="form-control margin-bottom-15" path="selectedMinor" items="${selectNumberParameters.minors}" name ="entitySelection" id="entitySelection" />
+                                                <label for="selectedMinor">Select Number of  </label>
+                                                <form:select class="form-control margin-bottom-15" path="selectedMinor" items="${selectNumberParameters.minors}" name ="selectedMinor" id="selectedMinor" onchange="populateEntities();" onfocus="this.selectedIndex = -1;"/>
                                             </div>
                                         </div>
                                     </tr>
@@ -166,7 +166,7 @@
                         </div>
                     </div>
 
-                    <form:form role="form" id="indicatorSelection"  method="post" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">
+
                     <div class="row">
                         <div class="col-md-6 col-sm-6">
                             <!-- Nav tabs -->
@@ -192,16 +192,14 @@
                                             <div id="collapseOne" class="panel-collapse collapse">
                                                 <div class="panel-body">
                                                          <label for="entityKeySelection">Select an Entity </label>
-                                                         <form:select class="form-control margin-bottom-15" path="selectedKeys" items="${entitySpecifications.keys}" name ="entityKeySelection" id="entityKeySelection" />
+                                                         <form:select class="form-control margin-bottom-15" path="selectedKeys" items="${selectNumberParameters.keys}" name ="entityKeySelection" id="entityKeySelection" />
                                                          <label for="specificationType">Select Specification Type </label>
-                                                         <form:select class="form-control margin-bottom-15" path="selectedentityValueTypes" items="${entitySpecifications.entityValueTypes}" name ="specificationType" id="specificationType" />
+                                                         <form:select class="form-control margin-bottom-15" path="selectedentityValueTypes" items="${selectNumberParameters.entityValueTypes}" name ="specificationType" id="specificationType" />
                                                          <label for="entityValue" class="control-label">Filter Specification</label>
                                                          <form:input class="form-control" path="evalue"  name="entityValue" id ="entityValue"/>
                                                          <br/>
-                                                         <input class="btn btn-primary" type="submit" name="action"
-                                                           value="Add"  />
-                                                          <input class="btn btn-primary" type="submit" name="action"
-                                                           value="Delete"  />
+                                                         <input class="btn btn-primary" type="button" name="addEntity" id ="addEntity"
+                                                           value="Add" onclick="addEntity()" />
                                                 </div>
                                             </div>
                                         </div>
@@ -333,15 +331,27 @@
                                     </ul>
                                 </div>
                                 <div class="tab-pane fade" id="messages">
-                                    <div class="list-group">
-                                        <a href="#" class="list-group-item active">
-                                            Morbi convallis sed nisi suscipit
-                                        </a>
-                                        <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-                                        <a href="#" class="list-group-item">Morbi leo risus</a>
-                                        <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-                                        <a href="#" class="list-group-item">Vestibulum at eros</a>
-                                    </div>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
+                                                            Attributes Summary
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseSix" class="panel-collapse collapse">
+                                                    <div class="panel-heading">Applied Filters</div>
+                                                    <div id="entity_filters">
+                                                    </div>
+                                                    <br/>
+                                                    <input class="btn btn-primary" type="button" id="refreshEntity" value="Refresh" onclick="refreshEntityFilters()"/>
+                                                    <input class="btn btn-primary" type="button" id ="deleteEntity" value="Delete"  onclick="deleteEntity(); return false;"/>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
                                 <div class="tab-pane fade" id="settings">
                                     <div class="list-group">
@@ -354,7 +364,7 @@
                                         <a href="#" class="list-group-item">Morbi leo risus</a>
                                     </div>
                                 </div>
-                                </form:form>
+
                             </div> <!-- tab-content -->
                         </div>
                     <img src="/graphs/jgraph?question=Hello&type=Pie" />

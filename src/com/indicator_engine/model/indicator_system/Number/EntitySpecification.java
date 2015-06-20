@@ -28,6 +28,22 @@ import java.util.List;
  */
 public class EntitySpecification implements Serializable {
 
+
+    List<String> source =  new ArrayList<>();
+    List<String> platform =  new ArrayList<>();
+    List<String> action =  new ArrayList<>();
+
+    private List<String> selectedSource;
+    private String selectedPlatform;
+    private String selectedAction;
+    List<String> minors =  new ArrayList<>();
+    List<String> majors =  new ArrayList<>();
+    List<String> type =  new ArrayList<>();
+    private String selectedMinor;
+    private String selectedMajor;
+    private String selectedType;
+
+
     private List<String> keys = new ArrayList<>();
     private String evalue;
     private String selectedKeys;
@@ -91,5 +107,101 @@ public class EntitySpecification implements Serializable {
 
     public void setEvalue(String evalue) {
         this.evalue = evalue;
+    }
+
+    public List<String> getSource() {
+        return source;
+    }
+
+    public void setSource(List<String> source) {
+        this.source = source;
+    }
+
+    public List<String> getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(List<String> platform) {
+        this.platform = platform;
+    }
+
+    public List<String> getAction() {
+        return action;
+    }
+
+    public void setAction(List<String> action) {
+        this.action = action;
+    }
+
+    public List<String> getSelectedSource() {
+        return selectedSource;
+    }
+
+    public void setSelectedSource(List<String> selectedSource) {
+        this.selectedSource = selectedSource;
+    }
+
+    public String getSelectedPlatform() {
+        return selectedPlatform;
+    }
+
+    public void setSelectedPlatform(String selectedPlatform) {
+        this.selectedPlatform = selectedPlatform;
+    }
+
+    public String getSelectedAction() {
+        return selectedAction;
+    }
+
+    public void setSelectedAction(String selectedAction) {
+        this.selectedAction = selectedAction;
+    }
+
+    public List<String> getMinors() {
+        return minors;
+    }
+
+    public void setMinors(List<String> minors) {
+        this.minors = minors;
+    }
+
+    public List<String> getMajors() {
+        return majors;
+    }
+
+    public void setMajors(List<String> majors) {
+        this.majors = majors;
+    }
+
+    public List<String> getType() {
+        return type;
+    }
+
+    public void setType(List<String> type) {
+        this.type = type;
+    }
+
+    public String getSelectedMinor() {
+        return selectedMinor;
+    }
+
+    public void setSelectedMinor(String selectedMinor) {
+        this.selectedMinor = selectedMinor;
+    }
+
+    public String getSelectedMajor() {
+        return selectedMajor;
+    }
+
+    public void setSelectedMajor(String selectedMajor) {
+        this.selectedMajor = selectedMajor;
+    }
+
+    public String getSelectedType() {
+        return selectedType;
+    }
+
+    public void setSelectedType(String selectedType) {
+        this.selectedType = selectedType;
     }
 }

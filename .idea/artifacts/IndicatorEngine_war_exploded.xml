@@ -13,7 +13,6 @@
           <element id="library" level="project" name="Spring Batch-2.2.6" />
           <element id="library" level="project" name="Spring Integration-4.0.3" />
           <element id="library" level="project" name="Spring Security-3.2.5" />
-          <element id="library" level="project" name="Spring Webflow-2.4.0" />
           <element id="library" level="project" name="Spring Web Services-2.0.2" />
           <element id="library" level="project" name="Spring MVC-4.1.6.RELEASE" />
           <element id="library" level="project" name="Hibernate 4.2.2-4.2.2" />
@@ -35,6 +34,7 @@
           <element id="library" level="project" name="jcommon-1.0.0" />
           <element id="library" level="project" name="cewolf-1.2.4" />
           <element id="library" level="project" name="cewolf-support" />
+          <element id="library" level="project" name="org.json:json:20141113" />
         </element>
       </element>
     </root>

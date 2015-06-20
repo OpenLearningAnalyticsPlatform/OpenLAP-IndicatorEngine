@@ -14,14 +14,7 @@ import java.util.Map;
 @SuppressWarnings({"unused", "unchecked"})
 public class SelectNumberParameters implements Serializable{
 
-    private final List<String> uiFlow = new ArrayList<>();
-    private String selectedUIFlow;
 
-    private final List<String> persistenceObjects = new ArrayList<>();
-    private final Map persistenceObjectsRelation = new HashMap();
-    private final HashMap<String, ArrayList<String>> retrievableObjects = new HashMap<String, ArrayList<String>>();
-    private String selectedPersistenceObject;
-    private String selectedRetrievableObjects;
 
     List<String> source =  new ArrayList<>();
     List<String> platform =  new ArrayList<>();
@@ -92,11 +85,6 @@ public class SelectNumberParameters implements Serializable{
 
     public void reset(){
         // Reset everything to your default values
-        this.persistenceObjects.clear();
-        this.persistenceObjectsRelation.clear();
-        this.retrievableObjects.clear();
-        this.selectedPersistenceObject = null;
-        this.selectedRetrievableObjects = null;
 
         this.selectedSource.clear();
         this.selectedPlatform  =null;
@@ -149,7 +137,6 @@ public class SelectNumberParameters implements Serializable{
 
         this.questionsContainer.reset();
 
-        this.uiFlow.clear();
         this.chartEngines.clear();
         this.chartTypes.clear();
         this.selectedChartType = null;
@@ -160,19 +147,7 @@ public class SelectNumberParameters implements Serializable{
     }
 
     public void buildDefault() {
-        this.persistenceObjects.add("GLAEntity");
-        this.persistenceObjects.add("H");
-        this.persistenceObjectsRelation.put("GLAEntity", "GLAEntity");
-        this.persistenceObjectsRelation.put("GLAEntity.key","key");
-        this.persistenceObjectsRelation.put("GLAEntity.value","value");
-        this.persistenceObjectsRelation.put("GLAEntity.action","glaEvent.action");
-        this.persistenceObjectsRelation.put("GLAEntity.source","glaEvent.source");
-        this.persistenceObjectsRelation.put("GLAEntity.platform","glaEvent.platform");
-        this.persistenceObjectsRelation.put("GLAEntity.major","glaEvent.glaCategory.major");
-        this.persistenceObjectsRelation.put("GLAEntity.minor","glaEvent.glaCategory.minor");
-        this.persistenceObjectsRelation.put("GLAEntity.type","glaEvent.glaCategory.type");
-        this.retrievableObjects.put("GLAEntity", new ArrayList<String>());
-        this.retrievableObjects.get("GLAEntity").add(" COUNT(*) ");
+
         this.entityValueTypes.add("Text");
         this.entityValueTypes.add("Number");
         this.entityValueTypes.add("Regex");
@@ -189,8 +164,6 @@ public class SelectNumberParameters implements Serializable{
         this.searchType.add("REGEX");
         this.filteringType.add("AND");
         this.filteringType.add("OR");
-        this.uiFlow.add("New");
-        this.uiFlow.add("Old");
         chartTypes.add("Bar");
         chartTypes.add("Pie");
         chartEngines.add("JFreeGraph");
@@ -239,14 +212,6 @@ public class SelectNumberParameters implements Serializable{
 
     public List<String> getMinors() {
         return minors;
-    }
-
-    public HashMap<String, ArrayList<String>> getRetrievableObjects() {
-        return retrievableObjects;
-    }
-
-    public String getSelectedRetrievableObjects() {
-        return selectedRetrievableObjects;
     }
 
 
@@ -320,18 +285,6 @@ public class SelectNumberParameters implements Serializable{
 
     public List<String> getSearchType() {
         return searchType;
-    }
-
-    public List<String> getPersistenceObjects() {
-        return persistenceObjects;
-    }
-
-    public String getSelectedPersistenceObject() {
-        return selectedPersistenceObject;
-    }
-
-    public Map getPersistenceObjectsRelation() {
-        return persistenceObjectsRelation;
     }
 
     public String getSelectedSearchType() {
@@ -526,32 +479,12 @@ public class SelectNumberParameters implements Serializable{
         this.selectedFilteringType = selectedFilteringType;
     }
 
-    public void setSelectedPersistenceObject(String selectedPersistenceObject) {
-        this.selectedPersistenceObject = selectedPersistenceObject;
-    }
-
-    public void setSelectedRetrievableObjects(String selectedRetrievableObjects) {
-        this.selectedRetrievableObjects = selectedRetrievableObjects;
-    }
-
     public String getIndicatorName() {
         return indicatorName;
     }
 
     public void setIndicatorName(String indicatorName) {
         this.indicatorName = indicatorName;
-    }
-
-    public List<String> getUiFlow() {
-        return uiFlow;
-    }
-
-    public String getSelectedUIFlow() {
-        return selectedUIFlow;
-    }
-
-    public void setSelectedUIFlow(String selectedUIFlow) {
-        this.selectedUIFlow = selectedUIFlow;
     }
 
     public Questions getQuestionsContainer() {
