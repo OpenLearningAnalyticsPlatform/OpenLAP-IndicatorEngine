@@ -49,11 +49,16 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/indicator_definition.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
+    <script>
+        $(function() {
+            $( document ).tooltip();
+        });
+    </script>
 </head>
 <body>
 <div class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <div class="logo"><h1>Indicator Definition</h1></div>
+        <div class="logo"><h1>Question - Indicator Editor</h1></div>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -110,7 +115,9 @@
                                             <div class="row">
                                                 <div class="col-md-6 margin-bottom-15">
                                                     <label for="questionNaming">Enter Question Name </label>
-                                                    <form:input path="questionsContainer.questionName" type="text" class="form-control" name ="questionNaming" id="questionNaming" onchange="validateQuestionName()" required="required" placeholder="Type your Question Name" />
+                                                    <form:input path="questionsContainer.questionName" type="text" class="form-control" name ="questionNaming"
+                                                                id="questionNaming" onchange="validateQuestionName()" required="required"
+                                                                placeholder="Type your Question Name" title="Question Name msut be unique & must be more than 3 characters."/>
                                                 </div>
                                             </div>
                                         </tr>
@@ -118,12 +125,49 @@
                                             <div class="row">
                                                 <div class="col-md-6 margin-bottom-15">
                                                         <label for="indicatorNaming">Indicator Name </label>
-                                                        <form:input path="indicatorName" type="text" class="form-control" name ="indicatornaming" id="indicatornaming" onchange="validateIndicatorName()" required="required" placeholder="Type your Indicator Name"/>
-                                                        <br/>
-                                                        <button class="btn btn-primary">Delete Indicator</button>
-                                                        <br/>
-                                                        <button class="btn btn-primary">Add a New Indicator</button>
+                                                        <form:input path="indicatorName" type="text" class="form-control" name ="indicatorNaming"
+                                                                    id="indicatorNaming" onchange="validateIndicatorName()" required="required"
+                                                                    placeholder="Type your Indicator Name" title="Indicator Name msut be unique & must be more than 3 characters."/>
                                                 </div>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <div class="row templatemo-form-buttons">
+                                                <div class="col-md-12">
+                                                    <label for="summaryOperations">Operations</label>
+                                                    <br/>
+                                                    <button  type="button" name="newIndicator" title="Click to Start a new Indicator Definition Process." value="Add New Indicator" onclick="addNewIndicator()" >
+                                                        <img src="${pageContext.request.contextPath}/images/new.png" alt="button" width="48" height="48"/>
+                                                    </button>
+                                                    <button  type="button" name="RunQuestion" title="Click to run the Question & all its indicators."
+                                                             value="Run Question" onclick="QuestionPlayBack()">
+                                                        <img src="${pageContext.request.contextPath}/images/run.png" alt="button" width="48" height="48"/>
+                                                    </button >
+                                                    <button  type="button" name="QuestionSave" title="Click to save the Question & all its indicators."
+                                                             value="Save Question" onclick="SaveQuestionDB()">
+                                                        <img src="${pageContext.request.contextPath}/images/save.png" alt="button" width="48" height="48"/>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <br/>
+                                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                Indicator Definition has already started. Please do not click to start another process. <br/>
+                                                Please complete this Indicator and if you require another Indicator then proceed by clicking on
+                                                <img src="${pageContext.request.contextPath}/images/new.png" alt="button" width="48" height="48"/>.
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <br/>
+                                            <div class="alert alert-success alert-dismissible" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                <img src="${pageContext.request.contextPath}/images/new.png" alt="button" width="48" height="48"/> : Define a new Indicator for the current Question.
+                                                <br/>
+                                                <img  src="${pageContext.request.contextPath}/images/run.png" alt="button" width="48" height="48"/> : Run the Entire Question and all its idicators.
+                                                <br/>
+                                                <img  src="${pageContext.request.contextPath}/images/save.png" alt="button" width="48" height="48"/> : Save the Question with its indicators.
                                             </div>
                                         </tr>
                                      </tbody>
@@ -137,6 +181,59 @@
                                 <div class="panel-body">
                                     <table class="table table-striped">
                                         <tbody>
+                                        <tr>
+                                            <div class="row">
+                                                <div class="col-md-6 margin-bottom-15">
+                                                    <label for="qNamefromBean">Question Name</label>
+                                                    <input type="text" disabled class="form-control margin-bottom-15"  title="Name of the Question which is being defined now."
+                                                           name ="qNamefromBean" id="qNamefromBean" onfocus="this.selectedIndex = -1;"/>
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <div class="row">
+                                                <div class="col-md-6 margin-bottom-15">
+                                                    <label for="associatedIndicators">Associated Indicators</label>
+                                                    <select class="form-control margin-bottom-15"  title="List of Indicators already defined for this Question"
+                                                            name ="associatedIndicators" id="associatedIndicators" onfocus="this.selectedIndex = -1;"/>
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <div class="row templatemo-form-buttons">
+                                                <div class="col-md-12">
+                                                    <label for="summaryOperations">Operations</label>
+                                                    <br/>
+                                                    <button  type="button" id="summaryOperations" title="Refresh Question Summary"
+                                                             value="Refresh" onclick="refreshQuestionSummary()">
+                                                       <img  src="${pageContext.request.contextPath}/images/refresh.png" alt="button" width="48" height="48"/>
+                                                    </button>
+                                                    <button  type="button" id="indView" title="View Summary of the selected Indicator" value="View"  onclick="refreshQuestionSummary()">
+                                                        <img  src="${pageContext.request.contextPath}/images/view.png" alt="button" width="48" height="48"/>
+                                                    </button>
+                                                    <button  type="button" id="indLoad" title="Load the Selected Indicator in Editor" value="Load" onclick="refreshQuestionSummary()">
+                                                        <img  src="${pageContext.request.contextPath}/images/load.png" alt="button" width="48" height="48"/>
+                                                    </button>
+                                                    <button  type="button" id="indDelete" title="Delete the Selected Indicator" value="Delete" onclick="refreshQuestionSummary()">
+                                                        <img  src="${pageContext.request.contextPath}/images/delete.png" alt="button" width="48" height="48"/>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <br/>
+                                            <div class="alert alert-success alert-dismissible" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                <img  src="${pageContext.request.contextPath}/images/refresh.png" alt="button" width="48" height="48"/> : Refresh the Question Summary.
+                                                <br/>
+                                                <img  src="${pageContext.request.contextPath}/images/view.png" alt="button" width="48" height="48"/> : View the selected Indicator Summary.
+                                                <br/>
+                                                <img  src="${pageContext.request.contextPath}/images/load.png" alt="button" width="48" height="48"/> : Load the selected Indicator for editing.
+                                                <br/>
+                                                <img  src="${pageContext.request.contextPath}/images/delete.png" alt="button" width="48" height="48"/> : Delete the selected Indicator from this Question.
+                                            </div>
+
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -154,7 +251,8 @@
                                         <div class="row">
                                             <div class="col-md-6 margin-bottom-15">
                                                 <label for="sourceSelection">Select a Source </label>
-                                                <form:select multiple="true" class="form-control margin-bottom-15" path="selectedSource" items="${selectNumberParameters.source}" name ="sourceSelection" id="sourceSelection" />
+                                                <form:select multiple="true" class="form-control margin-bottom-15" title="You can select multiple sourrces i.e from where the data comes."
+                                                             path="selectedSource" items="${selectNumberParameters.source}" name ="sourceSelection" id="sourceSelection" />
                                             </div>
                                         </div>
                                     </tr>
@@ -163,7 +261,8 @@
                                         <div class="row">
                                             <div class="col-md-6 margin-bottom-15">
                                                 <label for="PlatformSelection">Select a Platform </label>
-                                                <form:select class="form-control margin-bottom-15" path="selectedPlatform" items="${selectNumberParameters.platform}" name ="PlatformSelection" id="PlatformSelection" />
+                                                <form:select class="form-control margin-bottom-15" title="You can select a single platform."
+                                                             path="selectedPlatform" items="${selectNumberParameters.platform}" name ="PlatformSelection" id="PlatformSelection" />
                                             </div>
                                         </div>
                                     </tr>
@@ -171,7 +270,8 @@
                                         <div class="row">
                                             <div class="col-md-6 margin-bottom-15">
                                                 <label for="actionSelection">Select an Action </label>
-                                                <form:select class="form-control margin-bottom-15" path="selectedAction" items="${selectNumberParameters.action}" name ="actionSelection" id="actionSelection"  onchange="populateCategories();" onfocus="this.selectedIndex = -1;"/>
+                                                <form:select class="form-control margin-bottom-15" title="Please select an action to poulate the Available Minors."
+                                                             path="selectedAction" items="${selectNumberParameters.action}" name ="actionSelection" id="actionSelection"  onchange="populateCategories();" onfocus="this.selectedIndex = -1;"/>
                                             </div>
                                         </div>
                                     </tr>
@@ -179,7 +279,37 @@
                                         <div class="row">
                                             <div class="col-md-6 margin-bottom-15">
                                                 <label for="actionSelection">Select Number of  </label>
-                                                <form:select class="form-control margin-bottom-15" path="selectedMinor" items="${selectNumberParameters.minors}" name ="selectedMinor" id="selectedMinor" onchange="populateEntities();" onfocus="this.selectedIndex = -1;"/>
+                                                <form:select class="form-control margin-bottom-15" title="Please select a Minor to populate the relevant Attributes"
+                                                             path="selectedMinor" items="${selectNumberParameters.minors}" name ="selectedMinor" id="selectedMinor" onchange="populateEntities();" onfocus="this.selectedIndex = -1;"/>
+                                            </div>
+                                        </div>
+                                    </tr>
+                                    <tr>
+                                        <div class="alert alert-danger alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                            Do not Forget to add at least <strong> one Filter </strong> in the Indicator Property window to successfully complete the Definition process.
+                                        </div>
+                                        <div class="alert alert-info alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                            Please select all filters and click <img src="${pageContext.request.contextPath}/images/refresh_graph.png" alt="button" width="48" height="48"/>
+                                            to view the graph. <br/>
+                                            If you are satisfied then please click <img src="${pageContext.request.contextPath}/images/finalize.png" alt="button" width="48" height="48">
+                                            , as this is the last step of the Indicator Definition process.
+                                        </div>
+                                    </tr>
+                                    <tr>
+                                        <div class="row templatemo-form-buttons">
+                                            <div class="col-md-12">
+                                                <label for="summaryOperations">Operations</label>
+                                                <br/>
+                                                <button  type="button" name="indicatorMemorySave" title="Click to generate a graph with current selections"
+                                                         value="Refresh Graph" onclick="refreshGraph()" >
+                                                    <img src="${pageContext.request.contextPath}/images/refresh_graph.png" alt="button" width="48" height="48"/>
+                                                </button>
+                                                <button  type="button" title="Click to finalize the Current Indicator Settings."
+                                                         name="graphGeneration" value="Finalize Settings" onclick="finalizeIndicator()" >
+                                                    <img src="${pageContext.request.contextPath}/images/finalize.png" alt="button" width="48" height="48"/>
+                                                </button>
                                             </div>
                                         </div>
                                     </tr>
@@ -227,8 +357,9 @@
                                                              <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                                              <strong>Note !</strong> Please use 'ALL' to search all values.
                                                         </div>
-                                                        <input class="btn btn-primary" type="button" name="addEntity" id ="addEntity"
-                                                        value="Add" onclick="addEntity()" />
+                                                        <button  type="button" name="attributebutton" id ="attributebutton"  value="Add" onclick="addEntity()" >
+                                                            <img src="${pageContext.request.contextPath}/images/apply.png" alt="button" width="48" height="48"/>
+                                                        </button>
                                                         <br>
                                                         <div id="entity_filter_add_msg">
                                                         </div>
@@ -253,8 +384,9 @@
                                                         <label for="searchUserString" class="control-label">Search Keyword</label>
                                                         <form:input class="form-control" path="searchUserString"  name="searchUserString" id ="searchUserString"/>
                                                         <br/>
-                                                        <input type="button" class="btn btn-primary" name="_eventId_searchUser"
-                                                               value="Search" onfocus="searchUser()"/>
+                                                        <button  type="button" name="_eventId_searchUser" value="Search" onfocus="searchUser()" >
+                                                            <img src="${pageContext.request.contextPath}/images/search.png" alt="button" width="48" height="48"/>
+                                                        </button>
                                                         <br/>
                                                         <label for="multipleSelect">Search Results </label>
                                                         <form:select class="form-control" path="selectedUserString" name="multipleSelect" id="usersearchResults">
@@ -262,8 +394,9 @@
                                                         </form:select>
                                                         <label for="UsersearchType">Search Type </label>
                                                         <form:select class="form-control margin-bottom-15" path="selectedSearchType" items="${selectNumberParameters.searchType}" name ="UsersearchType" id="UsersearchType" />
-                                                        <input class="btn btn-primary" type="button" name="_eventId_specifyUser"
-                                                               value="Add" onclick="addUserFilter()" />
+                                                        <button  type="button" name="_eventId_specifyUser" value="Add" onclick="addUserFilter()" >
+                                                            <img src="${pageContext.request.contextPath}/images/apply.png" alt="button" width="48" height="48"/>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -284,8 +417,9 @@
                                                         <label for="sessionSearchString" class="control-label">Search Keyword</label>
                                                         <input class="form-control" path="sessionSearch"  name="sessionSearchString" id ="sessionSearchString"/>
                                                         <br/>
-                                                        <input type="button" class="btn btn-primary" name="_eventId_searchSession"
-                                                               value="Search" onclick="searchSession()" />
+                                                        <button  type="button" name="_eventId_searchSession" value="Search" onclick="searchSession()"  >
+                                                            <img src="${pageContext.request.contextPath}/images/search.png" alt="button" width="48" height="48"/>
+                                                        </button>
                                                         <br/>
                                                         <label for="multipleSelect">Search Results </label>
                                                         <form:select class="form-control"  path="selectedUserString" name="multipleSelect" id="SessionsearchResults">
@@ -293,8 +427,9 @@
                                                         </form:select>
                                                         <label for="SessionsearchType">Session Search Type</label>
                                                         <form:select class="form-control margin-bottom-15" path="selectedSearchType" items="${selectNumberParameters.searchType}" name ="SessionsearchType" id="SessionsearchType" />
-                                                        <input type="button" class="btn btn-primary" name="_eventId_specifySession"
-                                                               value="Add"  onclick="addSessionFilter()" />
+                                                        <button  type="button" name="_eventId_specifySession" value="Add"  onclick="addSessionFilter()">
+                                                            <img src="${pageContext.request.contextPath}/images/apply.png" alt="button" width="48" height="48"/>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -315,8 +450,9 @@
                                                         <label for="searchString" class="control-label">Search Keyword</label>
                                                         <input class="form-control" path="timeSearch"  name="searchString" id ="searchString"/>
                                                         <br/>
-                                                        <input type="submit" class="btn btn-primary" name="_eventId_searchTime"
-                                                               value="Search" />
+                                                        <button  type="button" name="_eventId_searchTime"value="Search">
+                                                            <img src="${pageContext.request.contextPath}/images/search.png" alt="button" width="48" height="48"/>
+                                                        </button>
                                                         <br/>
                                                         <label for="multipleSelect">Search Results </label>
                                                         <form:select size="2" class="form-control" path="selectedSearchStrings" name="multipleSelect">
@@ -324,10 +460,12 @@
                                                         </form:select>
                                                         <label for="timeSelectionType">TimeStamp Search Type</label>
                                                         <form:select class="form-control margin-bottom-15" path="selectedTimeType" items="${selectNumberParameters.timeType}" name ="timeSelectionType" id="timeSelectionType" />
-                                                        <input  type="submit" class="btn btn-primary" name="_eventId_specifyTime"
-                                                                value="Add" />
-                                                        <input  type="submit" class="btn btn-primary"name="_eventId_clearTimeValues"
-                                                                value="Delete All" />
+                                                        <button  type="button" name="_eventId_specifyTime" value="Add">
+                                                            <img src="${pageContext.request.contextPath}/images/apply.png" alt="button" width="48" height="48"/>
+                                                        </button>
+                                                        <button  value="Delete All">
+                                                            <img src="${pageContext.request.contextPath}/images/delete.png" alt="button" width="48" height="48"/>
+                                                        </button >
                                                     </div>
                                                 </div>
                                             </div>
@@ -350,8 +488,16 @@
                                                     <div id="entity_filters">
                                                     </div>
                                                     <br/>
-                                                    <input class="btn btn-primary" type="button" id="refreshEntity" value="Refresh" onclick="refreshEntityFilters()"/>
-                                                    <input class="btn btn-primary" type="button" id ="deleteEntities" value="Delete"  onclick="deleteEntity()"/>
+                                                    <div class="row templatemo-form-buttons">
+                                                        <div class="col-md-12">
+                                                            <button   type="button" id="refreshEntity" value="Refresh" onclick="refreshEntityFilters()">
+                                                                <img src="${pageContext.request.contextPath}/images/refresh.png" alt="button" width="48" height="48"/>
+                                                            </button >
+                                                            <button   type="button" id ="deleteEntities" value="Delete"  onclick="deleteEntity()">
+                                                                <img src="${pageContext.request.contextPath}/images/delete.png" alt="button" width="48" height="48"/>
+                                                            </button >
+                                                        </div>
+                                                    </div>
                                                     <br/>
                                                 </div>
                                             </div>
@@ -370,8 +516,16 @@
                                                     <div id="user_filters">
                                                     </div>
                                                     <br/>
-                                                    <input class="btn btn-primary" type="button" id="refreshUserSettings" value="Refresh" onclick="refreshUserFilters()"/>
-                                                    <input class="btn btn-primary" type="button" id ="deleteUserSettings" value="Delete"  onclick="deleteUserFilters()"/>
+                                                    <div class="row templatemo-form-buttons">
+                                                        <div class="col-md-12">
+                                                            <button   type="button" id="refreshUserSettings" value="Refresh" onclick="refreshUserFilters()">
+                                                                <img src="${pageContext.request.contextPath}/images/refresh.png" alt="button" width="48" height="48"/>
+                                                            </button >
+                                                            <button   type="button" id ="deleteUserSettings" value="Delete"  onclick="deleteUserFilters()">
+                                                                <img src="${pageContext.request.contextPath}/images/delete.png" alt="button" width="48" height="48"/>
+                                                            </button >
+                                                        </div>
+                                                    </div>
                                                     <br/>
                                                 </div>
                                             </div>
@@ -390,8 +544,16 @@
                                                     <div id="session_filters">
                                                     </div>
                                                     <br/>
-                                                    <input class="btn btn-primary" type="button" id="refreshSessionSettings" value="Refresh" onclick="refreshSessionFilters()"/>
-                                                    <input class="btn btn-primary" type="button" id ="deleteSessionSettings" value="Delete"  onclick="deleteSessionFilters()"/>
+                                                    <div class="row templatemo-form-buttons">
+                                                        <div class="col-md-12">
+                                                            <button  type="button" id="refreshSessionSettings" value="Refresh" onclick="refreshSessionFilters()">
+                                                                <img src="${pageContext.request.contextPath}/images/refresh.png" alt="button" width="48" height="48"/>
+                                                            </button >
+                                                            <button   type="button" id ="deleteSessionSettings" value="Delete"  onclick="deleteSessionFilters()">
+                                                                <img src="${pageContext.request.contextPath}/images/delete.png" alt="button" width="48" height="48"/>
+                                                            </button >
+                                                        </div>
+                                                    </div>
                                                     <br/>
                                                 </div>
                                             </div>
@@ -426,8 +588,6 @@
                                                         <form:select class="form-control margin-bottom-15" path="selectedChartType" items="${selectNumberParameters.chartTypes}" name ="selectedChartType" id="selectedChartType" />
                                                         <label for="EngineSelect">Select Graph Engine </label>
                                                         <form:select class="form-control margin-bottom-15" path="selectedChartEngine" items="${selectNumberParameters.chartEngines}" name ="EngineSelect" id="EngineSelect" />
-                                                        <input class="btn btn-primary" type="button" name="_eventId_indicatorNameEntered"
-                                                               value="Refresh Graph" onclick="refreshGraph()" />
                                                     </div>
                                                 </div>
                                             </div>

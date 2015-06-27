@@ -285,6 +285,7 @@ function processReceivedEntities() {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
             var entityKeySelection = document.getElementById("entityKeySelection");
+            removeOptions(entityKeySelection);
             for (var i=0;i< parsedJSON.length;i++) {
                 var newOption = new Option(parsedJSON[i], parsedJSON[i]);
                 entityKeySelection.appendChild(newOption);
@@ -337,17 +338,17 @@ function alert_indicatorName() {
             if (request.responseText == "exists") {
 
                 alert("Indicator name already Existing. Duplicate names not allowed");
-                document.getElementById("indicatornaming").value=null;
+                document.getElementById("indicatorNaming").value=null;
             }
             else if (request.responseText == "short") {
 
                 alert("Indicator Name is too Short");
-                document.getElementById("indicatornaming").value=null;
+                document.getElementById("indicatorNaming").value=null;
             }
             else if (request.responseText == "null") {
 
                 alert("Indicator Name cannot be Empty");
-                document.getElementById("indicatornaming").value=null;
+                document.getElementById("indicatorNaming").value=null;
             }
         }
     }
@@ -389,7 +390,7 @@ function addTable(heading,data, tablePlacement) {
 function refreshGraph() {
 
     var questionName = document.getElementById("questionNaming").value;
-    var indicatorName = document.getElementById("indicatornaming").value;
+    var indicatorName = document.getElementById("indicatorNaming").value;
     var graphType = document.getElementById("selectedChartType").value;
     var graphEngine = document.getElementById("EngineSelect").value;
     createRequest();
@@ -408,6 +409,18 @@ function drawGraph() {
         }
     }
 }
+function finalizeIndicator() {
+    createRequest();
+    var questionName = document.getElementById("questionNaming").value;
+    var indicatorName = document.getElementById("indicatorNaming").value;
+    var graphType = document.getElementById("selectedChartType").value;
+    var graphEngine = document.getElementById("EngineSelect").value;
+    var url ="/indicators/finalize?questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
+        +"&graphEngine="+graphEngine;
+    request.open("GET",url,true);
+    request.onreadystatechange=postrefreshQuestionSummary;
+    request.send(null);
+}
 
 function addNewIndicator() {
     createRequest();
@@ -417,17 +430,41 @@ function addNewIndicator() {
     request.send(null);
 }
 
+function refreshQuestionSummary() {
+    createRequest();
+    var url ="/indicators/refreshQuestionSummary";
+    request.open("GET",url,true);
+    request.onreadystatechange=postrefreshQuestionSummary;
+    request.send(null);
+}
+
 function processScreenForNextIndicator() {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
             alert(request.responseText);
-            document.getElementById("indicatornaming").value = "";
+            document.getElementById("indicatorNaming").value = "";
             var selectedMinor = document.getElementById("selectedMinor");
             removeOptions(selectedMinor);
-
+            refreshQuestionSummary();
         }
     }
+}
 
+function postrefreshQuestionSummary() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            var qNamefromBean = document.getElementById("qNamefromBean");
+            var associatedIndicators = document.getElementById("associatedIndicators");
+            removeOptions(associatedIndicators);
+            qNamefromBean.value = parsedJSON.questionName;
+            for (var i=0;i< parsedJSON.genQueries.length;i++) {
+
+                var newOption = new Option(parsedJSON.genQueries[i].indicatorName, parsedJSON.genQueries[i].indicatorName);
+                associatedIndicators.appendChild(newOption);
+            }
+        }
+    }
 
 }

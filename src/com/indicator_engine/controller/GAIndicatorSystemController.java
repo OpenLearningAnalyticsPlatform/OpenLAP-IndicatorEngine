@@ -76,7 +76,7 @@ public class GAIndicatorSystemController {
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         SelectNumberParameters selectNumberParameters = indicatorPreProcessor.initSelectNumberParametersObject();
         model.put("selectNumberParameters",selectNumberParameters);
-        return "indicator_system/number/new_ui";
+        return "indicator_system/number/question_indicator_editor";
     }
 
     @RequestMapping(value = "/initSources", method = RequestMethod.GET)
@@ -86,14 +86,6 @@ public class GAIndicatorSystemController {
         GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
         Gson gson = new Gson();
         return gson.toJson(glaEventBean.selectAll("source"));
-    }
-    @RequestMapping(value = "/initFilters", method = RequestMethod.GET)
-    public @ResponseBody
-    String processAJAXRequest_initFilterSettings(Model model) {
-
-        SelectNumberParameters selectNumberParameters = new SelectNumberParameters();
-        Gson gson = new Gson();
-        return gson.toJson(selectNumberParameters.getEntityValueTypes());
     }
 
     @RequestMapping(value = "/initAction", method = RequestMethod.GET)
@@ -352,21 +344,39 @@ public class GAIndicatorSystemController {
         log.info("Dumping Result \n" + result);
         return gson.toJson(entitySpecificationBean);
     }
-
-    @RequestMapping(value = "/addNewIndicator", method = RequestMethod.GET)
+    @RequestMapping(value = "/finalize", method = RequestMethod.GET)
     public @ResponseBody
-    String  addNewIndicator(Model model) {
+    String  finalizeIndicator(@RequestParam(value="questionName", required = true) String questionName,
+                              @RequestParam(value="indicatorName", required = true) String indicatorName,
+                              @RequestParam(value="graphType", required = true) String graphType,
+                              @RequestParam(value="graphEngine", required = true) String graphEngine,
+                              Model model) {
         Gson gson = new Gson();
+        GLACategoryDao glaCategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
+        OperationNumberProcessorDao operationNumberProcessorBean =  (OperationNumberProcessorDao) appContext.getBean("operationNumberProcessor");
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        entitySpecificationBean.setSelectedChartType(graphType);
+        entitySpecificationBean.setSelectedChartEngine(graphEngine);
+        entitySpecificationBean.setQuestionName(questionName);
+        entitySpecificationBean.setIndicatorName(indicatorName);
+        if(entitySpecificationBean.getHql() == null ) {
+            GLACategory glaCategory = glaCategoryBean.loadCategoryByName(entitySpecificationBean.getSelectedMinor());
+            entitySpecificationBean.setSelectedMajor(glaCategory.getMajor());
+            entitySpecificationBean.setSelectedType(glaCategory.getType());
+            operationNumberProcessorBean.computeResult(entitySpecificationBean);
+        }
         if(entitySpecificationBean.getQuestionsContainer().getGenQueries().size() == 0 ) {
             Questions questions = new Questions();
+            GenIndicatorProps genIndicatorProps = new GenIndicatorProps();
+            genIndicatorProps.setChartEngine(entitySpecificationBean.getSelectedChartEngine());
+            genIndicatorProps.setChartType(entitySpecificationBean.getSelectedChartType());
             IndicatorXMLData indicatorXMLData = new IndicatorXMLData(entitySpecificationBean.getSelectedSource(), entitySpecificationBean.getSelectedAction(),
                     entitySpecificationBean.getSelectedPlatform(), entitySpecificationBean.getSelectedMajor(), entitySpecificationBean.getSelectedMinor(),
                     entitySpecificationBean.getFilteringType(), entitySpecificationBean.getEntityValues(), entitySpecificationBean.getUserSpecifications(),
                     entitySpecificationBean.getSessionSpecifications(), entitySpecificationBean.getTimeSpecifications(), entitySpecificationBean.getSelectedChartType(),
                     entitySpecificationBean.getSelectedChartEngine());
             questions.setQuestionName(entitySpecificationBean.getQuestionName());
-            questions.getGenQueries().add(new GenQuery(entitySpecificationBean.getHql(),entitySpecificationBean.getIndicatorName(),1, indicatorXMLData));
+            questions.getGenQueries().add(new GenQuery(entitySpecificationBean.getHql(),entitySpecificationBean.getIndicatorName(),1, indicatorXMLData, genIndicatorProps));
             entitySpecificationBean.setQuestionsContainer(questions);
         }
         else if(entitySpecificationBean.getQuestionsContainer().getGenQueries().size() >= 1) {
@@ -375,12 +385,30 @@ public class GAIndicatorSystemController {
                     entitySpecificationBean.getFilteringType(), entitySpecificationBean.getEntityValues(), entitySpecificationBean.getUserSpecifications(),
                     entitySpecificationBean.getSessionSpecifications(), entitySpecificationBean.getTimeSpecifications(), entitySpecificationBean.getSelectedChartType(),
                     entitySpecificationBean.getSelectedChartEngine());
-            entitySpecificationBean.getQuestionsContainer().getGenQueries().add(new GenQuery(entitySpecificationBean.getHql(),entitySpecificationBean.getIndicatorName(),1, indicatorXMLData));
+            GenIndicatorProps genIndicatorProps = new GenIndicatorProps();
+            genIndicatorProps.setChartEngine(entitySpecificationBean.getSelectedChartEngine());
+            genIndicatorProps.setChartType(entitySpecificationBean.getSelectedChartType());
+            entitySpecificationBean.getQuestionsContainer().getGenQueries().add(new GenQuery(entitySpecificationBean.getHql(),entitySpecificationBean.getIndicatorName(),1, indicatorXMLData, genIndicatorProps));
 
         }
-        entitySpecificationBean.reset();
+        return gson.toJson(entitySpecificationBean.getQuestionsContainer());
+    }
 
-        return gson.toJson(entitySpecificationBean);
+    @RequestMapping(value = "/addNewIndicator", method = RequestMethod.GET)
+    public @ResponseBody
+    String  addNewIndicator(Model model) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        entitySpecificationBean.reset();
+        return gson.toJson(entitySpecificationBean.getQuestionsContainer());
+    }
+
+    @RequestMapping(value = "/refreshQuestionSummary", method = RequestMethod.GET)
+    public @ResponseBody
+    String  refreshQuestionSummary(Model model) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        return gson.toJson(entitySpecificationBean.getQuestionsContainer());
     }
 
 
@@ -715,37 +743,5 @@ class Categories {
 
     public void setMinor(String minor) {
         this.minor = minor;
-    }
-}
-class FilterSettings {
-
-    private final List<String> entityValueTypes = new ArrayList<>();
-    private final List<String> userSearchTypes = new ArrayList<>();
-    private final List<String> sessionSearchType = new ArrayList<>();
-    private final List<String> timeType = new ArrayList<>();
-    private final List<String> timeSearchType = new ArrayList<>();
-    private final List<String> searchType = new ArrayList<>();
-    private List<String> chartTypes = new ArrayList<>();
-    private List<String> chartEngines = new ArrayList<>();
-
-    FilterSettings() {
-        this.entityValueTypes.add("Text");
-        this.entityValueTypes.add("Number");
-        this.entityValueTypes.add("Regex");
-        this.userSearchTypes.add("UserName");
-        this.userSearchTypes.add("UserEmail");
-        this.sessionSearchType.add("ALL");
-        this.sessionSearchType.add("SEARCH LIKE");
-        this.timeSearchType.add("ALL");
-        this.timeSearchType.add("LIKE");
-        this.timeSearchType.add("EXACT");
-        this.timeType.add("EXACT");
-        this.timeType.add("RANGE");
-        this.searchType.add("EXACT");
-        this.searchType.add("REGEX");
-        chartTypes.add("Bar");
-        chartTypes.add("Pie");
-        chartEngines.add("JFreeGraph");
-        chartEngines.add("CEWOLF");
     }
 }

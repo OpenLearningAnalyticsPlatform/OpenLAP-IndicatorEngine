@@ -24,11 +24,12 @@ public class GenQuery implements Serializable {
         this.indicatorName = indicatorName;
         queryID = qid;
     }
-    public GenQuery(String query, String indicatorName,long qid, IndicatorXMLData indicatorXMLData ) {
+    public GenQuery(String query, String indicatorName,long qid, IndicatorXMLData indicatorXMLData, GenIndicatorProps genIndicatorProps) {
         this.query = query;
         this.indicatorName = indicatorName;
         queryID = qid;
         this.indicatorXMLData = indicatorXMLData;
+        this.genIndicatorProps = genIndicatorProps;
     }
     public GenQuery(String query, String indicatorName,long qid,
                     long props_id, Timestamp last_executionTime, int totalExecutions) {
