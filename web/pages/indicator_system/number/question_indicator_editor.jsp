@@ -45,13 +45,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Goal Oriented LA ToolKit : Indicator Definition" />
     <meta name="author" content="Tanmaya Mahapatra" />
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/dist/jquery.js"></script>
+
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/indicator_definition.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
+    <link href="${pageContext.request.contextPath}/js/jquery-ui/jquery-ui.css" rel="stylesheet">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-ui/jquery-ui.js"></script>
+    <!-- CSS -->
+    <style>
+        .ui-widget-header,.ui-state-default, .ui-button{
+            background:#b9cd6d;
+            border: 1px solid #b9cd6d;
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+        fieldset {
+            border: 0;
+        }
+        label {
+            display: block;
+            margin: 30px 0 0 0;
+        }
+        select {
+            width: 200px;
+        }
+        .overflow {
+            height: 200px;
+        }
+    </style>
     <script>
         $(function() {
             $( document ).tooltip();
+
+            $( "#actionSelection" ).selectmenu();
+
+            $( "#dialog-1" ).dialog({
+                autoOpen: false,
+            });
+            $( "#opener" ).click(function() {
+                $( "#dialog-1" ).dialog( "open" );
+            });
         });
     </script>
 </head>
@@ -102,6 +136,8 @@
             </ol>
             <h1>Question with Indicator Definition</h1>
             <p>Information to be added</p>
+            <div id="dialog-1" title="Dialog Title goes here...">This my first jQuery UI Dialog!</div>
+            <button id="opener">Open Dialog</button>
             <form:form role="form" id="sessionSelection"  method="POST" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">
                 <div class="col-md-12">
                     <div class="col-md-6 col-sm-6 margin-bottom-30">
@@ -640,7 +676,7 @@
     </footer>
 
 
-<script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/Chart.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/templatemo_script.js"></script>
