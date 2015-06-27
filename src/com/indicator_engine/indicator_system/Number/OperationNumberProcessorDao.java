@@ -19,14 +19,12 @@
 
 package com.indicator_engine.indicator_system.Number;
 
-import com.indicator_engine.model.indicator_system.Number.SelectNumberParameters;
-
-import java.util.List;
+import com.indicator_engine.model.indicator_system.Number.EntitySpecification;
 
 /**
  * Created by Tanmaya Mahapatra on 01-04-2015.
  */
 public interface OperationNumberProcessorDao {
 
-    public long computeResult(SelectNumberParameters selectNumberParameters);
+    public void computeResult(EntitySpecification entitySpecification);
 }

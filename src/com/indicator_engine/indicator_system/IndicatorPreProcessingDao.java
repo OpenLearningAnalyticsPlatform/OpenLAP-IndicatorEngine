@@ -39,14 +39,9 @@ public interface IndicatorPreProcessingDao {
     public List<String> initPopulateTypes(List<String> sources, String action, String platform);
     public List<String> initPopulateMajors(List<String> sources, String action, String platform);
     public void manageEValues(SelectNumberParameters obj);
-    public void clearEValuesSpecifications(SelectNumberParameters selectNumberParameters );
-    public void specifyNewUser(SelectNumberParameters selectNumberParameters);
-    public void clearUserSpecifications(SelectNumberParameters selectNumberParameters );
-    public void searchUser(SelectNumberParameters selectNumberParameters);
+    public List<String> searchUser(String keyword, String searchtype);
     public void clearSearchSettings(SelectNumberParameters selectNumberParameters);
-    public void specifyNewSession(SelectNumberParameters selectNumberParameters);
-    public void clearSessionSpecifications(SelectNumberParameters selectNumberParameters);
-    public void searchSession(SelectNumberParameters selectNumberParameters);
+    public List<String> searchSession(String keyword, String searchType);
     public void specifyNewTime(SelectNumberParameters selectNumberParameters);
     public void clearTimeSpecifications(SelectNumberParameters selectNumberParameters);
     public void searchTime(SelectNumberParameters selectNumberParameters);

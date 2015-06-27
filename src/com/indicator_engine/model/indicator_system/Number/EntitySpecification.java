@@ -20,6 +20,7 @@
 package com.indicator_engine.model.indicator_system.Number;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,110 +29,69 @@ import java.util.List;
  */
 public class EntitySpecification implements Serializable {
 
-
-    List<String> source =  new ArrayList<>();
-    List<String> platform =  new ArrayList<>();
-    List<String> action =  new ArrayList<>();
+    private String questionName;
+    private String indicatorName;
+    private String hql;
 
     private List<String> selectedSource;
     private String selectedPlatform;
     private String selectedAction;
-    List<String> minors =  new ArrayList<>();
-    List<String> majors =  new ArrayList<>();
-    List<String> type =  new ArrayList<>();
+
     private String selectedMinor;
     private String selectedMajor;
     private String selectedType;
 
 
-    private List<String> keys = new ArrayList<>();
-    private String evalue;
-    private String selectedKeys;
-    private final List<String> entityValueTypes = new ArrayList<>();
-    private String selectedentityValueTypes;
     private List<EntityValues>  entityValues = new ArrayList<EntityValues>();
+    private List<UserSearchSpecifications>  userSpecifications = new ArrayList<UserSearchSpecifications>();
+    private List<SessionSpecifications>  sessionSpecifications = new ArrayList<SessionSpecifications>();
+    private List<TimeSearchSpecifications>  timeSpecifications = new ArrayList<TimeSearchSpecifications>();
 
-    public EntitySpecification(){
-        this.evalue = null;
-        this.selectedentityValueTypes = null;
+    private String selectedChartType;
+    private String selectedChartEngine;
+
+    private final String  persistenceObject;
+    private final String filteringType;
+    private final String retrievableObjects;
+
+    private Questions questionsContainer = new Questions();
+
+    public EntitySpecification() {
+        this.persistenceObject = "GLAEntity";
+        this.filteringType  ="AND";
+        this.retrievableObjects = " COUNT(*) ";
+
+    }
+
+    public void reset() {
+
+        this.indicatorName = null;
+        this.hql = null;
+
+        this.selectedAction = null;
+        this.selectedPlatform = null;
+        this.selectedSource = null;
+
+        this.selectedMajor = null;
+        this.selectedMinor = null;
+        this.selectedType = null;
+
+        this.selectedChartEngine = null;
+        this.selectedChartType = null;
+
         this.entityValues.clear();
-        this.entityValueTypes.clear();
-        buildDefault();
+        this.userSpecifications.clear();
+        this.timeSpecifications.clear();
+        this.sessionSpecifications.clear();
     }
 
-    public void buildDefault() {
-        this.entityValueTypes.add("Text");
-        this.entityValueTypes.add("Number");
-        this.entityValueTypes.add("Regex");
+    public void completeReset() {
+
+        this.questionName = null;
+        reset();
+        this.questionsContainer = null;
     }
 
-    public List<String> getKeys() {
-        return keys;
-    }
-
-    public void setKeys(List<String> keys) {
-        this.keys = keys;
-    }
-
-    public String getSelectedKeys() {
-        return selectedKeys;
-    }
-
-    public void setSelectedKeys(String selectedKeys) {
-        this.selectedKeys = selectedKeys;
-    }
-
-    public List<String> getEntityValueTypes() {
-        return entityValueTypes;
-    }
-
-    public String getSelectedentityValueTypes() {
-        return selectedentityValueTypes;
-    }
-
-    public void setSelectedentityValueTypes(String selectedentityValueTypes) {
-        this.selectedentityValueTypes = selectedentityValueTypes;
-    }
-
-    public List<EntityValues> getEntityValues() {
-        return entityValues;
-    }
-
-    public void setEntityValues(List<EntityValues> entityValues) {
-        this.entityValues = entityValues;
-    }
-
-    public String getEvalue() {
-        return evalue;
-    }
-
-    public void setEvalue(String evalue) {
-        this.evalue = evalue;
-    }
-
-    public List<String> getSource() {
-        return source;
-    }
-
-    public void setSource(List<String> source) {
-        this.source = source;
-    }
-
-    public List<String> getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(List<String> platform) {
-        this.platform = platform;
-    }
-
-    public List<String> getAction() {
-        return action;
-    }
-
-    public void setAction(List<String> action) {
-        this.action = action;
-    }
 
     public List<String> getSelectedSource() {
         return selectedSource;
@@ -157,30 +117,6 @@ public class EntitySpecification implements Serializable {
         this.selectedAction = selectedAction;
     }
 
-    public List<String> getMinors() {
-        return minors;
-    }
-
-    public void setMinors(List<String> minors) {
-        this.minors = minors;
-    }
-
-    public List<String> getMajors() {
-        return majors;
-    }
-
-    public void setMajors(List<String> majors) {
-        this.majors = majors;
-    }
-
-    public List<String> getType() {
-        return type;
-    }
-
-    public void setType(List<String> type) {
-        this.type = type;
-    }
-
     public String getSelectedMinor() {
         return selectedMinor;
     }
@@ -203,5 +139,97 @@ public class EntitySpecification implements Serializable {
 
     public void setSelectedType(String selectedType) {
         this.selectedType = selectedType;
+    }
+
+    public List<EntityValues> getEntityValues() {
+        return entityValues;
+    }
+
+    public void setEntityValues(List<EntityValues> entityValues) {
+        this.entityValues = entityValues;
+    }
+
+    public List<UserSearchSpecifications> getUserSpecifications() {
+        return userSpecifications;
+    }
+
+    public void setUserSpecifications(List<UserSearchSpecifications> userSpecifications) {
+        this.userSpecifications = userSpecifications;
+    }
+
+    public List<SessionSpecifications> getSessionSpecifications() {
+        return sessionSpecifications;
+    }
+
+    public void setSessionSpecifications(List<SessionSpecifications> sessionSpecifications) {
+        this.sessionSpecifications = sessionSpecifications;
+    }
+
+    public List<TimeSearchSpecifications> getTimeSpecifications() {
+        return timeSpecifications;
+    }
+
+    public void setTimeSpecifications(List<TimeSearchSpecifications> timeSpecifications) {
+        this.timeSpecifications = timeSpecifications;
+    }
+
+    public String getSelectedChartType() {
+        return selectedChartType;
+    }
+
+    public void setSelectedChartType(String selectedChartType) {
+        this.selectedChartType = selectedChartType;
+    }
+
+    public String getSelectedChartEngine() {
+        return selectedChartEngine;
+    }
+
+    public void setSelectedChartEngine(String selectedChartEngine) {
+        this.selectedChartEngine = selectedChartEngine;
+    }
+
+    public String getQuestionName() {
+        return questionName;
+    }
+
+    public void setQuestionName(String questionName) {
+        this.questionName = questionName;
+    }
+
+    public String getIndicatorName() {
+        return indicatorName;
+    }
+
+    public void setIndicatorName(String indicatorName) {
+        this.indicatorName = indicatorName;
+    }
+
+    public String getHql() {
+        return hql;
+    }
+
+    public void setHql(String hql) {
+        this.hql = hql;
+    }
+
+    public Questions getQuestionsContainer() {
+        return questionsContainer;
+    }
+
+    public void setQuestionsContainer(Questions questionsContainer) {
+        this.questionsContainer = questionsContainer;
+    }
+
+    public String getPersistenceObject() {
+        return persistenceObject;
+    }
+
+    public String getFilteringType() {
+        return filteringType;
+    }
+
+    public String getRetrievableObjects() {
+        return retrievableObjects;
     }
 }

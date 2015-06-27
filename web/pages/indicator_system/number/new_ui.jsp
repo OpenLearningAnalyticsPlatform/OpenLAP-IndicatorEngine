@@ -45,10 +45,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Goal Oriented LA ToolKit : Indicator Definition" />
     <meta name="author" content="Tanmaya Mahapatra" />
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/indicator_definition.js"> </script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/indicator_definition.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
-
 </head>
 <body>
 <div class="navbar navbar-inverse" role="navigation">
@@ -97,31 +97,59 @@
             </ol>
             <h1>Question with Indicator Definition</h1>
             <p>Information to be added</p>
-            <div class="col-md-12">
-                <form:form role="form" id="sessionSelection"  method="POST" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">
+            <form:form role="form" id="sessionSelection"  method="POST" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">
+                <div class="col-md-12">
+                    <div class="col-md-6 col-sm-6 margin-bottom-30">
+
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Question Information</div>
+                                <div class="panel-body">
+                                    <table class="table table-striped">
+                                     <tbody>
+                                        <tr>
+                                            <div class="row">
+                                                <div class="col-md-6 margin-bottom-15">
+                                                    <label for="questionNaming">Enter Question Name </label>
+                                                    <form:input path="questionsContainer.questionName" type="text" class="form-control" name ="questionNaming" id="questionNaming" onchange="validateQuestionName()" required="required" placeholder="Type your Question Name" />
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <div class="row">
+                                                <div class="col-md-6 margin-bottom-15">
+                                                        <label for="indicatorNaming">Indicator Name </label>
+                                                        <form:input path="indicatorName" type="text" class="form-control" name ="indicatornaming" id="indicatornaming" onchange="validateIndicatorName()" required="required" placeholder="Type your Indicator Name"/>
+                                                        <br/>
+                                                        <button class="btn btn-primary">Delete Indicator</button>
+                                                        <br/>
+                                                        <button class="btn btn-primary">Add a New Indicator</button>
+                                                </div>
+                                            </div>
+                                        </tr>
+                                     </tbody>
+                                    </table>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-6 col-sm-6 margin-bottom-30">
                         <div class="panel panel-primary">
-                            <div class="panel-heading">Preliminary Information</div>
+                            <div class="panel-heading">Question Summary</div>
+                                <div class="panel-body">
+                                    <table class="table table-striped">
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-6 col-sm-6 margin-bottom-30">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Indicator Information</div>
                             <div class="panel-body">
                                 <table class="table table-striped">
                                     <tbody>
-                                    <tr>
-                                        <div class="row">
-                                            <div class="col-md-6 margin-bottom-15">
-                                                <label for="questionNaming">Enter Question Name </label>
-                                                <form:input path="questionsContainer.questionName" type="text" class="form-control" name ="questionNaming" id="questionNaming" onchange="validateQuestionName()" required="required" placeholder="Type your Question Name" />
-                                            </div>
-                                        </div>
-                                    </tr>
-
-                                    <tr>
-                                        <div class="row">
-                                            <div class="col-md-6 margin-bottom-15">
-                                                <label for="indicatornaming">Enter Indicator Name </label>
-                                                <form:input path="indicatorName" type="text" class="form-control" name ="indicatornaming" id="indicatornaming" onchange="validateIndicatorName()" required="required" placeholder="Type your Indicator Name"/>
-                                            </div>
-                                        </div>
-                                    </tr>
                                     <tr>
                                         <div class="row">
                                             <div class="col-md-6 margin-bottom-15">
@@ -150,59 +178,64 @@
                                     <tr>
                                         <div class="row">
                                             <div class="col-md-6 margin-bottom-15">
-                                                <label for="selectedMinor">Select Number of  </label>
+                                                <label for="actionSelection">Select Number of  </label>
                                                 <form:select class="form-control margin-bottom-15" path="selectedMinor" items="${selectNumberParameters.minors}" name ="selectedMinor" id="selectedMinor" onchange="populateEntities();" onfocus="this.selectedIndex = -1;"/>
                                             </div>
                                         </div>
-                                    </tr>
-                                    <tr>
-                                        <p>
-                                            <form:errors path="*" cssClass="errorblock" element="div" />
-                                        </p>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-
-
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6">
+                    <div class="col-md-6 col-sm-6 margin-bottom-30">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Indicator Properties & Summary</div>
+                            <div class="panel-body">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs" role="tablist" id="templatemo-tabs">
-                                <li class="active"><a href="#home" role="tab" data-toggle="tab">Filters</a></li>
-                                <li><a href="#profile" role="tab" data-toggle="tab">Graph Options</a></li>
-                                <li><a href="#messages" role="tab" data-toggle="tab">Summary</a></li>
-                                <li><a href="#settings" role="tab" data-toggle="tab">Other Settings</a></li>
+                                <li class="active"><a href="#filters" role="tab" data-toggle="tab">Filters</a></li>
+                                <li><a href="#FilterSummary" role="tab" data-toggle="tab">Filter Summary</a></li>
+                                <li><a href="#graphs" role="tab" data-toggle="tab">Graph Options</a></li>
+                                <li><a href="#indicatorSummary" role="tab" data-toggle="tab">Indicator Summary</a></li>
+                                <li><a href="#graphGeneration" role="tab" data-toggle="tab">Graph Preview</a></li>
                             </ul>
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                <div class="tab-pane fade in active" id="home">
+
+                                <div class="tab-pane fade in active" id="filters">
                                     <ul class="list-group">
                                         <li class="list-group-item">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h4 class="panel-title">
-                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                                        Attribute Settings
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseOne" class="panel-collapse collapse">
-                                                <div class="panel-body">
-                                                         <label for="entityKeySelection">Select an Entity </label>
-                                                         <form:select class="form-control margin-bottom-15" path="selectedKeys" items="${selectNumberParameters.keys}" name ="entityKeySelection" id="entityKeySelection" />
-                                                         <label for="specificationType">Select Specification Type </label>
-                                                         <form:select class="form-control margin-bottom-15" path="selectedentityValueTypes" items="${selectNumberParameters.entityValueTypes}" name ="specificationType" id="specificationType" />
-                                                         <label for="entityValue" class="control-label">Filter Specification</label>
-                                                         <form:input class="form-control" path="evalue"  name="entityValue" id ="entityValue"/>
-                                                         <br/>
-                                                         <input class="btn btn-primary" type="button" name="addEntity" id ="addEntity"
-                                                           value="Add" onclick="addEntity()" />
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                                            Attribute Settings
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne" class="panel-collapse collapse">
+                                                    <div class="panel-body">
+                                                        <label for="entityKeySelection">Select an Entity </label>
+                                                        <form:select class="form-control margin-bottom-15" path="selectedKeys" items="${selectNumberParameters.keys}" name ="entityKeySelection" id="entityKeySelection" />
+                                                        <label for="specificationType">Select Specification Type </label>
+                                                        <form:select class="form-control margin-bottom-15" path="selectedentityValueTypes" items="${selectNumberParameters.entityValueTypes}" name ="specificationType" id="specificationType" />
+                                                        <label for="entityValue" class="control-label">Filter Specification</label>
+                                                        <form:input class="form-control" path="evalue"  name="entityValue" id ="entityValue"/>
+                                                        <br/>
+                                                        <div class="alert alert-success alert-dismissible" role="alert">
+                                                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                             <strong>Note !</strong> Please use 'ALL' to search all values.
+                                                        </div>
+                                                        <input class="btn btn-primary" type="button" name="addEntity" id ="addEntity"
+                                                        value="Add" onclick="addEntity()" />
+                                                        <br>
+                                                        <div id="entity_filter_add_msg">
+                                                        </div>
+                                                        <br/>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         </li>
                                         <li class="list-group-item">
                                             <div class="panel panel-default">
@@ -215,24 +248,22 @@
                                                 </div>
                                                 <div id="collapseTwo" class="panel-collapse collapse">
                                                     <div class="panel-body">
-                                                        <label for="userType">Select User Type </label>
+                                                        <label for="userType">User Type </label>
                                                         <form:select class="form-control margin-bottom-15" path="selecteduserSearchTypes" items="${selectNumberParameters.userSearchTypes}" name ="userType" id="userType" />
-                                                        <label for="searchString" class="control-label">Filter Specification</label>
-                                                        <form:input class="form-control" path="searchUserString"  name="searchString" id ="searchString"/>
+                                                        <label for="searchUserString" class="control-label">Search Keyword</label>
+                                                        <form:input class="form-control" path="searchUserString"  name="searchUserString" id ="searchUserString"/>
                                                         <br/>
-                                                        <input type="submit" class="btn btn-primary" name="_eventId_searchUser"
-                                                               value="Search" />
+                                                        <input type="button" class="btn btn-primary" name="_eventId_searchUser"
+                                                               value="Search" onfocus="searchUser()"/>
                                                         <br/>
                                                         <label for="multipleSelect">Search Results </label>
-                                                        <form:select class="form-control" path="selectedUserString" name="multipleSelect">
+                                                        <form:select class="form-control" path="selectedUserString" name="multipleSelect" id="usersearchResults">
                                                             <form:options items="${selectNumberParameters.searchResults}" />
                                                         </form:select>
-                                                        <label for="searchType">Select Search Type Type </label>
-                                                        <form:select class="form-control margin-bottom-15" path="selectedSearchType" items="${selectNumberParameters.searchType}" name ="searchType" id="searchType" />
-                                                        <input class="btn btn-primary" type="submit" name="_eventId_specifyUser"
-                                                               value="Add" />
-                                                        <input type="submit" class="btn btn-primary" name="_eventId_clearUserValues"
-                                                               value="Delete All" />
+                                                        <label for="UsersearchType">Search Type </label>
+                                                        <form:select class="form-control margin-bottom-15" path="selectedSearchType" items="${selectNumberParameters.searchType}" name ="UsersearchType" id="UsersearchType" />
+                                                        <input class="btn btn-primary" type="button" name="_eventId_specifyUser"
+                                                               value="Add" onclick="addUserFilter()" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -248,24 +279,22 @@
                                                 </div>
                                                 <div id="collapseThree" class="panel-collapse collapse">
                                                     <div class="panel-body">
-                                                        <label for="sessionSearchType">Select Session Search Type </label>
+                                                        <label for="sessionSearchType">Session Search Type </label>
                                                         <form:select class="form-control margin-bottom-15" path="selectedsessionSearchType" items="${selectNumberParameters.sessionSearchType}" name ="sessionSearchType" id="sessionSearchType" />
-                                                        <label for="searchString" class="control-label">Filter Specification</label>
-                                                        <form:input class="form-control" path="sessionSearch"  name="searchString" id ="searchString"/>
+                                                        <label for="sessionSearchString" class="control-label">Search Keyword</label>
+                                                        <input class="form-control" path="sessionSearch"  name="sessionSearchString" id ="sessionSearchString"/>
                                                         <br/>
-                                                        <input type="submit" class="btn btn-primary" name="_eventId_searchSession"
-                                                               value="Search" />
+                                                        <input type="button" class="btn btn-primary" name="_eventId_searchSession"
+                                                               value="Search" onclick="searchSession()" />
                                                         <br/>
                                                         <label for="multipleSelect">Search Results </label>
-                                                        <form:select class="form-control"  path="selectedUserString" name="multipleSelect">
+                                                        <form:select class="form-control"  path="selectedUserString" name="multipleSelect" id="SessionsearchResults">
                                                             <form:options items="${selectNumberParameters.searchResults}" />
                                                         </form:select>
-                                                        <label for="searchType">Select Search Type Type </label>
-                                                        <form:select class="form-control margin-bottom-15" path="selectedSearchType" items="${selectNumberParameters.searchType}" name ="searchType" id="searchType" />
-                                                        <input type="submit" class="btn btn-primary" name="_eventId_specifySession"
-                                                                   value="Add" />
-                                                        <input type="submit" class="btn btn-primary" name="_eventId_clearSessionValues"
-                                                               value="Delete All" />
+                                                        <label for="SessionsearchType">Session Search Type</label>
+                                                        <form:select class="form-control margin-bottom-15" path="selectedSearchType" items="${selectNumberParameters.searchType}" name ="SessionsearchType" id="SessionsearchType" />
+                                                        <input type="button" class="btn btn-primary" name="_eventId_specifySession"
+                                                               value="Add"  onclick="addSessionFilter()" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -281,10 +310,10 @@
                                                 </div>
                                                 <div id="collapseFour" class="panel-collapse collapse">
                                                     <div class="panel-body">
-                                                        <label for="timeSearchType">Select TimeStamp Search Type </label>
+                                                        <label for="timeSearchType">TimeStamp Search Type </label>
                                                         <form:select class="form-control margin-bottom-15" path="selectedTimeSearchType" items="${selectNumberParameters.timeSearchType}" name ="timeSearchType" id="timeSearchType" />
-                                                        <label for="searchString" class="control-label">Filter Specification</label>
-                                                        <form:input class="form-control" path="timeSearch"  name="searchString" id ="searchString"/>
+                                                        <label for="searchString" class="control-label">Search Keyword</label>
+                                                        <input class="form-control" path="timeSearch"  name="searchString" id ="searchString"/>
                                                         <br/>
                                                         <input type="submit" class="btn btn-primary" name="_eventId_searchTime"
                                                                value="Search" />
@@ -293,7 +322,7 @@
                                                         <form:select size="2" class="form-control" path="selectedSearchStrings" name="multipleSelect">
                                                             <form:options items="${selectNumberParameters.searchResults}" />
                                                         </form:select>
-                                                        <label for="timeSelectionType">Select TimeStamp Search Type </label>
+                                                        <label for="timeSelectionType">TimeStamp Search Type</label>
                                                         <form:select class="form-control margin-bottom-15" path="selectedTimeType" items="${selectNumberParameters.timeType}" name ="timeSelectionType" id="timeSelectionType" />
                                                         <input  type="submit" class="btn btn-primary" name="_eventId_specifyTime"
                                                                 value="Add" />
@@ -305,32 +334,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="tab-pane fade" id="profile">
-                                    <ul class="list-group">
-                                        <li class="list-group-item">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <h4 class="panel-title">
-                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
-                                                            Graph Settings
-                                                        </a>
-                                                    </h4>
-                                                </div>
-                                                <div id="collapseFive" class="panel-collapse collapse">
-                                                    <div class="panel-body">
-                                                        <label for="entityKeySelection">Select Graph Type </label>
-                                                        <form:select class="form-control margin-bottom-15" path="selectedChartType" items="${selectNumberParameters.chartTypes}" name ="indRun" id="indRun" />
-                                                        <label for="specificationType">Select Graph Engine </label>
-                                                        <form:select class="form-control margin-bottom-15" path="selectedChartEngine" items="${selectNumberParameters.chartEngines}" name ="EngineSelect" id="EngineSelect" />
-                                                        <input class="btn btn-primary" type="submit" name="_eventId_indicatorNameEntered"
-                                                               value="Refresh Graph" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="tab-pane fade" id="messages">
+                                <div class="tab-pane fade" id="FilterSummary">
                                     <ul class="list-group">
                                         <li class="list-group-item">
                                             <div class="panel panel-default">
@@ -347,13 +351,54 @@
                                                     </div>
                                                     <br/>
                                                     <input class="btn btn-primary" type="button" id="refreshEntity" value="Refresh" onclick="refreshEntityFilters()"/>
-                                                    <input class="btn btn-primary" type="button" id ="deleteEntity" value="Delete"  onclick="deleteEntity(); return false;"/>
+                                                    <input class="btn btn-primary" type="button" id ="deleteEntities" value="Delete"  onclick="deleteEntity()"/>
+                                                    <br/>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseSeven">
+                                                            User Filter Summary
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseSeven" class="panel-collapse collapse">
+                                                    <div class="panel-heading">Applied Filters</div>
+                                                    <div id="user_filters">
+                                                    </div>
+                                                    <br/>
+                                                    <input class="btn btn-primary" type="button" id="refreshUserSettings" value="Refresh" onclick="refreshUserFilters()"/>
+                                                    <input class="btn btn-primary" type="button" id ="deleteUserSettings" value="Delete"  onclick="deleteUserFilters()"/>
+                                                    <br/>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseEight">
+                                                            Session Filter Summary
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseEight" class="panel-collapse collapse">
+                                                    <div class="panel-heading">Applied Filters</div>
+                                                    <div id="session_filters">
+                                                    </div>
+                                                    <br/>
+                                                    <input class="btn btn-primary" type="button" id="refreshSessionSettings" value="Refresh" onclick="refreshSessionFilters()"/>
+                                                    <input class="btn btn-primary" type="button" id ="deleteSessionSettings" value="Delete"  onclick="deleteSessionFilters()"/>
+                                                    <br/>
                                                 </div>
                                             </div>
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="tab-pane fade" id="settings">
+                                <div class="tab-pane fade" id="indicatorSummary">
                                     <div class="list-group">
                                         <a href="#" class="list-group-item disabled">
                                             Vivamus dictum posuere odio
@@ -364,29 +409,47 @@
                                         <a href="#" class="list-group-item">Morbi leo risus</a>
                                     </div>
                                 </div>
+                                <div class="tab-pane fade" id="graphs">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+                                                            Graph Settings
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseFive" class="panel-collapse collapse">
+                                                    <div class="panel-body">
+                                                        <label for="selectedChartType">Select Graph Type </label>
+                                                        <form:select class="form-control margin-bottom-15" path="selectedChartType" items="${selectNumberParameters.chartTypes}" name ="selectedChartType" id="selectedChartType" />
+                                                        <label for="EngineSelect">Select Graph Engine </label>
+                                                        <form:select class="form-control margin-bottom-15" path="selectedChartEngine" items="${selectNumberParameters.chartEngines}" name ="EngineSelect" id="EngineSelect" />
+                                                        <input class="btn btn-primary" type="button" name="_eventId_indicatorNameEntered"
+                                                               value="Refresh Graph" onclick="refreshGraph()" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-pane fade" id="graphGeneration">
+                                    <img src="/graphs/jgraph?default=true" id="graphImage"/>
+                                </div>
+
 
                             </div> <!-- tab-content -->
-                        </div>
-                    <img src="/graphs/jgraph?question=Hello&type=Pie" />
-                    <div class="row templatemo-form-buttons">
-                        <div class="row templatemo-form-buttons">
-                            <div class="col-md-12">
-                                <input class="btn btn-default" type="submit" name="_eventId_prevScreen"
-                                       value="Add a New Indicator" />
-                                <input class="btn btn-primary" type="submit" name="_eventId_indicatorNameEntered"
-                                       value="Save" />
-
-                            </div>
-                        </div>
                     </div>
-                    </form:form>
-            </div>
+                    </div>
+                    </div>
+                </div>
+            </form:form>
+
 
         </div>
-
-        </div>
-
     </div>
+
 
     <!-- Modal -->
     <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

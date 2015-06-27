@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 package com.indicator_engine.indicator_system.Number;
-import com.indicator_engine.model.indicator_system.Number.SelectNumberParameters
+import com.indicator_engine.model.indicator_system.Number.EntitySpecification
 import com.indicator_engine.indicator_system.Number.ProcessUserFilters;
 import java.util.List;
 
@@ -25,22 +25,22 @@ dialect  "mvel"
 
 rule "When Only Entity Filtering (Default Rule) is Present"
 when
-    SelectNumberParameters ( userSpecifications.isEmpty() == true,
+    EntitySpecification ( userSpecifications.isEmpty() == true,
                              timeSpecifications.isEmpty() == true,
                              sessionSpecifications.isEmpty() == true,
                              entityValues.size()== 1,
                              entityValues.get(0).geteValues() ==  "ALL")
     $pFilter : ProcessUserFilters()
-    $userParameter : SelectNumberParameters( $source : selectedSource,
+    $userParameter : EntitySpecification( $source : selectedSource,
                                              $platform : selectedPlatform,
                                              $action : selectedAction,
                                              $major : selectedMajor,
                                              $minor : selectedMinor,
                                              $type : selectedType,
                                              $key : entityValues,
-                                             $pobject: selectedPersistenceObject,
-                                             $filter : selectedFilteringType,
-                                             $robject : selectedRetrievableObjects)
+                                             $pobject: persistenceObject,
+                                             $filter : filteringType,
+                                             $robject : retrievableObjects)
 then
 
     $userParameter.setHql("SELECT " + $robject + " FROM " + $pobject + " WHERE glaEvent.action ='"+$action+"'"
@@ -53,22 +53,22 @@ end
 
 rule "When Only Entity Filtering (2+) is Present"
 when
-    SelectNumberParameters ( userSpecifications.isEmpty() == true,
+    EntitySpecification ( userSpecifications.isEmpty() == true,
                              timeSpecifications.isEmpty() == true,
                              sessionSpecifications.isEmpty() == true,
                              entityValues.isEmpty() == false)
 
     $pFilter : ProcessUserFilters()
-    $userParameter : SelectNumberParameters( $source : selectedSource,
+    $userParameter : EntitySpecification( $source : selectedSource,
                                               $platform : selectedPlatform,
                                               $action : selectedAction,
                                               $major : selectedMajor,
                                               $minor : selectedMinor,
                                               $type : selectedType,
                                               $key : entityValues,
-                                              $filter : selectedFilteringType,
-                                              $pobject: selectedPersistenceObject,
-                                              $robject : selectedRetrievableObjects)
+                                              $filter : filteringType,
+                                              $pobject: persistenceObject,
+                                              $robject : retrievableObjects)
 
 then
 
@@ -81,13 +81,13 @@ end
 
 rule "When Only User Filtering and Entity Filtering are Present"
 when
-    SelectNumberParameters ( userSpecifications.isEmpty() == false,
+    EntitySpecification ( userSpecifications.isEmpty() == false,
                              timeSpecifications.isEmpty() == true,
                              sessionSpecifications.isEmpty() == true,
                              entityValues.isEmpty() == false)
 
     $pFilter : ProcessUserFilters()
-    $userParameter : SelectNumberParameters( $source : selectedSource,
+    $userParameter : EntitySpecification( $source : selectedSource,
                                               $platform : selectedPlatform,
                                               $action : selectedAction,
                                               $major : selectedMajor,
@@ -95,9 +95,9 @@ when
                                               $type : selectedType,
                                               $key : entityValues,
                                               $user : userSpecifications,
-                                              $filter : selectedFilteringType,
-                                              $pobject: selectedPersistenceObject,
-                                              $robject : selectedRetrievableObjects)
+                                              $filter : filteringType,
+                                              $pobject: persistenceObject,
+                                              $robject : retrievableObjects)
 
 then
     $userParameter.setHql("SELECT " + $robject + " FROM " + $pobject + " WHERE glaEvent.action ='"+$action+"'"
@@ -109,13 +109,13 @@ end
 
 rule "When Session & Entity Filtering are Present"
 when
-    SelectNumberParameters ( userSpecifications.isEmpty() == true,
+    EntitySpecification ( userSpecifications.isEmpty() == true,
                              timeSpecifications.isEmpty() == true,
                              sessionSpecifications.isEmpty() == false,
                              entityValues.isEmpty() == false)
 
     $pFilter : ProcessUserFilters()
-    $userParameter : SelectNumberParameters( $source : selectedSource,
+    $userParameter : EntitySpecification( $source : selectedSource,
                                               $platform : selectedPlatform,
                                               $action : selectedAction,
                                               $major : selectedMajor,
@@ -123,9 +123,9 @@ when
                                               $type : selectedType,
                                               $key : entityValues,
                                               $session : sessionSpecifications,
-                                              $filter : selectedFilteringType,
-                                              $pobject: selectedPersistenceObject,
-                                              $robject : selectedRetrievableObjects)
+                                              $filter : filteringType,
+                                              $pobject: persistenceObject,
+                                              $robject : retrievableObjects)
 
 then
     $userParameter.setHql("SELECT " + $robject + " FROM " + $pobject + " WHERE glaEvent.action ='"+$action+"'"
@@ -138,13 +138,13 @@ end
 
 rule "When User Filtering, Session & Entity Filtering are Present"
 when
-    SelectNumberParameters ( userSpecifications.isEmpty() == false,
+    EntitySpecification ( userSpecifications.isEmpty() == false,
                              timeSpecifications.isEmpty() == true,
                              sessionSpecifications.isEmpty() == false,
                              entityValues.isEmpty() == false)
 
     $pFilter : ProcessUserFilters()
-    $userParameter : SelectNumberParameters( $source : selectedSource,
+    $userParameter : EntitySpecification( $source : selectedSource,
                                               $platform : selectedPlatform,
                                               $action : selectedAction,
                                               $major : selectedMajor,
@@ -153,9 +153,9 @@ when
                                               $key : entityValues,
                                               $user : userSpecifications,
                                               $session : sessionSpecifications,
-                                              $filter : selectedFilteringType,
-                                              $pobject: selectedPersistenceObject,
-                                              $robject : selectedRetrievableObjects)
+                                              $filter : filteringType,
+                                              $pobject: persistenceObject,
+                                              $robject : retrievableObjects)
 
 then
     $userParameter.setHql("SELECT " + $robject + " FROM " + $pobject + " WHERE glaEvent.action ='"+$action+"'"

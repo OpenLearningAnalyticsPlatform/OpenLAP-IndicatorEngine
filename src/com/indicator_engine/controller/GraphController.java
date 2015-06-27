@@ -24,6 +24,9 @@ import com.indicator_engine.dao.GLAIndicatorDao;
 import com.indicator_engine.dao.GLAQuestionDao;
 import com.indicator_engine.datamodel.GLAIndicator;
 import com.indicator_engine.datamodel.GLAQuestion;
+import com.indicator_engine.model.indicator_system.Number.EntitySpecification;
+import com.indicator_engine.model.indicator_system.Number.GenQuery;
+import com.indicator_engine.model.indicator_system.Number.Questions;
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
@@ -67,38 +70,86 @@ public class GraphController {
 
     @RequestMapping(value = "/jgraph", method = RequestMethod.GET)
     public void processGraphRequests(@RequestParam(value="type", defaultValue="bar") String gType,
-                                     @RequestParam(value="question", required = true)String questionName,
+                                     @RequestParam(value="question" ,required = false)String questionName,
+                                     @RequestParam(value="bean", defaultValue="false", required = false)String runFromContextBean,
+                                     @RequestParam(value="default", defaultValue="false", required = false)String defaultRun,
                                      HttpServletRequest request,
                                      HttpServletResponse response) {
 
 
         response.setContentType("image/png");
-        GLAQuestionDao glaQuestionsBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
-        long question_id = glaQuestionsBean.findQuestionID(questionName);
-        GLAQuestion glaQuestion = glaQuestionsBean.loadByQuestionID(question_id);
-        if(gType.equals("Pie")) {
-            PieDataset pdSet = createDataSet(glaQuestion);
-            JFreeChart chart = createPieChart(pdSet, glaQuestion.getQuestion_name());
+        if(defaultRun.equals("true")) {
+            DefaultPieDataset dataSet = new DefaultPieDataset();
+            dataSet.setValue("One", new Double(43.2));
+            dataSet.setValue("Two", new Double(10.0));
+            dataSet.setValue("Three", new Double(27.5));
+            dataSet.setValue("Four", new Double(17.5));
+            dataSet.setValue("Five", new Double(11.0));
+            dataSet.setValue("Six", new Double(19.4));
+            JFreeChart chart = createPieChart(dataSet, "Sample Graph");
             try {
                 ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart,
                         750, 400);
-                glaQuestionsBean.updateStatistics(question_id);
                 response.getOutputStream().close();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
-        else if(gType.equals("Bar")) {
-            CategoryDataset dataset = createCategoryDataset(glaQuestion);
-            JFreeChart chart = createBarChart(dataset, glaQuestion.getQuestion_name());
-            try {
-                ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart,
-                        750, 400);
-                glaQuestionsBean.updateStatistics(question_id);
-                response.getOutputStream().close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
+        else if(runFromContextBean.equals("true")) {
+            EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+            if(entitySpecificationBean.getSelectedChartType().equals("Pie")) {
+                PieDataset pdSet = createDataSet(entitySpecificationBean);
+                JFreeChart chart = createPieChart(pdSet, entitySpecificationBean.getQuestionName());
+                try {
+                    ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart,
+                            750, 400);
+                    response.getOutputStream().close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
+            else if(entitySpecificationBean.getSelectedChartType().equals("Bar")) {
+                CategoryDataset dataset = createCategoryDataSet(entitySpecificationBean);
+                JFreeChart chart = createBarChart(dataset, entitySpecificationBean.getQuestionName());
+                try {
+                    ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart,
+                            750, 400);
+                    response.getOutputStream().close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        else {
+
+            GLAQuestionDao glaQuestionsBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
+            long question_id = glaQuestionsBean.findQuestionID(questionName);
+            GLAQuestion glaQuestion = glaQuestionsBean.loadByQuestionID(question_id);
+            if(gType.equals("Pie")) {
+                PieDataset pdSet = createDataSet(glaQuestion);
+                JFreeChart chart = createPieChart(pdSet, glaQuestion.getQuestion_name());
+                try {
+                    ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart,
+                            750, 400);
+                    glaQuestionsBean.updateStatistics(question_id);
+                    response.getOutputStream().close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            else if(gType.equals("Bar")) {
+                CategoryDataset dataset = createCategoryDataSet(glaQuestion);
+                JFreeChart chart = createBarChart(dataset, glaQuestion.getQuestion_name());
+                try {
+                    ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart,
+                            750, 400);
+                    glaQuestionsBean.updateStatistics(question_id);
+                    response.getOutputStream().close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
         }
     }
 
@@ -115,7 +166,20 @@ public class GraphController {
         return dpd;
     }
 
-    private CategoryDataset createCategoryDataset(GLAQuestion glaQuestion) {
+    private PieDataset createDataSet(EntitySpecification entitySpecification) {
+        DefaultPieDataset dpd = new DefaultPieDataset();
+        GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
+        log.info("PIE CHART DATA : STARTED \n" + entitySpecification.getHql());
+        dpd.setValue(entitySpecification.getIndicatorName(), glaEntityBean.findNumber(entitySpecification.getHql()));
+        if(entitySpecification.getQuestionsContainer().getGenQueries().size() !=0){
+            for(GenQuery genQuery : entitySpecification.getQuestionsContainer().getGenQueries()) {
+                dpd.setValue(genQuery.getIndicatorName(), glaEntityBean.findNumber(genQuery.getQuery()));
+            }
+        }
+        return dpd;
+    }
+
+    private CategoryDataset createCategoryDataSet(GLAQuestion glaQuestion) {
 
         GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
         GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
@@ -129,6 +193,29 @@ public class GraphController {
                     glaIndicator.getIndicator_name());
             glaIndicatorBean.updateStatistics(glaIndicator.getId());
         }
+        return dataset;
+    }
+
+    private CategoryDataset createCategoryDataSet(EntitySpecification entitySpecification) {
+
+        GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
+        long total = 0;
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        total += glaEntityBean.findNumber(entitySpecification.getHql());
+        if(entitySpecification.getQuestionsContainer().getGenQueries().size() !=0){
+            for(GenQuery genQuery : entitySpecification.getQuestionsContainer().getGenQueries()) {
+                total += glaEntityBean.findNumber(genQuery.getQuery());
+            }
+        }
+        dataset.setValue((glaEntityBean.findNumber(entitySpecification.getHql()) *100)/total, entitySpecification.getIndicatorName(),
+                    entitySpecification.getIndicatorName());
+        if(entitySpecification.getQuestionsContainer().getGenQueries().size() !=0){
+            for(GenQuery genQuery : entitySpecification.getQuestionsContainer().getGenQueries()) {
+                dataset.setValue((glaEntityBean.findNumber(genQuery.getQuery()) *100)/total, genQuery.getIndicatorName(),
+                        genQuery.getIndicatorName());
+            }
+        }
+
         return dataset;
     }
 

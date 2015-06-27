@@ -33,7 +33,7 @@ public interface GLACategoryDao {
     public List<GLACategory> loadAll(String colName, String sortDirection, boolean sort);
     public int getTotalCategories();
     public List<String> selectAllMinors();
-    public GLACategory  loadcategoryByname(String categoryname);
+    public GLACategory loadCategoryByName(String categoryname);
     public long findCategoryID(String minor);
     public List<String> findCategoryByID(Long category_id,String sentity);
     public List<GLACategory> searchCategoryByMinor(String searchParameter, boolean exactSearch,

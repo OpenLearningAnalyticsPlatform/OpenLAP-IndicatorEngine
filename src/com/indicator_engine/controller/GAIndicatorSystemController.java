@@ -23,20 +23,19 @@ package com.indicator_engine.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.indicator_engine.dao.GLAQuestionDao;
+import com.indicator_engine.dao.*;
+import com.indicator_engine.datamodel.GLACategory;
 import com.indicator_engine.datamodel.GLAQuestion;
 import com.indicator_engine.graphgenerator.cewolf.PageViewCountData;
-import com.indicator_engine.dao.GLAIndicatorDao;
 import com.indicator_engine.datamodel.GLAIndicator;
 import com.indicator_engine.indicator_system.IndicatorPreProcessing;
+import com.indicator_engine.indicator_system.Number.OperationNumberProcessorDao;
 import com.indicator_engine.misc.NumberChecks;
 import com.indicator_engine.model.app.QuestionRun;
 import com.indicator_engine.model.app.SearchIndicatorForm;
 import com.indicator_engine.model.indicator_system.IndicatorDeletionForm;
 import com.indicator_engine.model.indicator_system.Number.*;
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -48,7 +47,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -78,10 +76,41 @@ public class GAIndicatorSystemController {
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         SelectNumberParameters selectNumberParameters = indicatorPreProcessor.initSelectNumberParametersObject();
         model.put("selectNumberParameters",selectNumberParameters);
-        entitySpecificationBean.setSource(selectNumberParameters.getSource());
-        entitySpecificationBean.setPlatform(selectNumberParameters.getPlatform());
-        entitySpecificationBean.setAction(selectNumberParameters.getAction());
         return "indicator_system/number/new_ui";
+    }
+
+    @RequestMapping(value = "/initSources", method = RequestMethod.GET)
+    public @ResponseBody
+    String processAJAXRequest_initSources(Model model) {
+
+        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
+        Gson gson = new Gson();
+        return gson.toJson(glaEventBean.selectAll("source"));
+    }
+    @RequestMapping(value = "/initFilters", method = RequestMethod.GET)
+    public @ResponseBody
+    String processAJAXRequest_initFilterSettings(Model model) {
+
+        SelectNumberParameters selectNumberParameters = new SelectNumberParameters();
+        Gson gson = new Gson();
+        return gson.toJson(selectNumberParameters.getEntityValueTypes());
+    }
+
+    @RequestMapping(value = "/initAction", method = RequestMethod.GET)
+    public @ResponseBody
+    String processAJAXRequest_initAction(Model model) {
+
+        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
+        Gson gson = new Gson();
+        return gson.toJson(glaEventBean.selectAll("action"));
+    }
+    @RequestMapping(value = "/initPlatform", method = RequestMethod.GET)
+    public @ResponseBody
+    String processAJAXRequest_initPlatform(Model model) {
+
+        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
+        Gson gson = new Gson();
+        return gson.toJson(glaEventBean.selectAll("platform"));
     }
 
     @RequestMapping(value = "/validateQName", method = RequestMethod.GET)
@@ -134,9 +163,7 @@ public class GAIndicatorSystemController {
                 }
             }
         }
-
         return status;
-
     }
 
     @RequestMapping(value = "/populateCategories", method = RequestMethod.GET)
@@ -160,10 +187,6 @@ public class GAIndicatorSystemController {
         List<String> majors = indicatorPreProcessor.initPopulateMajors(sources, action, platform);
         List<String> minors = indicatorPreProcessor.initPopulateMinors(sources, action, platform);
 
-        entitySpecificationBean.setMajors(majors);
-        entitySpecificationBean.setMinors(minors);
-        entitySpecificationBean.setType(types);
-
         for ( int i =0 ; i < minors.size();i++ ){
             categoriesList.add(new Categories(types.get(i),majors.get(i), minors.get(i)));
         }
@@ -180,7 +203,6 @@ public class GAIndicatorSystemController {
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         entitySpecificationBean.setSelectedMinor(minor);
         List<String> keys = indicatorPreProcessor.initAvailableEntities_DB(minor);
-        entitySpecificationBean.setKeys(keys);
         return gson.toJson(keys);
     }
 
@@ -214,12 +236,153 @@ public class GAIndicatorSystemController {
         return gson.toJson(entitySpecificationBean.getEntityValues());
     }
 
+    @RequestMapping(value = "/searchUser", method = RequestMethod.GET)
+    public @ResponseBody
+    String  searchUsers(@RequestParam(value="keyword", required = true) String keyword,
+                      @RequestParam(value="searchtype", required = true) String searchtype,
+                      Model model) {
+        IndicatorPreProcessing indicatorPreProcessor = (IndicatorPreProcessing)
+                appContext.getBean("indicatorPreProcessor");
+        Gson gson = new Gson();
+        List<String> searchResults = indicatorPreProcessor.searchUser(keyword, searchtype);
+        return gson.toJson(searchResults);
+    }
+
+    @RequestMapping(value = "/addUserFilter", method = RequestMethod.GET)
+    public @ResponseBody
+    String  addUserFilter(@RequestParam(value="userdata", required = true) String userdata,
+                        @RequestParam(value="searchType", required = true) String searchType,
+                          @RequestParam(value="userType", required = true) String userType,
+                        Model model) {
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        Gson gson = new Gson();
+        entitySpecificationBean.getUserSpecifications().add(new UserSearchSpecifications(userType, userdata, searchType));
+        return gson.toJson(entitySpecificationBean.getUserSpecifications());
+
+    }
+
+    @RequestMapping(value = "/getUserFilters", method = RequestMethod.GET)
+    public @ResponseBody
+    String  getUserFilters(Model model) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        return gson.toJson(entitySpecificationBean.getUserSpecifications());
+
+    }
+
+    @RequestMapping(value = "/deleteUserFilters", method = RequestMethod.GET)
+    public @ResponseBody
+    String  deleteUserFilters(Model model) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        entitySpecificationBean.getUserSpecifications().clear();
+        return gson.toJson(entitySpecificationBean.getUserSpecifications());
+    }
+
+    @RequestMapping(value = "/searchSession", method = RequestMethod.GET)
+    public @ResponseBody
+    String  searchSessions(@RequestParam(value="keyword", required = true) String keyword,
+                        @RequestParam(value="searchType", required = true) String searchType,
+                        Model model) {
+        IndicatorPreProcessing indicatorPreProcessor = (IndicatorPreProcessing)
+                appContext.getBean("indicatorPreProcessor");
+        Gson gson = new Gson();
+        List<String> searchResults = indicatorPreProcessor.searchSession(keyword, searchType);
+        return gson.toJson(searchResults);
+    }
+
+
+    @RequestMapping(value = "/addSessionFilter", method = RequestMethod.GET)
+    public @ResponseBody
+    String  addSessionFilter(@RequestParam(value="sessionData", required = true) String sessionData,
+                          @RequestParam(value="searchType", required = true) String searchType,
+
+                          Model model) {
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        Gson gson = new Gson();
+        entitySpecificationBean.getSessionSpecifications().add(new SessionSpecifications(searchType, sessionData));
+        return gson.toJson(entitySpecificationBean.getUserSpecifications());
+
+    }
+    @RequestMapping(value = "/getSessionFilters", method = RequestMethod.GET)
+    public @ResponseBody
+    String  getSessionFilters(Model model) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        return gson.toJson(entitySpecificationBean.getSessionSpecifications());
+
+    }
+    @RequestMapping(value = "/deleteSessionFilters", method = RequestMethod.GET)
+    public @ResponseBody
+    String  deleteSessionFilters(Model model) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        entitySpecificationBean.getSessionSpecifications().clear();
+        return gson.toJson(entitySpecificationBean.getSessionSpecifications());
+    }
+
     @RequestMapping(value = "/viewall", method = RequestMethod.GET)
     public String getIndicatorsViewAll(Map<String, Object> model) {
         SearchIndicatorForm searchIndicatorForm = new SearchIndicatorForm();
         model.put("searchIndicatorForm", searchIndicatorForm);
         return  "indicator_system/viewall_indicators";
     }
+
+    @RequestMapping(value = "/refreshGraph", method = RequestMethod.GET)
+    public @ResponseBody
+    String  refreshGraph(@RequestParam(value="questionName", required = true) String questionName,
+                         @RequestParam(value="indicatorName", required = true) String indicatorName,
+                         @RequestParam(value="graphType", required = true) String graphType,
+                         @RequestParam(value="graphEngine", required = true) String graphEngine,
+                         Model model) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
+        GLACategoryDao glaCategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
+        OperationNumberProcessorDao operationNumberProcessorBean =  (OperationNumberProcessorDao) appContext.getBean("operationNumberProcessor");
+        entitySpecificationBean.setSelectedChartType(graphType);
+        entitySpecificationBean.setSelectedChartEngine(graphEngine);
+        entitySpecificationBean.setQuestionName(questionName);
+        entitySpecificationBean.setIndicatorName(indicatorName);
+        GLACategory glaCategory = glaCategoryBean.loadCategoryByName(entitySpecificationBean.getSelectedMinor());
+        entitySpecificationBean.setSelectedMajor(glaCategory.getMajor());
+        entitySpecificationBean.setSelectedType(glaCategory.getType());
+        operationNumberProcessorBean.computeResult(entitySpecificationBean);
+        long result = glaEntityBean.findNumber(entitySpecificationBean.getHql());
+        log.info("Dumping Result \n" + result);
+        return gson.toJson(entitySpecificationBean);
+    }
+
+    @RequestMapping(value = "/addNewIndicator", method = RequestMethod.GET)
+    public @ResponseBody
+    String  addNewIndicator(Model model) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        if(entitySpecificationBean.getQuestionsContainer().getGenQueries().size() == 0 ) {
+            Questions questions = new Questions();
+            IndicatorXMLData indicatorXMLData = new IndicatorXMLData(entitySpecificationBean.getSelectedSource(), entitySpecificationBean.getSelectedAction(),
+                    entitySpecificationBean.getSelectedPlatform(), entitySpecificationBean.getSelectedMajor(), entitySpecificationBean.getSelectedMinor(),
+                    entitySpecificationBean.getFilteringType(), entitySpecificationBean.getEntityValues(), entitySpecificationBean.getUserSpecifications(),
+                    entitySpecificationBean.getSessionSpecifications(), entitySpecificationBean.getTimeSpecifications(), entitySpecificationBean.getSelectedChartType(),
+                    entitySpecificationBean.getSelectedChartEngine());
+            questions.setQuestionName(entitySpecificationBean.getQuestionName());
+            questions.getGenQueries().add(new GenQuery(entitySpecificationBean.getHql(),entitySpecificationBean.getIndicatorName(),1, indicatorXMLData));
+            entitySpecificationBean.setQuestionsContainer(questions);
+        }
+        else if(entitySpecificationBean.getQuestionsContainer().getGenQueries().size() >= 1) {
+            IndicatorXMLData indicatorXMLData = new IndicatorXMLData(entitySpecificationBean.getSelectedSource(), entitySpecificationBean.getSelectedAction(),
+                    entitySpecificationBean.getSelectedPlatform(), entitySpecificationBean.getSelectedMajor(), entitySpecificationBean.getSelectedMinor(),
+                    entitySpecificationBean.getFilteringType(), entitySpecificationBean.getEntityValues(), entitySpecificationBean.getUserSpecifications(),
+                    entitySpecificationBean.getSessionSpecifications(), entitySpecificationBean.getTimeSpecifications(), entitySpecificationBean.getSelectedChartType(),
+                    entitySpecificationBean.getSelectedChartEngine());
+            entitySpecificationBean.getQuestionsContainer().getGenQueries().add(new GenQuery(entitySpecificationBean.getHql(),entitySpecificationBean.getIndicatorName(),1, indicatorXMLData));
+
+        }
+        entitySpecificationBean.reset();
+
+        return gson.toJson(entitySpecificationBean);
+    }
+
 
     @RequestMapping(value = "/viewall", method = RequestMethod.POST)
     public ModelAndView processIndicatorSearchForm( @RequestParam String action, @Valid @ModelAttribute("searchIndicatorForm") SearchIndicatorForm searchIndicatorForm, BindingResult bindingResult, HttpSession session) {
@@ -525,7 +688,7 @@ class Categories {
     String major;
     String minor;
 
-    Categories(String type, String major, String minor){
+    Categories(String type, String major, String minor) {
         this.major = major;
         this.minor = minor;
         this.type = type;
@@ -552,5 +715,37 @@ class Categories {
 
     public void setMinor(String minor) {
         this.minor = minor;
+    }
+}
+class FilterSettings {
+
+    private final List<String> entityValueTypes = new ArrayList<>();
+    private final List<String> userSearchTypes = new ArrayList<>();
+    private final List<String> sessionSearchType = new ArrayList<>();
+    private final List<String> timeType = new ArrayList<>();
+    private final List<String> timeSearchType = new ArrayList<>();
+    private final List<String> searchType = new ArrayList<>();
+    private List<String> chartTypes = new ArrayList<>();
+    private List<String> chartEngines = new ArrayList<>();
+
+    FilterSettings() {
+        this.entityValueTypes.add("Text");
+        this.entityValueTypes.add("Number");
+        this.entityValueTypes.add("Regex");
+        this.userSearchTypes.add("UserName");
+        this.userSearchTypes.add("UserEmail");
+        this.sessionSearchType.add("ALL");
+        this.sessionSearchType.add("SEARCH LIKE");
+        this.timeSearchType.add("ALL");
+        this.timeSearchType.add("LIKE");
+        this.timeSearchType.add("EXACT");
+        this.timeType.add("EXACT");
+        this.timeType.add("RANGE");
+        this.searchType.add("EXACT");
+        this.searchType.add("REGEX");
+        chartTypes.add("Bar");
+        chartTypes.add("Pie");
+        chartEngines.add("JFreeGraph");
+        chartEngines.add("CEWOLF");
     }
 }

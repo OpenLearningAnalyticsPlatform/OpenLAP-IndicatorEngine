@@ -83,7 +83,7 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
 
     @Override
     @Transactional
-    public GLACategory  loadcategoryByname(String categoryname){
+    public GLACategory loadCategoryByName(String categoryname){
         Session session = factory.getCurrentSession();
         GLACategory glaCategory = null;
         Criteria criteria = session.createCriteria(GLACategory.class)

@@ -30,19 +30,29 @@ function createRequest() {
         request = null;
     }
 }
+function removeOptions(selectbox)
+{
+    var i;
+    for(i=selectbox.options.length-1;i>=0;i--)
+    {
+        selectbox.remove(i);
+    }
+}
+
 
 function validateQuestionName(){
     createRequest();
-    var questionNameEntered = document.getElementById("questionNaming").value;
+    var questionNameEntered = document.getElementById('questionNaming').value;
     var url ="/indicators/validateQName?qname="+questionNameEntered;
     request.open("GET",url,true);
     request.onreadystatechange=alert_questionName;
     request.send(null);
 }
 
-function validateIndicatorName(){
+function validateIndicatorName(obj){
     createRequest();
-    var indicatorNameEntered = document.getElementById("indicatornaming").value;
+    var indicatorNameEntered = document.getElementById('indicatorNaming').value;
+    console.log(indicatorNameEntered);
     var url ="/indicators/validateIndName?indname="+indicatorNameEntered;
     request.open("GET",url,true);
     request.onreadystatechange=alert_indicatorName;
@@ -74,7 +84,7 @@ function populateCategories(){
 
 function populateEntities() {
     createRequest();
-    var minorSelected = document.getElementById("selectedMinor").value;
+    var minorSelected = document.getElementById('selectedMinor').value;
     var url ="/indicators/populateEntities?minor="+minorSelected;
     request.open("GET",url,true);
     request.onreadystatechange=processReceivedEntities;
@@ -86,16 +96,6 @@ function addEntity(){
     var keySelected = document.getElementById("entityKeySelection").value;
     var searchType = document.getElementById("specificationType").value;
     var evalue = document.getElementById("entityValue").value;
-    if (keySelected.value == null) {
-        alert( "Please Select a Valid Key." );
-        keySelected.focus();
-        return false ;
-    }
-    if (evalue.value == "") {
-        alert( "Please fill a proper Search Term. For searching everything write 'ALL'" );
-        evalue.focus();
-        return false ;
-    }
     var url ="/indicators/addEntity?key="+keySelected+"&search="+searchType+"&value="+evalue;
     request.open("GET",url,true);
     request.onreadystatechange=displayEntityFilters;
@@ -110,13 +110,154 @@ function deleteEntity(){
     request.send(null);
 }
 
+function searchUser() {
+    createRequest();
+    var userType = document.getElementById("userType").value;
+    var searchUserString = document.getElementById("searchUserString").value;
+    var url ="/indicators/searchUser?keyword="+searchUserString+"&searchtype="+userType;
+    request.open("GET",url,true);
+    request.onreadystatechange=displaySearchUserResults;
+    request.send(null);
+}
+
+function addUserFilter() {
+    createRequest();
+    var userType = document.getElementById("userType").value;
+    var userdata = document.getElementById("usersearchResults").value;
+    var UsersearchType = document.getElementById("UsersearchType").value;
+    var url ="/indicators/addUserFilter?userdata="+userdata+"&searchType="+UsersearchType+"&userType="+userType;
+    request.open("GET",url,true);
+    request.onreadystatechange=displayUserFilters;
+    request.send(null);
+
+}
+
+function displayUserFilters() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            var heading = new Array();
+            heading[0] = "S/L";
+            heading[1] = "User Search Type";
+            heading[2] = "User Search";
+            heading[3] = "search Pattern";
+
+            var data = new Array();
+
+            for (var i=0;i< parsedJSON.length;i++) {
+                data[i] = new Array(i+1, parsedJSON[i].userSearchType, parsedJSON[i].userSearch, parsedJSON[i].searchPattern);
+            }
+        }
+        addTable(heading,data,"user_filters");
+    }
+}
+
+function refreshUserFilters() {
+    createRequest();
+    var url ="/indicators/getUserFilters";
+    request.open("GET",url,true);
+    request.onreadystatechange=displayUserFilters;
+    request.send(null);
+}
+
+function deleteUserFilters() {
+    createRequest();
+    var url ="/indicators/deleteUserFilters";
+    request.open("GET",url,true);
+    request.onreadystatechange=displayUserFilters;
+    request.send(null);
+}
+
+function displaySearchUserResults() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            var userSearchResults = document.getElementById("usersearchResults");
+            removeOptions(userSearchResults);
+            for (var i=0;i< parsedJSON.length;i++) {
+                var newOption = new Option(parsedJSON[i], parsedJSON[i]);
+                userSearchResults.appendChild(newOption);
+            }
+        }
+    }
+}
+
+function searchSession() {
+    createRequest();
+    var SessionSearchType = document.getElementById("sessionSearchType").value;
+    var sessionSearchString = document.getElementById("sessionSearchString").value;
+    var url ="/indicators/searchSession?keyword="+sessionSearchString+"&searchType="+SessionSearchType;
+    request.open("GET",url,true);
+    request.onreadystatechange=displaySearchSessionResults;
+    request.send(null);
+}
+
+function addSessionFilter() {
+    createRequest();
+    var SessionData = document.getElementById("SessionsearchResults").value;
+    var SessionSearchType = document.getElementById("SessionsearchType").value;
+    var url ="/indicators/addSessionFilter?sessionData="+SessionData+"&searchType="+SessionSearchType;
+    request.open("GET",url,true);
+    request.onreadystatechange=displaySessionFilters;
+    request.send(null);
+
+}
+
+function displaySessionFilters() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            var heading = new Array();
+            heading[0] = "S/L";
+            heading[1] = "Session Data";
+            heading[2] = "Filter Type";
+
+            var data = new Array();
+
+            for (var i=0;i< parsedJSON.length;i++) {
+                data[i] = new Array(i+1, parsedJSON[i].session, parsedJSON[i].type);
+            }
+        }
+        addTable(heading,data,"session_filters");
+    }
+}
+
+function refreshSessionFilters() {
+    createRequest();
+    var url ="/indicators/getSessionFilters";
+    request.open("GET",url,true);
+    request.onreadystatechange=displaySessionFilters;
+    request.send(null);
+}
+
+function deleteSessionFilters() {
+    createRequest();
+    var url ="/indicators/deleteSessionFilters";
+    request.open("GET",url,true);
+    request.onreadystatechange=displaySessionFilters;
+    request.send(null);
+}
+
+function displaySearchSessionResults() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            var SessionSearchResults = document.getElementById("SessionsearchResults");
+            removeOptions(SessionSearchResults);
+            for (var i=0;i< parsedJSON.length;i++) {
+                var newOption = new Option(parsedJSON[i], parsedJSON[i]);
+                SessionSearchResults.appendChild(newOption);
+            }
+        }
+    }
+}
+
 function refreshEntityFilters() {
     createRequest();
     var url ="/indicators/getEntities";
     request.open("GET",url,true);
     request.onreadystatechange=displayEntityFilters;
     request.send(null);
-
 }
 
 function displayEntityFilters(){
@@ -135,7 +276,7 @@ function displayEntityFilters(){
                 data[i] = new Array(i+1, parsedJSON[i].key, parsedJSON[i].eValues, parsedJSON[i].type);
             }
         }
-        addTable(heading,data);
+        addTable(heading,data, "entity_filters");
     }
 }
 
@@ -157,6 +298,7 @@ function processReceivedCategories() {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
             var selectedMinor = document.getElementById("selectedMinor");
+            removeOptions(selectedMinor);
             for (var i=0;i< parsedJSON.length;i++) {
                 var newOption = new Option(parsedJSON[i].minor, parsedJSON[i].minor);
                 selectedMinor.appendChild(newOption);
@@ -211,8 +353,8 @@ function alert_indicatorName() {
     }
 }
 
-function addTable(heading,data) {
-    var myTableDiv = document.getElementById("entity_filters");
+function addTable(heading,data, tablePlacement) {
+    var myTableDiv = document.getElementById(tablePlacement);
     myTableDiv.innerHTML = "";
     var table = document.createElement('TABLE');
     table.tagName = "TABLE";
@@ -242,4 +384,50 @@ function addTable(heading,data) {
         tableBody.appendChild(tr);
     }
     myTableDiv.appendChild(table);
+}
+
+function refreshGraph() {
+
+    var questionName = document.getElementById("questionNaming").value;
+    var indicatorName = document.getElementById("indicatornaming").value;
+    var graphType = document.getElementById("selectedChartType").value;
+    var graphEngine = document.getElementById("EngineSelect").value;
+    createRequest();
+    var url ="/indicators/refreshGraph?questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
+        +"&graphEngine="+graphEngine;
+    request.open("GET",url,true);
+    request.onreadystatechange=drawGraph;
+    request.send(null);
+}
+
+function drawGraph() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var graphImage = document.getElementById("graphImage");
+            graphImage.src="/graphs/jgraph?bean=true"+"&time="+new Date().getTime();
+        }
+    }
+}
+
+function addNewIndicator() {
+    createRequest();
+    var url ="/indicators/addNewIndicator";
+    request.open("GET",url,true);
+    request.onreadystatechange=processScreenForNextIndicator;
+    request.send(null);
+}
+
+function processScreenForNextIndicator() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            alert(request.responseText);
+            document.getElementById("indicatornaming").value = "";
+            var selectedMinor = document.getElementById("selectedMinor");
+            removeOptions(selectedMinor);
+
+        }
+    }
+
+
 }

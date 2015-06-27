@@ -125,7 +125,7 @@ public class ToolkitAdminController {
         GLACategoryDao glacategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
         GLAUserDao glauserBean = (GLAUserDao) appContext.getBean("glaUser");
         GLAUser selectedglaUser = glauserBean.loaduserByName(addEventDataForm.getSelectedUser());
-        GLACategory selectedglaCategory = glacategoryBean.loadcategoryByname(addEventDataForm.getSelectedCategory());
+        GLACategory selectedglaCategory = glacategoryBean.loadCategoryByName(addEventDataForm.getSelectedCategory());
         GLAEvent glaEvent = new GLAEvent();
         glaEvent.setSession(addEventDataForm.getSession());
         glaEvent.setAction(addEventDataForm.getSelectedAction());
@@ -722,7 +722,7 @@ public class ToolkitAdminController {
         for(int i =0 ; i< glaevents.length ; i++) {
 
             GLAUser selectedglaUser = glauserBean.loaduserByName(glaevents[i].getUSERNAME());
-            GLACategory selectedglaCategory = glacategoryBean.loadcategoryByname(glaevents[i].getCATEGORY());
+            GLACategory selectedglaCategory = glacategoryBean.loadCategoryByName(glaevents[i].getCATEGORY());
             GLAEvent glaEvent = new GLAEvent();
             glaEvent.setSession(glaevents[i].getSESSION());
             glaEvent.setAction(glaevents[i].getACTION());

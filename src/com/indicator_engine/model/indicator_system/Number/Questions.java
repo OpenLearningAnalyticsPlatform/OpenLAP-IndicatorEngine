@@ -1,12 +1,9 @@
 package com.indicator_engine.model.indicator_system.Number;
 
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by Tanmaya Mahapatra on 31-03-2015.
@@ -14,8 +11,7 @@ import java.util.UUID;
 @SuppressWarnings({"unused", "unchecked"})
 public class Questions implements Serializable{
 
-    @Size(min=3, max=50, message="Indicator Name must be between 3 and 50 characters")
-    @Pattern(regexp="^[a-zA-Z0-9]+$", message="Indicator Name must be alphanumeric with no spaces")
+
     private String questionName;
     private long questionId ;
     private Timestamp last_executionTime;

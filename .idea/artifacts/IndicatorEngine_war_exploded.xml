@@ -34,7 +34,7 @@
           <element id="library" level="project" name="jcommon-1.0.0" />
           <element id="library" level="project" name="cewolf-1.2.4" />
           <element id="library" level="project" name="cewolf-support" />
-          <element id="library" level="project" name="org.json:json:20141113" />
+          <element id="library" level="project" name="Spring Webflow-2.4.0" />
         </element>
       </element>
     </root>
