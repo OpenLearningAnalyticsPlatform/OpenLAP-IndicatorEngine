@@ -72,167 +72,167 @@
     <script>
         $(function() {
             $( document ).tooltip();
-            $( "#questionHelpDialog" ).dialog({
-                modal: true,
-                buttons: {
-                    Ok: function() {
-                        $( this ).dialog( "close" );
-                    }
-                },
-                autoOpen: false,
-                show: {
-                    effect: "blind",
-                    duration: 1000
-                },
-                hide: {
-                    effect: "explode",
-                    duration: 1000
-                },
-                height: 'auto',
-                maxWidth: 600,
-                minWidth: 500,
-                position: 'center',
-                resizable: false
-            });
-
-            $( "#questionSummaryDialog" ).dialog({
-                modal: true,
-                buttons: {
-                    Ok: function() {
-                        $( this ).dialog( "close" );
-                    }
-                },
-                autoOpen: false,
-                show: {
-                    effect: "blind",
-                    duration: 1000
-                },
-                hide: {
-                    effect: "explode",
-                    duration: 1000
-                },
-                height: 'auto',
-                maxWidth: 600,
-                minWidth: 500,
-                position: 'center',
-                resizable: false
-            });
-            $( "#indicatorHelpDialog" ).dialog({
-                modal: true,
-                buttons: {
-                    Ok: function() {
-                        $( this ).dialog( "close" );
-                    }
-                },
-                autoOpen: false,
-                show: {
-                    effect: "blind",
-                    duration: 1000
-                },
-                hide: {
-                    effect: "explode",
-                    duration: 1000
-                },
-                height: 'auto',
-                maxWidth: 600,
-                minWidth: 500,
-                position: 'center',
-                resizable: false
-            });
-
-
-            $( "#helpQuestionInfo" ).click(function() {
-                $( "#questionHelpDialog" ).dialog( "open" );
-            });
-            $( "#helpQuestionSummary" ).click(function() {
-                $( "#questionSummaryDialog" ).dialog( "open" );
-            });
-            $( "#helpIndicatorInfo" ).click(function() {
-                $( "#indicatorHelpDialog" ).dialog( "open" );
-            });
-
-            $(function() {
-                $( "#accordionFilterSummary" ).accordion({
-                    event: "click hoverintent"
-                });
-                $( "#accordionFilter" ).accordion({
-                    event: "click hoverintent"
-                });
-                $( "#accordionGraphSettings" ).accordion({
-                    event: "click hoverintent"
-                });
-                $( "#accordionIndicatorSummary" ).accordion({
-                    event: "click hoverintent"
-                });
-
-            });
-            /*
-             * hoverIntent | Copyright 2011 Brian Cherne
-             * http://cherne.net/brian/resources/jquery.hoverIntent.html
-             * modified by the jQuery UI team
-             */
-            $.event.special.hoverintent = {
-                setup: function() {
-                    $( this ).bind( "mouseover", jQuery.event.special.hoverintent.handler );
-                },
-                teardown: function() {
-                    $( this ).unbind( "mouseover", jQuery.event.special.hoverintent.handler );
-                },
-                handler: function( event ) {
-                    var currentX, currentY, timeout,
-                            args = arguments,
-                            target = $( event.target ),
-                            previousX = event.pageX,
-                            previousY = event.pageY;
-
-                    function track( event ) {
-                        currentX = event.pageX;
-                        currentY = event.pageY;
-                    };
-
-                    function clear() {
-                        target
-                                .unbind( "mousemove", track )
-                                .unbind( "mouseout", clear );
-                        clearTimeout( timeout );
-                    }
-
-                    function handler() {
-                        var prop,
-                                orig = event;
-
-                        if ( ( Math.abs( previousX - currentX ) +
-                                Math.abs( previousY - currentY ) ) < 7 ) {
-                            clear();
-
-                            event = $.Event( "hoverintent" );
-                            for ( prop in orig ) {
-                                if ( !( prop in event ) ) {
-                                    event[ prop ] = orig[ prop ];
-                                }
-                            }
-                            // Prevent accessing the original event since the new event
-                            // is fired asynchronously and the old event is no longer
-                            // usable (#6028)
-                            delete event.originalEvent;
-
-                            target.trigger( event );
-                        } else {
-                            previousX = currentX;
-                            previousY = currentY;
-                            timeout = setTimeout( handler, 100 );
-                        }
-                    }
-
-                    timeout = setTimeout( handler, 100 );
-                    target.bind({
-                        mousemove: track,
-                        mouseout: clear
-                    });
+        $( "#questionHelpDialog" ).dialog({
+            modal: true,
+            buttons: {
+                Ok: function() {
+                    $( this ).dialog( "close" );
                 }
-            };
+            },
+            autoOpen: false,
+            show: {
+                effect: "blind",
+                duration: 1000
+            },
+            hide: {
+                effect: "explode",
+                duration: 1000
+            },
+            height: 'auto',
+            maxWidth: 600,
+            minWidth: 500,
+            position: 'center',
+            resizable: false
+        });
+
+        $( "#questionSummaryDialog" ).dialog({
+            modal: true,
+            buttons: {
+                Ok: function() {
+                    $( this ).dialog( "close" );
+                }
+            },
+            autoOpen: false,
+            show: {
+                effect: "blind",
+                duration: 1000
+            },
+            hide: {
+                effect: "explode",
+                duration: 1000
+            },
+            height: 'auto',
+            maxWidth: 600,
+            minWidth: 500,
+            position: 'center',
+            resizable: false
+        });
+        $( "#indicatorHelpDialog" ).dialog({
+            modal: true,
+            buttons: {
+                Ok: function() {
+                    $( this ).dialog( "close" );
+                }
+            },
+            autoOpen: false,
+            show: {
+                effect: "blind",
+                duration: 1000
+            },
+            hide: {
+                effect: "explode",
+                duration: 1000
+            },
+            height: 'auto',
+            maxWidth: 600,
+            minWidth: 500,
+            position: 'center',
+            resizable: false
+        });
+
+
+        $( "#helpQuestionInfo" ).click(function() {
+            $( "#questionHelpDialog" ).dialog( "open" );
+        });
+        $( "#helpQuestionSummary" ).click(function() {
+            $( "#questionSummaryDialog" ).dialog( "open" );
+        });
+        $( "#helpIndicatorInfo" ).click(function() {
+            $( "#indicatorHelpDialog" ).dialog( "open" );
+        });
+
+        $(function() {
+            $( "#accordionFilterSummary" ).accordion({
+                event: "click hoverintent"
+            });
+            $( "#accordionFilter" ).accordion({
+                event: "click hoverintent"
+            });
+            $( "#accordionGraphSettings" ).accordion({
+                event: "click hoverintent"
+            });
+            $( "#accordionIndicatorSummary" ).accordion({
+                event: "click hoverintent"
+            });
 
         });
+        /*
+         * hoverIntent | Copyright 2011 Brian Cherne
+         * http://cherne.net/brian/resources/jquery.hoverIntent.html
+         * modified by the jQuery UI team
+         */
+        $.event.special.hoverintent = {
+            setup: function() {
+                $( this ).bind( "mouseover", jQuery.event.special.hoverintent.handler );
+            },
+            teardown: function() {
+                $( this ).unbind( "mouseover", jQuery.event.special.hoverintent.handler );
+            },
+            handler: function( event ) {
+                var currentX, currentY, timeout,
+                        args = arguments,
+                        target = $( event.target ),
+                        previousX = event.pageX,
+                        previousY = event.pageY;
+
+                function track( event ) {
+                    currentX = event.pageX;
+                    currentY = event.pageY;
+                };
+
+                function clear() {
+                    target
+                            .unbind( "mousemove", track )
+                            .unbind( "mouseout", clear );
+                    clearTimeout( timeout );
+                }
+
+                function handler() {
+                    var prop,
+                            orig = event;
+
+                    if ( ( Math.abs( previousX - currentX ) +
+                            Math.abs( previousY - currentY ) ) < 7 ) {
+                        clear();
+
+                        event = $.Event( "hoverintent" );
+                        for ( prop in orig ) {
+                            if ( !( prop in event ) ) {
+                                event[ prop ] = orig[ prop ];
+                            }
+                        }
+                        // Prevent accessing the original event since the new event
+                        // is fired asynchronously and the old event is no longer
+                        // usable (#6028)
+                        delete event.originalEvent;
+
+                        target.trigger( event );
+                    } else {
+                        previousX = currentX;
+                        previousY = currentY;
+                        timeout = setTimeout( handler, 100 );
+                    }
+                }
+
+                timeout = setTimeout( handler, 100 );
+                target.bind({
+                    mousemove: track,
+                    mouseout: clear
+                });
+            }
+        };
+
+    });
     </script>
 </head>
 <body>
@@ -290,13 +290,13 @@
                 <img  src="${pageContext.request.contextPath}/images/save.png" alt="button" width="48" height="48"/> : Save the Question with its indicators.
             </div>
             <div id="questionSummaryDialog" title="Icons in Question Summary Area">
-                <img  src="${pageContext.request.contextPath}/images/refresh.png" alt="button" width="48" height="48"/> : Refresh the Question Summary.
-                <br/>
-                <img  src="${pageContext.request.contextPath}/images/view.png" alt="button" width="48" height="48"/> : View the selected Indicator Summary.
-                <br/>
-                <img  src="${pageContext.request.contextPath}/images/load.png" alt="button" width="48" height="48"/> : Load the selected Indicator for editing.
-                <br/>
-                <img  src="${pageContext.request.contextPath}/images/delete.png" alt="button" width="48" height="48"/> : Delete the selected Indicator from this Question.
+                    <img  src="${pageContext.request.contextPath}/images/refresh.png" alt="button" width="48" height="48"/> : Refresh the Question Summary.
+                    <br/>
+                    <img  src="${pageContext.request.contextPath}/images/view.png" alt="button" width="48" height="48"/> : View the selected Indicator Summary.
+                    <br/>
+                    <img  src="${pageContext.request.contextPath}/images/load.png" alt="button" width="48" height="48"/> : Load the selected Indicator for editing.
+                    <br/>
+                    <img  src="${pageContext.request.contextPath}/images/delete.png" alt="button" width="48" height="48"/> : Delete the selected Indicator from this Question.
             </div>
             <div id="indicatorHelpDialog" title="Indicator Information Area Help">
                 Please select all filters and click <img src="${pageContext.request.contextPath}/images/refresh_graph.png" alt="button" width="48" height="48"/>
