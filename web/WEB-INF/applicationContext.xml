@@ -23,8 +23,9 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:flow="http://www.springframework.org/schema/webflow-config"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config.xsd">
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!-- For Enabling Annotation-based wiring-->
     <context:annotation-config/>
@@ -134,7 +135,8 @@
           class="com.indicator_engine.indicator_system.IndicatorPreProcessing">
     </bean>
     <bean id="entitySpecifications"
-          class="com.indicator_engine.model.indicator_system.Number.EntitySpecification">
+          class="com.indicator_engine.model.indicator_system.Number.EntitySpecification" scope="session">
+        <aop:scoped-proxy/>
     </bean>
     <bean id="operationNumberProcessor"
           class="com.indicator_engine.indicator_system.Number.OperationNumberProcessor">

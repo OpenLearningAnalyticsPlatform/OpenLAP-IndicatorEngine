@@ -71,7 +71,35 @@
     </style>
     <script>
         $(function() {
+
+            $( "#accordionFilterSummary" ).accordion({
+                event: "click hoverintent",
+                heightStyle: "fill"
+            });
+            $( "#accordionQuestionSummary" ).accordion({
+                event: "click hoverintent",
+                heightStyle: "fill"
+            });
+
+            $( "#accordionIndProp" ).accordion({
+                event: "click hoverintent",
+                heightStyle: "fill"
+            });
+
+            $( "#accordionFilter" ).accordion({
+                event: "click hoverintent",
+                heightStyle: "fill"
+            });
+            $( "#accordionGraphSettings" ).accordion({
+                event: "click hoverintent",
+                heightStyle: "fill"
+            });
+            $( "#accordionIndicatorSummary" ).accordion({
+                event: "click hoverintent",
+                heightStyle: "fill",
+            });
             $( document ).tooltip();
+
             $( "#questionHelpDialog" ).dialog({
                 modal: true,
                 buttons: {
@@ -151,88 +179,187 @@
                 $( "#indicatorHelpDialog" ).dialog( "open" );
             });
 
-            $(function() {
-                $( "#accordionFilterSummary" ).accordion({
-                    event: "click hoverintent"
-                });
-                $( "#accordionFilter" ).accordion({
-                    event: "click hoverintent"
-                });
-                $( "#accordionGraphSettings" ).accordion({
-                    event: "click hoverintent"
-                });
-                $( "#accordionIndicatorSummary" ).accordion({
-                    event: "click hoverintent"
-                });
-
+            $( "#indViewDialog" ).dialog({
+                modal: true,
+                buttons: {
+                    Ok: function() {
+                        $( this ).dialog( "close" );
+                    }
+                },
+                autoOpen: false,
+                show: {
+                    effect: "clip",
+                    duration: 1000
+                },
+                hide: {
+                    effect: "explode",
+                    duration: 1000
+                },
+                height: 'auto',
+                maxWidth: 1200,
+                minWidth: 900,
+                position: 'center',
+                resizable: false
             });
-            /*
-             * hoverIntent | Copyright 2011 Brian Cherne
-             * http://cherne.net/brian/resources/jquery.hoverIntent.html
-             * modified by the jQuery UI team
-             */
-            $.event.special.hoverintent = {
-                setup: function() {
-                    $( this ).bind( "mouseover", jQuery.event.special.hoverintent.handler );
-                },
-                teardown: function() {
-                    $( this ).unbind( "mouseover", jQuery.event.special.hoverintent.handler );
-                },
-                handler: function( event ) {
-                    var currentX, currentY, timeout,
-                            args = arguments,
-                            target = $( event.target ),
-                            previousX = event.pageX,
-                            previousY = event.pageY;
-
-                    function track( event ) {
-                        currentX = event.pageX;
-                        currentY = event.pageY;
-                    };
-
-                    function clear() {
-                        target
-                                .unbind( "mousemove", track )
-                                .unbind( "mouseout", clear );
-                        clearTimeout( timeout );
+            $( "#indDeleteDialog" ).dialog({
+                modal: true,
+                buttons: {
+                    Ok: function() {
+                        $( this ).dialog( "close" );
                     }
+                },
+                autoOpen: false,
+                show: {
+                    effect: "blind",
+                    duration: 1000
+                },
+                hide: {
+                    effect: "explode",
+                    duration: 1000
+                },
+                height: 'auto',
+                maxWidth: 800,
+                minWidth: 700,
+                position: 'center',
+                resizable: false
+            });
 
-                    function handler() {
-                        var prop,
-                                orig = event;
+            $("#indView").click(function(e){
+                $.ajax({type: "GET",
+                    url: "/indicators/refreshQuestionSummary",
+                    data: { indName: $("#associatedIndicators").val() },
+                    dataType: "json", // json
+                    success:function(response){
+                        //$("#indViewDialog").text(JSON.stringify(response));
+                        GenerateTable(response)
+                        $("#indViewDialog").dialog("open");
+                    }});
+            });
+            $("#indDelete").click(function(e){
+                $.ajax({type: "GET",
+                    url: "/indicators/deleteIndFromQn",
+                    data: { indName: $("#associatedIndicators").val() },
+                    dataType: "html",
+                    success:function(response){
+                        $("#indDeleteDialog").text(response);
+                        $('.indDeleteDialog').dialog('option', 'title', 'Indicator Deletion Message');
+                        refreshQuestionSummary();
+                        $("#indDeleteDialog").dialog("open");
+                    }});
+            });
+        });
+    function  GenerateTable(data) {
 
-                        if ( ( Math.abs( previousX - currentX ) +
-                                Math.abs( previousY - currentY ) ) < 7 ) {
-                            clear();
+        var indicatorData = new Array();
+        indicatorData.push(["S/L", "Property", "Value"]);
+        indicatorData.push([1, "Indicator Name", data.indicatorName]);
+        indicatorData.push([2, "Chart Type", data.genIndicatorProps.chartType]);
+        indicatorData.push([3, "Chart Engine", data.genIndicatorProps.chartEngine]);
+        indicatorData.push([4, "Entity Filters", data.indicatorXMLData.entityValues.length]);
+        indicatorData.push([5, "Session Filters", data.indicatorXMLData.sessionSpecifications.length]);
+        indicatorData.push([6, "User Filters", data.indicatorXMLData.userSpecifications.length]);
+        indicatorData.push([7, "Time Filters", data.indicatorXMLData.timeSpecifications.length]);
 
-                            event = $.Event( "hoverintent" );
-                            for ( prop in orig ) {
-                                if ( !( prop in event ) ) {
-                                    event[ prop ] = orig[ prop ];
-                                }
-                            }
-                            // Prevent accessing the original event since the new event
-                            // is fired asynchronously and the old event is no longer
-                            // usable (#6028)
-                            delete event.originalEvent;
+        /*indicatorData.push([2, "Hibernate Query", data.query]);
+        indicatorData.push([5, "Sources", data.indicatorXMLData.source]);
+        indicatorData.push([6, "Platform", data.indicatorXMLData.platform]);
+        indicatorData.push([7, "Action", data.indicatorXMLData.action]);
+        indicatorData.push([8, "Minor", data.indicatorXMLData.minor]);
+        indicatorData.push([9, "Major", data.indicatorXMLData.major]); */
 
-                            target.trigger( event );
-                        } else {
-                            previousX = currentX;
-                            previousY = currentY;
-                            timeout = setTimeout( handler, 100 );
-                        }
-                    }
+        //Create a HTML Table element.
+        var table = document.createElement("TABLE");
+        table.border = "1";
 
-                    timeout = setTimeout( handler, 100 );
-                    target.bind({
-                        mousemove: track,
-                        mouseout: clear
-                    });
-                }
+        //Get the count of columns.
+        var columnCount = indicatorData[0].length;
+
+        //Add the header row.
+        var row = table.insertRow(-1);
+        for (var i = 0; i < columnCount; i++) {
+            var headerCell = document.createElement("TH");
+            headerCell.innerHTML = indicatorData[0][i];
+            row.appendChild(headerCell);
+        }
+
+        //Add the data rows.
+        for (var i = 1; i < indicatorData.length; i++) {
+            row = table.insertRow(-1);
+            for (var j = 0; j < columnCount; j++) {
+                var cell = row.insertCell(-1);
+                cell.innerHTML = indicatorData[i][j];
+            }
+        }
+
+        var dvTable = document.getElementById("indBasicProperty");
+        dvTable.innerHTML = "";
+        dvTable.appendChild(table);
+    }
+    /*
+     * hoverIntent | Copyright 2011 Brian Cherne
+     * http://cherne.net/brian/resources/jquery.hoverIntent.html
+     * modified by the jQuery UI team
+     */
+    $.event.special.hoverintent = {
+        setup: function() {
+            $( this ).bind( "mouseover", jQuery.event.special.hoverintent.handler );
+        },
+        teardown: function() {
+            $( this ).unbind( "mouseover", jQuery.event.special.hoverintent.handler );
+        },
+        handler: function( event ) {
+            var currentX, currentY, timeout,
+                    args = arguments,
+                    target = $( event.target ),
+                    previousX = event.pageX,
+                    previousY = event.pageY;
+
+            function track( event ) {
+                currentX = event.pageX;
+                currentY = event.pageY;
             };
 
-        });
+            function clear() {
+                target
+                        .unbind( "mousemove", track )
+                        .unbind( "mouseout", clear );
+                clearTimeout( timeout );
+            }
+
+            function handler() {
+                var prop,
+                        orig = event;
+
+                if ( ( Math.abs( previousX - currentX ) +
+                        Math.abs( previousY - currentY ) ) < 7 ) {
+                    clear();
+
+                    event = $.Event( "hoverintent" );
+                    for ( prop in orig ) {
+                        if ( !( prop in event ) ) {
+                            event[ prop ] = orig[ prop ];
+                        }
+                    }
+                    // Prevent accessing the original event since the new event
+                    // is fired asynchronously and the old event is no longer
+                    // usable (#6028)
+                    delete event.originalEvent;
+
+                    target.trigger( event );
+                } else {
+                    previousX = currentX;
+                    previousY = currentY;
+                    timeout = setTimeout( handler, 100 );
+                }
+            }
+
+            timeout = setTimeout( handler, 100 );
+            target.bind({
+                mousemove: track,
+                mouseout: clear
+            });
+        }
+    };
     </script>
 </head>
 <body>
@@ -282,7 +409,51 @@
             </ol>
             <h1>Question with Indicator Definition</h1>
             <p>Information to be added</p>
+            <div id="indViewDialog" title="Selected Indicator Property">
+                <div id="accordionIndProp">
+                    <h3>Indicator Basic Properties</h3>
+                    <div>
+                        <p>
+                            <div id="indBasicProperty"></div>
+                        </p>
+                    </div>
+                    <h3>Indicator Data Properties</h3>
+                    <div>
+                        <p>
+                        <div id="indDataProperty"></div>
+                        </p>
+                    </div>
+                    <h3>Entity Filters</h3>
+                    <div>
+                        <p>
+                        <div id="indEntityFilters"></div>
+                        </p>
+                    </div>
+                    <h3>Session Filters</h3>
+                    <div>
+                        <p>
+                        <div id="indSessionFilters"></div>
+                        </p>
+                    </div>
+                    <h3>User Filters</h3>
+                    <div>
+                        <p>
+                        <div id="indUserFilters"></div>
+                        </p>
+                    </div>
+                    <h3>Time Filters</h3>
+                    <div>
+                        <p>
+                        <div id="indTimeFilters"></div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div id="indDeleteDialog" >
+            </div>
             <div id="questionHelpDialog" title="Icons in Question Information Area">
+                <img src="${pageContext.request.contextPath}/images/template.png" alt="button" width="48" height="48"/> : Load an exisitng Indicator from DB and use it as a template.
+                <br/>
                 <img src="${pageContext.request.contextPath}/images/new.png" alt="button" width="48" height="48"/> : Define a new Indicator for the current Question.
                 <br/>
                 <img  src="${pageContext.request.contextPath}/images/run.png" alt="button" width="48" height="48"/> : Run the Entire Question and all its idicators.
@@ -338,6 +509,10 @@
                                             <div class="col-md-12">
                                                 <label for="summaryOperations">Operations</label>
                                                 <br/>
+                                                <button  type="button" name="indicatorTemplate" title="Load Existing Indicator as a Template"
+                                                         value="Load Template" onclick="loadIndfromDB()">
+                                                    <img src="${pageContext.request.contextPath}/images/template.png" alt="button" width="48" height="48"/>
+                                                </button>
                                                 <button  type="button" name="newIndicator" title="Click to Start a new Indicator Definition Process." value="Add New Indicator" onclick="addNewIndicator()" >
                                                     <img src="${pageContext.request.contextPath}/images/new.png" alt="button" width="48" height="48"/>
                                                 </button>
@@ -614,7 +789,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade in active" id="FilterSummary">
+                                    <div class="tab-pane fade " id="FilterSummary">
                                         <div id="accordionFilterSummary">
                                             <h3>Attributes Summary</h3>
                                             <div>
@@ -678,7 +853,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade in active" id="indicatorSummary">
+                                    <div class="tab-pane fade" id="indicatorSummary">
                                         <div id="accordionIndicatorSummary">
                                             <h3>Basic Information</h3>
                                             <div>
@@ -700,7 +875,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade in active" id="graphs">
+                                    <div class="tab-pane fade" id="graphs">
                                         <div id="accordionGraphSettings">
                                             <h3>Graph Settings</h3>
                                             <div>
@@ -724,13 +899,12 @@
                                         <img src="/graphs/jgraph?default=true" id="graphImage"/>
                                     </div>
 
-
                                 </div> <!-- tab-content -->
-
                             </div>
                         </div>
                     </div>
                 </div>
+
             </form:form>
 
 
@@ -769,7 +943,6 @@
 
 
     <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/Chart.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/templatemo_script.js"></script>
     <script type="text/javascript">
     </script>

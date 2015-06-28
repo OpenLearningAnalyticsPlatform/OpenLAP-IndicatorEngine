@@ -2,10 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="974e7feb-8792-4228-ab5d-100949817edf" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/images/help.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/pages/indicator_system/number/classic_interface.jsp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/pages/test.jsp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/images/template.png" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\web\pages\indicator_system\number\classic_interface.jsp" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/EntitySpecification.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/EntitySpecification.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/GenQuery.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/GenQuery.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/WEB-INF/applicationContext.xml" afterPath="$PROJECT_DIR$/web/WEB-INF/applicationContext.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/indicator_definition.js" afterPath="$PROJECT_DIR$/web/js/indicator_definition.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp" afterPath="$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/pages/test.jsp" afterPath="$PROJECT_DIR$/web/pages/test.jsp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path=".idea/dataSources.local.xml" />
@@ -43,11 +48,73 @@
         <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="79" column="5" selection-start-line="79" selection-start-column="5" selection-end-line="79" selection-end-column="5" />
+              <caret line="379" column="54" selection-start-line="379" selection-start-column="54" selection-end-line="379" selection-end-column="54" />
               <folding>
-                <element signature="e#0#39127#0" expanded="true" />
+                <element signature="e#0#40724#0" expanded="true" />
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EntitySpecification.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/EntitySpecification.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="applicationContext.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/WEB-INF/applicationContext.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="141" column="86" selection-start-line="141" selection-start-column="86" selection-end-line="141" selection-end-column="86" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Questions.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/Questions.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GenQuery.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/GenQuery.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="103" column="37" selection-start-line="103" selection-start-column="37" selection-end-line="103" selection-end-column="37" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="indicator_definition.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/js/indicator_definition.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="354" column="0" selection-start-line="354" selection-start-column="0" selection-end-line="354" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GraphController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GraphController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="72" column="106" selection-start-line="72" selection-start-column="37" selection-end-line="72" selection-end-column="106" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -55,16 +122,33 @@
       <file leaf-file-name="question_indicator_editor.jsp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.29904306">
-              <caret line="232" column="14" selection-start-line="232" selection-start-column="14" selection-end-line="232" selection-end-column="14" />
+            <state vertical-scroll-proportion="0.46291867">
+              <caret line="454" column="165" selection-start-line="454" selection-start-column="165" selection-end-line="454" selection-end-column="165" />
               <folding>
-                <element signature="e#30183#30873#0#HTML" expanded="false" />
-                <element signature="e#30957#49791#0#HTML" expanded="false" />
-                <element signature="e#31111#41349#0#HTML" expanded="false" />
-                <element signature="e#41526#46576#0#HTML" expanded="false" />
-                <element signature="e#46756#47886#0#HTML" expanded="false" />
-                <element signature="e#48056#49482#0#HTML" expanded="false" />
+                <element signature="e#3905#4535#0#HTML" expanded="false" />
+                <element signature="e#4588#5218#0#HTML" expanded="false" />
+                <element signature="e#5268#5898#0#HTML" expanded="false" />
+                <element signature="e#5957#6033#0#HTML" expanded="false" />
+                <element signature="e#6093#6172#0#HTML" expanded="false" />
+                <element signature="e#6230#6307#0#HTML" expanded="false" />
+                <element signature="e#7028#7658#0#HTML" expanded="false" />
+                <element signature="e#7705#8198#0#HTML" expanded="false" />
+                <element signature="e#8246#8815#0#HTML" expanded="false" />
+                <element signature="e#8864#10970#0#HTML" expanded="false" />
+                <element signature="e#10975#11137#0#HTML" expanded="false" />
+                <element signature="e#11172#13209#0#HTML" expanded="false" />
+                <element signature="e#15939#17281#0#HTML" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test.jsp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/pages/test.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -114,7 +198,6 @@
         <option value="$PROJECT_DIR$/src/com/indicator_engine/controller/webflow_validators/SelectNumberParametersValidator.java" />
         <option value="$PROJECT_DIR$/web/pages/confirmation.jsp" />
         <option value="$PROJECT_DIR$/web/WEB-INF/flows/indicators_definition/entity-flow.xml" />
-        <option value="$PROJECT_DIR$/web/WEB-INF/applicationContext.xml" />
         <option value="$PROJECT_DIR$/web/pages/indicator_system/viewall_indicators.jsp" />
         <option value="$PROJECT_DIR$/web/pages/indicator_system/number/indicator_number_select_entity.jsp" />
         <option value="$PROJECT_DIR$/web/WEB-INF/flows/indicators_definition/indicators_definition-flow.xml" />
@@ -133,19 +216,20 @@
         <option value="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/OperationNumberProcessor.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/dao/GLACategoryDaoImpl.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/IndicatorXMLData.java" />
-        <option value="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/EntitySpecification.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/controller/GraphController.java" />
         <option value="$PROJECT_DIR$/web/pages/indicator_system/number/gh" />
         <option value="$PROJECT_DIR$/web/css/error.css" />
         <option value="$PROJECT_DIR$/web/js/questionIndicatorEditor.js" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/GenIndicatorProps.java" />
-        <option value="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/GenQuery.java" />
         <option value="$PROJECT_DIR$/web/pages/indicator_system/number/new_ui.jsp" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/35c9d31c-7e79-4566-931d-e743a4436cbf/console.sql" />
-        <option value="$PROJECT_DIR$/web/js/indicator_definition.js" />
-        <option value="$PROJECT_DIR$/web/pages/test.jsp" />
         <option value="$PROJECT_DIR$/web/pages/indicator_system/number/classic_interface.jsp" />
+        <option value="$PROJECT_DIR$/web/pages/test.jsp" />
+        <option value="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/GenQuery.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java" />
+        <option value="$PROJECT_DIR$/web/js/indicator_definition.js" />
+        <option value="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/EntitySpecification.java" />
+        <option value="$PROJECT_DIR$/web/WEB-INF/applicationContext.xml" />
         <option value="$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp" />
       </list>
     </option>
@@ -233,6 +317,10 @@
               <option name="myItemId" value="web" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WEB-INF" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -297,6 +385,56 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="number" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="images" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -966,7 +1104,7 @@
       <workItem from="1434777669571" duration="371000" />
       <workItem from="1434854675394" duration="36371000" />
       <workItem from="1435230097698" duration="38402000" />
-      <workItem from="1435383533810" duration="48434000" />
+      <workItem from="1435383533810" duration="67457000" />
     </task>
     <task id="LOCAL-00001" summary="charting capabilities : init">
       <created>1431340261434</created>
@@ -1034,11 +1172,17 @@
       <option name="project" value="LOCAL" />
       <updated>1435435036969</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Final UI with Jquery">
+      <created>1435478609760</created>
+      <option name="number" value="00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1435478609761</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="289354000" />
+    <option name="totallyTimeSpent" value="308377000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1101,7 +1245,7 @@
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.42093542" sideWeight="0.4936034" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42093542" sideWeight="0.4936034" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946696" sideWeight="0.50676984" order="3" side_tool="true" content_ui="tabs" />
@@ -1137,11 +1281,12 @@
     <MESSAGE value="UI Changes :" />
     <MESSAGE value="UI Changes : Tooltip Integrated in the main Flow" />
     <MESSAGE value="UI Changes : Dialog Window Integrated" />
-    <option name="LAST_COMMIT_MESSAGE" value="UI Changes : Dialog Window Integrated" />
+    <MESSAGE value="Final UI with Jquery" />
+    <option name="LAST_COMMIT_MESSAGE" value="Final UI with Jquery" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="4" />
+      <option name="time" value="5" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1357,14 +1502,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/applicationContext.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.10224949">
-          <caret line="61" column="79" selection-start-line="61" selection-start-column="70" selection-end-line="61" selection-end-column="79" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/ProcessUserFilters.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.5746422">
@@ -1414,14 +1551,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/GenQuery.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="38" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/pages/app/user_profile.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-7.2941175">
@@ -1462,29 +1591,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GraphController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="100" column="72" selection-start-line="100" selection-start-column="49" selection-end-line="100" selection-end-column="72" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/pages/indicator_system/indicators_home.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.1566985">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/indicator_definition.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.068966">
-          <caret line="350" column="56" selection-start-line="350" selection-start-column="56" selection-end-line="350" selection-end-column="56" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1501,7 +1612,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1516,22 +1627,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/Questions.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.050813008">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/EntitySpecification.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.66056913">
-          <caret line="31" column="4" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/dao/GLAEntityDaoImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5914634">
@@ -1542,58 +1637,93 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/Questions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/GenQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="103" column="37" selection-start-line="103" selection-start-column="37" selection-end-line="103" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/web/pages/test.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.2058823">
-          <caret line="221" column="27" selection-start-line="0" selection-start-column="0" selection-end-line="221" selection-end-column="27" />
+        <state vertical-scroll-proportion="-0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/indicator_definition.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="354" column="0" selection-start-line="354" selection-start-column="0" selection-end-line="354" selection-end-column="0" />
           <folding>
-            <element signature="n#ul#0;n#!!top" expanded="false" />
-            <element signature="n#div#0;n#!!top" expanded="false" />
-            <element signature="n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-            <element signature="n#div#0;n#div#1;n#div#0;n#!!top" expanded="false" />
-            <element signature="n#div#0;n#div#2;n#div#0;n#!!top" expanded="false" />
-            <element signature="n#div#0;n#div#3;n#div#0;n#!!top" expanded="false" />
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/pages/indicator_system/number/classic_interface.jsp">
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GraphController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.4978166">
-          <caret line="780" column="2" selection-start-line="780" selection-start-column="2" selection-end-line="780" selection-end-column="2" />
-          <folding>
-            <element signature="e#29619#30309#0#HTML" expanded="false" />
-            <element signature="e#30393#49227#0#HTML" expanded="false" />
-            <element signature="e#30547#40785#0#HTML" expanded="false" />
-            <element signature="e#40962#46012#0#HTML" expanded="false" />
-            <element signature="e#46192#47322#0#HTML" expanded="false" />
-            <element signature="e#47492#48918#0#HTML" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="72" column="106" selection-start-line="72" selection-start-column="37" selection-end-line="72" selection-end-column="106" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="79" column="5" selection-start-line="79" selection-start-column="5" selection-end-line="79" selection-end-column="5" />
+          <caret line="379" column="54" selection-start-line="379" selection-start-column="54" selection-end-line="379" selection-end-column="54" />
           <folding>
-            <element signature="e#0#39127#0" expanded="true" />
+            <element signature="e#0#40724#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/EntitySpecification.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/applicationContext.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="141" column="86" selection-start-line="141" selection-start-column="86" selection-end-line="141" selection-end-column="86" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.29904306">
-          <caret line="232" column="14" selection-start-line="232" selection-start-column="14" selection-end-line="232" selection-end-column="14" />
+        <state vertical-scroll-proportion="0.46291867">
+          <caret line="454" column="165" selection-start-line="454" selection-start-column="165" selection-end-line="454" selection-end-column="165" />
           <folding>
-            <element signature="e#30183#30873#0#HTML" expanded="false" />
-            <element signature="e#30957#49791#0#HTML" expanded="false" />
-            <element signature="e#31111#41349#0#HTML" expanded="false" />
-            <element signature="e#41526#46576#0#HTML" expanded="false" />
-            <element signature="e#46756#47886#0#HTML" expanded="false" />
-            <element signature="e#48056#49482#0#HTML" expanded="false" />
+            <element signature="e#3905#4535#0#HTML" expanded="false" />
+            <element signature="e#4588#5218#0#HTML" expanded="false" />
+            <element signature="e#5268#5898#0#HTML" expanded="false" />
+            <element signature="e#5957#6033#0#HTML" expanded="false" />
+            <element signature="e#6093#6172#0#HTML" expanded="false" />
+            <element signature="e#6230#6307#0#HTML" expanded="false" />
+            <element signature="e#7028#7658#0#HTML" expanded="false" />
+            <element signature="e#7705#8198#0#HTML" expanded="false" />
+            <element signature="e#8246#8815#0#HTML" expanded="false" />
+            <element signature="e#8864#10970#0#HTML" expanded="false" />
+            <element signature="e#10975#11137#0#HTML" expanded="false" />
+            <element signature="e#11172#13209#0#HTML" expanded="false" />
+            <element signature="e#15939#17281#0#HTML" expanded="false" />
           </folding>
         </state>
       </provider>

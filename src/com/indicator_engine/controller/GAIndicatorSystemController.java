@@ -48,6 +48,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -357,9 +358,10 @@ public class GAIndicatorSystemController {
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         entitySpecificationBean.setSelectedChartType(graphType);
         entitySpecificationBean.setSelectedChartEngine(graphEngine);
-        entitySpecificationBean.setQuestionName(questionName);
+        //entitySpecificationBean.setQuestionName(questionName);
         entitySpecificationBean.setIndicatorName(indicatorName);
         if(entitySpecificationBean.getHql() == null ) {
+            entitySpecificationBean.setQuestionName(questionName);
             GLACategory glaCategory = glaCategoryBean.loadCategoryByName(entitySpecificationBean.getSelectedMinor());
             entitySpecificationBean.setSelectedMajor(glaCategory.getMajor());
             entitySpecificationBean.setSelectedType(glaCategory.getType());
@@ -405,10 +407,40 @@ public class GAIndicatorSystemController {
 
     @RequestMapping(value = "/refreshQuestionSummary", method = RequestMethod.GET)
     public @ResponseBody
-    String  refreshQuestionSummary(Model model) {
+    String  refreshQuestionSummary(@RequestParam(value="indName" ,required = false)String indicatorName, Model model) {
         Gson gson = new Gson();
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        return gson.toJson(entitySpecificationBean.getQuestionsContainer());
+        if(indicatorName == null) {
+            return gson.toJson(entitySpecificationBean.getQuestionsContainer());
+        }
+        else {
+            Questions questions = entitySpecificationBean.getQuestionsContainer();
+            for(GenQuery genQuery : questions.getGenQueries()){
+                if(genQuery.getIndicatorName().equals(indicatorName))
+                    return gson.toJson(genQuery);
+            }
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/deleteIndFromQn", method = RequestMethod.GET)
+    public @ResponseBody
+    String  deleteIndicatorFromQn(@RequestParam(value="indName" ,required = false)String indicatorName, Model model) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        String msg = null;
+        if (indicatorName == null) {
+           msg = "Error Deletion Indicator. No Indicator Specified";
+        } else {
+            for (Iterator<GenQuery> genQuery = entitySpecificationBean.getQuestionsContainer().getGenQueries().iterator(); genQuery.hasNext(); ) {
+                GenQuery agenQuery = genQuery.next();
+                if (agenQuery.getIndicatorName().equals(indicatorName)) {
+                    msg=agenQuery.getIndicatorName()+" Successfully Deleted from Current Question Set. Please press the Refesh Button";
+                    genQuery.remove();
+                }
+            }
+        }
+        return gson.toJson(msg);
     }
 
 

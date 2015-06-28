@@ -52,7 +52,6 @@ function validateQuestionName(){
 function validateIndicatorName(obj){
     createRequest();
     var indicatorNameEntered = document.getElementById('indicatorNaming').value;
-    console.log(indicatorNameEntered);
     var url ="/indicators/validateIndName?indname="+indicatorNameEntered;
     request.open("GET",url,true);
     request.onreadystatechange=alert_indicatorName;
@@ -442,7 +441,6 @@ function processScreenForNextIndicator() {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
-            alert(request.responseText);
             document.getElementById("indicatorNaming").value = "";
             var selectedMinor = document.getElementById("selectedMinor");
             removeOptions(selectedMinor);

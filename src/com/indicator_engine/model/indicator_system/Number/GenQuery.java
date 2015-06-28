@@ -99,4 +99,30 @@ public class GenQuery implements Serializable {
         this.indicatorXMLData.setSelectedChartType(selectedChartType);
 
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GenQuery genQuery = (GenQuery) o;
+
+        if (queryID != genQuery.queryID) return false;
+        if (!query.equals(genQuery.query)) return false;
+        if (!indicatorName.equals(genQuery.indicatorName)) return false;
+        if (genIndicatorProps != null ? !genIndicatorProps.equals(genQuery.genIndicatorProps) : genQuery.genIndicatorProps != null)
+            return false;
+        return !(indicatorXMLData != null ? !indicatorXMLData.equals(genQuery.indicatorXMLData) : genQuery.indicatorXMLData != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (queryID ^ (queryID >>> 32));
+        result = 31 * result + query.hashCode();
+        result = 31 * result + indicatorName.hashCode();
+        result = 31 * result + (genIndicatorProps != null ? genIndicatorProps.hashCode() : 0);
+        result = 31 * result + (indicatorXMLData != null ? indicatorXMLData.hashCode() : 0);
+        return result;
+    }
 }
