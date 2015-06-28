@@ -44,7 +44,6 @@ public interface IndicatorPreProcessingDao {
     public List<String> searchSession(String keyword, String searchType);
     public void specifyNewTime(SelectNumberParameters selectNumberParameters);
     public void clearTimeSpecifications(SelectNumberParameters selectNumberParameters);
-    public void searchTime(SelectNumberParameters selectNumberParameters);
     public void addDefaultEValues(SelectNumberParameters selectNumberParameters);
     public void addIndicator(SelectNumberParameters selectNumberParameters, Questions indicatorName);
     public void saveIndicator(Questions indicatorName);

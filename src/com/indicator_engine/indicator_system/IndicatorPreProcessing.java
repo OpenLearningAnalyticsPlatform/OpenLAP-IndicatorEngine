@@ -186,14 +186,6 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
         selectNumberParameters.getTimeSpecifications().clear();
     }
     @Override
-    public void searchTime(SelectNumberParameters selectNumberParameters){
-        log.info("Within Search Time Method : Indicator PreProcessing");
-        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
-        selectNumberParameters.setSearchResults(glaEventBean.searchSimilarTimeDetails(selectNumberParameters.getSelectedTimeSearchType(),
-                selectNumberParameters.getTimeSearch()));
-
-    }
-    @Override
     public void clearSearchSettings(SelectNumberParameters selectNumberParameters) {
         selectNumberParameters.getSearchResults().clear();
         selectNumberParameters.setSelectedSearchType("");

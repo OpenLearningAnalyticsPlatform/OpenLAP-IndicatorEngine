@@ -20,6 +20,290 @@
 /**
  * Created by Tanmaya Mahapatra on 18-06-2015.
  */
+$(function() {
+
+    $( "#accordionFilterSummary" ).accordion({
+        event: "click hoverintent",
+        heightStyle: "fill"
+    });
+    $( "#accordionQuestionSummary" ).accordion({
+        event: "click hoverintent",
+        heightStyle: "fill"
+    });
+    $( "#accordionIndProp" ).accordion({
+        event: "click hoverintent",
+        heightStyle: "fill"
+    });
+    $( "#accordionFilter" ).accordion({
+        event: "click hoverintent",
+        heightStyle: "fill"
+    });
+    $( "#accordionGraphSettings" ).accordion({
+        event: "click hoverintent",
+        heightStyle: "fill"
+    });
+    $( "#accordionIndicatorSummary" ).accordion({
+        event: "click hoverintent",
+        heightStyle: "fill",
+    });
+    $( document ).tooltip();
+
+    $( "#questionHelpDialog" ).dialog({
+        modal: true,
+        buttons: {
+            Ok: function() {
+                $( this ).dialog( "close" );
+            }
+        },
+        autoOpen: false,
+        show: {
+            effect: "slide",
+            duration: 1000
+        },
+        hide: {
+            effect: "clip",
+            duration: 1000
+        },
+        height: 'auto',
+        maxWidth: 600,
+        minWidth: 500,
+        position: 'center',
+        resizable: false
+    });
+    $( "#questionSummaryDialog" ).dialog({
+        modal: true,
+        buttons: {
+            Ok: function() {
+                $( this ).dialog( "close" );
+            }
+        },
+        autoOpen: false,
+        show: {
+            effect: "slide",
+            duration: 1000
+        },
+        hide: {
+            effect: "clip",
+            duration: 1000
+        },
+        height: 'auto',
+        maxWidth: 600,
+        minWidth: 500,
+        position: 'center',
+        resizable: false
+    });
+    $( "#indicatorHelpDialog" ).dialog({
+        modal: true,
+        buttons: {
+            Ok: function() {
+                $( this ).dialog( "close" );
+            }
+        },
+        autoOpen: false,
+        show: {
+            effect: "slide",
+            duration: 1000
+        },
+        hide: {
+            effect: "clip",
+            duration: 1000
+        },
+        height: 'auto',
+        maxWidth: 600,
+        minWidth: 500,
+        position: 'center',
+        resizable: false
+    });
+    $( "#indViewDialog" ).dialog({
+        modal: true,
+        buttons: {
+            Ok: function() {
+                $( this ).dialog( "close" );
+            }
+        },
+        autoOpen: false,
+        show: {
+            effect: "slide",
+            duration: 1000
+        },
+        hide: {
+            effect: "clip",
+            duration: 1000
+        },
+        height: 'auto',
+        maxWidth: 1200,
+        minWidth: 900,
+        position: 'center',
+        resizable: true
+    });
+    $( "#indDeleteDialog" ).dialog({
+        modal: true,
+        buttons: {
+            Ok: function() {
+                $( this ).dialog( "close" );
+            }
+        },
+        autoOpen: false,
+        show: {
+            effect: "slide",
+            duration: 1000
+        },
+        hide: {
+            effect: "clip",
+            duration: 1000
+        },
+        height: 'auto',
+        maxWidth: 800,
+        minWidth: 700,
+        position: 'center',
+        resizable: false
+    });
+
+    $( "#helpQuestionInfo" ).click(function() {
+        $( "#questionHelpDialog" ).dialog( "open" );
+    });
+    $( "#helpQuestionSummary" ).click(function() {
+        $( "#questionSummaryDialog" ).dialog( "open" );
+    });
+    $( "#helpIndicatorInfo" ).click(function() {
+        $( "#indicatorHelpDialog" ).dialog( "open" );
+    });
+    $( "#indView" ).click(function(e){
+        $.ajax({type: "GET",
+            url: "/indicators/refreshQuestionSummary",
+            data: { indName: $("#associatedIndicators").val() },
+            dataType: "json", // json
+            success:function(response){
+                //$("#indViewDialog").text(JSON.stringify(response));
+                GenerateTable(response)
+                $("#indViewDialog").dialog("open");
+            }});
+    });
+    $( "#indDelete" ).click(function(e){
+        $.ajax({type: "GET",
+            url: "/indicators/deleteIndFromQn",
+            data: { indName: $("#associatedIndicators").val() },
+            dataType: "html",
+            success:function(response){
+                $("#indDeleteDialog").text(response);
+                $('.indDeleteDialog').dialog('option', 'title', 'Indicator Deletion Message');
+                refreshQuestionSummary();
+                $("#indDeleteDialog").dialog("open");
+            }});
+    });
+});
+function  GenerateTable(data) {
+
+    var indicatorData = new Array();
+    indicatorData.push(["S/L", "Property", "Value"]);
+    indicatorData.push([1, "Indicator Name", data.indicatorName]);
+    indicatorData.push([2, "Chart Type", data.genIndicatorProps.chartType]);
+    indicatorData.push([3, "Chart Engine", data.genIndicatorProps.chartEngine]);
+    indicatorData.push([4, "Entity Filters", data.indicatorXMLData.entityValues.length]);
+    indicatorData.push([5, "Session Filters", data.indicatorXMLData.sessionSpecifications.length]);
+    indicatorData.push([6, "User Filters", data.indicatorXMLData.userSpecifications.length]);
+    indicatorData.push([7, "Time Filters", data.indicatorXMLData.timeSpecifications.length]);
+
+    /*indicatorData.push([2, "Hibernate Query", data.query]);
+     indicatorData.push([5, "Sources", data.indicatorXMLData.source]);
+     indicatorData.push([6, "Platform", data.indicatorXMLData.platform]);
+     indicatorData.push([7, "Action", data.indicatorXMLData.action]);
+     indicatorData.push([8, "Minor", data.indicatorXMLData.minor]);
+     indicatorData.push([9, "Major", data.indicatorXMLData.major]); */
+
+    //Create a HTML Table element.
+    var table = document.createElement("TABLE");
+    table.border = "1";
+
+    //Get the count of columns.
+    var columnCount = indicatorData[0].length;
+
+    //Add the header row.
+    var row = table.insertRow(-1);
+    for (var i = 0; i < columnCount; i++) {
+        var headerCell = document.createElement("TH");
+        headerCell.innerHTML = indicatorData[0][i];
+        row.appendChild(headerCell);
+    }
+
+    //Add the data rows.
+    for (var i = 1; i < indicatorData.length; i++) {
+        row = table.insertRow(-1);
+        for (var j = 0; j < columnCount; j++) {
+            var cell = row.insertCell(-1);
+            cell.innerHTML = indicatorData[i][j];
+        }
+    }
+
+    var dvTable = document.getElementById("indBasicProperty");
+    dvTable.innerHTML = "";
+    dvTable.appendChild(table);
+}
+/*
+ * hoverIntent | Copyright 2011 Brian Cherne
+ * http://cherne.net/brian/resources/jquery.hoverIntent.html
+ * modified by the jQuery UI team
+ */
+$.event.special.hoverintent = {
+    setup: function() {
+        $( this ).bind( "mouseover", jQuery.event.special.hoverintent.handler );
+    },
+    teardown: function() {
+        $( this ).unbind( "mouseover", jQuery.event.special.hoverintent.handler );
+    },
+    handler: function( event ) {
+        var currentX, currentY, timeout,
+            args = arguments,
+            target = $( event.target ),
+            previousX = event.pageX,
+            previousY = event.pageY;
+
+        function track( event ) {
+            currentX = event.pageX;
+            currentY = event.pageY;
+        };
+
+        function clear() {
+            target
+                .unbind( "mousemove", track )
+                .unbind( "mouseout", clear );
+            clearTimeout( timeout );
+        }
+
+        function handler() {
+            var prop,
+                orig = event;
+
+            if ( ( Math.abs( previousX - currentX ) +
+                Math.abs( previousY - currentY ) ) < 7 ) {
+                clear();
+
+                event = $.Event( "hoverintent" );
+                for ( prop in orig ) {
+                    if ( !( prop in event ) ) {
+                        event[ prop ] = orig[ prop ];
+                    }
+                }
+                // Prevent accessing the original event since the new event
+                // is fired asynchronously and the old event is no longer
+                // usable (#6028)
+                delete event.originalEvent;
+
+                target.trigger( event );
+            } else {
+                previousX = currentX;
+                previousY = currentY;
+                timeout = setTimeout( handler, 100 );
+            }
+        }
+
+        timeout = setTimeout( handler, 100 );
+        target.bind({
+            mousemove: track,
+            mouseout: clear
+        });
+    }
+};
 
 var request;
 function createRequest() {
@@ -119,6 +403,16 @@ function searchUser() {
     request.send(null);
 }
 
+function searchTime(){
+    createRequest();
+    var timeType = document.getElementById("timeSearchType").value;
+    var searchTimeString = document.getElementById("timeSearchString").value;
+    var url ="/indicators/searchTime?searchTime="+searchTimeString+"&timeType="+timeType;
+    request.open("GET",url,true);
+    request.onreadystatechange=displaySearchTimeResults;
+    request.send(null);
+}
+
 function addUserFilter() {
     createRequest();
     var userType = document.getElementById("userType").value;
@@ -128,7 +422,27 @@ function addUserFilter() {
     request.open("GET",url,true);
     request.onreadystatechange=displayUserFilters;
     request.send(null);
+}
 
+function addTimeFilter() {
+    createRequest();
+    var timeSearchType = document.getElementById("timeSelectionType").value;
+    var timeString;
+    var selectedArray = new Array();
+    var selObj = document.getElementById("timeSearchResults");
+    var i;
+    var count = 0;
+    for (i=0; i< selObj.options.length; i++) {
+        if (selObj.options[i].selected) {
+            selectedArray[count] = selObj.options[i].value;
+            count++;
+        }
+    }
+    timeString = selectedArray;
+    var url ="/indicators/addTimeFilter?time="+timeString+"&timeType="+timeSearchType;
+    request.open("GET",url,true);
+    request.onreadystatechange=displayTimeFilters;
+    request.send(null);
 }
 
 function displayUserFilters() {
@@ -149,6 +463,40 @@ function displayUserFilters() {
         }
         addTable(heading,data,"user_filters");
     }
+}
+function displayTimeFilters() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            var heading = new Array();
+            heading[0] = "S/L";
+            heading[1] = "Time Search Type";
+            heading[2] = "Time Value";
+
+            var data = new Array();
+
+            for (var i=0;i< parsedJSON.length;i++) {
+                data[i] = new Array(i+1, parsedJSON[i].type, parsedJSON[i].timestamp);
+            }
+        }
+        addTable(heading,data,"time_filters");
+    }
+}
+
+function refreshTimeFilters() {
+    createRequest();
+    var url ="/indicators/getTimeFilters";
+    request.open("GET",url,true);
+    request.onreadystatechange=displayTimeFilters;
+    request.send(null);
+}
+
+function deleteTimeFilters() {
+    createRequest();
+    var url ="/indicators/deleteTimeFilters";
+    request.open("GET",url,true);
+    request.onreadystatechange=displayTimeFilters;
+    request.send(null);
 }
 
 function refreshUserFilters() {
@@ -179,6 +527,21 @@ function displaySearchUserResults() {
             }
         }
     }
+}
+
+function displaySearchTimeResults() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            var timeSearchResults = document.getElementById("timeSearchResults");
+            removeOptions(timeSearchResults);
+            for (var i=0;i< parsedJSON.length;i++) {
+                var newOption = new Option(parsedJSON[i], parsedJSON[i]);
+                timeSearchResults.appendChild(newOption);
+            }
+        }
+    }
+
 }
 
 function searchSession() {

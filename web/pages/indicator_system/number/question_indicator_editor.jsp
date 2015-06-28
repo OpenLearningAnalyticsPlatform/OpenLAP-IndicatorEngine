@@ -41,326 +41,18 @@
 <head>
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-    <title>Indicator Definition Home</title>
+    <title> Question Indicator Editor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Goal Oriented LA ToolKit : Indicator Definition" />
+    <meta name="description" content="Goal Oriented LA ToolKit : Question Indicator Editor" />
     <meta name="author" content="Tanmaya Mahapatra" />
-
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/indicator_definition.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
     <link href="${pageContext.request.contextPath}/js/jquery-ui/jquery-ui.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/indicator_editor.css" rel="stylesheet">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-ui/jquery-ui.js"></script>
-    <!-- CSS -->
-    <style>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/indicator_editor.js"></script>
 
-        fieldset {
-            border: 0;
-        }
-        label {
-            display: block;
-            margin: 30px 0 0 0;
-        }
-        select {
-            width: 200px;
-        }
-        .overflow {
-            height: 200px;
-        }
-    </style>
-    <script>
-        $(function() {
-
-            $( "#accordionFilterSummary" ).accordion({
-                event: "click hoverintent",
-                heightStyle: "fill"
-            });
-            $( "#accordionQuestionSummary" ).accordion({
-                event: "click hoverintent",
-                heightStyle: "fill"
-            });
-
-            $( "#accordionIndProp" ).accordion({
-                event: "click hoverintent",
-                heightStyle: "fill"
-            });
-
-            $( "#accordionFilter" ).accordion({
-                event: "click hoverintent",
-                heightStyle: "fill"
-            });
-            $( "#accordionGraphSettings" ).accordion({
-                event: "click hoverintent",
-                heightStyle: "fill"
-            });
-            $( "#accordionIndicatorSummary" ).accordion({
-                event: "click hoverintent",
-                heightStyle: "fill",
-            });
-            $( document ).tooltip();
-
-            $( "#questionHelpDialog" ).dialog({
-                modal: true,
-                buttons: {
-                    Ok: function() {
-                        $( this ).dialog( "close" );
-                    }
-                },
-                autoOpen: false,
-                show: {
-                    effect: "blind",
-                    duration: 1000
-                },
-                hide: {
-                    effect: "explode",
-                    duration: 1000
-                },
-                height: 'auto',
-                maxWidth: 600,
-                minWidth: 500,
-                position: 'center',
-                resizable: false
-            });
-
-            $( "#questionSummaryDialog" ).dialog({
-                modal: true,
-                buttons: {
-                    Ok: function() {
-                        $( this ).dialog( "close" );
-                    }
-                },
-                autoOpen: false,
-                show: {
-                    effect: "blind",
-                    duration: 1000
-                },
-                hide: {
-                    effect: "explode",
-                    duration: 1000
-                },
-                height: 'auto',
-                maxWidth: 600,
-                minWidth: 500,
-                position: 'center',
-                resizable: false
-            });
-            $( "#indicatorHelpDialog" ).dialog({
-                modal: true,
-                buttons: {
-                    Ok: function() {
-                        $( this ).dialog( "close" );
-                    }
-                },
-                autoOpen: false,
-                show: {
-                    effect: "blind",
-                    duration: 1000
-                },
-                hide: {
-                    effect: "explode",
-                    duration: 1000
-                },
-                height: 'auto',
-                maxWidth: 600,
-                minWidth: 500,
-                position: 'center',
-                resizable: false
-            });
-
-
-            $( "#helpQuestionInfo" ).click(function() {
-                $( "#questionHelpDialog" ).dialog( "open" );
-            });
-            $( "#helpQuestionSummary" ).click(function() {
-                $( "#questionSummaryDialog" ).dialog( "open" );
-            });
-            $( "#helpIndicatorInfo" ).click(function() {
-                $( "#indicatorHelpDialog" ).dialog( "open" );
-            });
-
-            $( "#indViewDialog" ).dialog({
-                modal: true,
-                buttons: {
-                    Ok: function() {
-                        $( this ).dialog( "close" );
-                    }
-                },
-                autoOpen: false,
-                show: {
-                    effect: "clip",
-                    duration: 1000
-                },
-                hide: {
-                    effect: "explode",
-                    duration: 1000
-                },
-                height: 'auto',
-                maxWidth: 1200,
-                minWidth: 900,
-                position: 'center',
-                resizable: false
-            });
-            $( "#indDeleteDialog" ).dialog({
-                modal: true,
-                buttons: {
-                    Ok: function() {
-                        $( this ).dialog( "close" );
-                    }
-                },
-                autoOpen: false,
-                show: {
-                    effect: "blind",
-                    duration: 1000
-                },
-                hide: {
-                    effect: "explode",
-                    duration: 1000
-                },
-                height: 'auto',
-                maxWidth: 800,
-                minWidth: 700,
-                position: 'center',
-                resizable: false
-            });
-
-            $("#indView").click(function(e){
-                $.ajax({type: "GET",
-                    url: "/indicators/refreshQuestionSummary",
-                    data: { indName: $("#associatedIndicators").val() },
-                    dataType: "json", // json
-                    success:function(response){
-                        //$("#indViewDialog").text(JSON.stringify(response));
-                        GenerateTable(response)
-                        $("#indViewDialog").dialog("open");
-                    }});
-            });
-            $("#indDelete").click(function(e){
-                $.ajax({type: "GET",
-                    url: "/indicators/deleteIndFromQn",
-                    data: { indName: $("#associatedIndicators").val() },
-                    dataType: "html",
-                    success:function(response){
-                        $("#indDeleteDialog").text(response);
-                        $('.indDeleteDialog').dialog('option', 'title', 'Indicator Deletion Message');
-                        refreshQuestionSummary();
-                        $("#indDeleteDialog").dialog("open");
-                    }});
-            });
-        });
-    function  GenerateTable(data) {
-
-        var indicatorData = new Array();
-        indicatorData.push(["S/L", "Property", "Value"]);
-        indicatorData.push([1, "Indicator Name", data.indicatorName]);
-        indicatorData.push([2, "Chart Type", data.genIndicatorProps.chartType]);
-        indicatorData.push([3, "Chart Engine", data.genIndicatorProps.chartEngine]);
-        indicatorData.push([4, "Entity Filters", data.indicatorXMLData.entityValues.length]);
-        indicatorData.push([5, "Session Filters", data.indicatorXMLData.sessionSpecifications.length]);
-        indicatorData.push([6, "User Filters", data.indicatorXMLData.userSpecifications.length]);
-        indicatorData.push([7, "Time Filters", data.indicatorXMLData.timeSpecifications.length]);
-
-        /*indicatorData.push([2, "Hibernate Query", data.query]);
-        indicatorData.push([5, "Sources", data.indicatorXMLData.source]);
-        indicatorData.push([6, "Platform", data.indicatorXMLData.platform]);
-        indicatorData.push([7, "Action", data.indicatorXMLData.action]);
-        indicatorData.push([8, "Minor", data.indicatorXMLData.minor]);
-        indicatorData.push([9, "Major", data.indicatorXMLData.major]); */
-
-        //Create a HTML Table element.
-        var table = document.createElement("TABLE");
-        table.border = "1";
-
-        //Get the count of columns.
-        var columnCount = indicatorData[0].length;
-
-        //Add the header row.
-        var row = table.insertRow(-1);
-        for (var i = 0; i < columnCount; i++) {
-            var headerCell = document.createElement("TH");
-            headerCell.innerHTML = indicatorData[0][i];
-            row.appendChild(headerCell);
-        }
-
-        //Add the data rows.
-        for (var i = 1; i < indicatorData.length; i++) {
-            row = table.insertRow(-1);
-            for (var j = 0; j < columnCount; j++) {
-                var cell = row.insertCell(-1);
-                cell.innerHTML = indicatorData[i][j];
-            }
-        }
-
-        var dvTable = document.getElementById("indBasicProperty");
-        dvTable.innerHTML = "";
-        dvTable.appendChild(table);
-    }
-    /*
-     * hoverIntent | Copyright 2011 Brian Cherne
-     * http://cherne.net/brian/resources/jquery.hoverIntent.html
-     * modified by the jQuery UI team
-     */
-    $.event.special.hoverintent = {
-        setup: function() {
-            $( this ).bind( "mouseover", jQuery.event.special.hoverintent.handler );
-        },
-        teardown: function() {
-            $( this ).unbind( "mouseover", jQuery.event.special.hoverintent.handler );
-        },
-        handler: function( event ) {
-            var currentX, currentY, timeout,
-                    args = arguments,
-                    target = $( event.target ),
-                    previousX = event.pageX,
-                    previousY = event.pageY;
-
-            function track( event ) {
-                currentX = event.pageX;
-                currentY = event.pageY;
-            };
-
-            function clear() {
-                target
-                        .unbind( "mousemove", track )
-                        .unbind( "mouseout", clear );
-                clearTimeout( timeout );
-            }
-
-            function handler() {
-                var prop,
-                        orig = event;
-
-                if ( ( Math.abs( previousX - currentX ) +
-                        Math.abs( previousY - currentY ) ) < 7 ) {
-                    clear();
-
-                    event = $.Event( "hoverintent" );
-                    for ( prop in orig ) {
-                        if ( !( prop in event ) ) {
-                            event[ prop ] = orig[ prop ];
-                        }
-                    }
-                    // Prevent accessing the original event since the new event
-                    // is fired asynchronously and the old event is no longer
-                    // usable (#6028)
-                    delete event.originalEvent;
-
-                    target.trigger( event );
-                } else {
-                    previousX = currentX;
-                    previousY = currentY;
-                    timeout = setTimeout( handler, 100 );
-                }
-            }
-
-            timeout = setTimeout( handler, 100 );
-            target.bind({
-                mousemove: track,
-                mouseout: clear
-            });
-        }
-    };
-    </script>
 </head>
 <body>
 <div class="navbar navbar-inverse" role="navigation">
@@ -421,30 +113,6 @@
                     <div>
                         <p>
                         <div id="indDataProperty"></div>
-                        </p>
-                    </div>
-                    <h3>Entity Filters</h3>
-                    <div>
-                        <p>
-                        <div id="indEntityFilters"></div>
-                        </p>
-                    </div>
-                    <h3>Session Filters</h3>
-                    <div>
-                        <p>
-                        <div id="indSessionFilters"></div>
-                        </p>
-                    </div>
-                    <h3>User Filters</h3>
-                    <div>
-                        <p>
-                        <div id="indUserFilters"></div>
-                        </p>
-                    </div>
-                    <h3>Time Filters</h3>
-                    <div>
-                        <p>
-                        <div id="indTimeFilters"></div>
                         </p>
                     </div>
                 </div>
@@ -766,20 +434,20 @@
                                                 <p>
                                                     <label for="timeSearchType">TimeStamp Search Type </label>
                                                     <form:select class="form-control margin-bottom-15" path="selectedTimeSearchType" items="${selectNumberParameters.timeSearchType}" name ="timeSearchType" id="timeSearchType" />
-                                                    <label for="searchString" class="control-label">Search Keyword</label>
-                                                    <input class="form-control" path="timeSearch"  name="searchString" id ="searchString"/>
+                                                    <label for="timeSearchString" class="control-label">Search Keyword</label>
+                                                    <input class="form-control" path="timeSearch"  name="searchString" id ="timeSearchString"/>
                                                     <br/>
-                                                    <button  type="button" name="_eventId_searchTime"value="Search">
+                                                    <button  type="button" name="_eventId_searchTime" onclick="searchTime()" value="Search">
                                                         <img src="${pageContext.request.contextPath}/images/search.png" alt="button" width="48" height="48"/>
                                                     </button>
                                                     <br/>
                                                     <label for="multipleSelect">Search Results </label>
-                                                    <form:select size="2" class="form-control" path="selectedSearchStrings" name="multipleSelect">
+                                                    <form:select multiple="true" class="form-control" path="selectedSearchStrings" id = "timeSearchResults" name="multipleSelect">
                                                         <form:options items="${selectNumberParameters.searchResults}" />
                                                     </form:select>
                                                     <label for="timeSelectionType">TimeStamp Search Type</label>
                                                     <form:select class="form-control margin-bottom-15" path="selectedTimeType" items="${selectNumberParameters.timeType}" name ="timeSelectionType" id="timeSelectionType" />
-                                                    <button  type="button" name="_eventId_specifyTime" value="Add">
+                                                    <button  type="button" name="_eventId_specifyTime" onclick="addTimeFilter()" value="Add">
                                                         <img src="${pageContext.request.contextPath}/images/apply.png" alt="button" width="48" height="48"/>
                                                     </button>
                                                     <button  value="Delete All">
@@ -844,6 +512,26 @@
                                                             <img src="${pageContext.request.contextPath}/images/refresh.png" alt="button" width="48" height="48"/>
                                                         </button >
                                                         <button   type="button" id ="deleteSessionSettings" value="Delete"  onclick="deleteSessionFilters()">
+                                                            <img src="${pageContext.request.contextPath}/images/delete.png" alt="button" width="48" height="48"/>
+                                                        </button >
+                                                    </div>
+                                                </div>
+                                                <br/>
+                                                </p>
+                                            </div>
+                                            <h3>Time Filter Summary</h3>
+                                            <div>
+                                                <p>
+                                                <div class="panel-heading">Applied Filters</div>
+                                                <div id="time_filters">
+                                                </div>
+                                                <br/>
+                                                <div class="row templatemo-form-buttons">
+                                                    <div class="col-md-12">
+                                                        <button  type="button" id="refreshTimeSettings" value="Refresh" onclick="refreshTimeFilters()">
+                                                            <img src="${pageContext.request.contextPath}/images/refresh.png" alt="button" width="48" height="48"/>
+                                                        </button >
+                                                        <button   type="button" id ="deleteTimeSettings" value="Delete"  onclick="deleteTimeFilters()">
                                                             <img src="${pageContext.request.contextPath}/images/delete.png" alt="button" width="48" height="48"/>
                                                         </button >
                                                     </div>

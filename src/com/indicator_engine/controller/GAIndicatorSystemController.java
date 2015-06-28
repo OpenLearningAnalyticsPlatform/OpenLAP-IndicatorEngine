@@ -272,6 +272,46 @@ public class GAIndicatorSystemController {
         return gson.toJson(entitySpecificationBean.getUserSpecifications());
     }
 
+    @RequestMapping(value = "/searchTime", method = RequestMethod.GET)
+    public @ResponseBody
+    String  searchTime(@RequestParam(value="searchTime", required = true) String time,
+                        @RequestParam(value="timeType", required = true) String timeType,
+                        Model model) {
+        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
+        Gson gson = new Gson();
+        List<String> searchResults = glaEventBean.searchSimilarTimeDetails(timeType, time);
+        return gson.toJson(searchResults);
+    }
+
+    @RequestMapping(value = "/addTimeFilter", method = RequestMethod.GET)
+    public @ResponseBody
+    String  addTimeFilter(@RequestParam(value="time", required = true) List<String> time,
+                          @RequestParam(value="timeType", required = true) String timeType,
+                          Model model) {
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        Gson gson = new Gson();
+        entitySpecificationBean.getTimeSpecifications().add(new TimeSearchSpecifications(timeType,time));
+        return gson.toJson(entitySpecificationBean.getTimeSpecifications());
+    }
+
+    @RequestMapping(value = "/getTimeFilters", method = RequestMethod.GET)
+    public @ResponseBody
+    String  getTimeFilters(Model model) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        return gson.toJson(entitySpecificationBean.getTimeSpecifications());
+
+    }
+
+    @RequestMapping(value = "/deleteTimeFilters", method = RequestMethod.GET)
+    public @ResponseBody
+    String  deleteTimeFilters(Model model) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        entitySpecificationBean.getTimeSpecifications().clear();
+        return gson.toJson(entitySpecificationBean.getTimeSpecifications());
+    }
+
     @RequestMapping(value = "/searchSession", method = RequestMethod.GET)
     public @ResponseBody
     String  searchSessions(@RequestParam(value="keyword", required = true) String keyword,
