@@ -20645,4 +20645,7 @@
       </prototype>
     </procedure>
   </data-source>
+  <data-source name="SQL Server - IndicatorEngineDB@137.226.231.13" uuid="4400d7f1-20a6-4146-9e73-594f971efa40">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
 </component>

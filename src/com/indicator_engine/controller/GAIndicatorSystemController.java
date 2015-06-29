@@ -20,8 +20,7 @@
 
 package com.indicator_engine.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.indicator_engine.dao.*;
 import com.indicator_engine.datamodel.GLACategory;
@@ -47,6 +46,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -234,10 +234,9 @@ public class GAIndicatorSystemController {
     String  searchUsers(@RequestParam(value="keyword", required = true) String keyword,
                       @RequestParam(value="searchtype", required = true) String searchtype,
                       Model model) {
-        IndicatorPreProcessing indicatorPreProcessor = (IndicatorPreProcessing)
-                appContext.getBean("indicatorPreProcessor");
+        GLAUserDao glaUserBean = (GLAUserDao) appContext.getBean("glaUser");
         Gson gson = new Gson();
-        List<String> searchResults = indicatorPreProcessor.searchUser(keyword, searchtype);
+        List<String> searchResults = glaUserBean.searchSimilarUserDetails(searchtype, keyword);
         return gson.toJson(searchResults);
     }
 
@@ -317,10 +316,9 @@ public class GAIndicatorSystemController {
     String  searchSessions(@RequestParam(value="keyword", required = true) String keyword,
                         @RequestParam(value="searchType", required = true) String searchType,
                         Model model) {
-        IndicatorPreProcessing indicatorPreProcessor = (IndicatorPreProcessing)
-                appContext.getBean("indicatorPreProcessor");
+        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
         Gson gson = new Gson();
-        List<String> searchResults = indicatorPreProcessor.searchSession(keyword, searchType);
+        List<String> searchResults = glaEventBean.searchSimilarSessionDetails(searchType, keyword);
         return gson.toJson(searchResults);
     }
 
@@ -383,7 +381,7 @@ public class GAIndicatorSystemController {
         operationNumberProcessorBean.computeResult(entitySpecificationBean);
         long result = glaEntityBean.findNumber(entitySpecificationBean.getHql());
         log.info("Dumping Result \n" + result);
-        return gson.toJson(entitySpecificationBean);
+        return gson.toJson("true");
     }
     @RequestMapping(value = "/finalize", method = RequestMethod.GET)
     public @ResponseBody

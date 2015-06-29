@@ -32,11 +32,12 @@ $(function() {
     });
     $( "#accordionIndProp" ).accordion({
         event: "click hoverintent",
-        heightStyle: "fill"
+        heightStyle: "content"
     });
     $( "#accordionFilter" ).accordion({
         event: "click hoverintent",
         heightStyle: "fill"
+
     });
     $( "#accordionGraphSettings" ).accordion({
         event: "click hoverintent",

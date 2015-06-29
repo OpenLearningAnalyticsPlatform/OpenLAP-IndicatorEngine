@@ -147,59 +147,13 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
     }
 
     @Override
-    public void manageEValues(SelectNumberParameters selectNumberParameters) {
-
-            selectNumberParameters.getEntityValues().add(new EntityValues(selectNumberParameters.getSelectedKeys(),
-                    selectNumberParameters.getSelectedentityValueTypes(), selectNumberParameters.getEvalue()));
-    }
-
-    @Override
     public void addDefaultEValues(SelectNumberParameters selectNumberParameters) {
         if ((selectNumberParameters.getEntityValues().isEmpty()))
             selectNumberParameters.getEntityValues().add(new EntityValues(selectNumberParameters.getSelectedKeys(),
                     selectNumberParameters.getSelectedentityValueTypes(), "ALL"));
 
     }
-    @Override
-    public List<String> searchUser(String keyword, String searchtype) {
-        log.info("Within Search User Method : Indicator PreProcessing");
-        GLAUserDao glauserBean = (GLAUserDao) appContext.getBean("glaUser");
-        return glauserBean.searchSimilarUserDetails(searchtype,keyword);
 
-
-    }
-
-    @Override
-    public List<String> searchSession(String keyword, String searchType){
-        log.info("Within Search Session Method : Indicator PreProcessing");
-        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
-        return glaEventBean.searchSimilarSessionDetails(searchType, keyword);
-    }
-
-    @Override
-    public void specifyNewTime(SelectNumberParameters selectNumberParameters){
-        selectNumberParameters.getTimeSpecifications().add(new TimeSearchSpecifications(selectNumberParameters.getSelectedTimeType(),
-                selectNumberParameters.getSelectedSearchStrings()));
-    }
-    @Override
-    public void clearTimeSpecifications(SelectNumberParameters selectNumberParameters){
-        selectNumberParameters.getTimeSpecifications().clear();
-    }
-    @Override
-    public void clearSearchSettings(SelectNumberParameters selectNumberParameters) {
-        selectNumberParameters.getSearchResults().clear();
-        selectNumberParameters.setSelectedSearchType("");
-
-    }
-    @Override
-    public void addIndicator(SelectNumberParameters selectNumberParameters, Questions questions){
-        questions.getGenQueries().add(new GenQuery(selectNumberParameters.getHql(), selectNumberParameters.getIndicatorName(),0));
-        log.info("Dumping Questions : \n");
-        for(GenQuery gQ : questions.getGenQueries()){
-            log.info(gQ.getQueryID() + "\t" + gQ.getQuery()+ "\n");
-        }
-
-    }
     @Override
     public void saveIndicator(Questions questions){
         log.info("Saving Indicator and all its Questions/Queries : STARTED " + questions.getQuestionName());

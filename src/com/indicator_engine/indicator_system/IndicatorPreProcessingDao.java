@@ -38,14 +38,7 @@ public interface IndicatorPreProcessingDao {
     public List<String> initPopulateMinors(List<String> sources, String action, String platform);
     public List<String> initPopulateTypes(List<String> sources, String action, String platform);
     public List<String> initPopulateMajors(List<String> sources, String action, String platform);
-    public void manageEValues(SelectNumberParameters obj);
-    public List<String> searchUser(String keyword, String searchtype);
-    public void clearSearchSettings(SelectNumberParameters selectNumberParameters);
-    public List<String> searchSession(String keyword, String searchType);
-    public void specifyNewTime(SelectNumberParameters selectNumberParameters);
-    public void clearTimeSpecifications(SelectNumberParameters selectNumberParameters);
     public void addDefaultEValues(SelectNumberParameters selectNumberParameters);
-    public void addIndicator(SelectNumberParameters selectNumberParameters, Questions indicatorName);
     public void saveIndicator(Questions indicatorName);
     public void flushPrevQnData(SelectNumberParameters selectNumberParameters);
     public void flushAll(Questions questions, SelectNumberParameters selectNumberParameters, IndicatorDefnOperationForm availableOperations);

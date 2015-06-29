@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="3694148550">
+  <component name="DataSourceManagerImpl" format="xml" hash="1480706792">
     <data-source source="LOCAL" name="SQL Server - Goal_LA@LENOVO-PC" uuid="35c9d31c-7e79-4566-931d-e743a4436cbf">
       <driver-ref>sqlserver.ms</driver-ref>
       <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
@@ -8,6 +8,12 @@
       <driver-properties>
         <property name="databaseName" value="Goal_LA" />
       </driver-properties>
+      <libraries />
+    </data-source>
+    <data-source source="LOCAL" name="SQL Server - IndicatorEngineDB@137.226.231.13" uuid="4400d7f1-20a6-4146-9e73-594f971efa40">
+      <driver-ref>sqlserver.jtds</driver-ref>
+      <jdbc-driver>net.sourceforge.jtds.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:jtds:sqlserver://137.226.231.13:1433/IndicatorEngineDB</jdbc-url>
       <libraries />
     </data-source>
   </component>
