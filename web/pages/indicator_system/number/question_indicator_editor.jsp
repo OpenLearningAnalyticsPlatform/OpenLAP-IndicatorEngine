@@ -49,8 +49,16 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
     <link href="${pageContext.request.contextPath}/js/jquery-ui/jquery-ui.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/indicator_editor.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/animate.css" rel="stylesheet">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/noty-2.3.5/js/noty/jquery.noty.js"  ></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/noty-2.3.5/js/noty/layouts/top.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/noty-2.3.5/js/noty/layouts/center.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/noty-2.3.5/js/noty/layouts/bottom.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/noty-2.3.5/js/noty/layouts/inline.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/noty-2.3.5/js/noty/layouts/bottomRight.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/noty-2.3.5/js/noty/themes/relax.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/indicator_editor.js"></script>
 
 </head>
@@ -101,6 +109,22 @@
             </ol>
             <h1>Question with Indicator Definition</h1>
             <p>Information to be added</p>
+
+            <script>
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Warning</strong> <br/> Please do not click any icons. <br/>' +
+                    'The Question : Indicator Definition process has started. Please follow the Instruction to continue.<br/>' +
+                    'You would receive further instructions as you proceed.',
+                    type: 'warning'
+                });
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Information</strong> <br/>Please Tye the Question Name to continue...',
+                    type: 'information'
+                });
+            </script>
+
             <div id="indViewDialog" title="Selected Indicator Property">
                 <div id="accordionIndProp">
                     <h3>Indicator Basic Properties</h3>
@@ -280,7 +304,7 @@
                                             <div class="col-md-6 margin-bottom-15">
                                                 <label for="sourceSelection">Select a Source </label>
                                                 <form:select multiple="true" class="form-control margin-bottom-15" title="You can select multiple sourrces i.e from where the data comes."
-                                                             path="selectedSource" items="${selectNumberParameters.source}" name ="sourceSelection" id="sourceSelection" />
+                                                             path="selectedSource" items="${selectNumberParameters.source}" name ="sourceSelection" id="sourceSelection" onchange="sourceChanged();" />
                                             </div>
                                         </div>
                                     </tr>
@@ -290,7 +314,7 @@
                                             <div class="col-md-6 margin-bottom-15">
                                                 <label for="PlatformSelection">Select a Platform </label>
                                                 <form:select class="form-control margin-bottom-15" title="You can select a single platform."
-                                                             path="selectedPlatform" items="${selectNumberParameters.platform}" name ="PlatformSelection" id="PlatformSelection" />
+                                                             path="selectedPlatform" items="${selectNumberParameters.platform}" name ="PlatformSelection" id="PlatformSelection" onchange="platformChanged();" onfocus="this.selectedIndex = -1;"/>
                                             </div>
                                         </div>
                                     </tr>
@@ -360,14 +384,14 @@
 
                                     <div class="tab-pane fade in active" id="filters">
                                         <div id="accordionFilter">
-                                            <h3>Attribute Settings</h3>
+                                            <h3>Attribute Filters</h3>
                                             <div>
                                                 <p>
-                                                    <label for="entityKeySelection">Select an Entity </label>
+                                                    <label for="entityKeySelection">Select an Attribute </label>
                                                         <form:select class="form-control margin-bottom-15" path="selectedKeys" items="${selectNumberParameters.keys}" name ="entityKeySelection" id="entityKeySelection" />
                                                     <label for="specificationType">Select Specification Type </label>
                                                         <form:select class="form-control margin-bottom-15" path="selectedentityValueTypes" items="${selectNumberParameters.entityValueTypes}" name ="specificationType" id="specificationType" />
-                                                    <label for="entityValue" class="control-label">Filter Specification</label>
+                                                    <label for="entityValue" class="control-label">Search Keyword</label>
                                                         <form:input class="form-control" path="evalue"  name="entityValue" id ="entityValue"/>
                                                     <br/>
                                                 <div class="alert alert-success alert-dismissible" role="alert">
@@ -383,7 +407,7 @@
                                                 <br/>
                                                 </p>
                                             </div>
-                                            <h3>User Settings</h3>
+                                            <h3>User Filters</h3>
                                             <div>
                                                 <p>
                                                     <label for="userType">User Type </label>
@@ -406,7 +430,7 @@
                                                     </button>
                                                 </p>
                                             </div>
-                                            <h3>Session Settings</h3>
+                                            <h3>Session Filters</h3>
                                             <div>
                                                 <p>
                                                     <label for="sessionSearchType">Session Search Type </label>
@@ -429,7 +453,7 @@
                                                     </button>
                                                 </p>
                                             </div>
-                                            <h3>Date & Time Settings</h3>
+                                            <h3>Time Filters</h3>
                                             <div>
                                                 <p>
                                                     <label for="timeSearchType">TimeStamp Search Type </label>
@@ -459,7 +483,7 @@
                                     </div>
                                     <div class="tab-pane fade " id="FilterSummary">
                                         <div id="accordionFilterSummary">
-                                            <h3>Attributes Summary</h3>
+                                            <h3>Attribute Filters Summary</h3>
                                             <div>
                                                 <p>
                                                 <div class="panel-heading">Applied Filters</div>
@@ -479,7 +503,7 @@
                                                 <br/>
                                                 </p>
                                             </div>
-                                            <h3>User Filter Summary</h3>
+                                            <h3>User Filters Summary</h3>
                                             <div>
                                                 <p>
                                                 <div class="panel-heading">Applied Filters</div>
@@ -499,7 +523,7 @@
                                                 <br/>
                                                 </p>
                                             </div>
-                                            <h3>Session Filter Summary</h3>
+                                            <h3>Session Filters Summary</h3>
                                             <div>
                                                 <p>
                                                 <div class="panel-heading">Applied Filters</div>
@@ -519,7 +543,7 @@
                                                 <br/>
                                                 </p>
                                             </div>
-                                            <h3>Time Filter Summary</h3>
+                                            <h3>Time Filters Summary</h3>
                                             <div>
                                                 <p>
                                                 <div class="panel-heading">Applied Filters</div>

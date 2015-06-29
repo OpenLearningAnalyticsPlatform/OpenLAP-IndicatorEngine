@@ -192,6 +192,36 @@ $(function() {
                 $("#indDeleteDialog").dialog("open");
             }});
     });
+    $.noty.defaults = {
+        layout: 'bottomRight',
+        theme: 'relax', // or 'relax'
+        type: 'information',
+        text: '', // can be html or string
+        dismissQueue: true, // If you want to use queue feature set this true
+        template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+        animation: {
+            open: 'animated bounceInLeft', // Animate.css class names
+            close: 'animated bounceOutLeft', // Animate.css class names
+            easing: 'swing', // unavailable - no need
+            speed: 500 // unavailable - no need
+        },
+        timeout: 30000, // delay for closing event. Set false for sticky notifications
+        force: false, // adds notification to the beginning of queue when set to true
+        modal: false,
+        maxVisible: 5, // you can set max visible notification for dismissQueue true option,
+        killer: false, // for close all notifications before show
+        closeWith: ['click'], // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+        callback: {
+            onShow: function() {},
+            afterShow: function() {},
+            onClose: function() {},
+            afterClose: function() {},
+            onCloseClick: function() {},
+        },
+        buttons: false // an array of buttons
+    };
+
+
 });
 function  GenerateTable(data) {
 
@@ -327,6 +357,7 @@ function removeOptions(selectbox)
 
 function validateQuestionName(){
     createRequest();
+
     var questionNameEntered = document.getElementById('questionNaming').value;
     var url ="/indicators/validateQName?qname="+questionNameEntered;
     request.open("GET",url,true);
@@ -345,6 +376,15 @@ function validateIndicatorName(obj){
 
 function populateCategories(){
     createRequest();
+    $.noty.defaults.killer = true;
+    noty({
+        text: '<strong>Success</strong> <br/> Action Selected <br/> Retreiving Minors...',
+        type: 'success'
+    });
+    noty({
+        text: '<strong>Next Step</strong> <br/> Select a Minor!',
+        type: 'information'
+    });
     var selectedSources = "";
     var selectedArray = new Array();
     var selObj = document.getElementById('sourceSelection');
@@ -368,6 +408,19 @@ function populateCategories(){
 
 function populateEntities() {
     createRequest();
+    $.noty.defaults.killer = true;
+    noty({
+        text: '<strong>Success</strong> <br/> Minor Selected <br/> Retreiving Entities...',
+        type: 'success'
+    });
+
+    noty({
+        text: '<strong>Next Step</strong> <br/> You may add <strong> Filters </strong> to your Indicator in the <strong"Indicator Properties & Summary" </strong> window.<br/> ' +
+        'We have added a default filter to select all values from the data sources selected above. <br/> You can view that in <strong>Filter Summary </strong> Tab.<br/>' +
+        'If you decide to add your own filters, please consider deleting the default filter to get correct results! <br/> ' +
+        'You can then click on the Graph icon to generate a graph which can be viewed in <strong> Graph Preview </strong> Tab.',
+        type: 'information'
+    });
     var minorSelected = document.getElementById('selectedMinor').value;
     var url ="/indicators/populateEntities?minor="+minorSelected;
     request.open("GET",url,true);
@@ -449,6 +502,19 @@ function addTimeFilter() {
 function displayUserFilters() {
     if (request.readyState == 4) {
         if (request.status == 200) {
+            $.noty.defaults.killer = true;
+            noty({
+                text: '<strong>Success</strong> <br/> 1 <strong>User Filter</strong> successfully added. <br/>.' +
+                'You can view the newly added filter in <strong> User Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
+                'Deletion of Filters is also possible from there.',
+                type: 'success'
+            });
+            noty({
+                text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>Attribute Filters</strong>,' +
+                '<strong>Session Filters</strong>, <strong>Time Filters</strong>, which are available in this sub-tab. <br/>' +
+                'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
+                type: 'information'
+            });
             var parsedJSON = JSON.parse(request.responseText);
             var heading = new Array();
             heading[0] = "S/L";
@@ -468,6 +534,19 @@ function displayUserFilters() {
 function displayTimeFilters() {
     if (request.readyState == 4) {
         if (request.status == 200) {
+            $.noty.defaults.killer = true;
+            noty({
+                text: '<strong>Success</strong> <br/> 1 <strong>Time Filter</strong> successfully added. <br/>.' +
+                'You can view the newly added filter in <strong> Time Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
+                'Deletion of Filters is also possible from there.',
+                type: 'success'
+            });
+            noty({
+                text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
+                '<strong>Session Filters</strong>, <strong>Attribute Filters</strong>, which are available below in this sub-tab. <br/>' +
+                'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
+                type: 'success'
+            });
             var parsedJSON = JSON.parse(request.responseText);
             var heading = new Array();
             heading[0] = "S/L";
@@ -569,6 +648,19 @@ function addSessionFilter() {
 function displaySessionFilters() {
     if (request.readyState == 4) {
         if (request.status == 200) {
+            $.noty.defaults.killer = true;
+            noty({
+                text: '<strong>Success</strong> <br/> 1 <strong>Session Filter</strong> successfully added. <br/>.' +
+                'You can view the newly added filter in <strong> Session Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
+                'Deletion of Filters is also possible from there.',
+                type: 'success'
+            });
+            noty({
+                text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
+                '<strong>Attribute Filters</strong>, <strong>Time Filters</strong>, which are available in this sub-tab. <br/>' +
+                'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
+                type: 'success'
+            });
             var parsedJSON = JSON.parse(request.responseText);
             var heading = new Array();
             heading[0] = "S/L";
@@ -626,6 +718,19 @@ function refreshEntityFilters() {
 function displayEntityFilters(){
     if (request.readyState == 4) {
         if (request.status == 200) {
+            $.noty.defaults.killer = true;
+            noty({
+                text: '<strong>Success</strong> <br/> 1 <strong>Attribute Filter</strong> successfully added. <br/>' +
+                'You can view the newly added filter in <strong> Attribute Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
+                'Deletion of Filters is also possible from there.',
+                type: 'success'
+            });
+            noty({
+                text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
+                '<strong>Session Filters</strong>, <strong>Time Filters</strong>, which are available in this filter sub-tab. <br/>' +
+                'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
+                type: 'information'
+            });
             var parsedJSON = JSON.parse(request.responseText);
             var heading = new Array();
             heading[0] = "S/L";
@@ -677,18 +782,42 @@ function alert_questionName() {
 
             if (request.responseText == "exists") {
 
-                alert("Question name already Existing. Duplicate names not allowed");
+               noty({
+                    text: '<strong>Error</strong> <br/> Question name already Existing. Duplicate names not allowed',
+                    type: 'error'
+               });
                 document.getElementById("questionNaming").value=null;
             }
             else if (request.responseText == "short") {
 
-                alert("Question Name is too Short");
-                document.getElementById("questionNaming").value=null;
+                noty({
+                    text: '<strong>Error</strong> <br/> Question Name is too Short!',
+                    type: 'error'
+                });
+                noty({
+                    text: '<strong>Information</strong> <br/> Question Name must have at least 6 characters',
+                    type: 'information'
+                });
+               document.getElementById("questionNaming").value=null;
             }
             else if (request.responseText == "null") {
 
-                alert("Question Name cannot be Empty");
+                noty({
+                    text: '<strong>Error</strong> <br/> Question Name cannot be Empty !',
+                    type: 'error'
+                });
                 document.getElementById("questionNaming").value=null;
+            }
+            else {
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Success</strong> <br/> Question Name satisfies all constraints',
+                    type: 'success'
+                });
+                noty({
+                    text: '<strong>Next Step</strong> <br/> Type the Indicator Name',
+                    type: 'information'
+                });
             }
         }
     }
@@ -700,21 +829,74 @@ function alert_indicatorName() {
 
             if (request.responseText == "exists") {
 
-                alert("Indicator name already Existing. Duplicate names not allowed");
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Error</strong> <br/> Indicator name already Existing. Duplicate names not allowed',
+                    type: 'error'
+                });
                 document.getElementById("indicatorNaming").value=null;
             }
             else if (request.responseText == "short") {
 
-                alert("Indicator Name is too Short");
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Error</strong> <br/> Indicator Name is too Short',
+                    type: 'error'
+                });
+                noty({
+                    text: '<strong>Information</strong> <br/> Indicator Name must have at least 6 characters',
+                    type: 'information'
+                });
                 document.getElementById("indicatorNaming").value=null;
             }
             else if (request.responseText == "null") {
 
-                alert("Indicator Name cannot be Empty");
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Error</strong> <br/> Indicator Name cannot be Empty',
+                    type: 'error'
+                });
                 document.getElementById("indicatorNaming").value=null;
+            }
+            else {
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Success</strong> <br/> Indicator Name satisfies all constraints',
+                    type: 'success'
+                });
+
+                noty({
+                    text: '<strong>Next Step</strong> <br/> Select 1 or more sources. !',
+                    type: 'information'
+                });
             }
         }
     }
+}
+
+function sourceChanged() {
+    $.noty.defaults.killer = true;
+    noty({
+        text: '<strong>Success</strong> <br/>Source Selected',
+        type: 'success'
+    });
+
+    noty({
+        text: '<strong>Next Step</strong> <br/>Select a Platform !',
+        type: 'information'
+    });
+}
+function platformChanged(){
+    $.noty.defaults.killer = true;
+    noty({
+        text: '<strong>Success</strong> <br/>Platform Selected',
+        type: 'success'
+    });
+
+    noty({
+        text: '<strong>Next Step</strong> <br/>Select an Action !',
+        type: 'information'
+    });
 }
 
 function addTable(heading,data, tablePlacement) {

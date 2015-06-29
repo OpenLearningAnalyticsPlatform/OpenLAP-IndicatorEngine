@@ -117,7 +117,7 @@ public class GAIndicatorSystemController {
         if (questionName == null)
            status = "null";
         else{
-            if(questionName.length() < 3) {
+            if(questionName.length() < 6) {
                 status = "short";
             }
             else {
@@ -144,7 +144,7 @@ public class GAIndicatorSystemController {
         if (indicatorName.isEmpty())
             status = "null";
         else{
-            if(indicatorName.length() < 3) {
+            if(indicatorName.length() < 6) {
                 status = "short";
             }
             else {
