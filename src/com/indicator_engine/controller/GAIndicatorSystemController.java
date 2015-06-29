@@ -215,9 +215,11 @@ public class GAIndicatorSystemController {
 
     @RequestMapping(value = "/getEntities", method = RequestMethod.GET)
     public @ResponseBody
-    String  getEntities(Model model) {
+    String  getEntities(Model model, @RequestParam(value="size", required = false) String size) {
         Gson gson = new Gson();
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        if(size != null && size.equals("Y"))
+            return gson.toJson(entitySpecificationBean.getEntityValues().size());
         return gson.toJson(entitySpecificationBean.getEntityValues());
     }
     @RequestMapping(value = "/deleteEntities", method = RequestMethod.GET)

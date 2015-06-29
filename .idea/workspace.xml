@@ -2,63 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="974e7feb-8792-4228-ab5d-100949817edf" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/font-awesome/fonts/FontAwesome.otf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/font-awesome/fonts/fontawesome-webfont.eot" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/font-awesome/fonts/fontawesome-webfont.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/font-awesome/fonts/fontawesome-webfont.woff" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/.gitignore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/Gruntfile.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/LICENSE.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/README.markdown" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/allLayouts.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/allTypes.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/css/animate.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/animate.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/api.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/themes/bootstrap.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/layouts/bottom.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/layouts/bottomCenter.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/layouts/bottomLeft.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/layouts/bottomRight.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/bower.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/buttons.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/layouts/center.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/layouts/centerLeft.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/layouts/centerRight.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/composer.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/consumingAlert.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/customContainer.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/themes/default.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/font-awesome/css/font-awesome.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/font-awesome/fonts/fontawesome-webfont.svg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/index.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/layouts/inline.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/jquery-1.7.2.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/jquery-1.8.0.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/jquery.noty.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/packaged/jquery.noty.packaged.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/packaged/jquery.noty.packaged.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/killer.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/notification_html.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/noty.jquery.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/package.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/promise.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/themes/relax.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/themeBootstrap.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/themeCss.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/layouts/top.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/layouts/topCenter.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/layouts/topLeft.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/js/noty/layouts/topRight.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/usingMaxVisible.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/usingWithAnimate.css.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/usingWithButtons.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/usingWithButtons2.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/usingWithModal.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/js/noty-2.3.5/demo/usingWithOldOptions.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/indicator_editor.js" afterPath="$PROJECT_DIR$/web/js/indicator_editor.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/questionIndicatorEditor.js" afterPath="$PROJECT_DIR$/web/js/questionIndicatorEditor.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp" afterPath="$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -99,10 +44,11 @@
       <file leaf-file-name="indicator_editor.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/js/indicator_editor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="6575" max-vertical-offset="21700">
-              <caret line="414" column="7" selection-start-line="410" selection-start-column="4" selection-end-line="414" selection-end-column="7" />
+            <state vertical-scroll-proportion="-2.6551723" vertical-offset="9923" max-vertical-offset="13000">
+              <caret line="1047" column="44" selection-start-line="1047" selection-start-column="14" selection-end-line="1047" selection-end-column="44" />
               <folding>
-                <element signature="n#!!doc" expanded="true" />
+                <element signature="e#842#896#0" expanded="false" />
+                <element signature="e#910#6847#0" expanded="false" />
                 <element signature="e#958#1029#0" expanded="false" />
                 <element signature="e#1079#1150#0" expanded="false" />
                 <element signature="e#1192#1266#0" expanded="false" />
@@ -110,25 +56,172 @@
                 <element signature="e#1427#1498#0" expanded="false" />
                 <element signature="e#1549#1621#0" expanded="false" />
                 <element signature="e#1692#2151#0" expanded="false" />
+                <element signature="e#1732#1831#0" expanded="false" />
+                <element signature="e#1761#1821#0" expanded="false" />
+                <element signature="e#1872#1939#0" expanded="false" />
+                <element signature="e#1955#2021#0" expanded="false" />
                 <element signature="e#2195#2654#0" expanded="false" />
+                <element signature="e#2235#2334#0" expanded="false" />
+                <element signature="e#2264#2324#0" expanded="false" />
+                <element signature="e#2375#2442#0" expanded="false" />
+                <element signature="e#2458#2524#0" expanded="false" />
                 <element signature="e#2696#3155#0" expanded="false" />
+                <element signature="e#2736#2835#0" expanded="false" />
+                <element signature="e#2765#2825#0" expanded="false" />
+                <element signature="e#2876#2943#0" expanded="false" />
+                <element signature="e#2959#3025#0" expanded="false" />
                 <element signature="e#3191#3650#0" expanded="false" />
+                <element signature="e#3231#3330#0" expanded="false" />
+                <element signature="e#3260#3320#0" expanded="false" />
+                <element signature="e#3371#3438#0" expanded="false" />
+                <element signature="e#3454#3520#0" expanded="false" />
                 <element signature="e#3688#4147#0" expanded="false" />
+                <element signature="e#3728#3827#0" expanded="false" />
+                <element signature="e#3757#3817#0" expanded="false" />
+                <element signature="e#3868#3935#0" expanded="false" />
+                <element signature="e#3951#4017#0" expanded="false" />
                 <element signature="e#4197#4257#0" expanded="false" />
                 <element signature="e#4309#4372#0" expanded="false" />
                 <element signature="e#4422#4483#0" expanded="false" />
                 <element signature="e#4523#4936#0" expanded="false" />
+                <element signature="e#4540#4928#0" expanded="false" />
+                <element signature="e#4750#4927#0" expanded="false" />
                 <element signature="e#4978#5459#0" expanded="false" />
+                <element signature="e#4995#5451#0" expanded="false" />
+                <element signature="e#5190#5450#0" expanded="false" />
+                <element signature="e#5484#6842#0" expanded="false" />
+                <element signature="e#5839#6094#0" expanded="false" />
+                <element signature="e#6589#6789#0" expanded="false" />
+                <element signature="e#6875#7459#0" expanded="false" />
+                <element signature="e#6921#7278#0" expanded="false" />
+                <element signature="e#7325#7455#0" expanded="false" />
+                <element signature="n#!!block;n#GenerateTable#0" expanded="false" />
+                <element signature="e#8193#8604#0" expanded="false" />
+                <element signature="e#8898#9049#0" expanded="false" />
+                <element signature="e#9127#9320#0" expanded="false" />
+                <element signature="e#9210#9314#0" expanded="false" />
+                <element signature="e#9447#9593#0" expanded="false" />
+                <element signature="e#9624#11421#0" expanded="false" />
+                <element signature="e#9648#9736#0" expanded="false" />
+                <element signature="e#9763#9853#0" expanded="false" />
+                <element signature="e#9886#11419#0" expanded="false" />
+                <element signature="e#10106#10189#0" expanded="false" />
+                <element signature="e#10217#10376#0" expanded="false" />
+                <element signature="e#10405#11274#0" expanded="false" />
+                <element signature="e#10571#11113#0" expanded="false" />
+                <element signature="e#10686#10829#0" expanded="false" />
+                <element signature="e#10734#10811#0" expanded="false" />
+                <element signature="e#10846#10905#0" expanded="false" />
+                <element signature="e#11119#11264#0" expanded="false" />
+                <element signature="e#11342#11411#0" expanded="false" />
+                <element signature="n#!!block;n#createRequest#0" expanded="false" />
+                <element signature="e#11472#11519#0" expanded="false" />
+                <element signature="e#11533#11613#0" expanded="false" />
+                <element signature="n#!!block;n#removeOptions#0" expanded="false" />
+                <element signature="e#11715#11751#0" expanded="false" />
+                <element signature="n#!!block;n#validateQuestionName#0" expanded="false" />
+                <element signature="n#!!block;n#alert_questionName#0" expanded="false" />
+                <element signature="e#12136#13755#0" expanded="false" />
+                <element signature="e#12173#13749#0" expanded="false" />
+                <element signature="e#12226#12507#0" expanded="false" />
+                <element signature="e#12250#12421#0" expanded="false" />
+                <element signature="e#12562#13004#0" expanded="false" />
+                <element signature="e#12586#12725#0" expanded="false" />
+                <element signature="e#12749#12918#0" expanded="false" />
+                <element signature="e#13058#13311#0" expanded="false" />
+                <element signature="e#13082#13225#0" expanded="false" />
+                <element signature="e#13329#13739#0" expanded="false" />
+                <element signature="e#13399#13554#0" expanded="false" />
+                <element signature="e#13578#13723#0" expanded="false" />
+                <element signature="n#!!block;n#validateIndicatorName#0" expanded="false" />
+                <element signature="n#!!block;n#alert_indicatorName#0" expanded="false" />
+                <element signature="e#14151#15921#0" expanded="false" />
+                <element signature="e#14188#15915#0" expanded="false" />
+                <element signature="e#14241#14571#0" expanded="false" />
+                <element signature="e#14312#14484#0" expanded="false" />
+                <element signature="e#14626#15117#0" expanded="false" />
+                <element signature="e#14697#14836#0" expanded="false" />
+                <element signature="e#14860#15030#0" expanded="false" />
+                <element signature="e#15171#15471#0" expanded="false" />
+                <element signature="e#15242#15384#0" expanded="false" />
+                <element signature="e#15489#15905#0" expanded="false" />
+                <element signature="e#15559#15715#0" expanded="false" />
+                <element signature="e#15740#15889#0" expanded="false" />
+                <element signature="n#!!block;n#sourceChanged#0" expanded="false" />
+                <element signature="e#15996#16090#0" expanded="false" />
+                <element signature="e#16103#16207#0" expanded="false" />
+                <element signature="n#!!block;n#platformChanged#0" expanded="false" />
+                <element signature="e#16285#16381#0" expanded="false" />
+                <element signature="e#16394#16497#0" expanded="false" />
+                <element signature="n#!!block;n#populateCategories#0" expanded="false" />
+                <element signature="e#16599#16721#0" expanded="false" />
+                <element signature="e#16733#16834#0" expanded="false" />
+                <element signature="e#17039#17179#0" expanded="false" />
+                <element signature="e#17081#17173#0" expanded="false" />
+                <element signature="n#!!block;n#processReceivedCategories#0" expanded="false" />
+                <element signature="e#17960#18115#0" expanded="false" />
+                <element signature="n#!!block;n#populateEntities#0" expanded="false" />
+                <element signature="e#18230#18353#0" expanded="false" />
+                <element signature="e#18366#18704#0" expanded="false" />
+                <element signature="e#18716#18913#0" expanded="false" />
+                <element signature="n#!!block;n#processReceivedEntities#0" expanded="false" />
+                <element signature="e#19242#19690#0" expanded="false" />
+                <element signature="e#19279#19684#0" expanded="false" />
+                <element signature="e#19526#19674#0" expanded="false" />
+                <element signature="n#!!block;n#searchUser#0" expanded="false" />
+                <element signature="n#!!block;n#displaySearchUserResults#0" expanded="false" />
+                <element signature="e#23401#23845#0" expanded="false" />
+                <element signature="e#23438#23839#0" expanded="false" />
+                <element signature="e#23682#23829#0" expanded="false" />
+                <element signature="e#26934#27076#0" expanded="false" />
+                <element signature="n#!!block;n#searchTime#0" expanded="false" />
+                <element signature="n#!!block;n#displaySearchTimeResults#0" expanded="false" />
+                <element signature="e#27612#28056#0" expanded="false" />
+                <element signature="e#27649#28050#0" expanded="false" />
+                <element signature="e#27893#28040#0" expanded="false" />
+                <element signature="e#28381#28521#0" expanded="false" />
+                <element signature="e#28423#28515#0" expanded="false" />
+                <element signature="n#!!block;n#searchSession#0" expanded="false" />
+                <element signature="n#!!block;n#displaySearchSessionResults#0" expanded="false" />
+                <element signature="e#31996#32452#0" expanded="false" />
+                <element signature="e#32033#32446#0" expanded="false" />
+                <element signature="e#32286#32436#0" expanded="false" />
+                <element signature="e#35468#35568#0" expanded="false" />
+                <element signature="e#36108#36276#0" expanded="false" />
+                <element signature="e#36333#36626#0" expanded="false" />
+                <element signature="e#36427#36585#0" expanded="false" />
+                <element signature="n#!!block;n#postrefreshQuestionSummary#0" expanded="false" />
+                <element signature="e#39693#39894#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="question_indicator_editor.jsp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="IndicatorPreProcessing.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/indicator_system/IndicatorPreProcessing.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2868" max-vertical-offset="5225">
+              <caret line="130" column="5" selection-start-line="130" selection-start-column="5" selection-end-line="130" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="question_indicator_editor.jsp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2600" max-vertical-offset="16775">
-              <caret line="104" column="40" selection-start-line="104" selection-start-column="40" selection-end-line="104" selection-end-column="40" />
+            <state vertical-scroll-proportion="-16.764706" vertical-offset="10930" max-vertical-offset="16325">
+              <caret line="460" column="61" selection-start-line="460" selection-start-column="61" selection-end-line="460" selection-end-column="61" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GAIndicatorSystemController.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.72444445" vertical-offset="3949" max-vertical-offset="19075">
+              <caret line="220" column="41" selection-start-line="220" selection-start-column="41" selection-end-line="220" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -205,9 +298,9 @@
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/4400d7f1-20a6-4146-9e73-594f971efa40/console.sql" />
         <option value="$PROJECT_DIR$/web/js/questionIndicatorEditor.js" />
         <option value="$PROJECT_DIR$/out/artifacts/IndicatorEngine_war_exploded/js/indicator_editor.js" />
-        <option value="$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java" />
-        <option value="$PROJECT_DIR$/web/js/indicator_editor.js" />
         <option value="$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp" />
+        <option value="$PROJECT_DIR$/web/js/indicator_editor.js" />
+        <option value="$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java" />
       </list>
     </option>
   </component>
@@ -248,7 +341,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -260,6 +353,354 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="indicator_engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="validator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="indicator_engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="testdata" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="indicator_engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="otp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="indicator_engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="indicator_engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="misc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="indicator_engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="learningcontextdata" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="indicator_engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="indicator_system" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="indicator_engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="indicator_system" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Number" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="indicator_engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="graphgenerator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="indicator_engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="email" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="indicator_engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="datamodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="indicator_engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dao" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="indicator_engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controller" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="indicator_engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controller" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GAIndicatorSystemController.java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="Scratches" />
     </panes>
   </component>
@@ -670,7 +1111,7 @@
       <workItem from="1435383533810" duration="89804000" />
       <workItem from="1435588823135" duration="543000" />
       <workItem from="1435590584550" duration="244000" />
-      <workItem from="1435590870194" duration="375000" />
+      <workItem from="1435590870194" duration="7468000" />
     </task>
     <task id="LOCAL-00001" summary="charting capabilities : init">
       <created>1431340261434</created>
@@ -768,11 +1209,17 @@
       <option name="project" value="LOCAL" />
       <updated>1435575966240</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="UI : Indicator Definition : On Screen User Guidance and Notification Feature added">
+      <created>1435591319428</created>
+      <option name="number" value="00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1435591319428</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="331886000" />
+    <option name="totallyTimeSpent" value="338979000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -804,19 +1251,19 @@
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42093542" sideWeight="0.5063966" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
@@ -879,7 +1326,8 @@
     <MESSAGE value="Front end : features added &#10;Time Stamp Search add  delete and view client side&#10;" />
     <MESSAGE value="Removed Redundant methods from Indicator Preprocessor" />
     <MESSAGE value="Spring Integration and Web Flow lib eliminated" />
-    <option name="LAST_COMMIT_MESSAGE" value="Spring Integration and Web Flow lib eliminated" />
+    <MESSAGE value="UI : Indicator Definition : On Screen User Guidance and Notification Feature added" />
+    <option name="LAST_COMMIT_MESSAGE" value="UI : Indicator Definition : On Screen User Guidance and Notification Feature added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -892,40 +1340,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="16775">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/indicator_editor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4471" max-vertical-offset="14756">
-          <caret line="414" column="7" selection-start-line="410" selection-start-column="4" selection-end-line="414" selection-end-column="7" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#958#1029#0" expanded="false" />
-            <element signature="e#1079#1150#0" expanded="false" />
-            <element signature="e#1192#1266#0" expanded="false" />
-            <element signature="e#1307#1379#0" expanded="false" />
-            <element signature="e#1427#1498#0" expanded="false" />
-            <element signature="e#1549#1621#0" expanded="false" />
-            <element signature="e#1692#2151#0" expanded="false" />
-            <element signature="e#2195#2654#0" expanded="false" />
-            <element signature="e#2696#3155#0" expanded="false" />
-            <element signature="e#3191#3650#0" expanded="false" />
-            <element signature="e#3688#4147#0" expanded="false" />
-            <element signature="e#4197#4257#0" expanded="false" />
-            <element signature="e#4309#4372#0" expanded="false" />
-            <element signature="e#4422#4483#0" expanded="false" />
-            <element signature="e#4523#4936#0" expanded="false" />
-            <element signature="e#4978#5459#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="11407">
@@ -1243,13 +1657,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/indicator_system/IndicatorPreProcessing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-84.655174" vertical-offset="0" max-vertical-offset="0">
-          <caret line="130" column="5" selection-start-line="130" selection-start-column="5" selection-end-line="130" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/css/animate.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
@@ -1278,19 +1685,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java">
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/email/MailPackage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-26.896551" vertical-offset="0" max-vertical-offset="0">
-          <caret line="146" column="41" selection-start-line="146" selection-start-column="41" selection-end-line="146" selection-end-column="41" />
+        <state vertical-scroll-proportion="0.2917153" vertical-offset="0" max-vertical-offset="4525">
+          <caret line="39" column="13" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/testdata/GenerateTestData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.26254377" vertical-offset="0" max-vertical-offset="857">
+          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1177#1219#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-16.764706" vertical-offset="10930" max-vertical-offset="16325">
+          <caret line="460" column="61" selection-start-line="460" selection-start-column="61" selection-end-line="460" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/indicator_system/IndicatorPreProcessing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2868" max-vertical-offset="5225">
+          <caret line="130" column="5" selection-start-line="130" selection-start-column="5" selection-end-line="130" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/js/indicator_editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
-          <caret line="414" column="7" selection-start-line="410" selection-start-column="4" selection-end-line="414" selection-end-column="7" />
+        <state vertical-scroll-proportion="-2.6551723" vertical-offset="9923" max-vertical-offset="13000">
+          <caret line="1047" column="44" selection-start-line="1047" selection-start-column="14" selection-end-line="1047" selection-end-column="44" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#842#896#0" expanded="false" />
+            <element signature="e#910#6847#0" expanded="false" />
             <element signature="e#958#1029#0" expanded="false" />
             <element signature="e#1079#1150#0" expanded="false" />
             <element signature="e#1192#1266#0" expanded="false" />
@@ -1298,23 +1734,150 @@
             <element signature="e#1427#1498#0" expanded="false" />
             <element signature="e#1549#1621#0" expanded="false" />
             <element signature="e#1692#2151#0" expanded="false" />
+            <element signature="e#1732#1831#0" expanded="false" />
+            <element signature="e#1761#1821#0" expanded="false" />
+            <element signature="e#1872#1939#0" expanded="false" />
+            <element signature="e#1955#2021#0" expanded="false" />
             <element signature="e#2195#2654#0" expanded="false" />
+            <element signature="e#2235#2334#0" expanded="false" />
+            <element signature="e#2264#2324#0" expanded="false" />
+            <element signature="e#2375#2442#0" expanded="false" />
+            <element signature="e#2458#2524#0" expanded="false" />
             <element signature="e#2696#3155#0" expanded="false" />
+            <element signature="e#2736#2835#0" expanded="false" />
+            <element signature="e#2765#2825#0" expanded="false" />
+            <element signature="e#2876#2943#0" expanded="false" />
+            <element signature="e#2959#3025#0" expanded="false" />
             <element signature="e#3191#3650#0" expanded="false" />
+            <element signature="e#3231#3330#0" expanded="false" />
+            <element signature="e#3260#3320#0" expanded="false" />
+            <element signature="e#3371#3438#0" expanded="false" />
+            <element signature="e#3454#3520#0" expanded="false" />
             <element signature="e#3688#4147#0" expanded="false" />
+            <element signature="e#3728#3827#0" expanded="false" />
+            <element signature="e#3757#3817#0" expanded="false" />
+            <element signature="e#3868#3935#0" expanded="false" />
+            <element signature="e#3951#4017#0" expanded="false" />
             <element signature="e#4197#4257#0" expanded="false" />
             <element signature="e#4309#4372#0" expanded="false" />
             <element signature="e#4422#4483#0" expanded="false" />
             <element signature="e#4523#4936#0" expanded="false" />
+            <element signature="e#4540#4928#0" expanded="false" />
+            <element signature="e#4750#4927#0" expanded="false" />
             <element signature="e#4978#5459#0" expanded="false" />
+            <element signature="e#4995#5451#0" expanded="false" />
+            <element signature="e#5190#5450#0" expanded="false" />
+            <element signature="e#5484#6842#0" expanded="false" />
+            <element signature="e#5839#6094#0" expanded="false" />
+            <element signature="e#6589#6789#0" expanded="false" />
+            <element signature="e#6875#7459#0" expanded="false" />
+            <element signature="e#6921#7278#0" expanded="false" />
+            <element signature="e#7325#7455#0" expanded="false" />
+            <element signature="n#!!block;n#GenerateTable#0" expanded="false" />
+            <element signature="e#8193#8604#0" expanded="false" />
+            <element signature="e#8898#9049#0" expanded="false" />
+            <element signature="e#9127#9320#0" expanded="false" />
+            <element signature="e#9210#9314#0" expanded="false" />
+            <element signature="e#9447#9593#0" expanded="false" />
+            <element signature="e#9624#11421#0" expanded="false" />
+            <element signature="e#9648#9736#0" expanded="false" />
+            <element signature="e#9763#9853#0" expanded="false" />
+            <element signature="e#9886#11419#0" expanded="false" />
+            <element signature="e#10106#10189#0" expanded="false" />
+            <element signature="e#10217#10376#0" expanded="false" />
+            <element signature="e#10405#11274#0" expanded="false" />
+            <element signature="e#10571#11113#0" expanded="false" />
+            <element signature="e#10686#10829#0" expanded="false" />
+            <element signature="e#10734#10811#0" expanded="false" />
+            <element signature="e#10846#10905#0" expanded="false" />
+            <element signature="e#11119#11264#0" expanded="false" />
+            <element signature="e#11342#11411#0" expanded="false" />
+            <element signature="n#!!block;n#createRequest#0" expanded="false" />
+            <element signature="e#11472#11519#0" expanded="false" />
+            <element signature="e#11533#11613#0" expanded="false" />
+            <element signature="n#!!block;n#removeOptions#0" expanded="false" />
+            <element signature="e#11715#11751#0" expanded="false" />
+            <element signature="n#!!block;n#validateQuestionName#0" expanded="false" />
+            <element signature="n#!!block;n#alert_questionName#0" expanded="false" />
+            <element signature="e#12136#13755#0" expanded="false" />
+            <element signature="e#12173#13749#0" expanded="false" />
+            <element signature="e#12226#12507#0" expanded="false" />
+            <element signature="e#12250#12421#0" expanded="false" />
+            <element signature="e#12562#13004#0" expanded="false" />
+            <element signature="e#12586#12725#0" expanded="false" />
+            <element signature="e#12749#12918#0" expanded="false" />
+            <element signature="e#13058#13311#0" expanded="false" />
+            <element signature="e#13082#13225#0" expanded="false" />
+            <element signature="e#13329#13739#0" expanded="false" />
+            <element signature="e#13399#13554#0" expanded="false" />
+            <element signature="e#13578#13723#0" expanded="false" />
+            <element signature="n#!!block;n#validateIndicatorName#0" expanded="false" />
+            <element signature="n#!!block;n#alert_indicatorName#0" expanded="false" />
+            <element signature="e#14151#15921#0" expanded="false" />
+            <element signature="e#14188#15915#0" expanded="false" />
+            <element signature="e#14241#14571#0" expanded="false" />
+            <element signature="e#14312#14484#0" expanded="false" />
+            <element signature="e#14626#15117#0" expanded="false" />
+            <element signature="e#14697#14836#0" expanded="false" />
+            <element signature="e#14860#15030#0" expanded="false" />
+            <element signature="e#15171#15471#0" expanded="false" />
+            <element signature="e#15242#15384#0" expanded="false" />
+            <element signature="e#15489#15905#0" expanded="false" />
+            <element signature="e#15559#15715#0" expanded="false" />
+            <element signature="e#15740#15889#0" expanded="false" />
+            <element signature="n#!!block;n#sourceChanged#0" expanded="false" />
+            <element signature="e#15996#16090#0" expanded="false" />
+            <element signature="e#16103#16207#0" expanded="false" />
+            <element signature="n#!!block;n#platformChanged#0" expanded="false" />
+            <element signature="e#16285#16381#0" expanded="false" />
+            <element signature="e#16394#16497#0" expanded="false" />
+            <element signature="n#!!block;n#populateCategories#0" expanded="false" />
+            <element signature="e#16599#16721#0" expanded="false" />
+            <element signature="e#16733#16834#0" expanded="false" />
+            <element signature="e#17039#17179#0" expanded="false" />
+            <element signature="e#17081#17173#0" expanded="false" />
+            <element signature="n#!!block;n#processReceivedCategories#0" expanded="false" />
+            <element signature="e#17960#18115#0" expanded="false" />
+            <element signature="n#!!block;n#populateEntities#0" expanded="false" />
+            <element signature="e#18230#18353#0" expanded="false" />
+            <element signature="e#18366#18704#0" expanded="false" />
+            <element signature="e#18716#18913#0" expanded="false" />
+            <element signature="n#!!block;n#processReceivedEntities#0" expanded="false" />
+            <element signature="e#19242#19690#0" expanded="false" />
+            <element signature="e#19279#19684#0" expanded="false" />
+            <element signature="e#19526#19674#0" expanded="false" />
+            <element signature="n#!!block;n#searchUser#0" expanded="false" />
+            <element signature="n#!!block;n#displaySearchUserResults#0" expanded="false" />
+            <element signature="e#23401#23845#0" expanded="false" />
+            <element signature="e#23438#23839#0" expanded="false" />
+            <element signature="e#23682#23829#0" expanded="false" />
+            <element signature="e#26934#27076#0" expanded="false" />
+            <element signature="n#!!block;n#searchTime#0" expanded="false" />
+            <element signature="n#!!block;n#displaySearchTimeResults#0" expanded="false" />
+            <element signature="e#27612#28056#0" expanded="false" />
+            <element signature="e#27649#28050#0" expanded="false" />
+            <element signature="e#27893#28040#0" expanded="false" />
+            <element signature="e#28381#28521#0" expanded="false" />
+            <element signature="e#28423#28515#0" expanded="false" />
+            <element signature="n#!!block;n#searchSession#0" expanded="false" />
+            <element signature="n#!!block;n#displaySearchSessionResults#0" expanded="false" />
+            <element signature="e#31996#32452#0" expanded="false" />
+            <element signature="e#32033#32446#0" expanded="false" />
+            <element signature="e#32286#32436#0" expanded="false" />
+            <element signature="e#35468#35568#0" expanded="false" />
+            <element signature="e#36108#36276#0" expanded="false" />
+            <element signature="e#36333#36626#0" expanded="false" />
+            <element signature="e#36427#36585#0" expanded="false" />
+            <element signature="n#!!block;n#postrefreshQuestionSummary#0" expanded="false" />
+            <element signature="e#39693#39894#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp">
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1768" max-vertical-offset="11407">
-          <caret line="104" column="40" selection-start-line="104" selection-start-column="40" selection-end-line="104" selection-end-column="40" />
+        <state vertical-scroll-proportion="0.72444445" vertical-offset="3949" max-vertical-offset="19075">
+          <caret line="220" column="41" selection-start-line="220" selection-start-column="41" selection-end-line="220" selection-end-column="41" />
           <folding />
         </state>
       </provider>

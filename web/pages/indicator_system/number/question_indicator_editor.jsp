@@ -110,21 +110,6 @@
             <h1>Question with Indicator Definition</h1>
             <p>Information to be added</p>
 
-            <script>
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Warning</strong> <br/> Please do not click any icons. <br/>' +
-                    'The Question : Indicator Definition process has started. Please follow the Instruction to continue.<br/>' +
-                    'You would receive further instructions as you proceed.',
-                    type: 'warning'
-                });
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Information</strong> <br/>Please Tye the Question Name to continue...',
-                    type: 'information'
-                });
-            </script>
-
             <div id="indViewDialog" title="Selected Indicator Property">
                 <div id="accordionIndProp">
                     <h3>Indicator Basic Properties</h3>
@@ -474,9 +459,6 @@
                                                     <button  type="button" name="_eventId_specifyTime" onclick="addTimeFilter()" value="Add">
                                                         <img src="${pageContext.request.contextPath}/images/apply.png" alt="button" width="48" height="48"/>
                                                     </button>
-                                                    <button  value="Delete All">
-                                                        <img src="${pageContext.request.contextPath}/images/delete.png" alt="button" width="48" height="48"/>
-                                                    </button >
                                                 </p>
                                             </div>
                                         </div>

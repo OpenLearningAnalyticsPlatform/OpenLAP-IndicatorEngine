@@ -208,7 +208,7 @@ $(function() {
         timeout: 30000, // delay for closing event. Set false for sticky notifications
         force: false, // adds notification to the beginning of queue when set to true
         modal: false,
-        maxVisible: 5, // you can set max visible notification for dismissQueue true option,
+        maxVisible: 7, // you can set max visible notification for dismissQueue true option,
         killer: false, // for close all notifications before show
         closeWith: ['click'], // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
         callback: {
@@ -223,6 +223,20 @@ $(function() {
 
 
 });
+$(window).load(function(){
+    $.noty.defaults.killer = true;
+    noty({
+        text: '<strong>Warning</strong> <br/> Please do not click any icons. <br/>' +
+        'The <strong> Question : Indicator </strong> Definition process has started. Please follow the instructions in the Information Notification Area to continue.<br/>' +
+        'You would receive further instructions as you proceed.',
+        type: 'warning'
+    });
+    $.noty.defaults.killer = true;
+    noty({
+        text: '<strong>Information</strong> <br/>Please Tye the Question Name to continue...',
+        type: 'information'
+    });
+})
 function  GenerateTable(data) {
 
     var indicatorData = new Array();
@@ -345,6 +359,7 @@ function createRequest() {
         request = null;
     }
 }
+
 function removeOptions(selectbox)
 {
     var i;
@@ -365,427 +380,16 @@ function validateQuestionName(){
     request.send(null);
 }
 
-function validateIndicatorName(obj){
-    createRequest();
-    var indicatorNameEntered = document.getElementById('indicatorNaming').value;
-    var url ="/indicators/validateIndName?indname="+indicatorNameEntered;
-    request.open("GET",url,true);
-    request.onreadystatechange=alert_indicatorName;
-    request.send(null);
-}
-
-function populateCategories(){
-    createRequest();
-    $.noty.defaults.killer = true;
-    noty({
-        text: '<strong>Success</strong> <br/> Action Selected <br/> Retreiving Minors...',
-        type: 'success'
-    });
-    noty({
-        text: '<strong>Next Step</strong> <br/> Select a Minor!',
-        type: 'information'
-    });
-    var selectedSources = "";
-    var selectedArray = new Array();
-    var selObj = document.getElementById('sourceSelection');
-    var i;
-    var count = 0;
-    for (i=0; i<selObj.options.length; i++) {
-        if (selObj.options[i].selected) {
-            selectedArray[count] = selObj.options[i].value;
-            count++;
-        }
-    }
-    selectedSources = selectedArray;
-    var selectedAction = document.getElementById('actionSelection').value;
-    var selectedPlatform = document.getElementById('PlatformSelection').value;
-    var url ="/indicators/populateCategories?action="+selectedAction+"&platform="+selectedPlatform+"&sources="+selectedSources;
-    request.open("GET",url,true);
-    request.onreadystatechange=processReceivedCategories;
-    request.send(null);
-
-}
-
-function populateEntities() {
-    createRequest();
-    $.noty.defaults.killer = true;
-    noty({
-        text: '<strong>Success</strong> <br/> Minor Selected <br/> Retreiving Entities...',
-        type: 'success'
-    });
-
-    noty({
-        text: '<strong>Next Step</strong> <br/> You may add <strong> Filters </strong> to your Indicator in the <strong"Indicator Properties & Summary" </strong> window.<br/> ' +
-        'We have added a default filter to select all values from the data sources selected above. <br/> You can view that in <strong>Filter Summary </strong> Tab.<br/>' +
-        'If you decide to add your own filters, please consider deleting the default filter to get correct results! <br/> ' +
-        'You can then click on the Graph icon to generate a graph which can be viewed in <strong> Graph Preview </strong> Tab.',
-        type: 'information'
-    });
-    var minorSelected = document.getElementById('selectedMinor').value;
-    var url ="/indicators/populateEntities?minor="+minorSelected;
-    request.open("GET",url,true);
-    request.onreadystatechange=processReceivedEntities;
-    request.send(null);
-}
-
-function addEntity(){
-    createRequest();
-    var keySelected = document.getElementById("entityKeySelection").value;
-    var searchType = document.getElementById("specificationType").value;
-    var evalue = document.getElementById("entityValue").value;
-    var url ="/indicators/addEntity?key="+keySelected+"&search="+searchType+"&value="+evalue;
-    request.open("GET",url,true);
-    request.onreadystatechange=displayEntityFilters;
-    request.send(null);
-}
-
-function deleteEntity(){
-    createRequest();
-    var url ="/indicators/deleteEntities";
-    request.open("GET",url,true);
-    request.onreadystatechange=displayEntityFilters;
-    request.send(null);
-}
-
-function searchUser() {
-    createRequest();
-    var userType = document.getElementById("userType").value;
-    var searchUserString = document.getElementById("searchUserString").value;
-    var url ="/indicators/searchUser?keyword="+searchUserString+"&searchtype="+userType;
-    request.open("GET",url,true);
-    request.onreadystatechange=displaySearchUserResults;
-    request.send(null);
-}
-
-function searchTime(){
-    createRequest();
-    var timeType = document.getElementById("timeSearchType").value;
-    var searchTimeString = document.getElementById("timeSearchString").value;
-    var url ="/indicators/searchTime?searchTime="+searchTimeString+"&timeType="+timeType;
-    request.open("GET",url,true);
-    request.onreadystatechange=displaySearchTimeResults;
-    request.send(null);
-}
-
-function addUserFilter() {
-    createRequest();
-    var userType = document.getElementById("userType").value;
-    var userdata = document.getElementById("usersearchResults").value;
-    var UsersearchType = document.getElementById("UsersearchType").value;
-    var url ="/indicators/addUserFilter?userdata="+userdata+"&searchType="+UsersearchType+"&userType="+userType;
-    request.open("GET",url,true);
-    request.onreadystatechange=displayUserFilters;
-    request.send(null);
-}
-
-function addTimeFilter() {
-    createRequest();
-    var timeSearchType = document.getElementById("timeSelectionType").value;
-    var timeString;
-    var selectedArray = new Array();
-    var selObj = document.getElementById("timeSearchResults");
-    var i;
-    var count = 0;
-    for (i=0; i< selObj.options.length; i++) {
-        if (selObj.options[i].selected) {
-            selectedArray[count] = selObj.options[i].value;
-            count++;
-        }
-    }
-    timeString = selectedArray;
-    var url ="/indicators/addTimeFilter?time="+timeString+"&timeType="+timeSearchType;
-    request.open("GET",url,true);
-    request.onreadystatechange=displayTimeFilters;
-    request.send(null);
-}
-
-function displayUserFilters() {
-    if (request.readyState == 4) {
-        if (request.status == 200) {
-            $.noty.defaults.killer = true;
-            noty({
-                text: '<strong>Success</strong> <br/> 1 <strong>User Filter</strong> successfully added. <br/>.' +
-                'You can view the newly added filter in <strong> User Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
-                'Deletion of Filters is also possible from there.',
-                type: 'success'
-            });
-            noty({
-                text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>Attribute Filters</strong>,' +
-                '<strong>Session Filters</strong>, <strong>Time Filters</strong>, which are available in this sub-tab. <br/>' +
-                'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
-                type: 'information'
-            });
-            var parsedJSON = JSON.parse(request.responseText);
-            var heading = new Array();
-            heading[0] = "S/L";
-            heading[1] = "User Search Type";
-            heading[2] = "User Search";
-            heading[3] = "search Pattern";
-
-            var data = new Array();
-
-            for (var i=0;i< parsedJSON.length;i++) {
-                data[i] = new Array(i+1, parsedJSON[i].userSearchType, parsedJSON[i].userSearch, parsedJSON[i].searchPattern);
-            }
-        }
-        addTable(heading,data,"user_filters");
-    }
-}
-function displayTimeFilters() {
-    if (request.readyState == 4) {
-        if (request.status == 200) {
-            $.noty.defaults.killer = true;
-            noty({
-                text: '<strong>Success</strong> <br/> 1 <strong>Time Filter</strong> successfully added. <br/>.' +
-                'You can view the newly added filter in <strong> Time Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
-                'Deletion of Filters is also possible from there.',
-                type: 'success'
-            });
-            noty({
-                text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
-                '<strong>Session Filters</strong>, <strong>Attribute Filters</strong>, which are available below in this sub-tab. <br/>' +
-                'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
-                type: 'success'
-            });
-            var parsedJSON = JSON.parse(request.responseText);
-            var heading = new Array();
-            heading[0] = "S/L";
-            heading[1] = "Time Search Type";
-            heading[2] = "Time Value";
-
-            var data = new Array();
-
-            for (var i=0;i< parsedJSON.length;i++) {
-                data[i] = new Array(i+1, parsedJSON[i].type, parsedJSON[i].timestamp);
-            }
-        }
-        addTable(heading,data,"time_filters");
-    }
-}
-
-function refreshTimeFilters() {
-    createRequest();
-    var url ="/indicators/getTimeFilters";
-    request.open("GET",url,true);
-    request.onreadystatechange=displayTimeFilters;
-    request.send(null);
-}
-
-function deleteTimeFilters() {
-    createRequest();
-    var url ="/indicators/deleteTimeFilters";
-    request.open("GET",url,true);
-    request.onreadystatechange=displayTimeFilters;
-    request.send(null);
-}
-
-function refreshUserFilters() {
-    createRequest();
-    var url ="/indicators/getUserFilters";
-    request.open("GET",url,true);
-    request.onreadystatechange=displayUserFilters;
-    request.send(null);
-}
-
-function deleteUserFilters() {
-    createRequest();
-    var url ="/indicators/deleteUserFilters";
-    request.open("GET",url,true);
-    request.onreadystatechange=displayUserFilters;
-    request.send(null);
-}
-
-function displaySearchUserResults() {
-    if (request.readyState == 4) {
-        if (request.status == 200) {
-            var parsedJSON = JSON.parse(request.responseText);
-            var userSearchResults = document.getElementById("usersearchResults");
-            removeOptions(userSearchResults);
-            for (var i=0;i< parsedJSON.length;i++) {
-                var newOption = new Option(parsedJSON[i], parsedJSON[i]);
-                userSearchResults.appendChild(newOption);
-            }
-        }
-    }
-}
-
-function displaySearchTimeResults() {
-    if (request.readyState == 4) {
-        if (request.status == 200) {
-            var parsedJSON = JSON.parse(request.responseText);
-            var timeSearchResults = document.getElementById("timeSearchResults");
-            removeOptions(timeSearchResults);
-            for (var i=0;i< parsedJSON.length;i++) {
-                var newOption = new Option(parsedJSON[i], parsedJSON[i]);
-                timeSearchResults.appendChild(newOption);
-            }
-        }
-    }
-
-}
-
-function searchSession() {
-    createRequest();
-    var SessionSearchType = document.getElementById("sessionSearchType").value;
-    var sessionSearchString = document.getElementById("sessionSearchString").value;
-    var url ="/indicators/searchSession?keyword="+sessionSearchString+"&searchType="+SessionSearchType;
-    request.open("GET",url,true);
-    request.onreadystatechange=displaySearchSessionResults;
-    request.send(null);
-}
-
-function addSessionFilter() {
-    createRequest();
-    var SessionData = document.getElementById("SessionsearchResults").value;
-    var SessionSearchType = document.getElementById("SessionsearchType").value;
-    var url ="/indicators/addSessionFilter?sessionData="+SessionData+"&searchType="+SessionSearchType;
-    request.open("GET",url,true);
-    request.onreadystatechange=displaySessionFilters;
-    request.send(null);
-
-}
-
-function displaySessionFilters() {
-    if (request.readyState == 4) {
-        if (request.status == 200) {
-            $.noty.defaults.killer = true;
-            noty({
-                text: '<strong>Success</strong> <br/> 1 <strong>Session Filter</strong> successfully added. <br/>.' +
-                'You can view the newly added filter in <strong> Session Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
-                'Deletion of Filters is also possible from there.',
-                type: 'success'
-            });
-            noty({
-                text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
-                '<strong>Attribute Filters</strong>, <strong>Time Filters</strong>, which are available in this sub-tab. <br/>' +
-                'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
-                type: 'success'
-            });
-            var parsedJSON = JSON.parse(request.responseText);
-            var heading = new Array();
-            heading[0] = "S/L";
-            heading[1] = "Session Data";
-            heading[2] = "Filter Type";
-
-            var data = new Array();
-
-            for (var i=0;i< parsedJSON.length;i++) {
-                data[i] = new Array(i+1, parsedJSON[i].session, parsedJSON[i].type);
-            }
-        }
-        addTable(heading,data,"session_filters");
-    }
-}
-
-function refreshSessionFilters() {
-    createRequest();
-    var url ="/indicators/getSessionFilters";
-    request.open("GET",url,true);
-    request.onreadystatechange=displaySessionFilters;
-    request.send(null);
-}
-
-function deleteSessionFilters() {
-    createRequest();
-    var url ="/indicators/deleteSessionFilters";
-    request.open("GET",url,true);
-    request.onreadystatechange=displaySessionFilters;
-    request.send(null);
-}
-
-function displaySearchSessionResults() {
-    if (request.readyState == 4) {
-        if (request.status == 200) {
-            var parsedJSON = JSON.parse(request.responseText);
-            var SessionSearchResults = document.getElementById("SessionsearchResults");
-            removeOptions(SessionSearchResults);
-            for (var i=0;i< parsedJSON.length;i++) {
-                var newOption = new Option(parsedJSON[i], parsedJSON[i]);
-                SessionSearchResults.appendChild(newOption);
-            }
-        }
-    }
-}
-
-function refreshEntityFilters() {
-    createRequest();
-    var url ="/indicators/getEntities";
-    request.open("GET",url,true);
-    request.onreadystatechange=displayEntityFilters;
-    request.send(null);
-}
-
-function displayEntityFilters(){
-    if (request.readyState == 4) {
-        if (request.status == 200) {
-            $.noty.defaults.killer = true;
-            noty({
-                text: '<strong>Success</strong> <br/> 1 <strong>Attribute Filter</strong> successfully added. <br/>' +
-                'You can view the newly added filter in <strong> Attribute Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
-                'Deletion of Filters is also possible from there.',
-                type: 'success'
-            });
-            noty({
-                text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
-                '<strong>Session Filters</strong>, <strong>Time Filters</strong>, which are available in this filter sub-tab. <br/>' +
-                'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
-                type: 'information'
-            });
-            var parsedJSON = JSON.parse(request.responseText);
-            var heading = new Array();
-            heading[0] = "S/L";
-            heading[1] = "Key";
-            heading[2] = "Value";
-            heading[3] = "Type";
-
-            var data = new Array();
-
-            for (var i=0;i< parsedJSON.length;i++) {
-                data[i] = new Array(i+1, parsedJSON[i].key, parsedJSON[i].eValues, parsedJSON[i].type);
-            }
-        }
-        addTable(heading,data, "entity_filters");
-    }
-}
-
-function processReceivedEntities() {
-    if (request.readyState == 4) {
-        if (request.status == 200) {
-            var parsedJSON = JSON.parse(request.responseText);
-            var entityKeySelection = document.getElementById("entityKeySelection");
-            removeOptions(entityKeySelection);
-            for (var i=0;i< parsedJSON.length;i++) {
-                var newOption = new Option(parsedJSON[i], parsedJSON[i]);
-                entityKeySelection.appendChild(newOption);
-            }
-        }
-    }
-}
-
-function processReceivedCategories() {
-    if (request.readyState == 4) {
-        if (request.status == 200) {
-            var parsedJSON = JSON.parse(request.responseText);
-            var selectedMinor = document.getElementById("selectedMinor");
-            removeOptions(selectedMinor);
-            for (var i=0;i< parsedJSON.length;i++) {
-                var newOption = new Option(parsedJSON[i].minor, parsedJSON[i].minor);
-                selectedMinor.appendChild(newOption);
-            }
-        }
-    }
-}
-
 function alert_questionName() {
     if (request.readyState == 4) {
         if (request.status == 200) {
 
             if (request.responseText == "exists") {
 
-               noty({
+                noty({
                     text: '<strong>Error</strong> <br/> Question name already Existing. Duplicate names not allowed',
                     type: 'error'
-               });
+                });
                 document.getElementById("questionNaming").value=null;
             }
             else if (request.responseText == "short") {
@@ -798,7 +402,7 @@ function alert_questionName() {
                     text: '<strong>Information</strong> <br/> Question Name must have at least 6 characters',
                     type: 'information'
                 });
-               document.getElementById("questionNaming").value=null;
+                document.getElementById("questionNaming").value=null;
             }
             else if (request.responseText == "null") {
 
@@ -821,6 +425,15 @@ function alert_questionName() {
             }
         }
     }
+}
+
+function validateIndicatorName(obj){
+    createRequest();
+    var indicatorNameEntered = document.getElementById('indicatorNaming').value;
+    var url ="/indicators/validateIndName?indname="+indicatorNameEntered;
+    request.open("GET",url,true);
+    request.onreadystatechange=alert_indicatorName;
+    request.send(null);
 }
 
 function alert_indicatorName() {
@@ -886,6 +499,7 @@ function sourceChanged() {
         type: 'information'
     });
 }
+
 function platformChanged(){
     $.noty.defaults.killer = true;
     noty({
@@ -898,6 +512,484 @@ function platformChanged(){
         type: 'information'
     });
 }
+
+function populateCategories(){
+    createRequest();
+    $.noty.defaults.killer = true;
+    noty({
+        text: '<strong>Success</strong> <br/> Action Selected <br/> Retreiving Minors...',
+        type: 'success'
+    });
+    noty({
+        text: '<strong>Next Step</strong> <br/> Select a Minor!',
+        type: 'information'
+    });
+    var selectedSources = "";
+    var selectedArray = new Array();
+    var selObj = document.getElementById('sourceSelection');
+    var i;
+    var count = 0;
+    for (i=0; i<selObj.options.length; i++) {
+        if (selObj.options[i].selected) {
+            selectedArray[count] = selObj.options[i].value;
+            count++;
+        }
+    }
+    selectedSources = selectedArray;
+    var selectedAction = document.getElementById('actionSelection').value;
+    var selectedPlatform = document.getElementById('PlatformSelection').value;
+    var url ="/indicators/populateCategories?action="+selectedAction+"&platform="+selectedPlatform+"&sources="+selectedSources;
+    request.open("GET",url,true);
+    request.onreadystatechange=processReceivedCategories;
+    request.send(null);
+
+}
+
+function processReceivedCategories() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            var selectedMinor = document.getElementById("selectedMinor");
+            removeOptions(selectedMinor);
+            for (var i=0;i< parsedJSON.length;i++) {
+                var newOption = new Option(parsedJSON[i].minor, parsedJSON[i].minor);
+                selectedMinor.appendChild(newOption);
+            }
+        }
+    }
+}
+
+function populateEntities() {
+    createRequest();
+    $.noty.defaults.killer = true;
+    noty({
+        text: '<strong>Success</strong> <br/> Minor Selected <br/> Retreiving Entities...',
+        type: 'success'
+    });
+
+    noty({
+        text: '<strong>Next Step</strong> <br/> You may add <strong> Filters </strong> to your Indicator in the <strong> Indicator Properties & Summary </strong> window.<br/> ' +
+        'You can click on the Graph icon to generate a graph which can be viewed in <strong> Graph Preview </strong> Tab.',
+        type: 'information'
+    });
+    noty({
+        text: '<strong>Warning</strong> <br/> We will add a default filter to select all values from the data sources selected above if you do not add any Filter !',
+        type: 'warning'
+    });
+
+    var minorSelected = document.getElementById('selectedMinor').value;
+    var url ="/indicators/populateEntities?minor="+minorSelected;
+    request.open("GET",url,true);
+    request.onreadystatechange=processReceivedEntities;
+    request.send(null);
+}
+
+function processReceivedEntities() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            var entityKeySelection = document.getElementById("entityKeySelection");
+            removeOptions(entityKeySelection);
+            for (var i=0;i< parsedJSON.length;i++) {
+                var newOption = new Option(parsedJSON[i], parsedJSON[i]);
+                entityKeySelection.appendChild(newOption);
+            }
+        }
+    }
+}
+
+function addEntity(){
+    createRequest();
+    var keySelected = document.getElementById("entityKeySelection").value;
+    var searchType = document.getElementById("specificationType").value;
+    var evalue = document.getElementById("entityValue").value;
+    var url ="/indicators/addEntity?key="+keySelected+"&search="+searchType+"&value="+evalue;
+    request.open("GET",url,true);
+    request.onreadystatechange = function(){displayEntityFilters(1)};
+    request.send(null);
+}
+
+function refreshEntityFilters() {
+    createRequest();
+    var url ="/indicators/getEntities";
+    request.open("GET",url,true);
+    request.onreadystatechange = function(){displayEntityFilters(2)};
+    request.send(null);
+}
+
+function deleteEntity(){
+    createRequest();
+    var url ="/indicators/deleteEntities";
+    request.open("GET",url,true);
+    request.onreadystatechange = function(){displayEntityFilters(3)};
+    request.send(null);
+}
+
+function displayEntityFilters(callstatus){
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            if(callstatus == 1) {
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Success</strong> <br/> 1 <strong>Attribute Filter</strong> successfully added. <br/>' +
+                    'You can view the newly added filter in <strong> Attribute Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
+                    'Deletion of Filters is also possible from there.',
+                    type: 'success'
+                });
+                noty({
+                    text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
+                    '<strong>Session Filters</strong>, <strong>Time Filters</strong>, which are available in this filter sub-tab. <br/>' +
+                    'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
+                    type: 'information'
+                });
+            }
+            else if(callstatus == 2) {
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Success</strong> <br/>  <strong>Attribute Filter Summary</strong> successfully refreshed. <br/>',
+                    type: 'success'
+                });
+            }
+            else if (callstatus == 3) {
+
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Success</strong> <br/>  <strong>All Attribute Filters </strong> successfully deleted. <br/>',
+                    type: 'success'
+                });
+            }
+
+            var parsedJSON = JSON.parse(request.responseText);
+            var heading = new Array();
+            heading[0] = "S/L";
+            heading[1] = "Key";
+            heading[2] = "Value";
+            heading[3] = "Type";
+
+            var data = new Array();
+
+            for (var i=0;i< parsedJSON.length;i++) {
+                data[i] = new Array(i+1, parsedJSON[i].key, parsedJSON[i].eValues, parsedJSON[i].type);
+            }
+        }
+        addTable(heading,data, "entity_filters");
+    }
+}
+
+function searchUser() {
+    createRequest();
+    var userType = document.getElementById("userType").value;
+    var searchUserString = document.getElementById("searchUserString").value;
+    var url ="/indicators/searchUser?keyword="+searchUserString+"&searchtype="+userType;
+    request.open("GET",url,true);
+    request.onreadystatechange=displaySearchUserResults;
+    request.send(null);
+}
+
+function displaySearchUserResults() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            var userSearchResults = document.getElementById("usersearchResults");
+            removeOptions(userSearchResults);
+            for (var i=0;i< parsedJSON.length;i++) {
+                var newOption = new Option(parsedJSON[i], parsedJSON[i]);
+                userSearchResults.appendChild(newOption);
+            }
+        }
+    }
+}
+
+function addUserFilter() {
+    createRequest();
+    var userType = document.getElementById("userType").value;
+    var userdata = document.getElementById("usersearchResults").value;
+    var UsersearchType = document.getElementById("UsersearchType").value;
+    var url ="/indicators/addUserFilter?userdata="+userdata+"&searchType="+UsersearchType+"&userType="+userType;
+    request.open("GET",url,true);
+    request.onreadystatechange = function(){displayUserFilters(1)};
+    request.send(null);
+}
+
+function refreshUserFilters() {
+    createRequest();
+    var url ="/indicators/getUserFilters";
+    request.open("GET",url,true);
+    request.onreadystatechange=  function(){displayUserFilters(2)};
+    request.send(null);
+}
+
+function deleteUserFilters() {
+    createRequest();
+    var url ="/indicators/deleteUserFilters";
+    request.open("GET",url,true);
+    request.onreadystatechange=  function(){displayUserFilters(3)};
+    request.send(null);
+}
+
+function displayUserFilters(callstatus) {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            if(callstatus == 1) {
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Success</strong> <br/> 1 <strong>User Filter</strong> successfully added. <br/>' +
+                    'You can view the newly added filter in <strong> User Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
+                    'Deletion of Filters is also possible from there.',
+                    type: 'success'
+                });
+                noty({
+                    text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>Attribute Filters</strong>,' +
+                    '<strong>Session Filters</strong>, <strong>Time Filters</strong>, which are available in this sub-tab. <br/>' +
+                    'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
+                    type: 'information'
+                });
+            }
+            else if(callstatus == 2) {
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Success</strong> <br/>  <strong>User Filter Summary</strong> successfully refreshed. <br/>',
+                    type: 'success'
+                });
+            }
+            else if (callstatus == 3) {
+
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Success</strong> <br/>  <strong>All User Filters </strong> successfully deleted. <br/>',
+                    type: 'success'
+                });
+            }
+
+            var parsedJSON = JSON.parse(request.responseText);
+            var heading = new Array();
+            heading[0] = "S/L";
+            heading[1] = "User Search Type";
+            heading[2] = "User Search";
+            heading[3] = "search Pattern";
+
+            var data = new Array();
+
+            for (var i=0;i< parsedJSON.length;i++) {
+                data[i] = new Array(i+1, parsedJSON[i].userSearchType, parsedJSON[i].userSearch, parsedJSON[i].searchPattern);
+            }
+        }
+        addTable(heading,data,"user_filters");
+    }
+}
+
+function searchTime(){
+    createRequest();
+    var timeType = document.getElementById("timeSearchType").value;
+    var searchTimeString = document.getElementById("timeSearchString").value;
+    var url ="/indicators/searchTime?searchTime="+searchTimeString+"&timeType="+timeType;
+    request.open("GET",url,true);
+    request.onreadystatechange=displaySearchTimeResults;
+    request.send(null);
+}
+
+function displaySearchTimeResults() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            var timeSearchResults = document.getElementById("timeSearchResults");
+            removeOptions(timeSearchResults);
+            for (var i=0;i< parsedJSON.length;i++) {
+                var newOption = new Option(parsedJSON[i], parsedJSON[i]);
+                timeSearchResults.appendChild(newOption);
+            }
+        }
+    }
+
+}
+
+function addTimeFilter() {
+    createRequest();
+    var timeSearchType = document.getElementById("timeSelectionType").value;
+    var timeString;
+    var selectedArray = new Array();
+    var selObj = document.getElementById("timeSearchResults");
+    var i;
+    var count = 0;
+    for (i=0; i< selObj.options.length; i++) {
+        if (selObj.options[i].selected) {
+            selectedArray[count] = selObj.options[i].value;
+            count++;
+        }
+    }
+    timeString = selectedArray;
+    var url ="/indicators/addTimeFilter?time="+timeString+"&timeType="+timeSearchType;
+    request.open("GET",url,true);
+    request.onreadystatechange= function(){displayTimeFilters(1)};
+    request.send(null);
+}
+
+function refreshTimeFilters() {
+    createRequest();
+    var url ="/indicators/getTimeFilters";
+    request.open("GET",url,true);
+    request.onreadystatechange= function(){displayTimeFilters(2)};
+    request.send(null);
+}
+
+function deleteTimeFilters() {
+    createRequest();
+    var url ="/indicators/deleteTimeFilters";
+    request.open("GET",url,true);
+    request.onreadystatechange= function(){displayTimeFilters(3)};
+    request.send(null);
+}
+
+function displayTimeFilters(callstatus) {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            if(callstatus == 1) {
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Success</strong> <br/> 1 <strong>Time Filter</strong> successfully added. <br/>' +
+                    'You can view the newly added filter in <strong> Time Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
+                    'Deletion of Filters is also possible from there.',
+                    type: 'success'
+                });
+                noty({
+                    text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
+                    '<strong>Session Filters</strong>, <strong>Attribute Filters</strong>, which are available below in this sub-tab. <br/>' +
+                    'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
+                    type: 'information'
+                });
+            }
+            else if(callstatus == 2) {
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Success</strong> <br/>  <strong>Time Filter Summary</strong> successfully refreshed. <br/>',
+                    type: 'success'
+                });
+            }
+            else if (callstatus == 3) {
+
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Success</strong> <br/>  <strong>All Time Filters </strong> successfully deleted. <br/>',
+                    type: 'success'
+                });
+            }
+            var parsedJSON = JSON.parse(request.responseText);
+            var heading = new Array();
+            heading[0] = "S/L";
+            heading[1] = "Time Search Type";
+            heading[2] = "Time Value";
+
+            var data = new Array();
+
+            for (var i=0;i< parsedJSON.length;i++) {
+                data[i] = new Array(i+1, parsedJSON[i].type, parsedJSON[i].timestamp);
+            }
+        }
+        addTable(heading,data,"time_filters");
+    }
+}
+
+function searchSession() {
+    createRequest();
+    var SessionSearchType = document.getElementById("sessionSearchType").value;
+    var sessionSearchString = document.getElementById("sessionSearchString").value;
+    var url ="/indicators/searchSession?keyword="+sessionSearchString+"&searchType="+SessionSearchType;
+    request.open("GET",url,true);
+    request.onreadystatechange=displaySearchSessionResults;
+    request.send(null);
+}
+
+function displaySearchSessionResults() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            var SessionSearchResults = document.getElementById("SessionsearchResults");
+            removeOptions(SessionSearchResults);
+            for (var i=0;i< parsedJSON.length;i++) {
+                var newOption = new Option(parsedJSON[i], parsedJSON[i]);
+                SessionSearchResults.appendChild(newOption);
+            }
+        }
+    }
+}
+
+function addSessionFilter() {
+    createRequest();
+    var SessionData = document.getElementById("SessionsearchResults").value;
+    var SessionSearchType = document.getElementById("SessionsearchType").value;
+    var url ="/indicators/addSessionFilter?sessionData="+SessionData+"&searchType="+SessionSearchType;
+    request.open("GET",url,true);
+    request.onreadystatechange= function(){displaySessionFilters(1)};
+    request.send(null);
+
+}
+
+function refreshSessionFilters() {
+    createRequest();
+    var url ="/indicators/getSessionFilters";
+    request.open("GET",url,true);
+    request.onreadystatechange= function(){displaySessionFilters(2)};
+    request.send(null);
+}
+
+function deleteSessionFilters() {
+    createRequest();
+    var url ="/indicators/deleteSessionFilters";
+    request.open("GET",url,true);
+    request.onreadystatechange= function(){displaySessionFilters(3)};
+    request.send(null);
+}
+
+function displaySessionFilters(callstatus) {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            if(callstatus == 1) {
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Success</strong> <br/> 1 <strong>Session Filter</strong> successfully added. <br/>' +
+                    'You can view the newly added filter in <strong> Session Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
+                    'Deletion of Filters is also possible from there.',
+                    type: 'success'
+                });
+                noty({
+                    text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
+                    '<strong>Attribute Filters</strong>, <strong>Time Filters</strong>, which are available in this sub-tab. <br/>' +
+                    'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
+                    type: 'information'
+                });
+            }
+            else if(callstatus == 2) {
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Success</strong> <br/>  <strong>Session Filter Summary</strong> successfully refreshed. <br/>',
+                    type: 'success'
+                });
+            }
+            else if (callstatus == 3) {
+
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Success</strong> <br/>  <strong>All Session Filters </strong> successfully deleted. <br/>',
+                    type: 'success'
+                });
+            }
+
+            var parsedJSON = JSON.parse(request.responseText);
+            var heading = new Array();
+            heading[0] = "S/L";
+            heading[1] = "Session Data";
+            heading[2] = "Filter Type";
+
+            var data = new Array();
+
+            for (var i=0;i< parsedJSON.length;i++) {
+                data[i] = new Array(i+1, parsedJSON[i].session, parsedJSON[i].type);
+            }
+        }
+        addTable(heading,data,"session_filters");
+    }
+}
+
 
 function addTable(heading,data, tablePlacement) {
     var myTableDiv = document.getElementById(tablePlacement);
@@ -932,18 +1024,59 @@ function addTable(heading,data, tablePlacement) {
     myTableDiv.appendChild(table);
 }
 
-function refreshGraph() {
+function refreshGraph(filterPresent) {
 
-    var questionName = document.getElementById("questionNaming").value;
-    var indicatorName = document.getElementById("indicatorNaming").value;
-    var graphType = document.getElementById("selectedChartType").value;
-    var graphEngine = document.getElementById("EngineSelect").value;
+    if(filterPresent) {
+        var questionName = document.getElementById("questionNaming").value;
+        var indicatorName = document.getElementById("indicatorNaming").value;
+        var graphType = document.getElementById("selectedChartType").value;
+        var graphEngine = document.getElementById("EngineSelect").value;
+        createRequest();
+        var url ="/indicators/refreshGraph?questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
+            +"&graphEngine="+graphEngine;
+        request.open("GET",url,true);
+        request.onreadystatechange=drawGraph;
+        request.send(null);
+    }
+    else {
+        checkForDefaultRule(1);
+    }
+
+}
+function checkForDefaultRule(funcId) {
     createRequest();
-    var url ="/indicators/refreshGraph?questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
-        +"&graphEngine="+graphEngine;
-    request.open("GET",url,true);
-    request.onreadystatechange=drawGraph;
+    var url ="/indicators/getEntities?size=Y";
+    request.open("GET",url,false);
+    request.onreadystatechange = function(){addDefaultRule(funcId)};
     request.send(null);
+}
+
+function addDefaultRule(funcID) {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            if(request.responseText == 0) {
+
+                createRequest();
+                var keySelected = document.getElementById("entityKeySelection").value;
+                var searchType = document.getElementById("specificationType").value;
+                var evalue = 'ALL';
+                var url ="/indicators/addEntity?key="+keySelected+"&search="+searchType+"&value="+evalue;
+                request.open("GET",url,false);
+                if(funcID == 1)
+                    request.onreadystatechange = function(){refreshGraph(new Boolean(true))};
+                else
+                    request.onreadystatechange = function(){finalizeIndicator(new Boolean(true))};
+                request.send(null);
+            }
+            else {
+                if(funcID == 1)
+                   refreshGraph(new Boolean(true));
+                else
+                    finalizeIndicator(new Boolean(true));
+
+            }
+        }
+    }
 }
 
 function drawGraph() {
@@ -954,26 +1087,6 @@ function drawGraph() {
         }
     }
 }
-function finalizeIndicator() {
-    createRequest();
-    var questionName = document.getElementById("questionNaming").value;
-    var indicatorName = document.getElementById("indicatorNaming").value;
-    var graphType = document.getElementById("selectedChartType").value;
-    var graphEngine = document.getElementById("EngineSelect").value;
-    var url ="/indicators/finalize?questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
-        +"&graphEngine="+graphEngine;
-    request.open("GET",url,true);
-    request.onreadystatechange=postrefreshQuestionSummary;
-    request.send(null);
-}
-
-function addNewIndicator() {
-    createRequest();
-    var url ="/indicators/addNewIndicator";
-    request.open("GET",url,true);
-    request.onreadystatechange=processScreenForNextIndicator;
-    request.send(null);
-}
 
 function refreshQuestionSummary() {
     createRequest();
@@ -981,18 +1094,6 @@ function refreshQuestionSummary() {
     request.open("GET",url,true);
     request.onreadystatechange=postrefreshQuestionSummary;
     request.send(null);
-}
-
-function processScreenForNextIndicator() {
-    if (request.readyState == 4) {
-        if (request.status == 200) {
-            var parsedJSON = JSON.parse(request.responseText);
-            document.getElementById("indicatorNaming").value = "";
-            var selectedMinor = document.getElementById("selectedMinor");
-            removeOptions(selectedMinor);
-            refreshQuestionSummary();
-        }
-    }
 }
 
 function postrefreshQuestionSummary() {
@@ -1012,3 +1113,65 @@ function postrefreshQuestionSummary() {
     }
 
 }
+
+function finalizeIndicator(filterPresent) {
+    if(filterPresent) {
+        createRequest();
+        var questionName = document.getElementById("questionNaming").value;
+        var indicatorName = document.getElementById("indicatorNaming").value;
+        var graphType = document.getElementById("selectedChartType").value;
+        var graphEngine = document.getElementById("EngineSelect").value;
+        var url ="/indicators/finalize?questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
+            +"&graphEngine="+graphEngine;
+        request.open("GET",url,true);
+        request.onreadystatechange=postrefreshQuestionSummary;
+        request.send(null);
+    }
+    else
+        checkForDefaultRule(2);
+
+}
+
+function addNewIndicator() {
+    createRequest();
+    var url ="/indicators/addNewIndicator";
+    request.open("GET",url,true);
+    request.onreadystatechange=processScreenForNextIndicator;
+    request.send(null);
+}
+
+function processScreenForNextIndicator() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            document.getElementById("indicatorNaming").value = "";
+            var selectedMinor = document.getElementById("selectedMinor");
+            removeOptions(selectedMinor);
+            refreshQuestionSummary();
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
