@@ -1,14 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="974e7feb-8792-4228-ab5d-100949817edf" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.ids" afterPath="$PROJECT_DIR$/.idea/dataSources.ids" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/IndicatorEngine.properties" afterPath="$PROJECT_DIR$/src/IndicatorEngine.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/IndicatorPreProcessing.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/IndicatorPreProcessing.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/IndicatorPreProcessingDao.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/IndicatorPreProcessingDao.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/indicator_editor.js" afterPath="$PROJECT_DIR$/web/js/indicator_editor.js" />
+    <list default="true" id="974e7feb-8792-4228-ab5d-100949817edf" name="Default" comment="Spring Integration Removed">
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\.idea\libraries\Spring_Integration_4_0_3.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\.idea\libraries\Spring_Webflow_2_4_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-binding-2.4.0.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-faces-2.4.0.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-amqp-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-core-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-event-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-feed-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-file-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-ftp-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-gemfire-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-groovy-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-http-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-ip-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-jdbc-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-jms-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-jmx-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-jpa-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-mail-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-mongodb-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-mqtt-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-redis-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-rmi-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-scripting-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-security-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-sftp-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-stream-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-syslog-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-test-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-twitter-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-ws-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-xml-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-integration-xmpp-4.0.3.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-js-2.4.0.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-js-resources-2.4.0.RELEASE.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Tanmaya Mahapatra\IdeaProjects\IndicatorEngine\lib\spring-webflow-2.4.0.RELEASE.jar" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/IndicatorEngine.iml" afterPath="$PROJECT_DIR$/IndicatorEngine.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/IndicatorEngine_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/IndicatorEngine_war_exploded.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path=".idea/dataSources.local.xml" />
@@ -161,7 +192,7 @@
       <file leaf-file-name="console.sql" pinned="false" current-in-tab="true">
         <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/4400d7f1-20a6-4146-9e73-594f971efa40/console.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.13786764">
+            <state vertical-scroll-proportion="0.16233766">
               <caret line="3" column="26" selection-start-line="3" selection-start-column="26" selection-end-line="3" selection-end-column="26" />
               <folding />
             </state>
@@ -736,6 +767,7 @@
     </configuration>
     <configuration default="true" type="JarApplication" factoryName="JAR Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="JAR_PATH" value="$PROJECT_DIR$/lib/spring-orm-4.1.6.RELEASE.jar" />
       <envs />
       <method />
     </configuration>
@@ -906,7 +938,7 @@
       <workItem from="1434777669571" duration="371000" />
       <workItem from="1434854675394" duration="36371000" />
       <workItem from="1435230097698" duration="38402000" />
-      <workItem from="1435383533810" duration="78433000" />
+      <workItem from="1435383533810" duration="78948000" />
     </task>
     <task id="LOCAL-00001" summary="charting capabilities : init">
       <created>1431340261434</created>
@@ -992,11 +1024,17 @@
       <option name="project" value="LOCAL" />
       <updated>1435510444270</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Removed Redundant methods from Indicator Preprocessor">
+      <created>1435575455817</created>
+      <option name="number" value="00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1435575455817</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="319353000" />
+    <option name="totallyTimeSpent" value="319868000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1017,12 +1055,12 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42093542" sideWeight="0.4936034" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.42093542" sideWeight="0.4936034" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946696" sideWeight="0.50676984" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32962137" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24946696" sideWeight="0.49323016" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24946696" sideWeight="0.49323016" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1098,7 +1136,8 @@
     <MESSAGE value="Final UI with Jquery" />
     <MESSAGE value="Front end : features added &#10;Indicator Iteration (Memory)&#10;Indicator View Property (Memory)&#10;Indicator Delete Property (Memory)&#10;&#10;Entity Bean scoped to session : Major Bug Resolved" />
     <MESSAGE value="Front end : features added &#10;Time Stamp Search add  delete and view client side&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Front end : features added &#10;Time Stamp Search add  delete and view client side&#10;" />
+    <MESSAGE value="Removed Redundant methods from Indicator Preprocessor" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed Redundant methods from Indicator Preprocessor" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1576,7 +1615,7 @@
     </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/4400d7f1-20a6-4146-9e73-594f971efa40/console.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.13786764">
+        <state vertical-scroll-proportion="0.16233766">
           <caret line="3" column="26" selection-start-line="3" selection-start-column="26" selection-end-line="3" selection-end-column="26" />
           <folding />
         </state>
@@ -1649,7 +1688,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>Spring Data JPA-1.3.3</last-edited>
+          <last-edited>Spring Web Services-2.0.2</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
