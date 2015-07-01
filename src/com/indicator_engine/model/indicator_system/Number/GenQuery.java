@@ -64,10 +64,14 @@ public class GenQuery implements Serializable {
         this.genIndicatorProps = genIndicatorProps;
     }
 
-    public void setGenIndicatorProps(long props_id, Timestamp last_executionTime, int totalExecutions) {
+    public void setGenIndicatorProps(long props_id, Timestamp last_executionTime, int totalExecutions,
+                                     String chartType,String chartEngine, String userName) {
         this.genIndicatorProps.setProps_id(props_id);
         this.genIndicatorProps.setTotalExecutions(totalExecutions);
         this.genIndicatorProps.setLast_executionTime(last_executionTime);
+        this.genIndicatorProps.setChartEngine(chartEngine);
+        this.genIndicatorProps.setChartType(chartType);
+        this.genIndicatorProps.setUserName(userName);
     }
 
     public IndicatorXMLData getIndicatorXMLData() {

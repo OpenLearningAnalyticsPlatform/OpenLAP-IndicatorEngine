@@ -51,18 +51,19 @@
 
     <header><!-- header -->
         <div id="plandesign"><img src="${pageContext.request.contextPath}/images/plans.png" alt="" /></div>
-        <h1><a href="#">Goal LA</a></h1>
+        <h1><a href="#">Open Learning Analytics Platform</a></h1>
         <p>A Learning Analytics System which is more dynamic and goal oriented. Active
             participation of the stakeholders in the definition of the questions and indicators.
-            A personalized system which is user driven.</p>
+            A personalized user driven system.</p>
     </header><!-- end of header -->
 
     <section id="main"><!-- #main content and sidebar area -->
         <section id="content"><!-- #content -->
 
             <article>
-                <h2><a href="#">L2P</a></h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.</p>
+                <h2><a href="#">Indicator Engine</a></h2>
+                <p>Indicator Engine allows the user to achieve personalized and goal-oriented LA in an efficient and effective way.
+                </p>
             </article>
 
             <article>
@@ -75,7 +76,7 @@
         </section><!-- end of #content -->
 
         <aside id="sidebar"><!-- sidebar -->
-            <h3>Acess LA Toolkit</h3>
+            <h3>Access Indicator Engine</h3>
             <ul>
                 <li><a href="/login">Login</a></li>
                 <li><a href="/register">Register</a></li>

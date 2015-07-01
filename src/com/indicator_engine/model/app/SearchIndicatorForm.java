@@ -48,7 +48,7 @@ public class SearchIndicatorForm {
 
     public SearchIndicatorForm(){
         searchType.add("ID");
-        searchType.add("Indicator Name");
+        searchType.add("Question Name");
     }
 
     public String getSelectedSearchType() {

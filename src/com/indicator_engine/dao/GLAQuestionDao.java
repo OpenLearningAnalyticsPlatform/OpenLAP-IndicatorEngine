@@ -34,4 +34,8 @@ public interface GLAQuestionDao {
     public long findQuestionID(String questionName);
     public GLAQuestion loadByQuestionID(long ID);
     public void updateStatistics(long ID);
+    public List<GLAQuestion> loadByQuestionName(String questionName, boolean exact);
+    public int getTotalQuestions();
+    public List<GLAQuestion> searchQuestionsName(String searchParameter, boolean exactSearch,
+                                                 String colName, String sortDirection, boolean sort);
 }

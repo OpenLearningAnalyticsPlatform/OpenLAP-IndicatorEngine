@@ -29,7 +29,6 @@ import com.indicator_engine.indicator_system.Number.OperationNumberProcessorDao;
 import com.indicator_engine.misc.NumberChecks;
 import com.indicator_engine.model.app.QuestionRun;
 import com.indicator_engine.model.app.SearchIndicatorForm;
-import com.indicator_engine.model.indicator_system.IndicatorDeletionForm;
 import com.indicator_engine.model.indicator_system.Number.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -606,6 +605,7 @@ public class GAIndicatorSystemController {
             glaIndicatorHashSet.add(glaIndicator);        }
 
           long qid = glaQuestionBean.add(glaQuestion, glaIndicatorHashSet);
+        entitySpecificationBean.completeReset();
 
         return gson.toJson(qid);
 
@@ -631,7 +631,7 @@ public class GAIndicatorSystemController {
             }
             else{
                 model = new ModelAndView("indicator_system/view_indicator_details");
-                model.addObject("numberIndicator", retrieveQuestion(searchIndicatorForm.getSelectedQuestionName()));
+                model.addObject("question", retrieveQuestion(searchIndicatorForm.getSelectedQuestionName()));
             }
         }
         return model;
@@ -671,18 +671,18 @@ public class GAIndicatorSystemController {
        return null;
     }
 
-    @RequestMapping(value = "/fetchExistingIndicatorsData.web", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/fetchExistingQuestionsData.web", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
-    String fetchIndicatorData(HttpServletRequest request) throws IOException {
+    String fetchQuestionData(HttpServletRequest request) throws IOException {
 
-        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
-        List<GLAIndicator> glaIndicatorList = null;
-        List<GLAIndicator> pageGLAindicatorList = new ArrayList<>();
+        GLAQuestionDao glaQuestionsBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
+        List<GLAQuestion> glaQuestionList = null;
+        List<GLAQuestion> pageGLAQuestionList = new ArrayList<>();
         Integer idisplayStart = 0;
         Integer iSortingCols =0;
         if(null != request.getParameter("iSortingCols"))
             iSortingCols = Integer.valueOf(request.getParameter("iSortingCols"));
-        GLAIndicatorJsonObject glaIndicatorJsonObject = new GLAIndicatorJsonObject();
+        GLAQuestionJsonObject glaQuestionJsonObject = new GLAQuestionJsonObject();
         if (null != request.getParameter("iDisplayStart")) {
             idisplayStart = Integer.valueOf(request.getParameter("iDisplayStart"));
             log.info("iDisplayStart : \t" + request.getParameter("iDisplayStart") + "\n");
@@ -706,23 +706,23 @@ public class GAIndicatorSystemController {
                     colName = "indicator_name";
                 else if (isortCol == 2)
                     colName = "short_name";
-                glaIndicatorList = glaIndicatorBean.displayall(colName,sortDirection,true);
+                glaQuestionList = glaQuestionsBean.displayAll(colName, sortDirection, true);
             }
             else
-                glaIndicatorList = glaIndicatorBean.displayall(colName,sortDirection,false);
+                glaQuestionList = glaQuestionsBean.displayAll(colName, sortDirection, false);
             if(idisplayStart != -1){
                 Integer endRange = idisplayStart+pageDisplayLength;
-                if(endRange >glaIndicatorList.size())
-                    endRange = glaIndicatorList.size();
+                if(endRange >glaQuestionList.size())
+                    endRange = glaQuestionList.size();
                 for(int i=idisplayStart; i<endRange; i++){
-                    pageGLAindicatorList.add(glaIndicatorList.get(i));
+                    pageGLAQuestionList.add(glaQuestionList.get(i));
                 }
             }
             //Set Total display record
-            glaIndicatorJsonObject.setiTotalDisplayRecords(glaIndicatorBean.getTotalIndicators());
+            glaQuestionJsonObject.setiTotalDisplayRecords(glaQuestionsBean.getTotalQuestions());
             //Set Total record
-            glaIndicatorJsonObject.setiTotalRecords(glaIndicatorBean.getTotalIndicators());
-            glaIndicatorJsonObject.setAaData(pageGLAindicatorList);
+            glaQuestionJsonObject.setiTotalRecords(glaQuestionsBean.getTotalQuestions());
+            glaQuestionJsonObject.setAaData(pageGLAQuestionList);
         }
         else {
             String colName = null;
@@ -736,79 +736,72 @@ public class GAIndicatorSystemController {
                     colName = "indicator_name";
                 else if (isortCol == 2)
                     colName = "short_name";
-                glaIndicatorList = glaIndicatorBean.searchIndicatorsName(searchParameter, false,colName,sortDirection,true);
+                glaQuestionList = glaQuestionsBean.searchQuestionsName(searchParameter, false, colName, sortDirection, true);
             }
             else
-                glaIndicatorList = glaIndicatorBean.searchIndicatorsName(searchParameter, false,colName,sortDirection,false);
+                glaQuestionList = glaQuestionsBean.searchQuestionsName(searchParameter, false, colName, sortDirection, false);
             if(idisplayStart != -1) {
                 Integer endRange = idisplayStart+pageDisplayLength;
                 Integer startRange = idisplayStart;
-                if(startRange > glaIndicatorList.size())
+                if(startRange > glaQuestionList.size())
                     startRange = 0;
-                if (endRange > glaIndicatorList.size())
-                    endRange = glaIndicatorList.size();
+                if (endRange > glaQuestionList.size())
+                    endRange = glaQuestionList.size();
                 for (int i = startRange; i <endRange; i++) {
-                    pageGLAindicatorList.add(glaIndicatorList.get(i));
+                    pageGLAQuestionList.add(glaQuestionList.get(i));
                 }
             }
             //Set Total display record
-            glaIndicatorJsonObject.setiTotalDisplayRecords(glaIndicatorList.size());
+            glaQuestionJsonObject.setiTotalDisplayRecords(glaQuestionList.size());
             //Set Total record
-            glaIndicatorJsonObject.setiTotalRecords(glaIndicatorList.size());
-            glaIndicatorJsonObject.setAaData(pageGLAindicatorList);
+            glaQuestionJsonObject.setiTotalRecords(glaQuestionList.size());
+            glaQuestionJsonObject.setAaData(pageGLAQuestionList);
         }
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        return gson.toJson(glaIndicatorJsonObject);
+        return gson.toJson(glaQuestionJsonObject);
     }
 
     private Questions retrieveQuestion(String questionName){
-        log.info("reteriveQuestion : STARTED \n");
         GLAQuestionDao glaQuestionsBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
-        log.info("Retreive From DB : STARTED \n");
-        log.info("Name : \t"+ questionName);
         long question_id = glaQuestionsBean.findQuestionID(questionName);
         GLAQuestion glaQuestion = glaQuestionsBean.loadByQuestionID(question_id);
         Questions questions = new Questions();
         questions.setQuestionId(glaQuestion.getId());
         questions.setQuestionName(glaQuestion.getQuestion_name());
-        log.info("GLA QUESTION FROM DB : ID : \t"+ glaQuestion.getId());
-        log.info("GLA QUESTION FROM DB : Name : \t"+ glaQuestion.getQuestion_name());
+        questions.setTotalExecutions(glaQuestion.getGlaQuestionProps().getTotalExecutions());
+        questions.setLast_executionTime(glaQuestion.getGlaQuestionProps().getLast_executionTime());
+        questions.setLast_executionTime(glaQuestion.getGlaQuestionProps().getLast_executionTime());
+        questions.setUserName(glaQuestion.getGlaQuestionProps().getUserName());
+        questions.setNumIndicators(glaQuestion.getIndicators_num());
         for( GLAIndicator glaIndicators : glaQuestion.getGlaIndicators()){
-            log.info("GLA Indicator FROM DB : Name : \t"+ glaIndicators.getIndicator_name());
-            log.info("GLA Indicator FROM DB : ID : \t"+ glaIndicators.getId());
-            log.info("GLA Indicator FROM DB : HQL : \t"+ glaIndicators.getHql());
-            log.info("GLA Indicator FROM DB : Short Name : \t"+ glaIndicators.getShort_name());
-            log.info("GLA Indicator FROM DB : PROPS ID : \t"+ glaIndicators.getGlaIndicatorProps().getId());
-            log.info("GLA INDICATOR FROM DB : LEX TIME : \t"+ glaIndicators.getGlaIndicatorProps().getLast_executionTime());
-            log.info("GLA INDICATOR FROM DB : EXEC COUNTER : \t"+ glaIndicators.getGlaIndicatorProps().getTotalExecutions());
             GenQuery genQuery = new GenQuery(glaIndicators.getHql(),glaIndicators.getIndicator_name(),
                     glaIndicators.getId());
             genQuery.setGenIndicatorProps(glaIndicators.getGlaIndicatorProps().getId(),glaIndicators.getGlaIndicatorProps().getLast_executionTime(),
-                    glaIndicators.getGlaIndicatorProps().getTotalExecutions());
+                    glaIndicators.getGlaIndicatorProps().getTotalExecutions(),glaIndicators.getGlaIndicatorProps().getChartType(),
+                    glaIndicators.getGlaIndicatorProps().getChartEngine(), glaIndicators.getGlaIndicatorProps().getUserName());
             questions.getGenQueries().add(genQuery);
         }
-        log.info("reteriveQuestion : ENDED \n");
         return questions;
 
     }
     private void processSearchParams(SearchIndicatorForm searchIndicatorForm){
         log.info("processSearchParams : STARTED \n");
-        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
-        GLAIndicator glaIndicator = null;
-        List<GLAIndicator> glaIndicatorList;
+        GLAQuestionDao glaQuestionBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
+        GLAQuestion glaQuestion = null;
+        List<GLAQuestion> glaQuestionList;
         if(NumberChecks.isNumeric(searchIndicatorForm.getSearchField()) && searchIndicatorForm.getSelectedSearchType().equals("ID")) {
-            glaIndicator = glaIndicatorBean.loadByIndicatorID(Long.parseLong(searchIndicatorForm.getSearchField()));
-            if(glaIndicator != null) {
-                log.info("GLA INDICATOR FROM DB SEARCH: ID : \t"+ glaIndicator.getId());
-                searchIndicatorForm.getSearchResults().add(glaIndicator.getIndicator_name());
+            glaQuestion = glaQuestionBean.loadByQuestionID(Long.parseLong(searchIndicatorForm.getSearchField()));
+            if(glaQuestion != null) {
+                log.info("GLA Question FROM DB SEARCH: ID : \t"+ glaQuestion.getId());
+                searchIndicatorForm.getSearchResults().add(glaQuestion.getQuestion_name());
             }
         }
-        else if (!NumberChecks.isNumeric(searchIndicatorForm.getSearchField()) && searchIndicatorForm.getSelectedSearchType().equals("Indicator Name")) {
-            glaIndicatorList = glaIndicatorBean.loadByIndicatorByName(searchIndicatorForm.getSearchField(),false);
-            if(glaIndicatorList != null) {
-                for(GLAIndicator gI : glaIndicatorList){
-                    log.info("GLA INDICATOR FROM DB SEARCH: NAME : \t"+ gI.getIndicator_name());
-                    searchIndicatorForm.getSearchResults().add(gI.getIndicator_name());
+        else if (!NumberChecks.isNumeric(searchIndicatorForm.getSearchField()) && searchIndicatorForm.getSelectedSearchType().equals("Question Name")) {
+            glaQuestionList = glaQuestionBean.loadByQuestionName(searchIndicatorForm.getSearchField(), false);
+            if(glaQuestionList != null) {
+                for(GLAQuestion gQ : glaQuestionList){
+                    log.info("GLA INDICATOR FROM DB SEARCH: NAME : \t"+ gQ.getQuestion_name());
+                    searchIndicatorForm.getSearchResults().add(gQ.getQuestion_name());
                 }
             }
         }

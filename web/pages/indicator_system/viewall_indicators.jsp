@@ -86,11 +86,11 @@
                         //Un-comment below alert to see page number
                         //alert("Current page number: "+this.fnPagingInfo().iPage);
                     },
-                    "sAjaxSource": "/indicators/fetchExistingIndicatorsData.web",
+                    "sAjaxSource": "/indicators/fetchExistingQuestionsData.web",
                     "aoColumns": [
                         { "mData": "id" },
-                        { "mData": "indicator_name" },
-                        { "mData": "short_name" },
+                        { "mData": "question_name" },
+                        { "mData": "indicators_num" },
                     ]
                 } );
 
@@ -198,7 +198,7 @@
                                 <tr>
                                     <th>Question ID</th>
                                     <th>Question Name</th>
-                                    <th>Short Name</th>
+                                    <th>Number of Associated Indicators</th>
                                 </tr>
                                 </thead>
                             </table>
@@ -231,9 +231,7 @@
     </footer>
 </div>
 
-<script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/Chart.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/templatemo_script.js"></script>
 <script type="text/javascript">
 </script>

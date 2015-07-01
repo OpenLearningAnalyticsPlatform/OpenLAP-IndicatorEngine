@@ -58,7 +58,6 @@
     <orderEntry type="library" name="log4j-1.2.14" level="project" />
     <orderEntry type="library" name="Drools-5.4.0" level="project" />
     <orderEntry type="library" name="ant:ant-javamail:1.6" level="project" />
-    <orderEntry type="library" name="org.fluttercode.datafactory:datafactory:0.8" level="project" />
     <orderEntry type="library" name="javax.mail:mail:1.4" level="project" />
     <orderEntry type="library" name="sqljdbc4" level="project" />
     <orderEntry type="library" name="commons-collections4-4.0" level="project" />

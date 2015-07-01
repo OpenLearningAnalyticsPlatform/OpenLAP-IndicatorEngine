@@ -143,6 +143,29 @@ public class GLAQuestionDaoImpl implements  GLAQuestionDao{
     }
 
     /**
+     * Loads an existing Indicator from the Database. Looks up using name in the Database. It does a similarity search in the database.
+     * @param questionName Name of the Indicator used for lookup.
+     * @return A List of similarly named Indicators present in the Database.
+     */
+    @Override
+    @Transactional
+    public List<GLAQuestion> loadByQuestionName(String questionName, boolean exact) {
+        Session session = factory.getCurrentSession();
+        questionName = "%"+questionName+"%";
+        Criteria criteria = session.createCriteria(GLAQuestion.class);
+        criteria.setFetchMode("glaIndicators", FetchMode.JOIN);
+        criteria.setFetchMode("glaQuestionProps", FetchMode.JOIN);
+        if(exact)
+            criteria.add(Restrictions.eq("question_name", questionName));
+        else
+            criteria.add(Restrictions.ilike("question_name", questionName));
+
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        return  criteria.list();
+
+    }
+
+    /**
      * Updates the Execution Statistics Counter of a Specific Question.
      * @param ID Question ID to be searched and updated.
      *
@@ -168,5 +191,42 @@ public class GLAQuestionDaoImpl implements  GLAQuestionDao{
         glaQuestion.getGlaQuestionProps().setTotalExecutions(glaQuestion.getGlaQuestionProps().getTotalExecutions()+1);
         factory.getCurrentSession().saveOrUpdate(glaQuestion);
 
+    }
+
+    /**
+     * Counts the total number of Questions present in the Database.
+     * @return
+     *      Total count of Questions
+     */
+    @Override
+    @Transactional
+    public int getTotalQuestions() {
+        Session session = factory.getCurrentSession();
+        return ((Number) session.createCriteria(GLAQuestion.class).setProjection(Projections.rowCount()).uniqueResult()).intValue();
+
+    }
+
+    @Override
+    @Transactional
+    public List<GLAQuestion> searchQuestionsName(String searchParameter, boolean exactSearch,
+                                                   String colName, String sortDirection, boolean sort){
+        if(!exactSearch)
+            searchParameter = "%"+searchParameter+"%";
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAQuestion.class);
+        criteria.setFetchMode("glaIndicators", FetchMode.JOIN);
+        criteria.setFetchMode("glaQuestionProps", FetchMode.JOIN);
+        if(!exactSearch)
+            criteria.add(Restrictions.ilike("question_name", searchParameter));
+        else
+            criteria.add(Restrictions.eq("question_name", searchParameter));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        if(sort) {
+            if(sortDirection.equals("asc"))
+                criteria.addOrder(Order.asc(colName));
+            else
+                criteria.addOrder(Order.desc(colName));
+        }
+        return criteria.list();
     }
 }

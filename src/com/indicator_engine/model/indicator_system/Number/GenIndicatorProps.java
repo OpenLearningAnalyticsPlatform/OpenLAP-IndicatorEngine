@@ -14,12 +14,17 @@ public class GenIndicatorProps implements Serializable {
 
     private String chartType;
     private String chartEngine;
+    private String userName;
 
     public GenIndicatorProps(){}
-    public GenIndicatorProps(long props_id, Timestamp last_executionTime, int totalExecutions){
+    public GenIndicatorProps(long props_id, Timestamp last_executionTime, int totalExecutions,
+                             String chartType,String chartEngine, String userName){
         this.props_id = props_id;
         this.last_executionTime = last_executionTime;
         this.totalExecutions = totalExecutions;
+        this.chartEngine = chartEngine;
+        this.chartType = chartType;
+        this.userName = userName;
     }
 
     public long getProps_id() {
@@ -60,5 +65,13 @@ public class GenIndicatorProps implements Serializable {
 
     public void setChartEngine(String chartEngine) {
         this.chartEngine = chartEngine;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

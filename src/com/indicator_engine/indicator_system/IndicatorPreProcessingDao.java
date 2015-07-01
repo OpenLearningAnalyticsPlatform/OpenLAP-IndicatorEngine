@@ -35,7 +35,4 @@ public interface IndicatorPreProcessingDao {
     public List<String> initPopulateMinors(List<String> sources, String action, String platform);
     public List<String> initPopulateTypes(List<String> sources, String action, String platform);
     public List<String> initPopulateMajors(List<String> sources, String action, String platform);
-    public void addDefaultEValues(SelectNumberParameters selectNumberParameters);
-    public void flushPrevQnData(SelectNumberParameters selectNumberParameters);
-    public void retrieveQuestion(Questions questions);
 }

@@ -102,18 +102,20 @@
                     <tr>
                         <th>Question ID</th>
                         <th>Name</th>
-                        <th>Number of Questions</th>
+                        <th>Number of Indicators</th>
                         <th>Last Executed on</th>
                         <th>Execution Counter</th>
+                        <th>Owner</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td><c:out value="${numberIndicator.indicator_id}"/></td>
-                        <td><c:out value="${numberIndicator.indicatorName}"/></td>
-                        <td><c:out value="${numberIndicator.genQueries.size()}"/></td>
-                        <td><c:out value="${numberIndicator.genIndicatorProps.last_executionTime}"/></td>
-                        <td><c:out value="${numberIndicator.genIndicatorProps.totalExecutions}"/></td>
+                        <td><c:out value="${question.questionId}"/></td>
+                        <td><c:out value="${question.questionName}"/></td>
+                        <td><c:out value="${question.numIndicators}"/></td>
+                        <td><c:out value="${question.last_executionTime}"/></td>
+                        <td><c:out value="${question.totalExecutions}"/></td>
+                        <td><c:out value="${question.userName}"/></td>
                     </tr>
                     </tbody>
                 </table>
@@ -125,14 +127,24 @@
                     <tr>
                         <th>Indicator ID</th>
                         <th>Indicator Name</th>
+                        <th>Last Executed on</th>
+                        <th>Execution Counter</th>
+                        <th>Chart Engine</th>
+                        <th>Chart Type</th>
+                        <th>Owner</th>
                         <th>Hibernate Query</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach var="entityVal" items="${numberIndicator.genQueries}"  varStatus="loop">
+                    <c:forEach var="entityVal" items="${question.genQueries}"  varStatus="loop">
                         <tr>
                             <td><c:out value="${entityVal.queryID}"/></td>
-                            <td><c:out value="${entityVal.questionName}"/></td>
+                            <td><c:out value="${entityVal.indicatorName}"/></td>
+                            <td><c:out value="${entityVal.genIndicatorProps.last_executionTime}"/></td>
+                            <td><c:out value="${entityVal.genIndicatorProps.totalExecutions}"/></td>
+                            <td><c:out value="${entityVal.genIndicatorProps.chartEngine}"/></td>
+                            <td><c:out value="${entityVal.genIndicatorProps.chartType}"/></td>
+                            <td><c:out value="${entityVal.genIndicatorProps.userName}"/></td>
                             <td><c:out value="${entityVal.query}"/></td>
                         </tr>
                     </c:forEach>

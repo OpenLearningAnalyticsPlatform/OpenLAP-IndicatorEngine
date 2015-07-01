@@ -21,6 +21,9 @@ public class Questions implements Serializable{
     private long questionId ;
     private Timestamp last_executionTime;
     private int totalExecutions;
+    private int numIndicators;
+
+    private String userName;
 
     private List<GenQuery> genQueries = new ArrayList<>();
 
@@ -46,6 +49,10 @@ public class Questions implements Serializable{
         // Reset everything to your default values
         this.questionName = null;
         this.genQueries.clear();
+        this.userName = null;
+        this.last_executionTime = null;
+        this.totalExecutions = 0;
+        this.numIndicators = 0;
     }
 
     public long getQuestionId() {
@@ -73,5 +80,19 @@ public class Questions implements Serializable{
         this.questionName = questionName;
     }
 
+    public String getUserName() {
+        return userName;
+    }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public int getNumIndicators() {
+        return numIndicators;
+    }
+
+    public void setNumIndicators(int numIndicators) {
+        this.numIndicators = numIndicators;
+    }
 }
