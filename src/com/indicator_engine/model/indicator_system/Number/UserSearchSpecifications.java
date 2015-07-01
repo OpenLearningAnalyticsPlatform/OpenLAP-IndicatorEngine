@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Tanmaya Mahapatra on 25-04-2015.
  */
 @SuppressWarnings({"unused", "unchecked"})
-public class UserSearchSpecifications implements Serializable {
+public class UserSearchSpecifications implements Serializable,Cloneable {
     private String userSearchType;
     private String searchPattern;
     private String userSearch ;
@@ -18,6 +18,19 @@ public class UserSearchSpecifications implements Serializable {
         this.userSearchType = userSearchType;
         this.userSearch = userSearch;
         this.searchPattern =searchPattern;
+    }
+
+    @Override
+    public UserSearchSpecifications clone() {
+        UserSearchSpecifications clone = null;
+        try{
+            clone = (UserSearchSpecifications) super.clone();
+
+        }catch(CloneNotSupportedException e){
+            throw new RuntimeException(e); // won't happen
+        }
+        return clone;
+
     }
 
     public String getUserSearchType() {

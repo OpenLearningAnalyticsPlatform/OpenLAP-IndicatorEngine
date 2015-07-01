@@ -151,7 +151,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <form:form action="" method="GET">
+
                         <h2 >Listing of All User Data from gla_USER Table<br><br></h2>
                         <table width="70%" style="border: 3px;background: rgb(243, 244, 248);"><tr><td>
                             <table id="gla_userData" class="display" cellspacing="0" width="100%">
@@ -165,7 +165,7 @@
                                 </thead>
                             </table>
                         </td></tr></table>
-                    </form:form>
+
                 </div>
             </div>
         </div>

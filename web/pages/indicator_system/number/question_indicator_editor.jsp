@@ -50,15 +50,13 @@
     <link href="${pageContext.request.contextPath}/js/jquery-ui/jquery-ui.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/indicator_editor.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/animate.css" rel="stylesheet">
+    <link href="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js" rel="stylesheet">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-ui/jquery-ui.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/noty-2.3.5/js/noty/jquery.noty.js"  ></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/noty-2.3.5/js/noty/layouts/top.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/noty-2.3.5/js/noty/layouts/center.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/noty-2.3.5/js/noty/layouts/bottom.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/noty-2.3.5/js/noty/layouts/inline.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/noty-2.3.5/js/noty/layouts/bottomRight.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/noty-2.3.5/js/noty/themes/relax.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/indicator_editor.js"></script>
 
 </head>
@@ -112,16 +110,82 @@
 
             <div id="indViewDialog" title="Selected Indicator Property">
                 <div id="accordionIndProp">
-                    <h3>Indicator Basic Properties</h3>
+                    <h3>Basic Properties</h3>
                     <div>
                         <p>
-                            <div id="indBasicProperty"></div>
+                        <div id="indBasicProperty"></div>
                         </p>
                     </div>
-                    <h3>Indicator Data Properties</h3>
+                    <h3>Entity Filters</h3>
                     <div>
                         <p>
-                        <div id="indDataProperty"></div>
+                            <div class="row">
+                            <div class="col-md-12">
+
+                                <h2 >Listing of All Attribute Filters <br><br></h2>
+                                <table width="70%" style="border: 3px;background: rgb(243, 244, 248);"><tr><td>
+                                    <table id="indEntityFilters" class="display" cellspacing="0" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th>Filter Key</th>
+                                            <th>Search Keyword</th>
+                                            <th>Search Pattern</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </td></tr></table>
+
+                            </div>
+                        </div>
+                        </p>
+                    </div>
+                    <h3>User Filters</h3>
+                    <div>
+                        <p>
+                            <h2 >Listing of All User Filters <br><br></h2>
+                            <table width="70%" style="border: 3px;background: rgb(243, 244, 248);"><tr><td>
+                                <table id="indUserFilters" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>User Search Type</th>
+                                        <th>User Search Pattern</th>
+                                        <th>User Value</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </td></tr></table>
+                        </p>
+                    </div>
+                    <h3>Session Filters</h3>
+                    <div>
+                        <p>
+                            <h2 >Listing of All Session Filters <br><br></h2>
+                            <table width="70%" style="border: 3px;background: rgb(243, 244, 248);"><tr><td>
+                                <table id="indSessionFilters" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>Session Value</th>
+                                        <th>Search Pattern</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </td></tr></table>
+                        </p>
+                    </div>
+                    <h3>Time Filters</h3>
+                    <div>
+                        <p>
+                            <h2 >Listing of All Time Filters <br><br></h2>
+                            <table width="70%" style="border: 3px;background: rgb(243, 244, 248);"><tr><td>
+                                <table id="indTimeFilters" class="display" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>Timestamp</th>
+                                        <th>Search Pattern</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </td></tr></table>
                         </p>
                     </div>
                 </div>
@@ -315,7 +379,7 @@
                                     <tr>
                                         <div class="row">
                                             <div class="col-md-6 margin-bottom-15">
-                                                <label for="actionSelection">Select Number of  </label>
+                                                <label for="actionSelection">Select Number of (Minors) </label>
                                                 <form:select class="form-control margin-bottom-15" title="Please select a Minor to populate the relevant Attributes"
                                                              path="selectedMinor" items="${selectNumberParameters.minors}" name ="selectedMinor" id="selectedMinor" onchange="populateEntities();" onfocus="this.selectedIndex = -1;"/>
                                             </div>
@@ -454,6 +518,9 @@
                                                     <form:select multiple="true" class="form-control" path="selectedSearchStrings" id = "timeSearchResults" name="multipleSelect">
                                                         <form:options items="${selectNumberParameters.searchResults}" />
                                                     </form:select>
+                                                    <br/>
+                                                    From Date: <input type="text" id="fromDate">
+                                                    To Date: <input type="text" id="toDate">
                                                     <label for="timeSelectionType">TimeStamp Search Type</label>
                                                     <form:select class="form-control margin-bottom-15" path="selectedTimeType" items="${selectNumberParameters.timeType}" name ="timeSelectionType" id="timeSelectionType" />
                                                     <button  type="button" name="_eventId_specifyTime" onclick="addTimeFilter()" value="Add">
@@ -552,19 +619,31 @@
                                             <h3>Basic Information</h3>
                                             <div>
                                                 <p>
-                                                    will be posted here
+                                                <div id="current_ind_basic_info">
+                                                </div>
+                                                <br/>
+                                                <div class="row templatemo-form-buttons">
+                                                    <div class="col-md-12">
+                                                        <button   type="button" id="refreshIndInfo" value="Refresh" onclick="refreshCurrentIndicator()">
+                                                            <img src="${pageContext.request.contextPath}/images/refresh.png" alt="button" width="48" height="48"/>
+                                                        </button >
+                                                    </div>
+                                                </div>
+                                                <br/>
                                                 </p>
                                             </div>
                                             <h3>Filters At a Glance</h3>
                                             <div>
                                                 <p>
-                                                    will be posted here
+                                                <div id="filters_at_a_glance">
+                                                </div>
                                                 </p>
                                             </div>
                                             <h3>Hibernate Query</h3>
                                             <div>
                                                 <p>
-                                                    will be posted here
+                                                <div id="currentIndHQL">
+                                                </div>
                                                 </p>
                                             </div>
                                         </div>

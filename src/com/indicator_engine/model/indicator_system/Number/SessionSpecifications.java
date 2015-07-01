@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Tanmaya Mahapatra on 26-04-2015.
  */
 @SuppressWarnings({"unused", "unchecked"})
-public class SessionSpecifications implements Serializable {
+public class SessionSpecifications implements Serializable,Cloneable {
     private String session;
     private String type;
 
@@ -16,6 +16,19 @@ public class SessionSpecifications implements Serializable {
     public SessionSpecifications(String type, String session) {
         this.type = type;
         this.session = session;
+    }
+
+    @Override
+    public SessionSpecifications clone() {
+        SessionSpecifications clone = null;
+        try{
+            clone = (SessionSpecifications) super.clone();
+
+        }catch(CloneNotSupportedException e){
+            throw new RuntimeException(e); // won't happen
+        }
+        return clone;
+
     }
 
     public String getSession() {

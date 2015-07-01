@@ -27,7 +27,7 @@ import java.util.List;
  * Created by Tanmaya Mahapatra on 24-04-2015.
  */
 @SuppressWarnings({"unused", "unchecked"})
-public class EntityValues implements Serializable {
+public class EntityValues implements Serializable,Cloneable {
     private String key;
     private String eValues;
     private String type;
@@ -36,6 +36,18 @@ public class EntityValues implements Serializable {
         this.eValues = eValues;
         this.type = type;
         this.key = key;
+    }
+    @Override
+    public EntityValues clone() {
+        EntityValues clone = null;
+        try{
+            clone = (EntityValues) super.clone();
+
+        }catch(CloneNotSupportedException e){
+            throw new RuntimeException(e); // won't happen
+        }
+        return clone;
+
     }
 
     public EntityValues(String eValues){

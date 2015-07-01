@@ -173,7 +173,6 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
         questions.setQuestionId(glaQuestionBean.add(glaQuestion, glaIndicator));
         log.info("Saving Indicator and all its Questions/Queries : ENDED");
 
-
     }
 
     @Override

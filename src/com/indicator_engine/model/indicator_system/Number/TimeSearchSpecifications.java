@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Tanmaya Mahapatra on 26-04-2015.
  */
 @SuppressWarnings({"unused", "unchecked"})
-public class TimeSearchSpecifications  implements Serializable{
+public class TimeSearchSpecifications  implements Serializable,Cloneable{
     private String type;
     private List<String> timestamp = new ArrayList<>();
 
@@ -16,6 +16,19 @@ public class TimeSearchSpecifications  implements Serializable{
     public TimeSearchSpecifications(String type, List<String> timestamp ){
         this.type = type;
         this.timestamp = timestamp;
+    }
+
+    @Override
+    public TimeSearchSpecifications clone() {
+        TimeSearchSpecifications clone = null;
+        try{
+            clone = (TimeSearchSpecifications) super.clone();
+
+        }catch(CloneNotSupportedException e){
+            throw new RuntimeException(e); // won't happen
+        }
+        return clone;
+
     }
 
     public String getType() {

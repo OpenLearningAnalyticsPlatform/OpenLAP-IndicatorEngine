@@ -236,4 +236,5 @@ public class EntitySpecification implements Serializable {
     public String getRetrievableObjects() {
         return retrievableObjects;
     }
+
 }

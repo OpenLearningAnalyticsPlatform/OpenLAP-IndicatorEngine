@@ -400,6 +400,7 @@ public class GAIndicatorSystemController {
         entitySpecificationBean.setSelectedChartEngine(graphEngine);
         //entitySpecificationBean.setQuestionName(questionName);
         entitySpecificationBean.setIndicatorName(indicatorName);
+        //If user Directly finalizes the Indicator, then we have to implicitly generate the HQL
         if(entitySpecificationBean.getHql() == null ) {
             entitySpecificationBean.setQuestionName(questionName);
             GLACategory glaCategory = glaCategoryBean.loadCategoryByName(entitySpecificationBean.getSelectedMinor());
@@ -407,6 +408,30 @@ public class GAIndicatorSystemController {
             entitySpecificationBean.setSelectedType(glaCategory.getType());
             operationNumberProcessorBean.computeResult(entitySpecificationBean);
         }
+
+        List<EntityValues>  xMLentityValues = new ArrayList<EntityValues>(entitySpecificationBean.getEntityValues().size());
+        Iterator<EntityValues> entityIterator = entitySpecificationBean.getEntityValues().iterator();
+        while(entityIterator.hasNext()){
+            xMLentityValues.add(entityIterator.next().clone());
+        }
+        List<UserSearchSpecifications>  xMlUserSpecifications = new ArrayList<UserSearchSpecifications>(entitySpecificationBean.getUserSpecifications().size());
+        Iterator<UserSearchSpecifications> userSpecIterator = entitySpecificationBean.getUserSpecifications().iterator();
+        while(userSpecIterator.hasNext()){
+            xMlUserSpecifications.add(userSpecIterator.next().clone());
+        }
+
+        List<SessionSpecifications>  xMLSessionSpecifications = new ArrayList<SessionSpecifications>(entitySpecificationBean.getSessionSpecifications().size());
+        Iterator<SessionSpecifications> sessionSpecIterator = entitySpecificationBean.getSessionSpecifications().iterator();
+        while(sessionSpecIterator.hasNext()){
+            xMLSessionSpecifications.add(sessionSpecIterator.next().clone());
+        }
+        List<TimeSearchSpecifications>  xMLTimeSpecifications = new ArrayList<TimeSearchSpecifications>(entitySpecificationBean.getTimeSpecifications().size());
+        Iterator<TimeSearchSpecifications> timeSpecIterator = entitySpecificationBean.getTimeSpecifications().iterator();
+        while(timeSpecIterator.hasNext()){
+            xMLTimeSpecifications.add(timeSpecIterator.next().clone());
+        }
+
+
         if(entitySpecificationBean.getQuestionsContainer().getGenQueries().size() == 0 ) {
             Questions questions = new Questions();
             GenIndicatorProps genIndicatorProps = new GenIndicatorProps();
@@ -414,8 +439,7 @@ public class GAIndicatorSystemController {
             genIndicatorProps.setChartType(entitySpecificationBean.getSelectedChartType());
             IndicatorXMLData indicatorXMLData = new IndicatorXMLData(entitySpecificationBean.getSelectedSource(), entitySpecificationBean.getSelectedAction(),
                     entitySpecificationBean.getSelectedPlatform(), entitySpecificationBean.getSelectedMajor(), entitySpecificationBean.getSelectedMinor(),
-                    entitySpecificationBean.getFilteringType(), entitySpecificationBean.getEntityValues(), entitySpecificationBean.getUserSpecifications(),
-                    entitySpecificationBean.getSessionSpecifications(), entitySpecificationBean.getTimeSpecifications(), entitySpecificationBean.getSelectedChartType(),
+                    entitySpecificationBean.getFilteringType(),xMLentityValues, xMlUserSpecifications, xMLSessionSpecifications, xMLTimeSpecifications, entitySpecificationBean.getSelectedChartType(),
                     entitySpecificationBean.getSelectedChartEngine());
             questions.setQuestionName(entitySpecificationBean.getQuestionName());
             questions.getGenQueries().add(new GenQuery(entitySpecificationBean.getHql(),entitySpecificationBean.getIndicatorName(),1, indicatorXMLData, genIndicatorProps));
@@ -424,8 +448,7 @@ public class GAIndicatorSystemController {
         else if(entitySpecificationBean.getQuestionsContainer().getGenQueries().size() >= 1) {
             IndicatorXMLData indicatorXMLData = new IndicatorXMLData(entitySpecificationBean.getSelectedSource(), entitySpecificationBean.getSelectedAction(),
                     entitySpecificationBean.getSelectedPlatform(), entitySpecificationBean.getSelectedMajor(), entitySpecificationBean.getSelectedMinor(),
-                    entitySpecificationBean.getFilteringType(), entitySpecificationBean.getEntityValues(), entitySpecificationBean.getUserSpecifications(),
-                    entitySpecificationBean.getSessionSpecifications(), entitySpecificationBean.getTimeSpecifications(), entitySpecificationBean.getSelectedChartType(),
+                    entitySpecificationBean.getFilteringType(), xMLentityValues, xMlUserSpecifications, xMLSessionSpecifications, xMLTimeSpecifications, entitySpecificationBean.getSelectedChartType(),
                     entitySpecificationBean.getSelectedChartEngine());
             GenIndicatorProps genIndicatorProps = new GenIndicatorProps();
             genIndicatorProps.setChartEngine(entitySpecificationBean.getSelectedChartEngine());
@@ -462,6 +485,19 @@ public class GAIndicatorSystemController {
         }
         return null;
     }
+    @RequestMapping(value = "/refreshCurrentIndicator", method = RequestMethod.GET)
+    public @ResponseBody
+    String  refreshCurrentIndicator(Model model) {
+
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        CurrentIndicatorSummary currentIndicatorSummary = new CurrentIndicatorSummary(entitySpecificationBean.getIndicatorName(), entitySpecificationBean.getSelectedPlatform(),
+                entitySpecificationBean.getSelectedAction(), entitySpecificationBean.getSelectedChartType(), entitySpecificationBean.getSelectedChartEngine(), entitySpecificationBean.getHql(),
+                entitySpecificationBean.getEntityValues().size(), entitySpecificationBean.getUserSpecifications().size(), entitySpecificationBean.getSessionSpecifications().size(),
+                entitySpecificationBean.getTimeSpecifications().size());
+        return gson.toJson(currentIndicatorSummary);
+
+    }
 
     @RequestMapping(value = "/deleteIndFromQn", method = RequestMethod.GET)
     public @ResponseBody
@@ -483,6 +519,43 @@ public class GAIndicatorSystemController {
         return gson.toJson(msg);
     }
 
+    @RequestMapping(value = "/loadIndFromQnSetToEditor", method = RequestMethod.GET)
+    public @ResponseBody
+    String  loadIndicatorFromQn(@RequestParam(value="indName" ,required = false)String indicatorName, Model model) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        String msg = null;
+        if (indicatorName != null) {
+            for (Iterator<GenQuery> genQuery = entitySpecificationBean.getQuestionsContainer().getGenQueries().iterator(); genQuery.hasNext(); ) {
+                GenQuery agenQuery = genQuery.next();
+                if (agenQuery.getIndicatorName().equals(indicatorName)) {
+                    entitySpecificationBean.setEntityValues(new ArrayList<EntityValues>(agenQuery.getIndicatorXMLData().getEntityValues().size()));
+                    Iterator<EntityValues> entityIterator = agenQuery.getIndicatorXMLData().getEntityValues().iterator();
+                    while(entityIterator.hasNext()) {
+                        entitySpecificationBean.getEntityValues().add(entityIterator.next().clone());
+                    }
+                    entitySpecificationBean.setUserSpecifications(new ArrayList<UserSearchSpecifications>(entitySpecificationBean.getUserSpecifications().size()));
+                    Iterator<UserSearchSpecifications> userSpecIterator = agenQuery.getIndicatorXMLData().getUserSpecifications().iterator();
+                    while(userSpecIterator.hasNext()){
+                        entitySpecificationBean.getUserSpecifications().add(userSpecIterator.next().clone());
+                    }
+                    entitySpecificationBean.setSessionSpecifications(new ArrayList<SessionSpecifications>(entitySpecificationBean.getSessionSpecifications().size()));
+                    Iterator<SessionSpecifications> sessionSpecIterator = agenQuery.getIndicatorXMLData().getSessionSpecifications().iterator();
+                    while(sessionSpecIterator.hasNext()){
+                        entitySpecificationBean.getSessionSpecifications().add(sessionSpecIterator.next().clone());
+                    }
+                    entitySpecificationBean.setTimeSpecifications(new ArrayList<TimeSearchSpecifications>(entitySpecificationBean.getTimeSpecifications().size()));
+                    Iterator<TimeSearchSpecifications> timeSpecIterator = agenQuery.getIndicatorXMLData().getTimeSpecifications().iterator();
+                    while(timeSpecIterator.hasNext()){
+                        entitySpecificationBean.getTimeSpecifications().add(timeSpecIterator.next().clone());
+                    }
+                    genQuery.remove();
+                    return gson.toJson(agenQuery);
+                }
+            }
+        }
+        return null;
+    }
 
     @RequestMapping(value = "/viewall", method = RequestMethod.POST)
     public ModelAndView processIndicatorSearchForm( @RequestParam String action, @Valid @ModelAttribute("searchIndicatorForm") SearchIndicatorForm searchIndicatorForm, BindingResult bindingResult, HttpSession session) {
@@ -815,5 +888,114 @@ class Categories {
 
     public void setMinor(String minor) {
         this.minor = minor;
+    }
+}
+
+class CurrentIndicatorSummary {
+
+    String name;
+    String platform;
+    String action;
+    String chartType;
+    String chartEngine;
+    String hql;
+    int entityFilters;
+    int userFilters;
+    int sessionFilters;
+    int timeFilters;
+
+    CurrentIndicatorSummary() {}
+    CurrentIndicatorSummary(String name, String platform, String action, String chartType, String chartEngine,
+                            String hql, int entityFilters, int userFilters, int sessionFilters, int timeFilters) {
+        this.name = name;
+        this.action = action;
+        this.platform = platform;
+        this.chartEngine = chartEngine;
+        this.chartType = chartType;
+        this.hql = hql;
+        this.entityFilters = entityFilters;
+        this.userFilters = userFilters;
+        this.sessionFilters = sessionFilters;
+        this.timeFilters = timeFilters;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getChartType() {
+        return chartType;
+    }
+
+    public void setChartType(String chartType) {
+        this.chartType = chartType;
+    }
+
+    public String getChartEngine() {
+        return chartEngine;
+    }
+
+    public void setChartEngine(String chartEngine) {
+        this.chartEngine = chartEngine;
+    }
+
+    public String getHql() {
+        return hql;
+    }
+
+    public void setHql(String hql) {
+        this.hql = hql;
+    }
+
+    public int getEntityFilters() {
+        return entityFilters;
+    }
+
+    public void setEntityFilters(int entityFilters) {
+        this.entityFilters = entityFilters;
+    }
+
+    public int getUserFilters() {
+        return userFilters;
+    }
+
+    public void setUserFilters(int userFilters) {
+        this.userFilters = userFilters;
+    }
+
+    public int getSessionFilters() {
+        return sessionFilters;
+    }
+
+    public void setSessionFilters(int sessionFilters) {
+        this.sessionFilters = sessionFilters;
+    }
+
+    public int getTimeFilters() {
+        return timeFilters;
+    }
+
+    public void setTimeFilters(int timeFilters) {
+        this.timeFilters = timeFilters;
     }
 }

@@ -48,6 +48,37 @@ $(function() {
         heightStyle: "fill",
     });
     $( document ).tooltip();
+    $( "#toDate" ).datepicker();
+    $( "#fromDate" ).datepicker();
+
+    var indPropEntityFilterTable = $('#indEntityFilters').dataTable({
+        "aoColumns": [
+        { "mDataProp": "key" },
+        { "mDataProp": "eValues" },
+        { "mDataProp": "type" }
+        ]
+    }).api();
+
+    var indPropUserFilterTable = $('#indUserFilters').dataTable({
+        "aoColumns": [
+            { "mDataProp": "userSearchType" },
+            { "mDataProp": "searchPattern" },
+            { "mDataProp": "userSearch" }
+        ]
+    }).api();
+    var indPropSessionFilterTable = $('#indSessionFilters').dataTable({
+        "aoColumns": [
+            { "mDataProp": "session" },
+            { "mDataProp": "type" }
+        ]
+    }).api();
+    var indPropTimeFilterTable = $('#indTimeFilters').dataTable({
+        "aoColumns": [
+            { "mDataProp": "timestamp" },
+            { "mDataProp": "type" }
+        ]
+    }).api();
+
 
     $( "#questionHelpDialog" ).dialog({
         modal: true,
@@ -132,8 +163,7 @@ $(function() {
             duration: 1000
         },
         height: 'auto',
-        maxWidth: 1200,
-        minWidth: 900,
+        width: 'auto',
         position: 'center',
         resizable: true
     });
@@ -177,6 +207,22 @@ $(function() {
             success:function(response){
                 //$("#indViewDialog").text(JSON.stringify(response));
                 GenerateTable(response)
+
+                indPropEntityFilterTable.clear();
+                indPropUserFilterTable.clear();
+                indPropSessionFilterTable.clear();
+                indPropTimeFilterTable.clear();
+
+                indPropEntityFilterTable.rows.add(response.indicatorXMLData.entityValues);
+                indPropUserFilterTable.rows.add(response.indicatorXMLData.userSpecifications);
+                indPropSessionFilterTable.rows.add(response.indicatorXMLData.sessionSpecifications);
+                indPropTimeFilterTable.rows.add(response.indicatorXMLData.timeSpecifications);
+
+                indPropEntityFilterTable.draw();
+                indPropUserFilterTable.draw();
+                indPropSessionFilterTable.draw();
+                indPropTimeFilterTable.draw();
+
                 $("#indViewDialog").dialog("open");
             }});
     });
@@ -192,6 +238,23 @@ $(function() {
                 $("#indDeleteDialog").dialog("open");
             }});
     });
+    $( "#indLoad" ).click(function(e){
+        $.ajax({type: "GET",
+            url: "/indicators/loadIndFromQnSetToEditor",
+            data: { indName: $("#associatedIndicators").val() },
+            dataType: "json",
+            success: function(response){
+                $("#indDeleteDialog").html("The Selected Indicator has been successfully loaded into the Editor.<br/> Please note that it has been <strong>deleted</strong>" +
+                "from the Question Set. So after making changes, please save it again if you want it to bve associated with the current indicator. <br/>" +
+                "Also note that you have to select again Platform and Axction to populate the List of Minors.");
+                $('.indDeleteDialog').dialog('option', 'title', 'Indicator Load Message');
+                refreshQuestionSummary();
+                updateScreenAfterLoadInd(response);
+                $("#indDeleteDialog").dialog("open");
+            }}
+        );
+    });
+
     $.noty.defaults = {
         layout: 'bottomRight',
         theme: 'relax', // or 'relax'
@@ -216,7 +279,7 @@ $(function() {
             afterShow: function() {},
             onClose: function() {},
             afterClose: function() {},
-            onCloseClick: function() {},
+            onCloseClick: function() {}
         },
         buttons: false // an array of buttons
     };
@@ -233,7 +296,7 @@ $(window).load(function(){
     });
     $.noty.defaults.killer = true;
     noty({
-        text: '<strong>Information</strong> <br/>Please Tye the Question Name to continue...',
+        text: '<strong>Information</strong> <br/>Please Type the Question Name to continue...',
         type: 'information'
     });
 })
@@ -248,13 +311,12 @@ function  GenerateTable(data) {
     indicatorData.push([5, "Session Filters", data.indicatorXMLData.sessionSpecifications.length]);
     indicatorData.push([6, "User Filters", data.indicatorXMLData.userSpecifications.length]);
     indicatorData.push([7, "Time Filters", data.indicatorXMLData.timeSpecifications.length]);
-
-    /*indicatorData.push([2, "Hibernate Query", data.query]);
-     indicatorData.push([5, "Sources", data.indicatorXMLData.source]);
-     indicatorData.push([6, "Platform", data.indicatorXMLData.platform]);
-     indicatorData.push([7, "Action", data.indicatorXMLData.action]);
-     indicatorData.push([8, "Minor", data.indicatorXMLData.minor]);
-     indicatorData.push([9, "Major", data.indicatorXMLData.major]); */
+    indicatorData.push([8, "Sources", data.indicatorXMLData.source]);
+    indicatorData.push([9, "Platform", data.indicatorXMLData.platform]);
+    indicatorData.push([10, "Action", data.indicatorXMLData.action]);
+    indicatorData.push([11, "Minor", data.indicatorXMLData.minor]);
+    indicatorData.push([12, "Major", data.indicatorXMLData.major]);
+    indicatorData.push([13, "Hibernate Query", data.query]);
 
     //Create a HTML Table element.
     var table = document.createElement("TABLE");
@@ -265,6 +327,7 @@ function  GenerateTable(data) {
 
     //Add the header row.
     var row = table.insertRow(-1);
+
     for (var i = 0; i < columnCount; i++) {
         var headerCell = document.createElement("TH");
         headerCell.innerHTML = indicatorData[0][i];
@@ -283,6 +346,55 @@ function  GenerateTable(data) {
     var dvTable = document.getElementById("indBasicProperty");
     dvTable.innerHTML = "";
     dvTable.appendChild(table);
+}
+
+function updateScreenAfterLoadInd(data) {
+    document.getElementById('indicatorNaming').value = data.indicatorName;
+    var sel = document.getElementById('PlatformSelection');
+    var opts = sel.options;
+    for(var opt, j = 0; opt = opts[j]; j++) {
+        if(opt.value == data.indicatorXMLData.platform) {
+            sel.selectedIndex = j;
+            break;
+        }
+    }
+    sel = document.getElementById('actionSelection');
+    var opts = sel.options;
+    for(var opt, j = 0; opt = opts[j]; j++) {
+        if(opt.value == data.indicatorXMLData.action) {
+            sel.selectedIndex = j;
+            break;
+        }
+    }
+    sel = document.getElementById('selectedChartType');
+    var opts = sel.options;
+    for(var opt, j = 0; opt = opts[j]; j++) {
+        if(opt.value == data.genIndicatorProps.chartType) {
+            sel.selectedIndex = j;
+            break;
+        }
+    }
+    sel = document.getElementById('EngineSelect');
+    var opts = sel.options;
+    for(var opt, j = 0; opt = opts[j]; j++) {
+        if(opt.value == data.genIndicatorProps.chartEngine) {
+            sel.selectedIndex = j;
+            break;
+        }
+    }
+    var optionsToSelect = data.indicatorXMLData.source;
+    var select = document.getElementById( 'sourceSelection' );
+
+    for ( var i = 0, l = select.options.length, o; i < l; i++ )
+    {
+        o = select.options[i];
+        if ( optionsToSelect.indexOf( o.text ) != -1 )
+        {
+            o.selected = true;
+        }
+    }
+
+
 }
 /*
  * hoverIntent | Copyright 2011 Brian Cherne
@@ -368,7 +480,6 @@ function removeOptions(selectbox)
         selectbox.remove(i);
     }
 }
-
 
 function validateQuestionName(){
     createRequest();
@@ -990,6 +1101,50 @@ function displaySessionFilters(callstatus) {
     }
 }
 
+function refreshCurrentIndicator(){
+    createRequest();
+    var url ="/indicators/refreshCurrentIndicator";
+    request.open("GET",url,true);
+    request.onreadystatechange =displayCurrentIndProps;
+    request.send(null);
+}
+
+function displayCurrentIndProps() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            $.noty.defaults.killer = true;
+            noty({
+                text: '<strong>Success</strong> <br/>  <strong>Current Indicator Summary</strong> successfully refreshed. <br/>',
+                type: 'success'
+            });
+            var parsedJSON = JSON.parse(request.responseText);
+
+            var placementDiv = document.getElementById("current_ind_basic_info");
+            placementDiv.innerHTML = "";
+            $("#current_ind_basic_info").append("<ul id='list'></ul>");
+            $("#list").append("<li>" + "Name : "+ parsedJSON.name +"</li>");
+            $("#list").append("<li>" + "Action "+ parsedJSON.action +"</li>");
+            $("#list").append("<li>" + "Platform : "+ parsedJSON.platform +"</li>");
+            $("#list").append("<li>" + "Chart Type : "+ parsedJSON.chartType +"</li>");
+            $("#list").append("<li>" + "Chart Engine : "+ parsedJSON.chartEngine +"</li>");
+
+            placementDiv = document.getElementById("filters_at_a_glance");
+            placementDiv.innerHTML = "";
+            $("#filters_at_a_glance").append("<ul id='filterInfoList'></ul>");
+            $("#filterInfoList").append("<li>" + "Entity Filters : "+ parsedJSON.entityFilters +"</li>");
+            $("#filterInfoList").append("<li>" + "User Filters : "+ parsedJSON.userFilters +"</li>");
+            $("#filterInfoList").append("<li>" + "Session Filters : "+ parsedJSON.sessionFilters +"</li>");
+            $("#filterInfoList").append("<li>" + "Time Filters : "+ parsedJSON.timeFilters +"</li>");
+
+            placementDiv = document.getElementById("currentIndHQL");
+            placementDiv.innerHTML = "";
+            $("#currentIndHQL").append("<ul id='queryList'></ul>");
+            $("#queryList").append("<li>" + "Hibernate Query : "+ parsedJSON.hql +"</li>");
+        }
+    }
+
+}
+
 
 function addTable(heading,data, tablePlacement) {
     var myTableDiv = document.getElementById(tablePlacement);
@@ -1151,27 +1306,3 @@ function processScreenForNextIndicator() {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
