@@ -35,7 +35,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Tanmaya Mahapatra on 03-06-2015.
@@ -48,28 +50,18 @@ public class GLAQuestionDaoImpl implements  GLAQuestionDao{
 
     @Override
     @Transactional
-    public long add(GLAQuestion glaQuestion, List<GLAIndicator> glaIndicator){
-        if(glaIndicator == null || glaQuestion == null)
+    public long add(GLAQuestion glaQuestion,  Set<GLAIndicator> glaIndicatorHashSet){
+        if(glaIndicatorHashSet == null || glaQuestion == null)
             return -1;
         log.info("Executing add() : GLAQuestionDaoImpl : MODE : ADD OR UPDATE");
-        Calendar calendar = Calendar.getInstance();
-        java.util.Date now = calendar.getTime();
-        GLAQuestionProps glaQuestionProps  = new GLAQuestionProps();
-        glaQuestionProps.setTotalExecutions(1);
-        glaQuestionProps.setLast_executionTime(new java.sql.Timestamp(now.getTime()));
-        glaQuestionProps.setGlaQuestion(glaQuestion);
-        glaQuestion.setGlaQuestionProps(glaQuestionProps);
-        factory.getCurrentSession().saveOrUpdate(glaQuestion);
-        for( int i = 0 ; i< glaIndicator.size() ;i++){
-            GLAIndicatorProps glaIndicatorProps  = new GLAIndicatorProps();
-            glaIndicatorProps.setTotalExecutions(1);
-            glaIndicatorProps.setLast_executionTime(new java.sql.Timestamp(now.getTime()));
-            glaIndicatorProps.setGlaIndicator(glaIndicator.get(i));
-            factory.getCurrentSession().saveOrUpdate(glaIndicator.get(i));
-            glaIndicator.get(i).setGlaIndicatorProps(glaIndicatorProps);
-            glaQuestion.getGlaIndicators().add(glaIndicator.get(i));
+        glaQuestion.setGlaIndicators(glaIndicatorHashSet);
+        Set<GLAQuestion> glaQuestionSet =  new HashSet<GLAQuestion>();
+        glaQuestionSet.add(glaQuestion);
+        for(GLAIndicator glaIndicator : glaIndicatorHashSet)
+        {
+            glaIndicator.setGlaQuestions(glaQuestionSet);
         }
-        factory.getCurrentSession().save(glaQuestion);
+        factory.getCurrentSession().saveOrUpdate(glaQuestion);
         return glaQuestion.getId();
     }
 

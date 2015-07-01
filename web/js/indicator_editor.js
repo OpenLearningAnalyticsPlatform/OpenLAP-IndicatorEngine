@@ -1306,3 +1306,12 @@ function processScreenForNextIndicator() {
         }
     }
 }
+
+function SaveQuestionDB() {
+    createRequest();
+    var userName = document.getElementById("userName").value;
+    var url ="/indicators/saveQuestionDB?userName="+userName;
+    request.open("GET",url,true);
+    request.onreadystatechange=processScreenForNextIndicator;
+    request.send(null);
+}

@@ -22,13 +22,18 @@ package com.indicator_engine.model.app;
 import com.indicator_engine.validator.PasswordsEqualConstraint;
 import com.indicator_engine.validator.Phone;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.Pattern;
 
 /**
  * Created by Tanmaya Mahapatra on 16-03-2015.
  */
+@Component
+@Scope("session")
 @SuppressWarnings({"unused", "unchecked"})
+
 public class UserProfileForm {
 
 

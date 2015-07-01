@@ -1,5 +1,8 @@
 package com.indicator_engine.model.indicator_system.Number;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -11,6 +14,8 @@ import java.util.Map;
 /**
  * Created by Tanmaya Mahapatra on 31-03-2015.
  */
+@Component
+@Scope("session")
 @SuppressWarnings({"unused", "unchecked"})
 public class SelectNumberParameters implements Serializable{
 

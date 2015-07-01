@@ -19,6 +19,9 @@
 
 package com.indicator_engine.model.indicator_system.Number;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,8 @@ import java.util.List;
 /**
  * Created by Tanmaya Mahapatra on 21-06-2015.
  */
+@Component
+@Scope("session")
 public class IndicatorXMLData implements Serializable {
 
     private List<String> source;

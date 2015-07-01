@@ -48,10 +48,36 @@ public class GLAIndicatorProps implements Serializable {
     @Expose
     private int totalExecutions;
 
+    @Column(name = "user_name", nullable = false)
+    @Expose
+    private String userName;
+
+    @Column(name = "composite", nullable = false)
+    @Expose
+    private boolean isComposite;
+
+    @Column(name = "json_data", nullable = false, columnDefinition="TEXT")
+    @Expose
+    private String json_data;
+
+    @Column(name = "chart_type", nullable = false)
+    @Expose
+    private String chartType;
+
+    @Column(name = "chart_engine", nullable = false)
+    @Expose
+    private String chartEngine;
+
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "indicator_id", nullable = false)
     private GLAIndicator glaIndicator;
 
+    @PrePersist
+    public void prePersist() {
+        if(userName == null) //We set default value in case if the value is not set yet.
+            userName = "admin";
+    }
     public long getId() {
         return id;
     }
@@ -82,5 +108,45 @@ public class GLAIndicatorProps implements Serializable {
 
     public void setGlaIndicator(GLAIndicator glaIndicator) {
         this.glaIndicator = glaIndicator;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public boolean isComposite() {
+        return isComposite;
+    }
+
+    public void setComposite(boolean isComposite) {
+        this.isComposite = isComposite;
+    }
+
+    public String getJson_data() {
+        return json_data;
+    }
+
+    public void setJson_data(String json_data) {
+        this.json_data = json_data;
+    }
+
+    public String getChartType() {
+        return chartType;
+    }
+
+    public void setChartType(String chartType) {
+        this.chartType = chartType;
+    }
+
+    public String getChartEngine() {
+        return chartEngine;
+    }
+
+    public void setChartEngine(String chartEngine) {
+        this.chartEngine = chartEngine;
     }
 }

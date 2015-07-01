@@ -23,12 +23,13 @@ import com.indicator_engine.datamodel.GLAIndicator;
 import com.indicator_engine.datamodel.GLAQuestion;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Tanmaya Mahapatra on 03-06-2015.
  */
 public interface GLAQuestionDao {
-    public long add(GLAQuestion glaQuestion, List<GLAIndicator> glaIndicator);
+    public long add(GLAQuestion glaQuestion, Set<GLAIndicator> glaIndicatorHashSet);
     public List<GLAQuestion> displayAll(String colName, String sortDirection, boolean sort);
     public long findQuestionID(String questionName);
     public GLAQuestion loadByQuestionID(long ID);

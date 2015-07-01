@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -41,6 +42,7 @@ import java.util.Map;
 
 
 @Controller
+@Scope("session")
 @SessionAttributes({"loggedIn", "userName", "sid", "activationStatus","role", "admin_access"})
 @SuppressWarnings({"unused", "unchecked"})
 public class LoginController {

@@ -31,6 +31,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.messaging.MessagingException;
@@ -58,6 +59,7 @@ import java.util.Map;
  * Created by Tanmaya Mahapatra on 01-03-2015.
  */
 @Controller
+@Scope("session")
 @SuppressWarnings({"unused", "unchecked"})
 public class RegistrationController {
     static Logger log = Logger.getLogger(LoginController.class.getName());

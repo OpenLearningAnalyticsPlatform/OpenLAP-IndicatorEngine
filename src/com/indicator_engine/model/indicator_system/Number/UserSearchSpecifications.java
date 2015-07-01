@@ -1,5 +1,8 @@
 package com.indicator_engine.model.indicator_system.Number;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +10,8 @@ import java.util.List;
 /**
  * Created by Tanmaya Mahapatra on 25-04-2015.
  */
+@Component
+@Scope("session")
 @SuppressWarnings({"unused", "unchecked"})
 public class UserSearchSpecifications implements Serializable,Cloneable {
     private String userSearchType;

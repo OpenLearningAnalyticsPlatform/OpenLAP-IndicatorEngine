@@ -19,7 +19,6 @@
 
 package com.indicator_engine.indicator_system;
 
-import com.indicator_engine.model.indicator_system.IndicatorDefnOperationForm;
 import com.indicator_engine.model.indicator_system.Number.Questions;
 import com.indicator_engine.model.indicator_system.Number.SelectNumberParameters;
 
@@ -30,17 +29,13 @@ import java.util.List;
  */
 public interface IndicatorPreProcessingDao {
 
-    public String retrieveOperation(IndicatorDefnOperationForm indicatorDefnOperationForm);
     public List<String> initAvailableEntities_DB(String minor);
     public List<String> initAvailableEvents_DB(String minor);
-    public IndicatorDefnOperationForm initAvailableOperations_DB();
     public SelectNumberParameters initSelectNumberParametersObject();
     public List<String> initPopulateMinors(List<String> sources, String action, String platform);
     public List<String> initPopulateTypes(List<String> sources, String action, String platform);
     public List<String> initPopulateMajors(List<String> sources, String action, String platform);
     public void addDefaultEValues(SelectNumberParameters selectNumberParameters);
-    public void saveIndicator(Questions indicatorName);
     public void flushPrevQnData(SelectNumberParameters selectNumberParameters);
-    public void flushAll(Questions questions, SelectNumberParameters selectNumberParameters, IndicatorDefnOperationForm availableOperations);
     public void retrieveQuestion(Questions questions);
 }

@@ -44,6 +44,10 @@ public class GLAQuestionProps implements Serializable {
     @Expose
     private Timestamp last_executionTime;
 
+    @Column(name = "user_name", nullable = false)
+    @Expose
+    private String userName;
+
     @Column(name = "execution_counter", nullable = false)
     @Expose
     private int totalExecutions;
@@ -84,6 +88,14 @@ public class GLAQuestionProps implements Serializable {
 
     public void setGlaQuestion(GLAQuestion glaQuestion) {
         this.glaQuestion = glaQuestion;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
 

@@ -107,6 +107,7 @@
             </ol>
             <h1>Question with Indicator Definition</h1>
             <p>Information to be added</p>
+            <input type="hidden" name="userName" id="userName" value="${sessionScope.userName}" />
 
             <div id="indViewDialog" title="Selected Indicator Property">
                 <div id="accordionIndProp">

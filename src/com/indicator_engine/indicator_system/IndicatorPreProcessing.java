@@ -24,7 +24,6 @@ import com.indicator_engine.datamodel.GLAIndicator;
 import com.indicator_engine.datamodel.GLAQuestion;
 import com.indicator_engine.datamodel.GLAQuestionProps;
 import com.indicator_engine.model.indicator_system.Number.*;
-import com.indicator_engine.model.indicator_system.IndicatorDefnOperationForm;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -40,11 +39,6 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
     static Logger log = Logger.getLogger(IndicatorPreProcessingDao.class.getName());
     @Autowired
     private ApplicationContext appContext;
-
-    @Override
-    public String retrieveOperation(IndicatorDefnOperationForm indicatorDefnOperationForm) {
-        return indicatorDefnOperationForm.getSelectedOperation();
-    }
 
     @Override
     public SelectNumberParameters initSelectNumberParametersObject() {
@@ -121,14 +115,6 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
         return types;
     }
 
-    @Override
-    public IndicatorDefnOperationForm initAvailableOperations_DB() {
-        IndicatorDefnOperationForm obj = new IndicatorDefnOperationForm();
-        GLAOperationsDao glaOperationsBean = (GLAOperationsDao) appContext.getBean("glaOperations");
-        obj.setOperation(glaOperationsBean.selectAllOperations());
-        return obj;
-
-    }
 
     @Override
     public List<String> initAvailableEntities_DB(String minor) {
@@ -151,27 +137,6 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
         if ((selectNumberParameters.getEntityValues().isEmpty()))
             selectNumberParameters.getEntityValues().add(new EntityValues(selectNumberParameters.getSelectedKeys(),
                     selectNumberParameters.getSelectedentityValueTypes(), "ALL"));
-
-    }
-
-    @Override
-    public void saveIndicator(Questions questions){
-        log.info("Saving Indicator and all its Questions/Queries : STARTED " + questions.getQuestionName());
-        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
-        GLAQuestionDao glaQuestionBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
-        List<GLAIndicator> glaIndicator = new ArrayList<>();
-        GLAQuestion glaQuestion = new GLAQuestion();
-        glaQuestion.setQuestion_name(questions.getQuestionName());
-        glaQuestion.setIndicators_num(questions.getGenQueries().size());
-        glaQuestion.setGlaQuestionProps(new GLAQuestionProps());
-        for(int i = 0 ; i < questions.getGenQueries().size(); i++) {
-            GLAIndicator gI = new GLAIndicator();
-            gI.setHql(questions.getGenQueries().get(i).getQuery());
-            gI.setIndicator_name(questions.getGenQueries().get(i).getIndicatorName());
-            glaIndicator.add(gI);
-        }
-        questions.setQuestionId(glaQuestionBean.add(glaQuestion, glaIndicator));
-        log.info("Saving Indicator and all its Questions/Queries : ENDED");
 
     }
 
@@ -203,21 +168,6 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
             questions.getGenQueries().add(genQuery);
         }
         log.info("reteriveQuestion : ENDED \n");
-    }
-
-    @Override
-    public void flushAll(Questions questions, SelectNumberParameters selectNumberParameters,
-                                 IndicatorDefnOperationForm availableOperations){
-
-        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
-        GLAOperationsDao glaOperationsBean = (GLAOperationsDao) appContext.getBean("glaOperations");
-        questions.reset();
-        selectNumberParameters.reset();
-        availableOperations.reset();
-        selectNumberParameters.setSource(glaEventBean.selectAll("source"));
-        selectNumberParameters.setPlatform(glaEventBean.selectAll("platform"));
-        selectNumberParameters.setAction(glaEventBean.selectAll("action"));
-        availableOperations.setOperation(glaOperationsBean.selectAllOperations());
     }
 
     @Override

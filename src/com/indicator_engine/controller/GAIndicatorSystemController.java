@@ -22,10 +22,8 @@ package com.indicator_engine.controller;
 
 import com.google.gson.*;
 import com.indicator_engine.dao.*;
-import com.indicator_engine.datamodel.GLACategory;
-import com.indicator_engine.datamodel.GLAQuestion;
+import com.indicator_engine.datamodel.*;
 import com.indicator_engine.graphgenerator.cewolf.PageViewCountData;
-import com.indicator_engine.datamodel.GLAIndicator;
 import com.indicator_engine.indicator_system.IndicatorPreProcessing;
 import com.indicator_engine.indicator_system.Number.OperationNumberProcessorDao;
 import com.indicator_engine.misc.NumberChecks;
@@ -36,6 +34,7 @@ import com.indicator_engine.model.indicator_system.Number.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -46,15 +45,14 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Tanmaya Mahapatra on 23-03-2015.
  */
 @Controller
+@Scope("session")
+@SessionAttributes({"loggedIn", "userName", "sid", "activationStatus","role", "admin_access"})
 @RequestMapping(value="/indicators")
 @SuppressWarnings({"unused", "unchecked"})
 public class GAIndicatorSystemController {
@@ -139,6 +137,7 @@ public class GAIndicatorSystemController {
 
         String status = null;
         GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         List<GLAIndicator> glaIndicatorList = glaIndicatorBean.displayall(null, null, false);
         if (indicatorName.isEmpty())
             status = "null";
@@ -149,6 +148,12 @@ public class GAIndicatorSystemController {
             else {
                 for (GLAIndicator glaIndicator : glaIndicatorList) {
                     if (indicatorName.equals(glaIndicator.getIndicator_name())) {
+                        status = "exists";
+                        break;
+                    }
+                }
+                for(GenQuery genQuery : entitySpecificationBean.getQuestionsContainer().getGenQueries()) {
+                    if(genQuery.getIndicatorName().equals(indicatorName)) {
                         status = "exists";
                         break;
                     }
@@ -554,6 +559,56 @@ public class GAIndicatorSystemController {
             }
         }
         return null;
+    }
+
+    @RequestMapping(value = "/saveQuestionDB", method = RequestMethod.GET)
+    public @ResponseBody
+    String  saveQnToDB(@RequestParam(value="userName" ,required = true)String userName,
+                       Model model) {
+
+        log.info("Saving Indicator and all its Questions/Queries : STARTED " );
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        GLAQuestionDao glaQuestionBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date now = calendar.getTime();
+        Set<GLAIndicator> glaIndicatorHashSet = new HashSet<GLAIndicator>();
+        //Create the Question
+        GLAQuestion glaQuestion = new GLAQuestion();
+        glaQuestion.setIndicators_num(entitySpecificationBean.getQuestionsContainer().getGenQueries().size());
+        glaQuestion.setQuestion_name(entitySpecificationBean.getQuestionsContainer().getQuestionName());
+        //Create the Question Properties
+        GLAQuestionProps glaQuestionProps = new GLAQuestionProps();
+        glaQuestionProps.setUserName(userName);
+        glaQuestionProps.setGlaQuestion(glaQuestion);
+        glaQuestionProps.setLast_executionTime(new java.sql.Timestamp(now.getTime()));
+        glaQuestionProps.setTotalExecutions(1);
+        glaQuestion.setGlaQuestionProps(glaQuestionProps);
+        for(GenQuery genQuery : entitySpecificationBean.getQuestionsContainer().getGenQueries())
+        {
+            //Creating & Settings a Indicator
+            GLAIndicator glaIndicator = new GLAIndicator();
+            glaIndicator.setIndicator_name(genQuery.getIndicatorName());
+            glaIndicator.setHql(genQuery.getQuery());
+            //Creating  &  Setting its Properties
+            GLAIndicatorProps glaIndicatorProps = new GLAIndicatorProps();
+            glaIndicatorProps.setComposite(false);
+            glaIndicatorProps.setTotalExecutions(1);
+            glaIndicatorProps.setLast_executionTime(new java.sql.Timestamp(now.getTime()));
+            glaIndicatorProps.setUserName(userName);
+            glaIndicatorProps.setJson_data(gson.toJson(genQuery.getIndicatorXMLData()));
+            glaIndicatorProps.setChartEngine(genQuery.getGenIndicatorProps().getChartEngine());
+            glaIndicatorProps.setChartType(genQuery.getGenIndicatorProps().getChartType());
+            glaIndicatorProps.setGlaIndicator(glaIndicator);
+            // Pushing this property set to the Indicator
+            glaIndicator.setGlaIndicatorProps(glaIndicatorProps);
+            //Adding to the Hashset
+            glaIndicatorHashSet.add(glaIndicator);        }
+
+        glaQuestionBean.add(glaQuestion, glaIndicatorHashSet);
+
+        return null;
+
     }
 
     @RequestMapping(value = "/viewall", method = RequestMethod.POST)
