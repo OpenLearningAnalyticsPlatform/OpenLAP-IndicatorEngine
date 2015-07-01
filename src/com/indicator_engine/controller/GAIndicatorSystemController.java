@@ -605,9 +605,9 @@ public class GAIndicatorSystemController {
             //Adding to the Hashset
             glaIndicatorHashSet.add(glaIndicator);        }
 
-        glaQuestionBean.add(glaQuestion, glaIndicatorHashSet);
+          long qid = glaQuestionBean.add(glaQuestion, glaIndicatorHashSet);
 
-        return null;
+        return gson.toJson(qid);
 
     }
 
@@ -636,100 +636,7 @@ public class GAIndicatorSystemController {
         }
         return model;
     }
-    @RequestMapping(value = "/modify", method = RequestMethod.GET)
-    public String getIndicatorsModify(Map<String, Object> model) {
-        SearchIndicatorForm searchIndicatorForm = new SearchIndicatorForm();
-        model.put("searchIndicatorForm", searchIndicatorForm);
-        return  "indicator_system/modify_indicator";
-    }
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public String getIndicatorsDelete(Map<String, Object> model) {
-        SearchIndicatorForm searchIndicatorForm = new SearchIndicatorForm();
-        model.put("searchIndicatorForm", searchIndicatorForm);
-        return  "indicator_system/delete_indicator";
 
-    }
-
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public ModelAndView processQuestionDeleteForm(@RequestParam String action,
-                                                  @Valid @ModelAttribute("searchIndicatorForm") SearchIndicatorForm searchIndicatorForm,
-                                                  BindingResult bindingResult,
-                                                  HttpSession session) {
-
-        ModelAndView model = null;
-        if (bindingResult.hasErrors()) {
-            return new ModelAndView("indicator_system/delete_indicator");
-        }
-        if (action.equals("search")) {
-            processSearchParams(searchIndicatorForm);
-            model = new ModelAndView("indicator_system/delete_indicator");
-            model.addObject("searchIndicatorForm", searchIndicatorForm);
-        }
-        else if(action.equals("load")) {
-            if (searchIndicatorForm.getSelectedQuestionName() == null || searchIndicatorForm.getSelectedQuestionName().isEmpty()) {
-                model = new ModelAndView("indicator_system/delete_indicator");
-                model.addObject("searchIndicatorForm", searchIndicatorForm);
-            }
-            else {
-
-                Questions questions = retrieveQuestion(searchIndicatorForm.getSelectedQuestionName());
-                IndicatorDeletionForm indicatorDeletionForm = new IndicatorDeletionForm();
-                indicatorDeletionForm.getDeletionList().add(questions.getQuestionName());
-                indicatorDeletionForm.setIndName(questions.getQuestionName());
-                for(GenQuery gQ  : questions.getGenQueries()) {
-                    indicatorDeletionForm.getDeletionList().add(gQ.getIndicatorName());
-                }
-                model = new ModelAndView("indicator_system/delete_indicator_details");
-                model.addObject("indicatorDeletionForm", indicatorDeletionForm);
-                model.addObject("numberIndicator", questions);
-            }
-        }
-        return model;
-    }
-
-    @RequestMapping(value = "/processdelete", method = RequestMethod.POST)
-    public ModelAndView processDeletion( @ModelAttribute("indicatorDeletionForm") IndicatorDeletionForm indicatorDeletionForm) {
-
-        ModelAndView model = null;
-        log.info("processDeletion : STARTED \n");
-        if (indicatorDeletionForm.getSelectedList()== null ){
-            Questions questions = retrieveQuestion(indicatorDeletionForm.getIndName());
-            indicatorDeletionForm.getDeletionList().add(questions.getQuestionName());
-            for(GenQuery gQ  : questions.getGenQueries()) {
-                indicatorDeletionForm.getDeletionList().add(gQ.getIndicatorName());
-            }
-            model = new ModelAndView("indicator_system/delete_indicator_details");
-            model.addObject("indicatorDeletionForm", indicatorDeletionForm);
-            model.addObject("numberIndicator", questions);
-            return model;
-        }
-        else{
-            log.info("processDeletion : Working With Deletion Logic \n");
-            GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
-            for(String name : indicatorDeletionForm.getSelectedList()){
-                log.info("Selected Deletion Name :in  indicatorDeletionForm.getSelectedList()\t" + name+ "\n");
-                List<GLAIndicator> glaIndicatorList = glaIndicatorBean.searchIndicatorsName(name,true, null, null, false);
-                log.info("Searching for Name : in  Indicator List\t" + glaIndicatorList.size()+ "\n");
-                if(glaIndicatorList.size() > 0){
-                    log.info("Dumping Name : in  Indicator List\t" + glaIndicatorList.get(0).getIndicator_name()+ "\n");
-                    long indicator_id = glaIndicatorBean.findIndicatorID(glaIndicatorList.get(0).getIndicator_name());
-                    if(indicator_id != 0 )
-                        glaIndicatorBean.deleteIndicator(indicator_id);
-                }
-                /*else{
-                    GLAQueriesDao glaQueriesBean = (GLAQueriesDao) appContext.getBean("glaQueries");
-                    List<GLAQueries> glaQueriesList = glaQueriesBean.searchQuestionsName(name, true);
-                    if(glaQueriesList.size() > 0){
-                        long question_id = glaQueriesBean.findQuestionID(glaQueriesList.get(0).getQuestion_name());
-                        if(question_id != 0 )
-                            glaQueriesBean.deleteQuestion(question_id);
-
-                    }
-                }*/
-            }
-        }
-        return model;
-    }
     @RequestMapping(value = "/trialrun", method = RequestMethod.GET)
     public String getQuestionsTrialRun(Map<String, Object> model) {
         QuestionRun questionRun = new QuestionRun();

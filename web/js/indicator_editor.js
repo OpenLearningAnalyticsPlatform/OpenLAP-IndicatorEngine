@@ -1237,6 +1237,16 @@ function addDefaultRule(funcID) {
 function drawGraph() {
     if (request.readyState == 4) {
         if (request.status == 200) {
+            $.noty.defaults.killer = true;
+            noty({
+                text: '<strong>Success</strong> <br/>  <strong>Congratulations ! </strong> Your graph for the current Indicator has been generated',
+                type: 'success'
+            });
+            noty({
+                text: '<strong>Information</strong> <br/>  You can view the graph by clicking on the <strong> Graph Preview</strong>  tab in the ' +
+                '<strong> Indicator Properties & Summary </strong> Window',
+                type: 'information'
+            });
             var graphImage = document.getElementById("graphImage");
             graphImage.src="/graphs/jgraph?bean=true"+"&time="+new Date().getTime();
         }
@@ -1254,6 +1264,7 @@ function refreshQuestionSummary() {
 function postrefreshQuestionSummary() {
     if (request.readyState == 4) {
         if (request.status == 200) {
+
             var parsedJSON = JSON.parse(request.responseText);
             var qNamefromBean = document.getElementById("qNamefromBean");
             var associatedIndicators = document.getElementById("associatedIndicators");
@@ -1312,6 +1323,29 @@ function SaveQuestionDB() {
     var userName = document.getElementById("userName").value;
     var url ="/indicators/saveQuestionDB?userName="+userName;
     request.open("GET",url,true);
-    request.onreadystatechange=processScreenForNextIndicator;
+    request.onreadystatechange=processScreenForNextQuestion;
     request.send(null);
+}
+
+function processScreenForNextQuestion() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            document.getElementById("questionNaming").value = "";
+            document.getElementById("indicatorNaming").value = "";
+            var selectedMinor = document.getElementById("selectedMinor");
+            removeOptions(selectedMinor);
+            refreshQuestionSummary();
+            $.noty.defaults.killer = true;
+            noty({
+                text: '<strong>Success</strong> <br/>  <strong>Congratulations ! </strong> Your Question and all its indicators have been saved.',
+                type: 'success'
+            });
+            noty({
+                text: '<strong>Information</strong> <br/>  You can define a new Question or you can view all existing Questions by clicking the ' +
+                '<strong> View Existing <strong> link of the left side of the page.',
+                type: 'information'
+            });
+        }
+    }
 }
