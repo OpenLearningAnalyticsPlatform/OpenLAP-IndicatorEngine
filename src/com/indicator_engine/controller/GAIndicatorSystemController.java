@@ -21,7 +21,6 @@
 package com.indicator_engine.controller;
 
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 import com.indicator_engine.dao.*;
 import com.indicator_engine.datamodel.GLACategory;
 import com.indicator_engine.datamodel.GLAQuestion;

@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="javax.servlet.jsp.jstl-api-1.2.1">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Documents/RWTH/Semester_4/javax.servlet.jsp.jstl-api-1.2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javax.servlet.jsp.jstl-api-1.2.1.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

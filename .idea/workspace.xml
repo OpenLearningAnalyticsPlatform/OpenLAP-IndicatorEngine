@@ -2,17 +2,40 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="974e7feb-8792-4228-ab5d-100949817edf" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/EntitySpecification.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/EntitySpecification.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/EntityValues.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/EntityValues.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cewolf-1.2.4/lib/batik-awt-util-1.6.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cewolf-1.2.4/lib/batik-dom-1.6.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cewolf-1.2.4/lib/batik-svggen-1.6.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cewolf-1.2.4/lib/batik-util-1.6.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cewolf-1.2.4/lib/batik-xml-1.6.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cewolf-1.2.4/cewolf-1.2.4.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/commons-collections4-4.0.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/commons-io-2.4.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cewolf-1.2.4/lib/commons-logging-1.1.1.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/gson-2.2.4.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/httpclient-4.4.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/httpcore-4.4.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/javax.servlet.jsp.jstl-1.2.1.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/javax.servlet.jsp.jstl-api-1.2.1.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/jcommon-1.0.0.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cewolf-1.2.4/lib/jcommon-1.0.18.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cewolf-1.2.4/lib/jfreechart-1.0.14.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cewolf-1.2.4/lib/junit-3.8.2.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/sqljdbc4.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cewolf-1.2.4/lib/tlddoc.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/cewolf-1.2.4/cewolf.tld" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/IndicatorPreProcessing.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/IndicatorPreProcessing.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/SessionSpecifications.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/SessionSpecifications.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/TimeSearchSpecifications.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/TimeSearchSpecifications.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/UserSearchSpecifications.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/UserSearchSpecifications.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/css/indicator_editor.css" afterPath="$PROJECT_DIR$/web/css/indicator_editor.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/indicator_editor.js" afterPath="$PROJECT_DIR$/web/js/indicator_editor.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp" afterPath="$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/pages/admin/view_userdata.jsp" afterPath="$PROJECT_DIR$/web/pages/admin/view_userdata.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/cewolf_1_2_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/cewolf_1_2_4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/cewolf_support.xml" afterPath="$PROJECT_DIR$/.idea/libraries/cewolf_support.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/commons_collections4_4_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/commons_collections4_4_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/commons_io_2_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/commons_io_2_4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/gson_2_2_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/gson_2_2_4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/httpclient_4_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/httpclient_4_4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/httpcore_4_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/httpcore_4_4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/javax_servlet_jsp_jstl_1_2_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/javax_servlet_jsp_jstl_1_2_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/javax_servlet_jsp_jstl_api_1_2_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/javax_servlet_jsp_jstl_api_1_2_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/jcommon_1_0_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/jcommon_1_0_0.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/log4j_1_2_14.xml" afterPath="$PROJECT_DIR$/.idea/libraries/log4j_1_2_14.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/sqljdbc4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/sqljdbc4.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path=".idea/dataSources.local.xml" />
@@ -49,10 +72,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="indicator_editor.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="indicator_editor.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/js/indicator_editor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.24516909" vertical-offset="10922" max-vertical-offset="15500">
+            <state vertical-scroll-proportion="-7.0" vertical-offset="10922" max-vertical-offset="15500">
               <caret line="1121" column="79" selection-start-line="1121" selection-start-column="79" selection-end-line="1121" selection-end-column="79" />
               <folding>
                 <element signature="e#842#896#0" expanded="false" />
@@ -190,68 +213,69 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SQL Server - IndicatorEngineDB@137.226.231.13" pinned="false" current-in-tab="false">
-        <entry file="dbDummy://db-console:/f5b50d99/4400d7f1-20a6-4146-9e73-594f971efa40/">
+      <file leaf-file-name="IndicatorPreProcessing.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/indicator_system/IndicatorPreProcessing.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="150">
-              <caret line="0" column="26" selection-start-line="0" selection-start-column="26" selection-end-line="0" selection-end-column="26" />
+            <state vertical-scroll-proportion="-3.5517242" vertical-offset="3122" max-vertical-offset="5200">
+              <caret line="157" column="25" selection-start-line="157" selection-start-column="16" selection-end-line="157" selection-end-column="29" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GAIndicatorSystemController.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GAIndicatorSystemController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-17.344828" vertical-offset="21322" max-vertical-offset="24375">
-              <caret line="904" column="19" selection-start-line="904" selection-start-column="8" selection-end-line="904" selection-end-column="19" />
+            <state vertical-scroll-proportion="1.5131578" vertical-offset="19245" max-vertical-offset="24775">
+              <caret line="804" column="23" selection-start-line="804" selection-start-column="23" selection-end-line="804" selection-end-column="23" />
               <folding>
+                <element signature="e#0#50478#0" expanded="true" />
                 <element signature="imports" expanded="true" />
-                <element signature="e#2426#2468#0" expanded="true" />
-                <element signature="e#20890#20904#0" expanded="true" />
-                <element signature="e#21250#21276#0" expanded="true" />
-                <element signature="e#21659#21682#0" expanded="true" />
-                <element signature="e#22079#22105#0" expanded="true" />
-                <element signature="e#48972#48973#0" expanded="true" />
-                <element signature="e#48999#49000#0" expanded="true" />
-                <element signature="e#49039#49040#0" expanded="true" />
-                <element signature="e#49071#49072#0" expanded="true" />
-                <element signature="e#49106#49107#0" expanded="true" />
-                <element signature="e#49137#49138#0" expanded="true" />
-                <element signature="e#49185#49186#0" expanded="true" />
-                <element signature="e#49225#49226#0" expanded="true" />
-                <element signature="e#49258#49259#0" expanded="true" />
-                <element signature="e#49287#49288#0" expanded="true" />
-                <element signature="e#49331#49332#0" expanded="true" />
-                <element signature="e#49367#49368#0" expanded="true" />
-                <element signature="e#49403#49404#0" expanded="true" />
-                <element signature="e#49435#49436#0" expanded="true" />
+                <element signature="e#2384#2426#0" expanded="true" />
+                <element signature="e#20848#20862#0" expanded="true" />
+                <element signature="e#21208#21234#0" expanded="true" />
+                <element signature="e#21617#21640#0" expanded="true" />
+                <element signature="e#22037#22063#0" expanded="true" />
+                <element signature="e#48930#48931#0" expanded="true" />
+                <element signature="e#48957#48958#0" expanded="true" />
+                <element signature="e#48997#48998#0" expanded="true" />
+                <element signature="e#49029#49030#0" expanded="true" />
+                <element signature="e#49064#49065#0" expanded="true" />
+                <element signature="e#49095#49096#0" expanded="true" />
+                <element signature="e#49143#49144#0" expanded="true" />
+                <element signature="e#49183#49184#0" expanded="true" />
+                <element signature="e#49216#49217#0" expanded="true" />
+                <element signature="e#49245#49246#0" expanded="true" />
+                <element signature="e#49289#49290#0" expanded="true" />
+                <element signature="e#49325#49326#0" expanded="true" />
+                <element signature="e#49361#49362#0" expanded="true" />
+                <element signature="e#49393#49394#0" expanded="true" />
+                <element signature="e#49443#49444#0" expanded="true" />
                 <element signature="e#49485#49486#0" expanded="true" />
-                <element signature="e#49527#49528#0" expanded="true" />
-                <element signature="e#49565#49566#0" expanded="true" />
-                <element signature="e#49599#49600#0" expanded="true" />
-                <element signature="e#49653#49654#0" expanded="true" />
-                <element signature="e#49699#49700#0" expanded="true" />
-                <element signature="e#49729#49730#0" expanded="true" />
-                <element signature="e#49755#49756#0" expanded="true" />
-                <element signature="e#49793#49794#0" expanded="true" />
-                <element signature="e#49823#49824#0" expanded="true" />
-                <element signature="e#49860#49861#0" expanded="true" />
-                <element signature="e#49896#49897#0" expanded="true" />
-                <element signature="e#49951#49952#0" expanded="true" />
-                <element signature="e#50001#50002#0" expanded="true" />
-                <element signature="e#50036#50037#0" expanded="true" />
-                <element signature="e#50070#50071#0" expanded="true" />
-                <element signature="e#50121#50122#0" expanded="true" />
-                <element signature="e#50167#50168#0" expanded="true" />
-                <element signature="e#50205#50206#0" expanded="true" />
-                <element signature="e#50242#50243#0" expanded="true" />
-                <element signature="e#50299#50300#0" expanded="true" />
-                <element signature="e#50351#50352#0" expanded="true" />
-                <element signature="e#50386#50387#0" expanded="true" />
-                <element signature="e#50420#50421#0" expanded="true" />
-                <element signature="e#50471#50472#0" expanded="true" />
-                <element signature="e#50517#50518#0" expanded="true" />
+                <element signature="e#49523#49524#0" expanded="true" />
+                <element signature="e#49557#49558#0" expanded="true" />
+                <element signature="e#49611#49612#0" expanded="true" />
+                <element signature="e#49657#49658#0" expanded="true" />
+                <element signature="e#49687#49688#0" expanded="true" />
+                <element signature="e#49713#49714#0" expanded="true" />
+                <element signature="e#49751#49752#0" expanded="true" />
+                <element signature="e#49781#49782#0" expanded="true" />
+                <element signature="e#49818#49819#0" expanded="true" />
+                <element signature="e#49854#49855#0" expanded="true" />
+                <element signature="e#49909#49910#0" expanded="true" />
+                <element signature="e#49959#49960#0" expanded="true" />
+                <element signature="e#49994#49995#0" expanded="true" />
+                <element signature="e#50028#50029#0" expanded="true" />
+                <element signature="e#50079#50080#0" expanded="true" />
+                <element signature="e#50125#50126#0" expanded="true" />
+                <element signature="e#50163#50164#0" expanded="true" />
+                <element signature="e#50200#50201#0" expanded="true" />
+                <element signature="e#50257#50258#0" expanded="true" />
+                <element signature="e#50309#50310#0" expanded="true" />
+                <element signature="e#50344#50345#0" expanded="true" />
+                <element signature="e#50378#50379#0" expanded="true" />
+                <element signature="e#50429#50430#0" expanded="true" />
+                <element signature="e#50475#50476#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -363,10 +387,10 @@
         <option value="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/UserSearchSpecifications.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/SessionSpecifications.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/TimeSearchSpecifications.java" />
-        <option value="db-console:/f5b50d99/4400d7f1-20a6-4146-9e73-594f971efa40/" />
-        <option value="$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java" />
         <option value="$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp" />
         <option value="$PROJECT_DIR$/web/js/indicator_editor.js" />
+        <option value="$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java" />
+        <option value="db-console:/f5b50d99/4400d7f1-20a6-4146-9e73-594f971efa40/" />
       </list>
     </option>
   </component>
@@ -521,24 +545,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="IndicatorEngine" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="IndicatorEngine" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -558,10 +564,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="indicator_engine" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="validator" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -964,10 +966,10 @@
     <property name="Downloaded.Files.Path.Enabled" value="true" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15527344" />
     <property name="project.structure.side.proportion" value="0.3101852" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/javax.servlet.jsp.jstl-1.2.1.jar!/" />
     <property name="FullScreen" value="false" />
     <property name="dynamic.classpath" value="false" />
     <property name="options.lastSelected" value="preferences.externalResources" />
@@ -1357,7 +1359,7 @@
       <workItem from="1435383533810" duration="89804000" />
       <workItem from="1435588823135" duration="543000" />
       <workItem from="1435590584550" duration="244000" />
-      <workItem from="1435590870194" duration="37922000" />
+      <workItem from="1435590870194" duration="39417000" />
     </task>
     <task id="LOCAL-00001" summary="charting capabilities : init">
       <created>1431340261434</created>
@@ -1467,15 +1469,21 @@
       <option name="project" value="LOCAL" />
       <updated>1435607304243</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Previously Defined Indicator : Load into Editor for re-edits.&#10;Prev. Indicator : View Summary&#10;Current Ind : see summary">
+      <created>1435742158306</created>
+      <option name="number" value="00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1435742158306</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="369433000" />
+    <option name="totallyTimeSpent" value="370928000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -1490,7 +1498,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32962137" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32739422" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1536,12 +1544,12 @@
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.42093542" sideWeight="0.4936034" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42093542" sideWeight="0.4936034" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946696" sideWeight="0.50676984" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946696" sideWeight="0.49323016" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24946696" sideWeight="0.49323016" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
@@ -1582,7 +1590,8 @@
     <MESSAGE value="Spring Integration and Web Flow lib eliminated" />
     <MESSAGE value="UI : Indicator Definition : On Screen User Guidance and Notification Feature added" />
     <MESSAGE value="Default Filter Functionality Added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Default Filter Functionality Added" />
+    <MESSAGE value="Previously Defined Indicator : Load into Editor for re-edits.&#10;Prev. Indicator : View Summary&#10;Current Ind : see summary" />
+    <option name="LAST_COMMIT_MESSAGE" value="Previously Defined Indicator : Load into Editor for re-edits.&#10;Prev. Indicator : View Summary&#10;Current Ind : see summary" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1883,14 +1892,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/indicator_system/IndicatorPreProcessing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3468" max-vertical-offset="5200">
-          <caret line="173" column="75" selection-start-line="173" selection-start-column="75" selection-end-line="173" selection-end-column="75" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/css/indicator_editor.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="430" max-vertical-offset="1300">
@@ -1975,69 +1976,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="dbDummy://db-console:/f5b50d99/4400d7f1-20a6-4146-9e73-594f971efa40/">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="544">
-          <caret line="0" column="26" selection-start-line="0" selection-start-column="26" selection-end-line="0" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-17.344828" vertical-offset="21322" max-vertical-offset="24375">
-          <caret line="904" column="19" selection-start-line="904" selection-start-column="8" selection-end-line="904" selection-end-column="19" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2426#2468#0" expanded="true" />
-            <element signature="e#20890#20904#0" expanded="true" />
-            <element signature="e#21250#21276#0" expanded="true" />
-            <element signature="e#21659#21682#0" expanded="true" />
-            <element signature="e#22079#22105#0" expanded="true" />
-            <element signature="e#48972#48973#0" expanded="true" />
-            <element signature="e#48999#49000#0" expanded="true" />
-            <element signature="e#49039#49040#0" expanded="true" />
-            <element signature="e#49071#49072#0" expanded="true" />
-            <element signature="e#49106#49107#0" expanded="true" />
-            <element signature="e#49137#49138#0" expanded="true" />
-            <element signature="e#49185#49186#0" expanded="true" />
-            <element signature="e#49225#49226#0" expanded="true" />
-            <element signature="e#49258#49259#0" expanded="true" />
-            <element signature="e#49287#49288#0" expanded="true" />
-            <element signature="e#49331#49332#0" expanded="true" />
-            <element signature="e#49367#49368#0" expanded="true" />
-            <element signature="e#49403#49404#0" expanded="true" />
-            <element signature="e#49435#49436#0" expanded="true" />
-            <element signature="e#49485#49486#0" expanded="true" />
-            <element signature="e#49527#49528#0" expanded="true" />
-            <element signature="e#49565#49566#0" expanded="true" />
-            <element signature="e#49599#49600#0" expanded="true" />
-            <element signature="e#49653#49654#0" expanded="true" />
-            <element signature="e#49699#49700#0" expanded="true" />
-            <element signature="e#49729#49730#0" expanded="true" />
-            <element signature="e#49755#49756#0" expanded="true" />
-            <element signature="e#49793#49794#0" expanded="true" />
-            <element signature="e#49823#49824#0" expanded="true" />
-            <element signature="e#49860#49861#0" expanded="true" />
-            <element signature="e#49896#49897#0" expanded="true" />
-            <element signature="e#49951#49952#0" expanded="true" />
-            <element signature="e#50001#50002#0" expanded="true" />
-            <element signature="e#50036#50037#0" expanded="true" />
-            <element signature="e#50070#50071#0" expanded="true" />
-            <element signature="e#50121#50122#0" expanded="true" />
-            <element signature="e#50167#50168#0" expanded="true" />
-            <element signature="e#50205#50206#0" expanded="true" />
-            <element signature="e#50242#50243#0" expanded="true" />
-            <element signature="e#50299#50300#0" expanded="true" />
-            <element signature="e#50351#50352#0" expanded="true" />
-            <element signature="e#50386#50387#0" expanded="true" />
-            <element signature="e#50420#50421#0" expanded="true" />
-            <element signature="e#50471#50472#0" expanded="true" />
-            <element signature="e#50517#50518#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.8235292" vertical-offset="15327" max-vertical-offset="18300">
@@ -2048,7 +1986,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web/js/indicator_editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24516909" vertical-offset="10922" max-vertical-offset="15500">
+        <state vertical-scroll-proportion="-7.0" vertical-offset="10922" max-vertical-offset="15500">
           <caret line="1121" column="79" selection-start-line="1121" selection-start-column="79" selection-end-line="1121" selection-end-column="79" />
           <folding>
             <element signature="e#842#896#0" expanded="false" />
@@ -2185,6 +2123,78 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/indicator_system/IndicatorPreProcessing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.5517242" vertical-offset="3122" max-vertical-offset="5200">
+          <caret line="157" column="25" selection-start-line="157" selection-start-column="16" selection-end-line="157" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbDummy://db-console:/f5b50d99/4400d7f1-20a6-4146-9e73-594f971efa40/">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="544">
+          <caret line="0" column="22" selection-start-line="0" selection-start-column="22" selection-end-line="0" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.5131578" vertical-offset="19245" max-vertical-offset="24775">
+          <caret line="804" column="23" selection-start-line="804" selection-start-column="23" selection-end-line="804" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#50478#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#2384#2426#0" expanded="true" />
+            <element signature="e#20848#20862#0" expanded="true" />
+            <element signature="e#21208#21234#0" expanded="true" />
+            <element signature="e#21617#21640#0" expanded="true" />
+            <element signature="e#22037#22063#0" expanded="true" />
+            <element signature="e#48930#48931#0" expanded="true" />
+            <element signature="e#48957#48958#0" expanded="true" />
+            <element signature="e#48997#48998#0" expanded="true" />
+            <element signature="e#49029#49030#0" expanded="true" />
+            <element signature="e#49064#49065#0" expanded="true" />
+            <element signature="e#49095#49096#0" expanded="true" />
+            <element signature="e#49143#49144#0" expanded="true" />
+            <element signature="e#49183#49184#0" expanded="true" />
+            <element signature="e#49216#49217#0" expanded="true" />
+            <element signature="e#49245#49246#0" expanded="true" />
+            <element signature="e#49289#49290#0" expanded="true" />
+            <element signature="e#49325#49326#0" expanded="true" />
+            <element signature="e#49361#49362#0" expanded="true" />
+            <element signature="e#49393#49394#0" expanded="true" />
+            <element signature="e#49443#49444#0" expanded="true" />
+            <element signature="e#49485#49486#0" expanded="true" />
+            <element signature="e#49523#49524#0" expanded="true" />
+            <element signature="e#49557#49558#0" expanded="true" />
+            <element signature="e#49611#49612#0" expanded="true" />
+            <element signature="e#49657#49658#0" expanded="true" />
+            <element signature="e#49687#49688#0" expanded="true" />
+            <element signature="e#49713#49714#0" expanded="true" />
+            <element signature="e#49751#49752#0" expanded="true" />
+            <element signature="e#49781#49782#0" expanded="true" />
+            <element signature="e#49818#49819#0" expanded="true" />
+            <element signature="e#49854#49855#0" expanded="true" />
+            <element signature="e#49909#49910#0" expanded="true" />
+            <element signature="e#49959#49960#0" expanded="true" />
+            <element signature="e#49994#49995#0" expanded="true" />
+            <element signature="e#50028#50029#0" expanded="true" />
+            <element signature="e#50079#50080#0" expanded="true" />
+            <element signature="e#50125#50126#0" expanded="true" />
+            <element signature="e#50163#50164#0" expanded="true" />
+            <element signature="e#50200#50201#0" expanded="true" />
+            <element signature="e#50257#50258#0" expanded="true" />
+            <element signature="e#50309#50310#0" expanded="true" />
+            <element signature="e#50344#50345#0" expanded="true" />
+            <element signature="e#50378#50379#0" expanded="true" />
+            <element signature="e#50429#50430#0" expanded="true" />
+            <element signature="e#50475#50476#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
   </component>
   <component name="masterDetails">
     <states>
@@ -2252,7 +2262,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>Spring Web Services-2.0.2</last-edited>
+          <last-edited>sqljdbc4</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
