@@ -146,11 +146,11 @@
             <p>Here you can define view all Existing Questions.</p>
             <div class="row">
                 <div class="col-md-12">
-                    <form:form role="form" id="searchIndicatorForm"  method="post" modelAttribute="searchIndicatorForm" action="/indicators/viewall">
+                    <form:form role="form" id="searchQuestionForm"  method="post" modelAttribute="searchQuestionForm" action="/indicators/viewall">
                         <div class="row">
                             <div class="col-md-6 margin-bottom-15">
                                 <label for="searchTypeSelection">Select Search Type </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedSearchType" items="${searchIndicatorForm.searchType}" name ="searchTypeSelection" id="searchTypeSelection" />
+                                <form:select class="form-control margin-bottom-15" path="selectedSearchType" items="${searchQuestionForm.searchType}" name ="searchTypeSelection" id="searchTypeSelection" />
                             </div>
                         </div>
 
@@ -170,7 +170,7 @@
                             <div class="col-md-6 margin-bottom-15">
                                 <label for="multipleSelect">Search Results </label>
                                 <form:select class="form-control" path="selectedQuestionName" name="multipleSelect">
-                                    <form:options items="${searchIndicatorForm.searchResults}" />
+                                    <form:options items="${searchQuestionForm.searchResults}" />
                                 </form:select>
                             </div>
                         </div>

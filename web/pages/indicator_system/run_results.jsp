@@ -92,8 +92,64 @@
             </ol>
             <h1>Execution Results</h1>
             <p>Here is the result of execution.</p>
+            <div class="table-responsive">
+                <h4 class="margin-bottom-15">Question Details</h4>
+                <table class="table table-striped table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Question ID</th>
+                        <th>Name</th>
+                        <th>Number of Indicators</th>
+                        <th>Last Executed on</th>
+                        <th>Execution Counter</th>
+                        <th>Owner</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><c:out value="${question.questionId}"/></td>
+                        <td><c:out value="${question.questionName}"/></td>
+                        <td><c:out value="${question.numIndicators}"/></td>
+                        <td><c:out value="${question.last_executionTime}"/></td>
+                        <td><c:out value="${question.totalExecutions}"/></td>
+                        <td><c:out value="${question.userName}"/></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-responsive">
+                <h4 class="margin-bottom-15">Associated Indicators Visualization</h4>
+                <table class="table table-striped table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Indicator ID</th>
+                        <th>Indicator Name</th>
+                        <th>Last Executed on</th>
+                        <th>Execution Counter</th>
+                        <th>Chart Engine</th>
+                        <th>Chart Type</th>
+                        <th>Owner</th>
+                        <th>Indicator Visualization</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="entityVal" items="${question.genQueries}"  varStatus="loop">
+                        <tr>
+                            <td><c:out value="${entityVal.queryID}"/></td>
+                            <td><c:out value="${entityVal.indicatorName}"/></td>
+                            <td><c:out value="${entityVal.genIndicatorProps.last_executionTime}"/></td>
+                            <td><c:out value="${entityVal.genIndicatorProps.totalExecutions}"/></td>
+                            <td><c:out value="${entityVal.genIndicatorProps.chartEngine}"/></td>
+                            <td><c:out value="${entityVal.genIndicatorProps.chartType}"/></td>
+                            <td><c:out value="${entityVal.genIndicatorProps.userName}"/></td>
+                            <td><img src="/graphs/jgraph?indicator=${entityVal.indicatorName}" /><c:out value="${entityVal.queryID}"/></td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
 
-            <img src="/graphs/jgraph?question=${questionName}&type=${chartType}" />
+
 
 
 

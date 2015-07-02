@@ -1,4 +1,3 @@
-
 <%--
   ~ Open Platform Learning Analytics : Indicator Engine
   ~ Copyright (C) 2015  Learning Technologies Group, RWTH
@@ -41,20 +40,69 @@
 <head>
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-    <title>Indicator Execution</title>
+    <title>Question Run Dashboard</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
-    <script type="javascript" src="${pageContext.request.contextPath}/js/user_profile_checks.js"> </script>
-    <link href="${pageContext.request.contextPath}/lib/select2/css/select2.min.css" rel="stylesheet" />
-    <script src="${pageContext.request.contextPath}/lib/select2/js/select2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.0/css/jquery.dataTables.css">
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
+    <script type="text/javascript">
+
+        (function($) {
+            //Plug-in to fetch page data
+            jQuery.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
+            {
+                return {
+                    "iStart":         oSettings._iDisplayStart,
+                    "iEnd":           oSettings.fnDisplayEnd(),
+                    "iLength":        oSettings._iDisplayLength,
+                    "iTotal":         oSettings.fnRecordsTotal(),
+                    "iFilteredTotal": oSettings.fnRecordsDisplay(),
+                    "iPage":          oSettings._iDisplayLength === -1 ?
+                            0 : Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength ),
+                    "iTotalPages":    oSettings._iDisplayLength === -1 ?
+                            0 : Math.ceil( oSettings.fnRecordsDisplay() / oSettings._iDisplayLength )
+                };
+            };
+
+            $(document).ready(function() {
+
+                $("#indicatorData").dataTable( {
+                    "bProcessing": true,
+                    "bServerSide": true,
+                    "sort": "position",
+                    //bStateSave variable you can use to save state on client cookies: set value "true"
+                    "bStateSave": false,
+                    //Default: Page display length
+                    "iDisplayLength": 10,
+                    //We will use below variable to track page number on server side(For more information visit: http://legacy.datatables.net/usage/options#iDisplayStart)
+                    "iDisplayStart": 0,
+                    "fnDrawCallback": function () {
+                        //Get page numer on client. Please note: number start from 0 So
+                        //for the first page you will see 0 second page 1 third page 2...
+                        //Un-comment below alert to see page number
+                        //alert("Current page number: "+this.fnPagingInfo().iPage);
+                    },
+                    "sAjaxSource": "/indicators/fetchExistingQuestionsData.web",
+                    "aoColumns": [
+                        { "mData": "id" },
+                        { "mData": "question_name" },
+                        { "mData": "indicators_num" },
+                    ]
+                } );
+
+            } );
+        })(jQuery);
+    </script>
 
 </head>
 <body>
 <div class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <div class="logo"><h1>Indicator Execution</h1></div>
+        <div class="logo"><h1>Question Run Dashboard</h1></div>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -94,70 +142,96 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Indicator Execution</h1>
-            <p>Please select an Indicator to run.</p>
+            <h1>Question Run Dashboard</h1>
+            <p>Here you can view all Existing Questions and select one to run.</p>
             <div class="row">
                 <div class="col-md-12">
-                    <form:form role="form" id="indicatorSelection"  method="post" modelAttribute="questionRun" action="/indicators/trialrun">
+                    <form:form role="form" id="searchQuestionForm"  method="post" modelAttribute="searchQuestionForm" action="/indicators/trialrun">
                         <div class="row">
                             <div class="col-md-6 margin-bottom-15">
-                                <label for="indRun">Select an Indicator to Run </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedQuestion" items="${questionRun.availableQuestions}" name ="indRun" id="indRun" />
+                                <label for="searchTypeSelection">Select Search Type </label>
+                                <form:select class="form-control margin-bottom-15" path="selectedSearchType" items="${searchQuestionForm.searchType}" name ="searchTypeSelection" id="searchTypeSelection" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 margin-bottom-15">
+                                <label for="searchString" class="control-label">Search String</label>
+                                <form:input class="form-control" path="searchField"  name="searchString" id ="searchString"/>
+                            </div>
+                        </div>
+                        <div class="row templatemo-form-buttons">
+                            <div class="col-md-12">
+                                <input class="btn btn-default" type="submit" name="action"
+                                       value="search"  />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 margin-bottom-15">
-                                <label for="chartSelect">Select a Chart Type </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedChartType" items="${questionRun.chartTypes}" name ="chartSelect" id="chartSelect" />
+                                <label for="multipleSelect">Search Results </label>
+                                <form:select class="form-control" path="selectedQuestionName" name="multipleSelect">
+                                    <form:options items="${searchQuestionForm.searchResults}" />
+                                </form:select>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 margin-bottom-15">
-                                <label for="EngineSelect">Select an Engine </label>
-                                <form:select class="form-control margin-bottom-15" path="selectedChartEngine" items="${questionRun.chartEngines}" name ="EngineSelect" id="EngineSelect" />
-                            </div>
-                        </div>
-                        <p>
-                            <form:errors path="*" cssClass="errorblock" element="div" />
-                        </p>
                         <div class="row templatemo-form-buttons">
                             <div class="col-md-12">
                                 <input class="btn btn-primary" type="submit" name="action"
-                                       value="Run" />
+                                       value="Visualize" />
                             </div>
                         </div>
+
+                        <p>
+                            <form:errors path="*" cssClass="errorblock" element="div" />
+                        </p>
+
+                    </form:form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <form:form action="" method="GET">
+                        <h2 >Listing of All Existing Questions<br><br></h2>
+                        <table width="70%" style="border: 3px;background: rgb(243, 244, 248);"><tr><td>
+                            <table id="indicatorData" class="display" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Question ID</th>
+                                    <th>Question Name</th>
+                                    <th>Number of Associated Indicators</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </td></tr></table>
                     </form:form>
                 </div>
             </div>
         </div>
-
-        </div>
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Are you sure you want to sign out?</h4>
-                </div>
-                <div class="modal-footer">
-                    <a href="/logoff" class="btn btn-primary">Yes</a>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Are you sure you want to sign out?</h4>
+            </div>
+            <div class="modal-footer">
+                <a href="/logoff" class="btn btn-primary">Yes</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
             </div>
         </div>
     </div>
-    <footer class="templatemo-footer">
-        <div class="templatemo-copyright">
-            <p>Copyright &copy; 2015 Learning Technologies Group, RWTH</p>
-        </div>
-    </footer>
+</div>
+<footer class="templatemo-footer">
+    <div class="templatemo-copyright">
+        <p>Copyright &copy; 2015 Learning Technologies Group, RWTH</p>
+    </div>
+</footer>
 </div>
 
-<script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/Chart.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/templatemo_script.js"></script>
 <script type="text/javascript">
 </script>

@@ -69,11 +69,9 @@ public class GraphController {
     static Logger log = Logger.getLogger(GraphController.class.getName());
 
     @RequestMapping(value = "/jgraph", method = RequestMethod.GET)
-    public void processGraphRequests(@RequestParam(value="type", defaultValue="bar") String gType,
-                                     @RequestParam(value="question" ,required = false)String questionName,
+    public void processGraphRequests(@RequestParam(value="indicator" ,required = false)String indicatorName,
                                      @RequestParam(value="bean", defaultValue="false", required = false)String runFromContextBean,
                                      @RequestParam(value="default", defaultValue="false", required = false)String defaultRun,
-                                     HttpServletRequest request,
                                      HttpServletResponse response) {
 
 
@@ -122,28 +120,30 @@ public class GraphController {
         }
         else {
 
-            GLAQuestionDao glaQuestionsBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
-            long question_id = glaQuestionsBean.findQuestionID(questionName);
-            GLAQuestion glaQuestion = glaQuestionsBean.loadByQuestionID(question_id);
-            if(gType.equals("Pie")) {
-                PieDataset pdSet = createDataSet(glaQuestion);
-                JFreeChart chart = createPieChart(pdSet, glaQuestion.getQuestion_name());
+            GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
+            long indicatorID = glaIndicatorBean.findIndicatorID(indicatorName);
+            GLAIndicator glaIndicator = glaIndicatorBean.loadByIndicatorID(indicatorID);
+            if(glaIndicator.getGlaIndicatorProps().getChartType().equals("Pie")) {
+                PieDataset pdSet = createDataSet(glaIndicator);
+                JFreeChart chart = createPieChart(pdSet, glaIndicator.getIndicator_name());
                 try {
                     ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart,
                             750, 400);
-                    glaQuestionsBean.updateStatistics(question_id);
+                    glaIndicatorBean.updateStatistics(indicatorID);
+                    //also update question stats
                     response.getOutputStream().close();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
-            else if(gType.equals("Bar")) {
-                CategoryDataset dataset = createCategoryDataSet(glaQuestion);
-                JFreeChart chart = createBarChart(dataset, glaQuestion.getQuestion_name());
+            else if(glaIndicator.getGlaIndicatorProps().getChartType().equals("Bar")) {
+                CategoryDataset dataset = createCategoryDataSet(glaIndicator);
+                JFreeChart chart = createBarChart(dataset, glaIndicator.getIndicator_name());
                 try {
                     ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart,
                             750, 400);
-                    glaQuestionsBean.updateStatistics(question_id);
+                    glaIndicatorBean.updateStatistics(indicatorID);
+                    //also update question stats
                     response.getOutputStream().close();
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -153,16 +153,13 @@ public class GraphController {
         }
     }
 
-    private PieDataset createDataSet(GLAQuestion glaQuestion) {
+    private PieDataset createDataSet(GLAIndicator glaIndicator) {
         DefaultPieDataset dpd = new DefaultPieDataset();
         GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
         GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
-        log.info("PIE CHART DATA : STARTED \n" + glaQuestion.getGlaIndicators());
-        for( GLAIndicator glaIndicator : glaQuestion.getGlaIndicators()){
-
-            dpd.setValue(glaIndicator.getIndicator_name(), glaEntityBean.findNumber(glaIndicator.getHql()));
-            glaIndicatorBean.updateStatistics(glaIndicator.getId());
-        }
+        log.info("PIE CHART DATA : STARTED \n" + glaIndicator.getIndicator_name());
+        dpd.setValue(glaIndicator.getIndicator_name(), glaEntityBean.findNumber(glaIndicator.getHql()));
+        glaIndicatorBean.updateStatistics(glaIndicator.getId());
         return dpd;
     }
 
@@ -179,20 +176,15 @@ public class GraphController {
         return dpd;
     }
 
-    private CategoryDataset createCategoryDataSet(GLAQuestion glaQuestion) {
+    private CategoryDataset createCategoryDataSet(GLAIndicator glaIndicator) {
 
         GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
-        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
         long total = 0;
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for( GLAIndicator glaIndicator : glaQuestion.getGlaIndicators()){
-            total += glaEntityBean.findNumber(glaIndicator.getHql());
-        }
-        for( GLAIndicator glaIndicator : glaQuestion.getGlaIndicators()){
-            dataset.setValue((glaEntityBean.findNumber(glaIndicator.getHql())*100)/total, glaIndicator.getIndicator_name(),
-                    glaIndicator.getIndicator_name());
-            glaIndicatorBean.updateStatistics(glaIndicator.getId());
-        }
+        total += glaEntityBean.findNumber(glaIndicator.getHql());
+        dataset.setValue((glaEntityBean.findNumber(glaIndicator.getHql())*100)/total, glaIndicator.getIndicator_name(),
+                glaIndicator.getIndicator_name());
+        // glaIndicatorBean.updateStatistics(glaIndicator.getId());
         return dataset;
     }
 
@@ -284,8 +276,6 @@ public class GraphController {
         domainAxis.setCategoryLabelPositions(
                 CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0)
         );
-        // OPTIONAL CUSTOMISATION COMPLETED.
-
         return chart;
 
     }

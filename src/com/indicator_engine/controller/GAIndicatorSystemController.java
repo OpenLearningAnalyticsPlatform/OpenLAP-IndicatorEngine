@@ -28,7 +28,7 @@ import com.indicator_engine.indicator_system.IndicatorPreProcessing;
 import com.indicator_engine.indicator_system.Number.OperationNumberProcessorDao;
 import com.indicator_engine.misc.NumberChecks;
 import com.indicator_engine.model.app.QuestionRun;
-import com.indicator_engine.model.app.SearchIndicatorForm;
+import com.indicator_engine.model.app.SearchQuestionForm;
 import com.indicator_engine.model.indicator_system.Number.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -357,13 +357,6 @@ public class GAIndicatorSystemController {
         return gson.toJson(entitySpecificationBean.getSessionSpecifications());
     }
 
-    @RequestMapping(value = "/viewall", method = RequestMethod.GET)
-    public String getIndicatorsViewAll(Map<String, Object> model) {
-        SearchIndicatorForm searchIndicatorForm = new SearchIndicatorForm();
-        model.put("searchIndicatorForm", searchIndicatorForm);
-        return  "indicator_system/viewall_indicators";
-    }
-
     @RequestMapping(value = "/refreshGraph", method = RequestMethod.GET)
     public @ResponseBody
     String  refreshGraph(@RequestParam(value="questionName", required = true) String questionName,
@@ -611,8 +604,17 @@ public class GAIndicatorSystemController {
 
     }
 
+    @RequestMapping(value = "/viewall", method = RequestMethod.GET)
+    public String getIndicatorsViewAll(Map<String, Object> model) {
+        SearchQuestionForm searchQuestionForm = new SearchQuestionForm();
+        model.put("searchQuestionForm", searchQuestionForm);
+        return  "indicator_system/viewall_indicators";
+    }
+
     @RequestMapping(value = "/viewall", method = RequestMethod.POST)
-    public ModelAndView processIndicatorSearchForm( @RequestParam String action, @Valid @ModelAttribute("searchIndicatorForm") SearchIndicatorForm searchIndicatorForm, BindingResult bindingResult, HttpSession session) {
+    public ModelAndView processIndicatorSearchForm( @RequestParam String action,
+                                                    @Valid @ModelAttribute("searchQuestionForm") SearchQuestionForm searchQuestionForm,
+                                                    BindingResult bindingResult, HttpSession session) {
 
         ModelAndView model = null;
         if (bindingResult.hasErrors()) {
@@ -620,18 +622,18 @@ public class GAIndicatorSystemController {
         }
         if(action.equals("search")){
 
-            processSearchParams(searchIndicatorForm);
+            processSearchParams(searchQuestionForm);
             model = new ModelAndView("indicator_system/viewall_indicators");
-            model.addObject("searchIndicatorForm", searchIndicatorForm);
+            model.addObject("searchQuestionForm", searchQuestionForm);
         }
         else if(action.equals("load")){
-            if(searchIndicatorForm.getSelectedQuestionName() == null || searchIndicatorForm.getSelectedQuestionName().isEmpty()) {
+            if(searchQuestionForm.getSelectedQuestionName() == null || searchQuestionForm.getSelectedQuestionName().isEmpty()) {
                 model = new ModelAndView("indicator_system/viewall_indicators");
-                model.addObject("searchIndicatorForm", searchIndicatorForm);
+                model.addObject("searchQuestionForm", searchQuestionForm);
             }
             else{
                 model = new ModelAndView("indicator_system/view_indicator_details");
-                model.addObject("question", retrieveQuestion(searchIndicatorForm.getSelectedQuestionName()));
+                model.addObject("question", retrieveQuestion(searchQuestionForm.getSelectedQuestionName()));
             }
         }
         return model;
@@ -639,36 +641,36 @@ public class GAIndicatorSystemController {
 
     @RequestMapping(value = "/trialrun", method = RequestMethod.GET)
     public String getQuestionsTrialRun(Map<String, Object> model) {
-        QuestionRun questionRun = new QuestionRun();
-        GLAQuestionDao glaQuestionsBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
-        List<GLAQuestion> glaQuestionList = glaQuestionsBean.displayAll(null, null, false);
-        for(GLAQuestion gQ : glaQuestionList){
-            questionRun.getAvailableQuestions().add(gQ.getQuestion_name());
-        }
-        model.put("questionRun", questionRun);
+        SearchQuestionForm searchQuestionForm = new SearchQuestionForm();
+        model.put("searchQuestionForm", searchQuestionForm);
         return "indicator_system/trial_run";
     }
 
     @RequestMapping(value = "/trialrun", method = RequestMethod.POST)
-    public String processTrialRun( @Valid @ModelAttribute("questionRun") QuestionRun questionRun,
-                                         BindingResult bindingResult,
-                                         Map<String, Object> model) {
+    public ModelAndView processTrialRun( @RequestParam String action,
+                                   @Valid @ModelAttribute("searchQuestionForm") SearchQuestionForm searchQuestionForm,
+                                   BindingResult bindingResult) {
 
+        ModelAndView model = null;
         if (bindingResult.hasErrors()) {
-            return "indicator_system/trial_run";
+            return new ModelAndView("indicator_system/trial_run");
+        }
+        if(action.equals("search")){
+
+            processSearchParams(searchQuestionForm);
+            model = new ModelAndView("indicator_system/trial_run");
+            model.addObject("searchQuestionForm", searchQuestionForm);
+        }
+        if(action.equals("Visualize")){
+
+            model = new ModelAndView("indicator_system/run_results");
+            model.addObject("chartType", "Pie");
+            model.addObject("questionName", searchQuestionForm.getSelectedQuestionName());
+            model.addObject("question", retrieveQuestion(searchQuestionForm.getSelectedQuestionName()));
+
         }
 
-        if(questionRun.getSelectedChartEngine().equals("JFreeGraph")) {
-            model.put("chartType", questionRun.getSelectedChartType());
-            model.put("questionName", questionRun.getSelectedQuestion());
-            return "indicator_system/run_results";
-        }
-        else if (questionRun.getSelectedChartEngine().equals("CEWOLF")) {
-            model.put("pageViews", PageViews);
-            return "indicator_system/run_results_cewolf";
-        }
-
-       return null;
+       return model;
     }
 
     @RequestMapping(value = "/fetchExistingQuestionsData.web", method = RequestMethod.GET, produces = "application/json")
@@ -784,24 +786,24 @@ public class GAIndicatorSystemController {
         return questions;
 
     }
-    private void processSearchParams(SearchIndicatorForm searchIndicatorForm){
+    private void processSearchParams(SearchQuestionForm searchQuestionForm){
         log.info("processSearchParams : STARTED \n");
         GLAQuestionDao glaQuestionBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
         GLAQuestion glaQuestion = null;
         List<GLAQuestion> glaQuestionList;
-        if(NumberChecks.isNumeric(searchIndicatorForm.getSearchField()) && searchIndicatorForm.getSelectedSearchType().equals("ID")) {
-            glaQuestion = glaQuestionBean.loadByQuestionID(Long.parseLong(searchIndicatorForm.getSearchField()));
+        if(NumberChecks.isNumeric(searchQuestionForm.getSearchField()) && searchQuestionForm.getSelectedSearchType().equals("ID")) {
+            glaQuestion = glaQuestionBean.loadByQuestionID(Long.parseLong(searchQuestionForm.getSearchField()));
             if(glaQuestion != null) {
                 log.info("GLA Question FROM DB SEARCH: ID : \t"+ glaQuestion.getId());
-                searchIndicatorForm.getSearchResults().add(glaQuestion.getQuestion_name());
+                searchQuestionForm.getSearchResults().add(glaQuestion.getQuestion_name());
             }
         }
-        else if (!NumberChecks.isNumeric(searchIndicatorForm.getSearchField()) && searchIndicatorForm.getSelectedSearchType().equals("Question Name")) {
-            glaQuestionList = glaQuestionBean.loadByQuestionName(searchIndicatorForm.getSearchField(), false);
+        else if (!NumberChecks.isNumeric(searchQuestionForm.getSearchField()) && searchQuestionForm.getSelectedSearchType().equals("Question Name")) {
+            glaQuestionList = glaQuestionBean.loadByQuestionName(searchQuestionForm.getSearchField(), false);
             if(glaQuestionList != null) {
                 for(GLAQuestion gQ : glaQuestionList){
                     log.info("GLA INDICATOR FROM DB SEARCH: NAME : \t"+ gQ.getQuestion_name());
-                    searchIndicatorForm.getSearchResults().add(gQ.getQuestion_name());
+                    searchQuestionForm.getSearchResults().add(gQ.getQuestion_name());
                 }
             }
         }

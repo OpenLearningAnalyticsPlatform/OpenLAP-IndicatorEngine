@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created by Tanmaya Mahapatra on 09-05-2015.
  */
-public class SearchIndicatorForm {
+public class SearchQuestionForm {
 
     @Pattern(regexp="^[a-zA-Z0-9]+$", message="searchField must be alphanumeric with no spaces")
     private String searchField;
@@ -46,7 +46,7 @@ public class SearchIndicatorForm {
         this.selectedQuestionName = selectedQuestionName;
     }
 
-    public SearchIndicatorForm(){
+    public SearchQuestionForm(){
         searchType.add("ID");
         searchType.add("Question Name");
     }
