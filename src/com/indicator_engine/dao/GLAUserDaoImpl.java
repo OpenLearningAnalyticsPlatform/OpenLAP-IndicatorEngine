@@ -49,7 +49,7 @@ public class GLAUserDaoImpl implements  GLAUserDao{
 
     }
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<GLAUser> loadUsersRange(long startRange, long endRange) {
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAUser.class);
@@ -61,7 +61,7 @@ public class GLAUserDaoImpl implements  GLAUserDao{
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<GLAUser> loadAll(String colName, String sortDirection, boolean sort) {
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAUser.class);
@@ -77,7 +77,7 @@ public class GLAUserDaoImpl implements  GLAUserDao{
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public int getTotalUsers() {
         Session session = factory.getCurrentSession();
         return ((Number) session.createCriteria(GLAUser.class).setProjection(Projections.rowCount()).uniqueResult()).intValue();
@@ -85,7 +85,7 @@ public class GLAUserDaoImpl implements  GLAUserDao{
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<String> selectAllUsers() {
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAUser.class)
@@ -95,7 +95,7 @@ public class GLAUserDaoImpl implements  GLAUserDao{
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<GLAUser> searchLikeUsers(String searchParameter,
                                          String colName,
                                          String sortDirection,
@@ -115,7 +115,7 @@ public class GLAUserDaoImpl implements  GLAUserDao{
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public GLAUser loaduserByName(String username)
     {
         Session session = factory.getCurrentSession();
@@ -130,7 +130,7 @@ public class GLAUserDaoImpl implements  GLAUserDao{
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<String> searchSimilarUserDetails(String userDetail, String searchCriteria)
     {
         Session session = factory.getCurrentSession();

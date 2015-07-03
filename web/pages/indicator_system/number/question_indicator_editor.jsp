@@ -215,7 +215,13 @@
                 If you are satisfied then please click <img src="${pageContext.request.contextPath}/images/finalize.png" alt="button" width="48" height="48">
                 , as this is the last step of the Indicator Definition process.
             </div>
-            <form:form role="form" id="sessionSelection"  method="POST" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">
+            <ul class="nav nav-tabs" role="tablist" id="qiEditorTab">
+                <li class="active"><a href="#QuestionIndicatorEditor" role="tab" data-toggle="tab">Editor</a></li>
+                <li><a href="#QuestionRun" role="tab" data-toggle="tab">Question Visualization</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="QuestionIndicatorEditor">
+                    <form:form role="form" id="sessionSelection"  method="POST" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">
                 <div class="col-md-12">
                     <div class="col-md-6 col-sm-6 margin-bottom-30">
 
@@ -678,6 +684,51 @@
                 </div>
 
             </form:form>
+                </div>
+                <div class="tab-pane fade in active" id="QuestionRun">
+                    <h1>Execution Results</h1>
+                    <p>Here is the result of execution.</p>
+                    <div class="table-responsive">
+                        <h4 class="margin-bottom-15">Question Details</h4>
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Question Name</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><c:out value="${question.questionName}"/></td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-responsive">
+                        <h4 class="margin-bottom-15">Associated Indicators Visualization</h4>
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Indicator Name</th>
+                                <th>Chart Engine</th>
+                                <th>Chart Type</th>
+                                <th>Indicator Visualization</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach var="entityVal" items="${question.genQueries}"  varStatus="loop">
+                                <tr>
+                                    <td><c:out value="${entityVal.indicatorName}"/></td>
+                                    <td><c:out value="${entityVal.genIndicatorProps.chartEngine}"/></td>
+                                    <td><c:out value="${entityVal.genIndicatorProps.chartType}"/></td>
+                                    <td><img src="/graphs/jgraph?indicator=${entityVal.indicatorName}" /><c:out value="${entityVal.queryID}"/></td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
 
         </div>

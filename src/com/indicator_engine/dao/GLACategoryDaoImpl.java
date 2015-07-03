@@ -50,7 +50,7 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<GLACategory> loadAll(String colName, String sortDirection, boolean sort) {
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLACategory.class);
@@ -66,14 +66,14 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public int getTotalCategories() {
         Session session = factory.getCurrentSession();
         return ((Number) session.createCriteria(GLACategory.class).setProjection(Projections.rowCount()).uniqueResult()).intValue();
 
     }
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<String> selectAllMinors(){
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLACategory.class)
@@ -82,7 +82,7 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public GLACategory loadCategoryByName(String categoryname){
         Session session = factory.getCurrentSession();
         GLACategory glaCategory = null;
@@ -100,7 +100,7 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public long findCategoryID(String minor){
         Session session = factory.getCurrentSession();
         GLACategory glaCategory = null;
@@ -114,7 +114,7 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<String> findCategoryByID(Long category_id, String sentity){
         Session session = factory.getCurrentSession();
         String hql = "SELECT "+ sentity+ " FROM GLACategory WHERE id ="+ category_id;
@@ -123,7 +123,7 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<GLACategory> searchCategoryByMinor(String searchParameter, boolean exactSearch,
                                                    String colName, String sortDirection, boolean sort){
         if(!exactSearch)

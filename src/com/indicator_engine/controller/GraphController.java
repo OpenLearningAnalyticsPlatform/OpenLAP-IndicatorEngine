@@ -168,11 +168,11 @@ public class GraphController {
         GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
         log.info("PIE CHART DATA : STARTED \n" + entitySpecification.getHql());
         dpd.setValue(entitySpecification.getIndicatorName(), glaEntityBean.findNumber(entitySpecification.getHql()));
-        if(entitySpecification.getQuestionsContainer().getGenQueries().size() !=0){
+        /*if(entitySpecification.getQuestionsContainer().getGenQueries().size() !=0){
             for(GenQuery genQuery : entitySpecification.getQuestionsContainer().getGenQueries()) {
                 dpd.setValue(genQuery.getIndicatorName(), glaEntityBean.findNumber(genQuery.getQuery()));
             }
-        }
+        }*/
         return dpd;
     }
 
@@ -194,19 +194,23 @@ public class GraphController {
         long total = 0;
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         total += glaEntityBean.findNumber(entitySpecification.getHql());
-        if(entitySpecification.getQuestionsContainer().getGenQueries().size() !=0){
+        /*if(entitySpecification.getQuestionsContainer().getGenQueries().size() !=0){
             for(GenQuery genQuery : entitySpecification.getQuestionsContainer().getGenQueries()) {
                 total += glaEntityBean.findNumber(genQuery.getQuery());
             }
-        }
-        dataset.setValue((glaEntityBean.findNumber(entitySpecification.getHql()) *100)/total, entitySpecification.getIndicatorName(),
+        }*/
+        if(total != 0)
+            dataset.setValue((glaEntityBean.findNumber(entitySpecification.getHql()) *100)/total, entitySpecification.getIndicatorName(),
                     entitySpecification.getIndicatorName());
-        if(entitySpecification.getQuestionsContainer().getGenQueries().size() !=0){
+        else
+            dataset.setValue((glaEntityBean.findNumber(entitySpecification.getHql()) *100), entitySpecification.getIndicatorName(),
+                    entitySpecification.getIndicatorName());
+        /*if(entitySpecification.getQuestionsContainer().getGenQueries().size() !=0){
             for(GenQuery genQuery : entitySpecification.getQuestionsContainer().getGenQueries()) {
                 dataset.setValue((glaEntityBean.findNumber(genQuery.getQuery()) *100)/total, genQuery.getIndicatorName(),
                         genQuery.getIndicatorName());
             }
-        }
+        }*/
 
         return dataset;
     }

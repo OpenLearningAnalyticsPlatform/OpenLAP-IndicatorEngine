@@ -49,7 +49,7 @@ public class GLAEventDaoImpl implements GLAEventDao {
     @Autowired
     private SessionFactory factory;
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public void add(GLAEvent gEvent, GLAEntity entity) {
         log.info("Executing add()");
         factory.getCurrentSession().saveOrUpdate(gEvent);
@@ -60,7 +60,7 @@ public class GLAEventDaoImpl implements GLAEventDao {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<GLAEvent> loadAllEvents(String colName, String sortDirection, boolean sort){
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAEvent.class);
@@ -78,7 +78,7 @@ public class GLAEventDaoImpl implements GLAEventDao {
 
     }
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public int getTotalEvents(){
         Session session = factory.getCurrentSession();
         return ((Number) session.createCriteria(GLAEvent.class).setProjection(Projections.rowCount()).uniqueResult()).intValue();
@@ -86,7 +86,7 @@ public class GLAEventDaoImpl implements GLAEventDao {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<String> selectAllEvents() {
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAEvent.class)
@@ -96,7 +96,7 @@ public class GLAEventDaoImpl implements GLAEventDao {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public GLAEvent loadEventByID(Long id)
     {
         Session session = factory.getCurrentSession();
@@ -114,7 +114,7 @@ public class GLAEventDaoImpl implements GLAEventDao {
         return glaEvent;
     }
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<String> loadEventByCategoryID(Long categoryID){
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAEvent.class);
@@ -135,7 +135,7 @@ public class GLAEventDaoImpl implements GLAEventDao {
         return selectedEvents;
     }
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<String> selectAll(String EventComponent){
 
         Session session = factory.getCurrentSession();
@@ -148,17 +148,17 @@ public class GLAEventDaoImpl implements GLAEventDao {
     }
 
     @Override
-    @Transactional
-    public long findCategoryId(String action, String source, String platform){
+    @Transactional(readOnly = true)
+    public List<Long> findCategoryId(String action, String source, String platform){
         Session session = factory.getCurrentSession();
         String hql = "SELECT DISTINCT glaCategory.id FROM GLAEvent WHERE action = '"+ action+"'"+ " AND source = '"+ source+"'"+ " AND platform = '"+ platform+"'";
         Query query = session.createQuery(hql);
-        return ((Long) query.uniqueResult()).longValue();
+        return query.list();
 
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<String> searchSimilarSessionDetails(String searchType, String searchCriteria)
     {
         Session session = factory.getCurrentSession();
@@ -173,7 +173,7 @@ public class GLAEventDaoImpl implements GLAEventDao {
         return query.list();
     }
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<String> searchSimilarTimeDetails(String searchType, String searchCriteria)
     {
         Session session = factory.getCurrentSession();
@@ -198,7 +198,7 @@ public class GLAEventDaoImpl implements GLAEventDao {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<GLAEvent> searchEventsByAction(String searchParameter, boolean exactSearch,
                                                String colName, String sortDirection, boolean sort){
         if(!exactSearch)

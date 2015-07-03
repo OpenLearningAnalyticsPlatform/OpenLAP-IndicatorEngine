@@ -59,13 +59,16 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
         List<String> minor = new ArrayList<>();
         for(String source : sources) {
             log.info("initPopulateMinors : Selected Source : \t" + source + "\n");
-            long category_id = glaEventBean.findCategoryId(action,source,
+            List<Long> category_id= glaEventBean.findCategoryId(action,source,
                     platform);
             log.info("initPopulateMinors : Category ID : \t" + category_id + "\n");
-            for(String values : glacategoryBean.findCategoryByID(category_id, "minor")) {
-                if(values != null)
-                    minor.add(values);
+            for( long catId : category_id) {
+                for(String values : glacategoryBean.findCategoryByID(catId, "minor")) {
+                    if(values != null)
+                        minor.add(values);
+                }
             }
+
         }
         log.info("initPopulateMinors : Computed Minor : \t" + minor + "\n");
         log.info("initPopulateMinors : ENDED");
@@ -80,12 +83,14 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
         List<String> major = new ArrayList<>();
         for(String source : sources) {
             log.info("initPopulateMajors : Selected Source : \t" + source + "\n");
-            long category_id = glaEventBean.findCategoryId(action, source,
+            List<Long> category_id  = glaEventBean.findCategoryId(action, source,
                     platform);
             log.info("initPopulateMajors : Category ID : \t" + category_id + "\n");
-            for(String values : glacategoryBean.findCategoryByID(category_id, "major")){
-                if(values != null)
-                    major.add(values);
+            for( long catId : category_id) {
+                for(String values : glacategoryBean.findCategoryByID(catId, "major")){
+                    if(values != null)
+                        major.add(values);
+                }
             }
         }
         log.info("initPopulateMajors : Computed Major : \t" + major + "\n");
@@ -101,13 +106,15 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
         List<String> types = new ArrayList<>();
         for(String source : sources) {
             log.info("initPopulateTypes : Selected Source : \t" + source + "\n");
-            long category_id = glaEventBean.findCategoryId(action, source,
+            List<Long> category_id = glaEventBean.findCategoryId(action, source,
                     platform);
             log.info("initPopulateTypes : Category ID : \t" + category_id + "\n");
-            for(String values : glacategoryBean.findCategoryByID(category_id, "type")){
-                log.info("initPopulateTypes : Values for Category ID : \t" + values + "\n");
-                if(values != null)
-                    types.add(values);
+            for( long catId : category_id) {
+                for(String values : glacategoryBean.findCategoryByID(catId, "type")){
+                    log.info("initPopulateTypes : Values for Category ID : \t" + values + "\n");
+                    if(values != null)
+                        types.add(values);
+                }
             }
         }
         log.info("initPopulateTypes : Computed Types : \t" + types + "\n");

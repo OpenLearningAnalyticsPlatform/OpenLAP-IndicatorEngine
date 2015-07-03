@@ -68,7 +68,7 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<GLAEntity> loadAll(String colName, String sortDirection, boolean sort) {
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAEntity.class);
@@ -90,14 +90,14 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public int getTotalEntities() {
         Session session = factory.getCurrentSession();
         return ((Number) session.createCriteria(GLAEntity.class).setProjection(Projections.rowCount()).uniqueResult()).intValue();
 
     }
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<String> loadEntitiesByCategoryID(Long categoryID){
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAEntity.class);
@@ -112,7 +112,7 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<String> loadEntitiesByCategoryIDName(Long categoryID, String name){
         Session session = factory.getCurrentSession();
         Criteria criteria = session.createCriteria(GLAEntity.class);
@@ -127,7 +127,7 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public long findNumber(String hql) {
         Session session = factory.getCurrentSession();
         Query query = session.createQuery(hql);
@@ -135,7 +135,7 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<GLAEntity> searchEntitiesByKey(String searchParameter, boolean exactSearch,
                                                String colName, String sortDirection, boolean sort){
         if(!exactSearch)
