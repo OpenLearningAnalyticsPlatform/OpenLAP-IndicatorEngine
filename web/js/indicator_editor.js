@@ -1349,3 +1349,41 @@ function processScreenForNextQuestion() {
         }
     }
 }
+
+function QuestionVisualize() {
+    createRequest();
+    var url ="/indicators/refreshQuestionSummary";
+    request.open("GET",url,true);
+    request.onreadystatechange=updateVisusliationTab;
+    request.send(null);
+}
+function updateVisusliationTab() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            if(parsedJSON.genQueries.length ==0) {
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Error</strong> <br/>  No Indicators have been defined for Visualization',
+                    type: 'error'
+                });
+            }
+            else {
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Success</strong> <br/>  Current Question has been visualized successfully.',
+                    type: 'success'
+                });
+                for(i=0; i<parsedJSON.genQueries.length; i++) {
+                    var src = document.getElementById("runIndMem");
+                    var img = document.createElement("img");
+                    img.src = "/graphs/jgraph?runFromMemory=true&indicator="+parsedJSON.genQueries[i].indicatorName;
+                    src.appendChild(img);
+                }
+
+            }
+
+        }
+    }
+
+}

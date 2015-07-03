@@ -23,6 +23,7 @@ import com.indicator_engine.dao.GLAEntityDao;
 import com.indicator_engine.dao.GLAIndicatorDao;
 import com.indicator_engine.dao.GLAQuestionDao;
 import com.indicator_engine.datamodel.GLAIndicator;
+import com.indicator_engine.datamodel.GLAIndicatorProps;
 import com.indicator_engine.datamodel.GLAQuestion;
 import com.indicator_engine.model.indicator_system.Number.EntitySpecification;
 import com.indicator_engine.model.indicator_system.Number.GenQuery;
@@ -54,6 +55,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -70,6 +72,7 @@ public class GraphController {
 
     @RequestMapping(value = "/jgraph", method = RequestMethod.GET)
     public void processGraphRequests(@RequestParam(value="indicator" ,required = false)String indicatorName,
+                                     @RequestParam(value="runFromMemory", defaultValue="false", required = false)String runFromMemory,
                                      @RequestParam(value="bean", defaultValue="false", required = false)String runFromContextBean,
                                      @RequestParam(value="default", defaultValue="false", required = false)String defaultRun,
                                      HttpServletResponse response) {
@@ -117,6 +120,44 @@ public class GraphController {
                     ex.printStackTrace();
                 }
             }
+        }
+        else if(runFromMemory.equals("true")){
+
+            EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+            GLAIndicator glaIndicator = new GLAIndicator();
+            GLAIndicatorProps glaIndicatorProps = new GLAIndicatorProps();
+            for (Iterator<GenQuery> genQuery = entitySpecificationBean.getQuestionsContainer().getGenQueries().iterator(); genQuery.hasNext(); ) {
+                GenQuery agenQuery = genQuery.next();
+                if (agenQuery.getIndicatorName().equals(indicatorName)) {
+                    glaIndicator.setHql(agenQuery.getQuery());
+                    glaIndicator.setIndicator_name(agenQuery.getIndicatorName());
+                    glaIndicatorProps.setChartType(agenQuery.getGenIndicatorProps().getChartType());
+                    glaIndicator.setGlaIndicatorProps(glaIndicatorProps);
+                }
+            }
+            if(glaIndicator.getGlaIndicatorProps().getChartType().equals("Pie")) {
+                PieDataset pdSet = createDataSet(glaIndicator);
+                JFreeChart chart = createPieChart(pdSet, glaIndicator.getIndicator_name());
+                try {
+                    ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart,
+                            750, 400);
+                    response.getOutputStream().close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            else if(glaIndicator.getGlaIndicatorProps().getChartType().equals("Bar")) {
+                CategoryDataset dataset = createCategoryDataSet(glaIndicator);
+                JFreeChart chart = createBarChart(dataset, glaIndicator.getIndicator_name());
+                try {
+                    ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart,
+                            750, 400);
+                    response.getOutputStream().close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
         }
         else {
 

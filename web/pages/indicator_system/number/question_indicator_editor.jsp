@@ -263,7 +263,7 @@
                                                     <img src="${pageContext.request.contextPath}/images/new.png" alt="button" width="48" height="48"/>
                                                 </button>
                                                 <button  type="button" name="RunQuestion" title="Click to run the Question & all its indicators."
-                                                         value="Run Question" onclick="QuestionPlayBack()">
+                                                         value="Run Question" onclick="QuestionVisualize()">
                                                     <img src="${pageContext.request.contextPath}/images/run.png" alt="button" width="48" height="48"/>
                                                 </button >
                                                 <button  type="button" name="QuestionSave" title="Click to save the Question & all its indicators."
@@ -710,20 +710,13 @@
                             <thead>
                             <tr>
                                 <th>Indicator Name</th>
-                                <th>Chart Engine</th>
-                                <th>Chart Type</th>
                                 <th>Indicator Visualization</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach var="entityVal" items="${question.genQueries}"  varStatus="loop">
-                                <tr>
-                                    <td><c:out value="${entityVal.indicatorName}"/></td>
-                                    <td><c:out value="${entityVal.genIndicatorProps.chartEngine}"/></td>
-                                    <td><c:out value="${entityVal.genIndicatorProps.chartType}"/></td>
-                                    <td><img src="/graphs/jgraph?indicator=${entityVal.indicatorName}" /><c:out value="${entityVal.queryID}"/></td>
-                                </tr>
-                            </c:forEach>
+                           <div id ="runIndMem">
+
+                           </div>
                             </tbody>
                         </table>
                     </div>
