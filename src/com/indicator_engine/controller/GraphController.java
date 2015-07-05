@@ -162,6 +162,7 @@ public class GraphController {
         else {
 
             GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
+            GLAQuestionDao glaQuestionBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
             long indicatorID = glaIndicatorBean.findIndicatorID(indicatorName);
             GLAIndicator glaIndicator = glaIndicatorBean.loadByIndicatorID(indicatorID);
             if(glaIndicator.getGlaIndicatorProps().getChartType().equals("Pie")) {
@@ -171,7 +172,8 @@ public class GraphController {
                     ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart,
                             750, 400);
                     glaIndicatorBean.updateStatistics(indicatorID);
-                    //also update question stats
+                    long questionID = glaIndicatorBean.findQuestionID(indicatorID);
+                    glaQuestionBean.updateStatistics(questionID);
                     response.getOutputStream().close();
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -184,7 +186,8 @@ public class GraphController {
                     ChartUtilities.writeChartAsPNG(response.getOutputStream(), chart,
                             750, 400);
                     glaIndicatorBean.updateStatistics(indicatorID);
-                    //also update question stats
+                    long questionID = glaIndicatorBean.findQuestionID(indicatorID);
+                    glaQuestionBean.updateStatistics(questionID);
                     response.getOutputStream().close();
                 } catch (IOException ex) {
                     ex.printStackTrace();

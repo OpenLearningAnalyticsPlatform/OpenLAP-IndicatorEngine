@@ -1374,8 +1374,10 @@ function updateVisusliationTab() {
                     text: '<strong>Success</strong> <br/>  Current Question has been visualized successfully.',
                     type: 'success'
                 });
+                document.getElementById('QuestionRun').focus();
+                var src = document.getElementById("runIndMem");
+                src.innerHTML = "";
                 for(i=0; i<parsedJSON.genQueries.length; i++) {
-                    var src = document.getElementById("runIndMem");
                     var img = document.createElement("img");
                     img.src = "/graphs/jgraph?runFromMemory=true&indicator="+parsedJSON.genQueries[i].indicatorName;
                     src.appendChild(img);
@@ -1385,5 +1387,4 @@ function updateVisusliationTab() {
 
         }
     }
-
 }

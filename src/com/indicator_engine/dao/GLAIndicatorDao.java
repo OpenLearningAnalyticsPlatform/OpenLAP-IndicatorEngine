@@ -39,4 +39,5 @@ public interface GLAIndicatorDao {
     public long findIndicatorID(String indicatorName);
     public void deleteIndicator(long indicator_id);
     public void updateStatistics(long ID);
+    public long findQuestionID(long indicatorID);
 }

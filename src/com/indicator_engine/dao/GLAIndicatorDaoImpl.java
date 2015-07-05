@@ -306,4 +306,19 @@ public class GLAIndicatorDaoImpl implements GLAIndicatorDao {
         factory.getCurrentSession().saveOrUpdate(glaIndicator);
 
     }
+
+    @Override
+    @Transactional
+    public long findQuestionID(long indicatorID){
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAIndicator.class);
+        criteria.setFetchMode("glaIndicatorProps", FetchMode.JOIN);
+        criteria.createAlias("glaQuestions", "questions");
+        criteria.setFetchMode("questions", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", indicatorID));
+        criteria.setProjection(Projections.property("questions.id"));
+
+        return ((Long) criteria.uniqueResult()).longValue();
+
+    }
 }

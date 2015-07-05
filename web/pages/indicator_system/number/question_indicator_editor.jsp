@@ -686,39 +686,12 @@
             </form:form>
                 </div>
                 <div class="tab-pane fade in active" id="QuestionRun">
-                    <h1>Execution Results</h1>
-                    <p>Here is the result of execution.</p>
-                    <div class="table-responsive">
-                        <h4 class="margin-bottom-15">Question Details</h4>
-                        <table class="table table-striped table-hover table-bordered">
-                            <thead>
-                            <tr>
-                                <th>Question Name</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td><c:out value="${question.questionName}"/></td>
-
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <h1>Question Visualiztion</h1>
+                    <p>Visualizing all Indicators</p>
                     <div class="table-responsive">
                         <h4 class="margin-bottom-15">Associated Indicators Visualization</h4>
-                        <table class="table table-striped table-hover table-bordered">
-                            <thead>
-                            <tr>
-                                <th>Indicator Name</th>
-                                <th>Indicator Visualization</th>
-                            </tr>
-                            </thead>
-                            <tbody>
                            <div id ="runIndMem">
-
                            </div>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
