@@ -54,6 +54,8 @@ public class EntitySpecification implements Serializable {
     private String selectedChartType;
     private String selectedChartEngine;
 
+    private boolean isComposite;
+
     private final String  persistenceObject;
     private final String filteringType;
     private final String retrievableObjects;
@@ -82,6 +84,7 @@ public class EntitySpecification implements Serializable {
 
         this.selectedChartEngine = null;
         this.selectedChartType = null;
+        this.isComposite = false;
 
         this.entityValues.clear();
         this.userSpecifications.clear();
@@ -237,4 +240,11 @@ public class EntitySpecification implements Serializable {
         return retrievableObjects;
     }
 
+    public boolean isComposite() {
+        return isComposite;
+    }
+
+    public void setComposite(boolean isComposite) {
+        this.isComposite = isComposite;
+    }
 }

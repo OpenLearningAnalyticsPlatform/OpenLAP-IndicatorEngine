@@ -132,6 +132,7 @@ public class GraphController {
                     glaIndicator.setHql(agenQuery.getQuery());
                     glaIndicator.setIndicator_name(agenQuery.getIndicatorName());
                     glaIndicatorProps.setChartType(agenQuery.getGenIndicatorProps().getChartType());
+                    glaIndicatorProps.setComposite(agenQuery.getGenIndicatorProps().isComposite());
                     glaIndicator.setGlaIndicatorProps(glaIndicatorProps);
                 }
             }
@@ -203,7 +204,6 @@ public class GraphController {
         GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
         log.info("PIE CHART DATA : STARTED \n" + glaIndicator.getIndicator_name());
         dpd.setValue(glaIndicator.getIndicator_name(), glaEntityBean.findNumber(glaIndicator.getHql()));
-        glaIndicatorBean.updateStatistics(glaIndicator.getId());
         return dpd;
     }
 
@@ -226,8 +226,12 @@ public class GraphController {
         long total = 0;
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         total += glaEntityBean.findNumber(glaIndicator.getHql());
-        dataset.setValue((glaEntityBean.findNumber(glaIndicator.getHql())*100)/total, glaIndicator.getIndicator_name(),
+        if(total != 0)
+            dataset.setValue((glaEntityBean.findNumber(glaIndicator.getHql())*100)/total, glaIndicator.getIndicator_name(),
                 glaIndicator.getIndicator_name());
+        else
+            dataset.setValue((glaEntityBean.findNumber(glaIndicator.getHql())*100), glaIndicator.getIndicator_name(),
+                    glaIndicator.getIndicator_name());
         // glaIndicatorBean.updateStatistics(glaIndicator.getId());
         return dataset;
     }

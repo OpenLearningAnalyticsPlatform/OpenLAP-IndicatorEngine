@@ -104,7 +104,6 @@
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
             <h1>Question with Indicator Definition</h1>
-            <p>Information to be added</p>
             <input type="hidden" name="userName" id="userName" value="${sessionScope.userName}" />
 
             <div id="indViewDialog" title="Selected Indicator Property">
@@ -217,6 +216,7 @@
             </div>
             <ul class="nav nav-tabs" role="tablist" id="qiEditorTab">
                 <li class="active"><a href="#QuestionIndicatorEditor" role="tab" data-toggle="tab">Editor</a></li>
+                <li><a href="#TemplateLoad" role="tab" data-toggle="tab">Template Load</a></li>
                 <li><a href="#QuestionRun" role="tab" data-toggle="tab">Question Visualization</a></li>
             </ul>
             <div class="tab-content">
@@ -686,13 +686,37 @@
             </form:form>
                 </div>
                 <div class="tab-pane fade in active" id="QuestionRun">
-                    <h1>Question Visualiztion</h1>
-                    <p>Visualizing all Indicators</p>
+                    <h1>Question Visualization</h1>
                     <div class="table-responsive">
                         <h4 class="margin-bottom-15">Associated Indicators Visualization</h4>
+                        You can combine various Indicators to save as a new composite Indicator. You can define only one composite Indicator at one time.
+                        Please select the indicators and also fill out other details like Name, graphing type etc. The New Composite Indicator will be available
+                        in Memory and You can view that in "Question Summary" Properties window.
                            <div id ="runIndMem">
                            </div>
+                            <div class="col-md-6 margin-bottom-15">
+                            <input type="text" class="form-control" placeholder="Type the New Composite Indicator Name"
+                                   title="Type the New Composite Indicator Name" name ="compositeIndName" id="compositeIndName" />
+                                <br/>
+                            <select class="form-control margin-bottom-15" id="compositeGraphType">
+                                <option value="Pie">Pie</option>
+                                <option value="Bar">Bar</option>
+                            </select>
+                            <br/>
+                            <select class="form-control margin-bottom-15"  id="compositeGraphEngine">
+                                <option value="JGraph">JGraph</option>
+                            </select>
+                            <br/>
+                            <button  type="button" name="CompositeIndButton" value="Add" onclick="addCompositeIndicator()" >
+                                <img src="${pageContext.request.contextPath}/images/apply.png" alt="button" width="48" height="48"/>
+                            </button>
+                            </div>
+
                     </div>
+                </div>
+                <div class="tab-pane fade in active" id="TemplateLoad">
+                    <h1>Use an Existing Indicator as a template</h1>
+                    <p>Search an Existing Indicator</p>
                 </div>
             </div>
 

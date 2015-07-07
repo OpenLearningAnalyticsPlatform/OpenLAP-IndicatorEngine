@@ -1354,10 +1354,10 @@ function QuestionVisualize() {
     createRequest();
     var url ="/indicators/refreshQuestionSummary";
     request.open("GET",url,true);
-    request.onreadystatechange=updateVisusliationTab;
+    request.onreadystatechange=updateVisualisationTab;
     request.send(null);
 }
-function updateVisusliationTab() {
+function updateVisualisationTab() {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
@@ -1374,17 +1374,69 @@ function updateVisusliationTab() {
                     text: '<strong>Success</strong> <br/>  Current Question has been visualized successfully.',
                     type: 'success'
                 });
-                document.getElementById('QuestionRun').focus();
                 var src = document.getElementById("runIndMem");
                 src.innerHTML = "";
                 for(i=0; i<parsedJSON.genQueries.length; i++) {
+
+                    var label= document.createElement("label");
+                    var description = document.createTextNode(parsedJSON.genQueries[i].indicatorName);
+                    var checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";    // make the element a checkbox
+                    checkbox.name = parsedJSON.genQueries[i].indicatorName;      // give it a name we can check on the server side
+                    checkbox.value = parsedJSON.genQueries[i].indicatorName;         // make its value "pair"
+                    checkbox.className = "messageCheckbox";
+
+                    label.appendChild(checkbox);   // add the box to the element
+                    label.appendChild(description);// add the description to the element
+                    // add the label element to your div
+                    src.appendChild(label);
                     var img = document.createElement("img");
                     img.src = "/graphs/jgraph?runFromMemory=true&indicator="+parsedJSON.genQueries[i].indicatorName;
                     src.appendChild(img);
                 }
+                $('#qiEditorTab a[href="#QuestionRun"]').tab('show');
 
             }
 
         }
     }
+}
+
+function addCompositeIndicator() {
+    var checkedValues = new Array();
+    var counter =0 ;
+    var inputElements = document.getElementsByClassName('messageCheckbox');
+    for(var i=0; inputElements[i]; ++i){
+        if(inputElements[i].checked){
+            checkedValues[counter] = inputElements[i].value;
+            counter++;
+        }
+    }
+    var indicatorName = document.getElementById("compositeIndName").value;
+    var graphType = document.getElementById("compositeGraphType").value;
+    var graphEngine = document.getElementById("compositeGraphEngine").value;
+    createRequest();
+    var url ="/indicators/addCompositeIndicator?indName="+indicatorName+"&graphType="+graphType+"&graphEngine="+graphType
+        +"&compositeSources="+checkedValues;
+   request.open("GET",url,true);
+   request.onreadystatechange=postAddCompositeIndicator;
+   request.send(null);
+}
+
+function postAddCompositeIndicator() {
+
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            $.noty.defaults.killer = true;
+            noty({
+                text: '<strong>Success</strong> <br/>  A New composite Indicator has been added',
+                type: 'success'
+            });
+            refreshQuestionSummary();
+            $('#qiEditorTab a[href="#qiEditorTab"]').tab('show');
+
+        }
+    }
+
 }

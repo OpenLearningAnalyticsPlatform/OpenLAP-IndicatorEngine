@@ -373,6 +373,7 @@ public class GAIndicatorSystemController {
         entitySpecificationBean.setSelectedChartEngine(graphEngine);
         entitySpecificationBean.setQuestionName(questionName);
         entitySpecificationBean.setIndicatorName(indicatorName);
+        entitySpecificationBean.setComposite(false);
         GLACategory glaCategory = glaCategoryBean.loadCategoryByName(entitySpecificationBean.getSelectedMinor());
         entitySpecificationBean.setSelectedMajor(glaCategory.getMajor());
         entitySpecificationBean.setSelectedType(glaCategory.getType());
@@ -394,6 +395,7 @@ public class GAIndicatorSystemController {
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         entitySpecificationBean.setSelectedChartType(graphType);
         entitySpecificationBean.setSelectedChartEngine(graphEngine);
+        entitySpecificationBean.setComposite(false);
         //entitySpecificationBean.setQuestionName(questionName);
         entitySpecificationBean.setIndicatorName(indicatorName);
         //If user Directly finalizes the Indicator, then we have to implicitly generate the HQL
@@ -433,6 +435,7 @@ public class GAIndicatorSystemController {
             GenIndicatorProps genIndicatorProps = new GenIndicatorProps();
             genIndicatorProps.setChartEngine(entitySpecificationBean.getSelectedChartEngine());
             genIndicatorProps.setChartType(entitySpecificationBean.getSelectedChartType());
+            genIndicatorProps.setComposite(entitySpecificationBean.isComposite());
             IndicatorXMLData indicatorXMLData = new IndicatorXMLData(entitySpecificationBean.getSelectedSource(), entitySpecificationBean.getSelectedAction(),
                     entitySpecificationBean.getSelectedPlatform(), entitySpecificationBean.getSelectedMajor(), entitySpecificationBean.getSelectedMinor(),
                     entitySpecificationBean.getFilteringType(),xMLentityValues, xMlUserSpecifications, xMLSessionSpecifications, xMLTimeSpecifications, entitySpecificationBean.getSelectedChartType(),
@@ -449,10 +452,39 @@ public class GAIndicatorSystemController {
             GenIndicatorProps genIndicatorProps = new GenIndicatorProps();
             genIndicatorProps.setChartEngine(entitySpecificationBean.getSelectedChartEngine());
             genIndicatorProps.setChartType(entitySpecificationBean.getSelectedChartType());
+            genIndicatorProps.setComposite(entitySpecificationBean.isComposite());
             entitySpecificationBean.getQuestionsContainer().getGenQueries().add(new GenQuery(entitySpecificationBean.getHql(),entitySpecificationBean.getIndicatorName(),1, indicatorXMLData, genIndicatorProps));
 
         }
         return gson.toJson(entitySpecificationBean.getQuestionsContainer());
+    }
+
+
+    @RequestMapping(value = "/addCompositeIndicator", method = RequestMethod.GET)
+    public @ResponseBody
+    String  addCompositeIndicator(@RequestParam(value="indName", required = true) String indicatorName,
+                         @RequestParam(value="graphType", required = true) String graphType,
+                         @RequestParam(value="graphEngine", required = true) String graphEngine,
+                         @RequestParam(value="compositeSources", required = true) List<String> compositeSources,
+                         Model model) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        GenIndicatorProps genIndicatorProps = new GenIndicatorProps();
+        genIndicatorProps.setChartEngine(graphEngine);
+        genIndicatorProps.setChartType(graphType);
+        genIndicatorProps.setComposite(true);
+        List<CompositeQuery> compositeQueryList = new ArrayList<>();
+        for (String indName : compositeSources ) {
+            for (Iterator<GenQuery> genQuery = entitySpecificationBean.getQuestionsContainer().getGenQueries().iterator(); genQuery.hasNext(); ) {
+                GenQuery agenQuery = genQuery.next();
+                if (agenQuery.getIndicatorName().equals(indName)) {
+                    compositeQueryList.add(new CompositeQuery(agenQuery.getQuery()));
+                }
+            }
+        }
+        entitySpecificationBean.getQuestionsContainer().getGenQueries().add(new GenQuery(gson.toJson(compositeQueryList),indicatorName,1, null, genIndicatorProps));
+        return gson.toJson(entitySpecificationBean.getQuestionsContainer());
+
     }
 
     @RequestMapping(value = "/addNewIndicator", method = RequestMethod.GET)
@@ -584,7 +616,7 @@ public class GAIndicatorSystemController {
             glaIndicator.setHql(genQuery.getQuery());
             //Creating  &  Setting its Properties
             GLAIndicatorProps glaIndicatorProps = new GLAIndicatorProps();
-            glaIndicatorProps.setComposite(false);
+            glaIndicatorProps.setComposite(genQuery.getGenIndicatorProps().isComposite());
             glaIndicatorProps.setTotalExecutions(1);
             glaIndicatorProps.setLast_executionTime(new java.sql.Timestamp(now.getTime()));
             glaIndicatorProps.setUserName(userName);
@@ -595,9 +627,10 @@ public class GAIndicatorSystemController {
             // Pushing this property set to the Indicator
             glaIndicator.setGlaIndicatorProps(glaIndicatorProps);
             //Adding to the Hashset
-            glaIndicatorHashSet.add(glaIndicator);        }
+            glaIndicatorHashSet.add(glaIndicator);
+        }
 
-          long qid = glaQuestionBean.add(glaQuestion, glaIndicatorHashSet);
+        long qid = glaQuestionBean.add(glaQuestion, glaIndicatorHashSet);
         entitySpecificationBean.completeReset();
 
         return gson.toJson(qid);
@@ -953,5 +986,20 @@ class CurrentIndicatorSummary {
 
     public void setTimeFilters(int timeFilters) {
         this.timeFilters = timeFilters;
+    }
+}
+
+class CompositeQuery {
+    private String query;
+
+    CompositeQuery(String query) {
+        this.query = query;
+    }
+    public String getQuery() {
+        return query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
     }
 }
