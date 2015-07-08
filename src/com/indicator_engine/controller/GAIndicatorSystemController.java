@@ -507,11 +507,11 @@ public class GAIndicatorSystemController {
         else {
             Questions questions = entitySpecificationBean.getQuestionsContainer();
             for(GenQuery genQuery : questions.getGenQueries()){
-                if(genQuery.getIndicatorName().equals(indicatorName))
+                if(genQuery.getIndicatorName().equals(indicatorName) && !genQuery.getGenIndicatorProps().isComposite())
                     return gson.toJson(genQuery);
             }
         }
-        return null;
+        return gson.toJson(null);
     }
     @RequestMapping(value = "/refreshCurrentIndicator", method = RequestMethod.GET)
     public @ResponseBody
@@ -556,7 +556,7 @@ public class GAIndicatorSystemController {
         if (indicatorName != null) {
             for (Iterator<GenQuery> genQuery = entitySpecificationBean.getQuestionsContainer().getGenQueries().iterator(); genQuery.hasNext(); ) {
                 GenQuery agenQuery = genQuery.next();
-                if (agenQuery.getIndicatorName().equals(indicatorName)) {
+                    if (agenQuery.getIndicatorName().equals(indicatorName) && !agenQuery.getGenIndicatorProps().isComposite()) {
                     entitySpecificationBean.setEntityValues(new ArrayList<EntityValues>(agenQuery.getIndicatorXMLData().getEntityValues().size()));
                     Iterator<EntityValues> entityIterator = agenQuery.getIndicatorXMLData().getEntityValues().iterator();
                     while(entityIterator.hasNext()) {
@@ -582,7 +582,7 @@ public class GAIndicatorSystemController {
                 }
             }
         }
-        return null;
+        return gson.toJson(null);
     }
 
     @RequestMapping(value = "/saveQuestionDB", method = RequestMethod.GET)

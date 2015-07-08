@@ -205,25 +205,34 @@ $(function() {
             data: { indName: $("#associatedIndicators").val() },
             dataType: "json", // json
             success:function(response){
-                //$("#indViewDialog").text(JSON.stringify(response));
-                GenerateTable(response)
+                if (response == null ) {
+                    $("#indDeleteDialog").html("The Selected Indicator Property cannot be viewed as it a Composite Indicator. It can only be deleted/Saved to DB.");
+                    refreshQuestionSummary();
+                    $('.indDeleteDialog').dialog('option', 'title', 'Indicator View Message');
+                    $("#indDeleteDialog").dialog("open");
+                }
+                else {
+                    //$("#indViewDialog").text(JSON.stringify(response));
+                    GenerateTable(response);
+                    indPropEntityFilterTable.clear();
+                    indPropUserFilterTable.clear();
+                    indPropSessionFilterTable.clear();
+                    indPropTimeFilterTable.clear();
 
-                indPropEntityFilterTable.clear();
-                indPropUserFilterTable.clear();
-                indPropSessionFilterTable.clear();
-                indPropTimeFilterTable.clear();
+                    indPropEntityFilterTable.rows.add(response.indicatorXMLData.entityValues);
+                    indPropUserFilterTable.rows.add(response.indicatorXMLData.userSpecifications);
+                    indPropSessionFilterTable.rows.add(response.indicatorXMLData.sessionSpecifications);
+                    indPropTimeFilterTable.rows.add(response.indicatorXMLData.timeSpecifications);
 
-                indPropEntityFilterTable.rows.add(response.indicatorXMLData.entityValues);
-                indPropUserFilterTable.rows.add(response.indicatorXMLData.userSpecifications);
-                indPropSessionFilterTable.rows.add(response.indicatorXMLData.sessionSpecifications);
-                indPropTimeFilterTable.rows.add(response.indicatorXMLData.timeSpecifications);
+                    indPropEntityFilterTable.draw();
+                    indPropUserFilterTable.draw();
+                    indPropSessionFilterTable.draw();
+                    indPropTimeFilterTable.draw();
 
-                indPropEntityFilterTable.draw();
-                indPropUserFilterTable.draw();
-                indPropSessionFilterTable.draw();
-                indPropTimeFilterTable.draw();
+                    $("#indViewDialog").dialog("open");
 
-                $("#indViewDialog").dialog("open");
+                }
+
             }});
     });
     $( "#indDelete" ).click(function(e){
@@ -244,15 +253,23 @@ $(function() {
             data: { indName: $("#associatedIndicators").val() },
             dataType: "json",
             success: function(response){
-                $("#indDeleteDialog").html("The Selected Indicator has been successfully loaded into the Editor.<br/> Please note that it has been <strong>deleted</strong>" +
-                "from the Question Set. So after making changes, please save it again if you want it to bve associated with the current indicator. <br/>" +
-                "Also note that you have to select again Platform and Axction to populate the List of Minors.");
-                $('.indDeleteDialog').dialog('option', 'title', 'Indicator Load Message');
-                refreshQuestionSummary();
-                updateScreenAfterLoadInd(response);
-                $("#indDeleteDialog").dialog("open");
-            }}
-        );
+                if (response == null ) {
+                    $("#indDeleteDialog").html("The Selected Indicator Cannot be Loaded as it a Composite Indicator. It can only be deleted/Saved to DB.");
+                    refreshQuestionSummary();
+                    $('.indDeleteDialog').dialog('option', 'title', 'Indicator Load Message');
+                    $("#indDeleteDialog").dialog("open");
+                }
+                else {
+                    $("#indDeleteDialog").html("The Selected Indicator has been successfully loaded into the Editor.<br/> Please note that it has been <strong>deleted</strong>" +
+                    "from the Question Set. So after making changes, please save it again if you want it to bve associated with the current indicator. <br/>" +
+                    "Also note that you have to select again Platform and Axction to populate the List of Minors.");
+                    $('.indDeleteDialog').dialog('option', 'title', 'Indicator Load Message');
+                    refreshQuestionSummary();
+                    updateScreenAfterLoadInd(response);
+                    $("#indDeleteDialog").dialog("open");
+                }
+            }
+        });
     });
 
     $.noty.defaults = {
@@ -1434,7 +1451,7 @@ function postAddCompositeIndicator() {
                 type: 'success'
             });
             refreshQuestionSummary();
-            $('#qiEditorTab a[href="#qiEditorTab"]').tab('show');
+            $('#qiEditorTab a[href="#QuestionIndicatorEditor"]').tab('show');
 
         }
     }
