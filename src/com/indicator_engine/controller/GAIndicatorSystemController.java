@@ -478,7 +478,7 @@ public class GAIndicatorSystemController {
             for (Iterator<GenQuery> genQuery = entitySpecificationBean.getQuestionsContainer().getGenQueries().iterator(); genQuery.hasNext(); ) {
                 GenQuery agenQuery = genQuery.next();
                 if (agenQuery.getIndicatorName().equals(indName)) {
-                    compositeQueryList.add(new CompositeQuery(agenQuery.getQuery()));
+                    compositeQueryList.add(new CompositeQuery(agenQuery.getQuery(), agenQuery.getIndicatorName()));
                 }
             }
         }
@@ -990,10 +990,12 @@ class CurrentIndicatorSummary {
 }
 
 class CompositeQuery {
+    private String parentIndName;
     private String query;
 
-    CompositeQuery(String query) {
+    CompositeQuery(String query,String parentIndName) {
         this.query = query;
+        this.parentIndName = parentIndName;
     }
     public String getQuery() {
         return query;
@@ -1001,5 +1003,13 @@ class CompositeQuery {
 
     public void setQuery(String query) {
         this.query = query;
+    }
+
+    public String getParentIndName() {
+        return parentIndName;
+    }
+
+    public void setParentIndName(String parentIndName) {
+        this.parentIndName = parentIndName;
     }
 }

@@ -19,6 +19,7 @@
 
 package com.indicator_engine.controller;
 
+import com.google.gson.Gson;
 import com.indicator_engine.dao.GLAEntityDao;
 import com.indicator_engine.dao.GLAIndicatorDao;
 import com.indicator_engine.dao.GLAQuestionDao;
@@ -53,9 +54,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
+import java.awt.GradientPaint;
+import java.awt.Color;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -201,9 +204,21 @@ public class GraphController {
     private PieDataset createDataSet(GLAIndicator glaIndicator) {
         DefaultPieDataset dpd = new DefaultPieDataset();
         GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
-        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
-        log.info("PIE CHART DATA : STARTED \n" + glaIndicator.getIndicator_name());
-        dpd.setValue(glaIndicator.getIndicator_name(), glaEntityBean.findNumber(glaIndicator.getHql()));
+        Gson gson = new Gson();
+        if(glaIndicator.getGlaIndicatorProps().isComposite()) {
+            CompositeQuery [] compositeQuery = gson.fromJson(glaIndicator.getHql(),CompositeQuery[].class);
+            for(int i = 0; i < compositeQuery.length; i++) {
+                log.info("PIE CHART DATA : COMPOSITE \n" + compositeQuery[i].getQuery());
+                dpd.setValue(compositeQuery[i].getParentIndName(), glaEntityBean.findNumber(compositeQuery[i].getQuery()));
+            }
+
+        }
+        else {
+
+            log.info("PIE CHART DATA : STARTED \n" + glaIndicator.getIndicator_name());
+            dpd.setValue(glaIndicator.getIndicator_name(), glaEntityBean.findNumber(glaIndicator.getHql()));
+        }
+
         return dpd;
     }
 
@@ -224,15 +239,37 @@ public class GraphController {
 
         GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
         long total = 0;
+        Gson gson = new Gson();
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        total += glaEntityBean.findNumber(glaIndicator.getHql());
-        if(total != 0)
-            dataset.setValue((glaEntityBean.findNumber(glaIndicator.getHql())*100)/total, glaIndicator.getIndicator_name(),
-                glaIndicator.getIndicator_name());
-        else
-            dataset.setValue((glaEntityBean.findNumber(glaIndicator.getHql())*100), glaIndicator.getIndicator_name(),
-                    glaIndicator.getIndicator_name());
-        // glaIndicatorBean.updateStatistics(glaIndicator.getId());
+        if(glaIndicator.getGlaIndicatorProps().isComposite()) {
+            CompositeQuery [] compositeQuery = gson.fromJson(glaIndicator.getHql(),CompositeQuery[].class);
+            for(int i = 0; i < compositeQuery.length; i++) {
+                total += glaEntityBean.findNumber(compositeQuery[i].getQuery());
+            }
+            if(total != 0) {
+                for(int i = 0; i < compositeQuery.length; i++) {
+                    dataset.setValue((glaEntityBean.findNumber(compositeQuery[i].getQuery())*100)/total, compositeQuery[i].getParentIndName(),
+                            compositeQuery[i].getParentIndName());
+                }
+            }
+            else {
+                for(int i = 0; i < compositeQuery.length; i++) {
+                    dataset.setValue((glaEntityBean.findNumber(compositeQuery[i].getQuery())*100), compositeQuery[i].getParentIndName(),
+                            compositeQuery[i].getParentIndName());
+                }
+            }
+        }
+        else {
+            total += glaEntityBean.findNumber(glaIndicator.getHql());
+            if(total != 0)
+                dataset.setValue((glaEntityBean.findNumber(glaIndicator.getHql())*100)/total, glaIndicator.getIndicator_name(),
+                        glaIndicator.getIndicator_name());
+            else
+                dataset.setValue((glaEntityBean.findNumber(glaIndicator.getHql())*100), glaIndicator.getIndicator_name(),
+                        glaIndicator.getIndicator_name());
+            // glaIndicatorBean.updateStatistics(glaIndicator.getId());
+        }
+
         return dataset;
     }
 
