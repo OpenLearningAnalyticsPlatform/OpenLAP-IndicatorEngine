@@ -21,10 +21,19 @@ package com.indicator_engine.indicator_system.Number;
 
 import com.indicator_engine.model.indicator_system.Number.EntityValues;
 import com.indicator_engine.model.indicator_system.Number.SessionSpecifications;
+import com.indicator_engine.model.indicator_system.Number.TimeSearchSpecifications;
 import com.indicator_engine.model.indicator_system.Number.UserSearchSpecifications;
+import jxl.write.DateTime;
 import org.drools.definition.process.*;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Parses the User Input given during Indicator Definition process and generates equivalent Hibernate Queries.
@@ -285,6 +294,60 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
             hibernateQuery += hibernateExactSession;
         if(counterLikeSesion > 0)
             hibernateQuery += hibernateLikeSession;
+
+        return hibernateQuery;
+    }
+    public String processTime( List<TimeSearchSpecifications>  timeSearchSpecifications, String filter){
+        String hibernateQuery=" ";
+        String hibernateExactTime =" AND glaEvent.timestamp IN (";
+        String hibernateRangeTime =" AND glaEvent.timestamp IN (";
+        String type = null;
+        List<String> time = new ArrayList<>();
+        int counterTime = 0;
+        int counterRangeTime = 0;
+        for(TimeSearchSpecifications timeSpec : timeSearchSpecifications){
+            time = timeSpec.getTimestamp();
+            type = timeSpec.getType();
+            if(type.equals("EXACT")) {
+                if(counterTime == 0) {
+
+                    Date date = new Date(Long.parseLong(time.get(0))); // *1000 is to convert seconds to milliseconds
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // the format of your date
+                    String formattedDate = sdf.format(date);
+                    hibernateExactTime += "'"+formattedDate+"'";
+                    counterTime++;
+                    continue;
+                }
+                if(counterTime >= 1 ) {
+
+                    Date date = new Date(Long.parseLong(time.get(0))); // *1000 is to convert seconds to milliseconds
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // the format of your date
+                    String formattedDate = sdf.format(date);
+                    hibernateExactTime += ", '"+ formattedDate + "' ";
+                    counterTime++;
+                    continue;
+                }
+            }
+            if(type.equals("RANGE")) {
+                /*if(counterRangeTime == 0) {
+                    hibernateRangeTime += " ( SELECT session FROM GLAEvent " +
+                            " WHERE session LIKE  '%"+ session + "%' ";
+                    counterRangeTime++;
+                    continue;
+                }
+                if(counterRangeTime >= 1 ) {
+                    hibernateRangeTime += filter +" session LIKE '%"+ session + "%' ";
+                    counterRangeTime++;
+                    continue;
+                } */
+            }
+        }
+        hibernateExactTime += " )";
+        hibernateRangeTime +=") )";
+        if(counterTime > 0)
+            hibernateQuery += hibernateExactTime;
+        if(counterRangeTime > 0)
+            hibernateQuery += hibernateRangeTime;
 
         return hibernateQuery;
     }

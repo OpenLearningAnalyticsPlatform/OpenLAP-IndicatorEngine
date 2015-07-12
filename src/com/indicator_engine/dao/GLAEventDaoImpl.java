@@ -37,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -174,7 +175,7 @@ public class GLAEventDaoImpl implements GLAEventDao {
     }
     @Override
     @Transactional(readOnly = true)
-    public List<String> searchSimilarTimeDetails(String searchType, String searchCriteria)
+    public List<Timestamp> searchSimilarTimeDetails(String searchType, String searchCriteria)
     {
         Session session = factory.getCurrentSession();
         String hql = null;

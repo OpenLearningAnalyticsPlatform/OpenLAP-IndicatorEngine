@@ -520,7 +520,7 @@
                                                     </button>
                                                     <br/>
                                                     <label for="multipleSelect">Search Results </label>
-                                                    <form:select multiple="true" class="form-control" path="selectedSearchStrings" id = "timeSearchResults" name="multipleSelect">
+                                                    <form:select class="form-control" path="selectedSearchStrings" id = "timeSearchResults" name="multipleSelect">
                                                         <form:options items="${selectNumberParameters.searchResults}" />
                                                     </form:select>
                                                     <br/>

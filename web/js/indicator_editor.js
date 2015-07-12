@@ -934,22 +934,27 @@ function displaySearchTimeResults() {
 function addTimeFilter() {
     createRequest();
     var timeSearchType = document.getElementById("timeSelectionType").value;
-    var timeString;
-    var selectedArray = new Array();
-    var selObj = document.getElementById("timeSearchResults");
-    var i;
-    var count = 0;
-    for (i=0; i< selObj.options.length; i++) {
-        if (selObj.options[i].selected) {
-            selectedArray[count] = selObj.options[i].value;
-            count++;
-        }
+    if(timeSearchType === "EXACT"){
+        var timeString = document.getElementById("timeSearchResults").value;
+        var UTCDate = +(new Date(timeString));
+        var url ="/indicators/addTimeFilter?time="+UTCDate+"&timeType="+timeSearchType;
+        request.open("GET",url,true);
+        request.onreadystatechange= function(){displayTimeFilters(1)};
+        request.send(null);
     }
-    timeString = selectedArray;
-    var url ="/indicators/addTimeFilter?time="+timeString+"&timeType="+timeSearchType;
-    request.open("GET",url,true);
-    request.onreadystatechange= function(){displayTimeFilters(1)};
-    request.send(null);
+    else {
+        var startRange = document.getElementById("fromDate").value;
+        var endRange = document.getElementById("toDate").value;
+        var time = new Array();
+        time[0] = +(new Date(startRange));
+        time[1] = +(new Date(endRange));
+        console.log(time);
+        url ="/indicators/addTimeFilter?time="+time+"&timeType="+timeSearchType;
+        request.open("GET",url,true);
+        request.onreadystatechange= function(){displayTimeFilters(1)};
+        request.send(null);
+    }
+
 }
 
 function refreshTimeFilters() {

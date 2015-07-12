@@ -44,6 +44,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -283,13 +284,13 @@ public class GAIndicatorSystemController {
                         Model model) {
         GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
         Gson gson = new Gson();
-        List<String> searchResults = glaEventBean.searchSimilarTimeDetails(timeType, time);
+        List<Timestamp> searchResults = glaEventBean.searchSimilarTimeDetails(timeType, time);
         return gson.toJson(searchResults);
     }
 
     @RequestMapping(value = "/addTimeFilter", method = RequestMethod.GET)
     public @ResponseBody
-    String  addTimeFilter(@RequestParam(value="time", required = true) List<String> time,
+    String  addTimeFilter(@RequestParam(value="time", required = false) List<String> time,
                           @RequestParam(value="timeType", required = true) String timeType,
                           Model model) {
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");

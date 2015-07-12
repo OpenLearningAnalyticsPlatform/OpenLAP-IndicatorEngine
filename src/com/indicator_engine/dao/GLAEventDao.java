@@ -24,6 +24,7 @@ package com.indicator_engine.dao;
 import com.indicator_engine.datamodel.GLAEntity;
 import com.indicator_engine.datamodel.GLAEvent;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -39,7 +40,7 @@ public interface GLAEventDao {
     public List<String> selectAll(String EventComponent);
     public List<Long> findCategoryId(String action, String source, String platform);
     public List<String> searchSimilarSessionDetails(String searchType, String searchCriteria);
-    public List<String> searchSimilarTimeDetails(String searchType, String searchCriteria);
+    public List<Timestamp> searchSimilarTimeDetails(String searchType, String searchCriteria);
     public List<GLAEvent> searchEventsByAction(String searchParameter, boolean exactSearch,
                                                String colName, String sortDirection, boolean sort);
 }

@@ -165,3 +165,31 @@ then
                                  +$type+"' "+ $pFilter.processEntities($key,$filter) + $pFilter.processUsers($user, $filter) + $pFilter.processSessions($session,$filter));
 end
 
+
+rule "When Time & Entity Filtering are Present"
+when
+    EntitySpecification ( userSpecifications.isEmpty() == true,
+                             timeSpecifications.isEmpty() == false,
+                             sessionSpecifications.isEmpty() == true,
+                             entityValues.isEmpty() == false)
+
+    $pFilter : ProcessUserFilters()
+    $userParameter : EntitySpecification( $source : selectedSource,
+                                              $platform : selectedPlatform,
+                                              $action : selectedAction,
+                                              $major : selectedMajor,
+                                              $minor : selectedMinor,
+                                              $type : selectedType,
+                                              $key : entityValues,
+                                              $time : timeSpecifications,
+                                              $filter : filteringType,
+                                              $pobject: persistenceObject,
+                                              $robject : retrievableObjects)
+
+then
+    $userParameter.setHql("SELECT " + $robject + " FROM " + $pobject + " WHERE glaEvent.action ='"+$action+"'"
+                                 +" AND glaEvent.source IN "+$pFilter.processSource($source,$filter) +" AND glaEvent.platform = '"
+                                 + $platform+"'"+" AND glaEvent.glaCategory.major = '"+$major+"'"
+                                 +" AND glaEvent.glaCategory.minor = '"+$minor+"'"+" AND glaEvent.glaCategory.type = '"
+                                 +$type+"' "+  $pFilter.processEntities($key,$filter)+ $pFilter.processTime($time,$filter));
+end
