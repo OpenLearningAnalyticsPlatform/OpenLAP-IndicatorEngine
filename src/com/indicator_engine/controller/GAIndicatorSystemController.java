@@ -563,17 +563,17 @@ public class GAIndicatorSystemController {
                     while(entityIterator.hasNext()) {
                         entitySpecificationBean.getEntityValues().add(entityIterator.next().clone());
                     }
-                    entitySpecificationBean.setUserSpecifications(new ArrayList<UserSearchSpecifications>(entitySpecificationBean.getUserSpecifications().size()));
+                    entitySpecificationBean.setUserSpecifications(new ArrayList<UserSearchSpecifications>(agenQuery.getIndicatorXMLData().getUserSpecifications().size()));
                     Iterator<UserSearchSpecifications> userSpecIterator = agenQuery.getIndicatorXMLData().getUserSpecifications().iterator();
                     while(userSpecIterator.hasNext()){
                         entitySpecificationBean.getUserSpecifications().add(userSpecIterator.next().clone());
                     }
-                    entitySpecificationBean.setSessionSpecifications(new ArrayList<SessionSpecifications>(entitySpecificationBean.getSessionSpecifications().size()));
+                    entitySpecificationBean.setSessionSpecifications(new ArrayList<SessionSpecifications>(agenQuery.getIndicatorXMLData().getSessionSpecifications().size()));
                     Iterator<SessionSpecifications> sessionSpecIterator = agenQuery.getIndicatorXMLData().getSessionSpecifications().iterator();
                     while(sessionSpecIterator.hasNext()){
                         entitySpecificationBean.getSessionSpecifications().add(sessionSpecIterator.next().clone());
                     }
-                    entitySpecificationBean.setTimeSpecifications(new ArrayList<TimeSearchSpecifications>(entitySpecificationBean.getTimeSpecifications().size()));
+                    entitySpecificationBean.setTimeSpecifications(new ArrayList<TimeSearchSpecifications>(agenQuery.getIndicatorXMLData().getTimeSpecifications().size()));
                     Iterator<TimeSearchSpecifications> timeSpecIterator = agenQuery.getIndicatorXMLData().getTimeSpecifications().iterator();
                     while(timeSpecIterator.hasNext()){
                         entitySpecificationBean.getTimeSpecifications().add(timeSpecIterator.next().clone());
@@ -636,6 +636,72 @@ public class GAIndicatorSystemController {
 
         return gson.toJson(qid);
 
+    }
+
+    @RequestMapping(value = "/searchIndicator", method = RequestMethod.GET)
+    public @ResponseBody
+    String  searchIndicator(@RequestParam(value="searchString" ,required = true)String searchString,
+                            @RequestParam(value="searchType" ,required = true)String searchType) {
+        Gson gson = new Gson();
+        List<String> names = new ArrayList<>();
+        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
+        GLAIndicator glaIndicator = null;
+        List<GLAIndicator> glaIndicatorList;
+        if(NumberChecks.isNumeric(searchString) && searchType.equals("ID")) {
+            glaIndicator = glaIndicatorBean.loadByIndicatorID(Long.parseLong(searchString));
+            if (glaIndicator != null) {
+                log.info("GLA Question FROM DB SEARCH: ID : \t"+ glaIndicator.getId());
+                names.add(glaIndicator.getIndicator_name());
+            }
+        }
+        else if (!NumberChecks.isNumeric(searchString) && searchType.equals("IndicatorName")) {
+            glaIndicatorList = glaIndicatorBean.loadByIndicatorByName(searchString, false);
+            if (glaIndicatorList != null) {
+                for(GLAIndicator gI : glaIndicatorList){
+                    names.add(gI.getIndicator_name());
+                }
+            }
+        }
+        return gson.toJson(names);
+    }
+
+    @RequestMapping(value = "/loadIndicator", method = RequestMethod.GET)
+    public @ResponseBody
+    String  loadIndicatorFromDB(@RequestParam(value="indName" ,required = true)String indName,
+                                @RequestParam(value="loadTemplate" ,required = false)String loadTemplate) {
+
+        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        GLAIndicator glaIndicator = null;
+        long indicatorID = glaIndicatorBean.findIndicatorID(indName);
+        glaIndicator = glaIndicatorBean.loadByIndicatorID(indicatorID);
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        if(loadTemplate != null && !glaIndicator.getGlaIndicatorProps().isComposite()) {
+
+            IndicatorXMLData indicatorXMLData = gson.fromJson(glaIndicator.getGlaIndicatorProps().getJson_data(), IndicatorXMLData.class);
+            entitySpecificationBean.setEntityValues(new ArrayList<EntityValues>(indicatorXMLData.getEntityValues().size()));
+            Iterator<EntityValues> entityIterator = indicatorXMLData.getEntityValues().iterator();
+            while(entityIterator.hasNext()) {
+                entitySpecificationBean.getEntityValues().add(entityIterator.next().clone());
+            }
+            entitySpecificationBean.setUserSpecifications(new ArrayList<UserSearchSpecifications>(indicatorXMLData.getUserSpecifications().size()));
+            Iterator<UserSearchSpecifications> userSpecIterator =indicatorXMLData.getUserSpecifications().iterator();
+            while(userSpecIterator.hasNext()){
+                entitySpecificationBean.getUserSpecifications().add(userSpecIterator.next().clone());
+            }
+            entitySpecificationBean.setSessionSpecifications(new ArrayList<SessionSpecifications>(indicatorXMLData.getSessionSpecifications().size()));
+            Iterator<SessionSpecifications> sessionSpecIterator =indicatorXMLData.getSessionSpecifications().iterator();
+            while(sessionSpecIterator.hasNext()){
+                entitySpecificationBean.getSessionSpecifications().add(sessionSpecIterator.next().clone());
+            }
+            entitySpecificationBean.setTimeSpecifications(new ArrayList<TimeSearchSpecifications>(indicatorXMLData.getTimeSpecifications().size()));
+            Iterator<TimeSearchSpecifications> timeSpecIterator = indicatorXMLData.getTimeSpecifications().iterator();
+            while(timeSpecIterator.hasNext()){
+                entitySpecificationBean.getTimeSpecifications().add(timeSpecIterator.next().clone());
+            }
+
+        }
+        return gson.toJson(glaIndicator);
     }
 
     @RequestMapping(value = "/viewall", method = RequestMethod.GET)
@@ -795,6 +861,96 @@ public class GAIndicatorSystemController {
         }
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         return gson.toJson(glaQuestionJsonObject);
+    }
+
+    @RequestMapping(value = "/fetchExistingIndicatorsData.web", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    String fetchIndicatorData(HttpServletRequest request) throws IOException {
+
+        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
+        List<GLAIndicator> glaIndicatorList = null;
+        List<GLAIndicator> pageGLAIndicatorList = new ArrayList<>();
+        Integer idisplayStart = 0;
+        Integer iSortingCols =0;
+        if(null != request.getParameter("iSortingCols"))
+            iSortingCols = Integer.valueOf(request.getParameter("iSortingCols"));
+        GLAIndicatorJsonObject glaIndicatorJsonObject = new GLAIndicatorJsonObject();
+        if (null != request.getParameter("iDisplayStart")) {
+            idisplayStart = Integer.valueOf(request.getParameter("iDisplayStart"));
+            log.info("iDisplayStart : \t" + request.getParameter("iDisplayStart") + "\n");
+        }
+        //Fetch search parameter
+        String searchParameter = request.getParameter("sSearch");
+        log.info("sSearch : \t"+ searchParameter+"\n");
+        //Fetch Page display length
+        Integer pageDisplayLength = Integer.parseInt(request.getParameter("iDisplayLength"));
+        log.info("iDisplayLength : \t"+ pageDisplayLength+"\n");
+        //Create page list data
+        if(searchParameter == null || searchParameter.isEmpty()) {
+            String colName = null;
+            String sortDirection =null;
+            if(iSortingCols == 1 ) {
+                Integer isortCol = Integer.valueOf(request.getParameter("iSortCol_0"));
+                sortDirection = request.getParameter("sSortDir_0");
+                if (isortCol == 0)
+                    colName = "id";
+                else if (isortCol == 1)
+                    colName = "indicator_name";
+                else if (isortCol == 2)
+                    colName = "short_name";
+                glaIndicatorList = glaIndicatorBean.displayall(colName, sortDirection, true);
+            }
+            else
+                glaIndicatorList = glaIndicatorBean.displayall(colName, sortDirection, false);
+            if(idisplayStart != -1){
+                Integer endRange = idisplayStart+pageDisplayLength;
+                if(endRange >glaIndicatorList.size())
+                    endRange = glaIndicatorList.size();
+                for(int i=idisplayStart; i<endRange; i++){
+                    pageGLAIndicatorList.add(glaIndicatorList.get(i));
+                }
+            }
+            //Set Total display record
+            glaIndicatorJsonObject.setiTotalDisplayRecords(glaIndicatorBean.getTotalIndicators());
+            //Set Total record
+            glaIndicatorJsonObject.setiTotalRecords(glaIndicatorBean.getTotalIndicators());
+            glaIndicatorJsonObject.setAaData(pageGLAIndicatorList);
+        }
+        else {
+            String colName = null;
+            String sortDirection =null;
+            if(iSortingCols == 1 ) {
+                Integer isortCol = Integer.valueOf(request.getParameter("iSortCol_0"));
+                sortDirection = request.getParameter("sSortDir_0");
+                if (isortCol == 0)
+                    colName = "id";
+                else if (isortCol == 1)
+                    colName = "indicator_name";
+                else if (isortCol == 2)
+                    colName = "short_name";
+                glaIndicatorList = glaIndicatorBean.searchIndicatorsName(searchParameter, false, colName, sortDirection, true);
+            }
+            else
+                glaIndicatorList = glaIndicatorBean.searchIndicatorsName(searchParameter, false, colName, sortDirection, false);
+            if(idisplayStart != -1) {
+                Integer endRange = idisplayStart+pageDisplayLength;
+                Integer startRange = idisplayStart;
+                if(startRange > glaIndicatorList.size())
+                    startRange = 0;
+                if (endRange > glaIndicatorList.size())
+                    endRange = glaIndicatorList.size();
+                for (int i = startRange; i <endRange; i++) {
+                    pageGLAIndicatorList.add(glaIndicatorList.get(i));
+                }
+            }
+            //Set Total display record
+            glaIndicatorJsonObject.setiTotalDisplayRecords(glaIndicatorList.size());
+            //Set Total record
+            glaIndicatorJsonObject.setiTotalRecords(glaIndicatorList.size());
+            glaIndicatorJsonObject.setAaData(pageGLAIndicatorList);
+        }
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        return gson.toJson(glaIndicatorJsonObject);
     }
 
     private Questions retrieveQuestion(String questionName){

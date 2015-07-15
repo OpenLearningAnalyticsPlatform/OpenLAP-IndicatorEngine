@@ -1462,3 +1462,171 @@ function postAddCompositeIndicator() {
     }
 
 }
+
+function loadIndfromDB() {
+    $('#qiEditorTab a[href="#TemplateLoad"]').tab('show');
+}
+
+function searchIndicator() {
+    var searchString = document.getElementById("IndSearch").value;
+    var searchIndType = document.getElementById("searchIndType").value;
+    createRequest();
+    var url ="/indicators/searchIndicator?searchString="+searchString+"&searchType="+searchIndType;
+    request.open("GET",url,true);
+    request.onreadystatechange=displayReceivedIndicators;
+    request.send(null);
+}
+
+function displayReceivedIndicators() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            $.noty.defaults.killer = true;
+            noty({
+                text: '<strong>Success</strong> <br/>  Matching Indicators have been fetched from DB',
+                type: 'success'
+            });
+            var searchResults = document.getElementById("searchResults");
+            removeOptions(searchResults);
+            for (var i=0;i< parsedJSON.length;i++) {
+                var newOption = new Option(parsedJSON[i], parsedJSON[i]);
+                searchResults.appendChild(newOption);
+            }
+        }
+    }
+}
+
+function viewIndicatorProp() {
+    var indName = document.getElementById("searchResults").value;
+    createRequest();
+    var url ="/indicators/loadIndicator?indName="+indName;
+    request.open("GET",url,true);
+    request.onreadystatechange=displayIndicatorProp;
+    request.send(null);
+}
+
+function displayIndicatorProp() {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            var parsedindProp = JSON.parse(parsedJSON.glaIndicatorProps.json_data);
+            $.noty.defaults.killer = true;
+            noty({
+                text: '<strong>Success</strong> <br/>  Selected Indicator Property loaded',
+                type: 'success'
+            });
+            var indicatorData = new Array();
+            indicatorData.push(["S/L", "Property", "Value"]);
+            indicatorData.push([1, "Indicator Name", parsedJSON.indicator_name]);
+            indicatorData.push([2, "Chart Type", parsedJSON.glaIndicatorProps.chartType]);
+            indicatorData.push([3, "Chart Engine", parsedJSON.glaIndicatorProps.chartEngine]);
+            indicatorData.push([4, "Entity Filters", parsedindProp.entityValues.length]);
+            indicatorData.push([5, "Session Filters", parsedindProp.sessionSpecifications.length]);
+            indicatorData.push([6, "User Filters", parsedindProp.userSpecifications.length]);
+            indicatorData.push([7, "Time Filters",parsedindProp.timeSpecifications.length]);
+            indicatorData.push([8, "Sources", parsedindProp.source]);
+            indicatorData.push([9, "Platform", parsedindProp.platform]);
+            indicatorData.push([10, "Action", parsedindProp.action]);
+            indicatorData.push([11, "Minor", parsedindProp.minor]);
+            indicatorData.push([12, "Major", parsedindProp.major]);
+            indicatorData.push([13, "Hibernate Query", parsedJSON.hql]);
+
+            //Create a HTML Table element.
+            var table = document.createElement("TABLE");
+            table.border = "1";
+
+            //Get the count of columns.
+            var columnCount = indicatorData[0].length;
+
+            //Add the header row.
+            var row = table.insertRow(-1);
+
+            for (var i = 0; i < columnCount; i++) {
+                var headerCell = document.createElement("TH");
+                headerCell.innerHTML = indicatorData[0][i];
+                row.appendChild(headerCell);
+            }
+
+            //Add the data rows.
+            for (var i = 1; i < indicatorData.length; i++) {
+                row = table.insertRow(-1);
+                for (var j = 0; j < columnCount; j++) {
+                    var cell = row.insertCell(-1);
+                    cell.innerHTML = indicatorData[i][j];
+                }
+            }
+
+            var dvTable = document.getElementById("IndPropsFromDB");
+            dvTable.innerHTML = "";
+            dvTable.appendChild(table);
+        }
+    }
+}
+
+function loadFromTemplate() {
+    var indName = document.getElementById("searchResults").value;
+    var dvTable = document.getElementById("IndPropsFromDB");
+    dvTable.innerHTML = "";
+    createRequest();
+    var url ="/indicators/loadIndicator?indName="+indName+"&loadTemplate=Y";
+    request.open("GET",url,true);
+    request.onreadystatechange=loadToEditor;
+    request.send(null);
+}
+
+function loadToEditor() {
+
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            var parsedindProp = JSON.parse(parsedJSON.glaIndicatorProps.json_data);
+            $.noty.defaults.killer = true;
+            noty({
+                text: '<strong>Success</strong> <br/>  Selected Indicator has been loaded as a Template',
+                type: 'success'
+            });
+
+            var sel = document.getElementById('PlatformSelection');
+            var opts = sel.options;
+            for (var opt, j = 0; opt = opts[j]; j++) {
+                if (opt.value == parsedindProp.platform) {
+                    sel.selectedIndex = j;
+                    break;
+                }
+            }
+            sel = document.getElementById('actionSelection');
+            var opts = sel.options;
+            for (var opt, j = 0; opt = opts[j]; j++) {
+                if (opt.value == parsedindProp.action) {
+                    sel.selectedIndex = j;
+                    break;
+                }
+            }
+            sel = document.getElementById('selectedChartType');
+            var opts = sel.options;
+            for (var opt, j = 0; opt = opts[j]; j++) {
+                if (opt.value == parsedindProp.chartType) {
+                    sel.selectedIndex = j;
+                    break;
+                }
+            }
+            sel = document.getElementById('EngineSelect');
+            var opts = sel.options;
+            for (var opt, j = 0; opt = opts[j]; j++) {
+                if (opt.value == parsedindProp.chartEngine) {
+                    sel.selectedIndex = j;
+                    break;
+                }
+            }
+            var optionsToSelect = parsedindProp.source;
+            var select = document.getElementById('sourceSelection');
+
+            for (var i = 0, l = select.options.length, o; i < l; i++) {
+                o = select.options[i];
+                if (optionsToSelect.indexOf(o.text) != -1) {
+                    o.selected = true;
+                }
+            }
+        }
+    }
+}

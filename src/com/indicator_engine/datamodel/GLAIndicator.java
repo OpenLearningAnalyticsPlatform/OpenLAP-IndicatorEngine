@@ -53,6 +53,7 @@ public class GLAIndicator implements Serializable {
 
     @OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL,
             mappedBy="glaIndicator", orphanRemoval=true)
+    @Expose
     private GLAIndicatorProps  glaIndicatorProps;
 
     @ManyToMany(mappedBy = "glaIndicators")

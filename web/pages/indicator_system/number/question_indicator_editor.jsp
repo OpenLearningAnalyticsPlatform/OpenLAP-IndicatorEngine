@@ -58,6 +58,54 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/noty-2.3.5/js/noty/themes/relax.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/indicator_editor.js"></script>
+    <script type="text/javascript">
+
+        (function($) {
+            //Plug-in to fetch page data
+            jQuery.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
+            {
+                return {
+                    "iStart":         oSettings._iDisplayStart,
+                    "iEnd":           oSettings.fnDisplayEnd(),
+                    "iLength":        oSettings._iDisplayLength,
+                    "iTotal":         oSettings.fnRecordsTotal(),
+                    "iFilteredTotal": oSettings.fnRecordsDisplay(),
+                    "iPage":          oSettings._iDisplayLength === -1 ?
+                            0 : Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength ),
+                    "iTotalPages":    oSettings._iDisplayLength === -1 ?
+                            0 : Math.ceil( oSettings.fnRecordsDisplay() / oSettings._iDisplayLength )
+                };
+            };
+
+            $(document).ready(function() {
+
+                $("#indicatorData").dataTable( {
+                    "bProcessing": true,
+                    "bServerSide": true,
+                    "sort": "position",
+                    //bStateSave variable you can use to save state on client cookies: set value "true"
+                    "bStateSave": false,
+                    //Default: Page display length
+                    "iDisplayLength": 10,
+                    //We will use below variable to track page number on server side(For more information visit: http://legacy.datatables.net/usage/options#iDisplayStart)
+                    "iDisplayStart": 0,
+                    "fnDrawCallback": function () {
+                        //Get page numer on client. Please note: number start from 0 So
+                        //for the first page you will see 0 second page 1 third page 2...
+                        //Un-comment below alert to see page number
+                        //alert("Current page number: "+this.fnPagingInfo().iPage);
+                    },
+                    "sAjaxSource": "/indicators/fetchExistingIndicatorsData.web",
+                    "aoColumns": [
+                        { "mData": "id" },
+                        { "mData": "indicator_name" },
+                        { "mData": "short_name" },
+                    ]
+                } );
+
+            } );
+        })(jQuery);
+    </script>
 
 </head>
 <body>
@@ -717,6 +765,52 @@
                 <div class="tab-pane fade" id="TemplateLoad">
                     <h1>Use an Existing Indicator as a template</h1>
                     <p>Search an Existing Indicator</p>
+                    <div class="col-md-12">
+                        <h2 >Listing of All Existing Indicators<br><br></h2>
+                        <table width="70%" style="border: 3px;background: rgb(243, 244, 248);"><tr><td>
+                            <table id="indicatorData" class="display" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Indicator ID</th>
+                                    <th>Indicator Name</th>
+                                    <th>Short Name</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </td></tr></table>
+                        <div class="col-md-6 margin-bottom-15">
+
+                            <br/>
+                            <label > Search Type</label>
+                            <select class="form-control margin-bottom-15" id="searchIndType">
+                                <option value="ID">ID</option>
+                                <option value="IndicatorName">IndicatorName</option>
+                            </select>
+                            <br/>
+                            <label > Search String</label>
+                            <input type="text" class="form-control" placeholder="Type the Indicator Name/ID"
+                                   title="Type the Indicator Name/ID" name ="IndSearch" id="IndSearch" />
+                            <br/>
+                            <button  type="button" name="CompositeIndButton" value="Add" onclick="searchIndicator()" >
+                                <img src="${pageContext.request.contextPath}/images/search.png" alt="button" width="48" height="48"/>
+                            </button>
+                            <br/>
+                            <label > Search Results</label>
+                            <select class="form-control margin-bottom-15" id="searchResults">
+
+                            </select>
+                            <button  type="button" name="CompositeIndButton" value="Add" onclick="viewIndicatorProp()" >
+                                <img src="${pageContext.request.contextPath}/images/view.png" alt="button" width="48" height="48"/>
+                            </button>
+                            <button  type="button" name="CompositeIndButton" value="Add" onclick="loadFromTemplate()" >
+                                <img src="${pageContext.request.contextPath}/images/load.png" alt="button" width="48" height="48"/>
+                            </button>
+                            <br/>
+                            <div id="IndPropsFromDB">
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
