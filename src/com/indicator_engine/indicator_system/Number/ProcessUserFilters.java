@@ -300,7 +300,7 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
     public String processTime( List<TimeSearchSpecifications>  timeSearchSpecifications, String filter){
         String hibernateQuery=" ";
         String hibernateExactTime =" AND glaEvent.timestamp IN (";
-        String hibernateRangeTime =" AND glaEvent.timestamp IN (";
+        String hibernateRangeTime ="  ";
         String type = null;
         List<String> time = new ArrayList<>();
         int counterTime = 0;
@@ -320,8 +320,8 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
                 }
                 if(counterTime >= 1 ) {
 
-                    Date date = new Date(Long.parseLong(time.get(0))); // *1000 is to convert seconds to milliseconds
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // the format of your date
+                    Date date = new Date(Long.parseLong(time.get(0)));
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String formattedDate = sdf.format(date);
                     hibernateExactTime += ", '"+ formattedDate + "' ";
                     counterTime++;
@@ -329,21 +329,30 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
                 }
             }
             if(type.equals("RANGE")) {
-                /*if(counterRangeTime == 0) {
-                    hibernateRangeTime += " ( SELECT session FROM GLAEvent " +
-                            " WHERE session LIKE  '%"+ session + "%' ";
+
+                if(counterRangeTime == 0) {
+                    Date startDate = new Date(Long.parseLong(time.get(0)));
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String startFormattedDate = sdf.format(startDate);
+                    Date endDate = new Date(Long.parseLong(time.get(1)));
+                    String endFormattedDate = sdf.format(endDate);
+                    hibernateRangeTime += " AND glaEvent.timestamp BETWEEN ' " + startFormattedDate + "' AND '" + endFormattedDate+"' ";
                     counterRangeTime++;
                     continue;
                 }
                 if(counterRangeTime >= 1 ) {
-                    hibernateRangeTime += filter +" session LIKE '%"+ session + "%' ";
+                    Date startDate = new Date(Long.parseLong(time.get(0)));
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String startFormattedDate = sdf.format(startDate);
+                    Date endDate = new Date(Long.parseLong(time.get(1)));
+                    String endFormattedDate = sdf.format(endDate);
+                    hibernateRangeTime += " AND glaEvent.timestamp BETWEEN ' " + startFormattedDate + "' AND '" + endFormattedDate+"' ";
                     counterRangeTime++;
                     continue;
-                } */
+                }
             }
         }
         hibernateExactTime += " )";
-        hibernateRangeTime +=") )";
         if(counterTime > 0)
             hibernateQuery += hibernateExactTime;
         if(counterRangeTime > 0)
