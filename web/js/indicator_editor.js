@@ -1271,6 +1271,7 @@ function drawGraph() {
             });
             var graphImage = document.getElementById("graphImage");
             graphImage.src="/graphs/jgraph?bean=true"+"&time="+new Date().getTime();
+            $('#templatemo-tabs a[href="#graphGeneration"]').tab('show');
         }
     }
 }

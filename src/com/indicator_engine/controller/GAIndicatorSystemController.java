@@ -211,8 +211,7 @@ public class GAIndicatorSystemController {
                           Model model) {
             Gson gson = new Gson();
             EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-            entitySpecificationBean.getEntityValues().add(new EntityValues(key,
-                    search, value));
+            entitySpecificationBean.getEntityValues().add(new EntityValues(key, value, search));
             return gson.toJson(entitySpecificationBean.getEntityValues());
 
     }
@@ -437,8 +436,8 @@ public class GAIndicatorSystemController {
             genIndicatorProps.setChartEngine(entitySpecificationBean.getSelectedChartEngine());
             genIndicatorProps.setChartType(entitySpecificationBean.getSelectedChartType());
             genIndicatorProps.setComposite(entitySpecificationBean.isComposite());
-            IndicatorXMLData indicatorXMLData = new IndicatorXMLData(entitySpecificationBean.getSelectedSource(), entitySpecificationBean.getSelectedAction(),
-                    entitySpecificationBean.getSelectedPlatform(), entitySpecificationBean.getSelectedMajor(), entitySpecificationBean.getSelectedMinor(),
+            IndicatorXMLData indicatorXMLData = new IndicatorXMLData(entitySpecificationBean.getSelectedSource(), entitySpecificationBean.getSelectedPlatform(),
+                    entitySpecificationBean.getSelectedAction(),entitySpecificationBean.getSelectedMinor(),entitySpecificationBean.getSelectedMajor(),
                     entitySpecificationBean.getFilteringType(),xMLentityValues, xMlUserSpecifications, xMLSessionSpecifications, xMLTimeSpecifications, entitySpecificationBean.getSelectedChartType(),
                     entitySpecificationBean.getSelectedChartEngine());
             questions.setQuestionName(entitySpecificationBean.getQuestionName());
@@ -446,8 +445,8 @@ public class GAIndicatorSystemController {
             entitySpecificationBean.setQuestionsContainer(questions);
         }
         else if(entitySpecificationBean.getQuestionsContainer().getGenQueries().size() >= 1) {
-            IndicatorXMLData indicatorXMLData = new IndicatorXMLData(entitySpecificationBean.getSelectedSource(), entitySpecificationBean.getSelectedAction(),
-                    entitySpecificationBean.getSelectedPlatform(), entitySpecificationBean.getSelectedMajor(), entitySpecificationBean.getSelectedMinor(),
+            IndicatorXMLData indicatorXMLData = new IndicatorXMLData(entitySpecificationBean.getSelectedSource(), entitySpecificationBean.getSelectedPlatform(),
+                    entitySpecificationBean.getSelectedAction(),entitySpecificationBean.getSelectedMinor(),entitySpecificationBean.getSelectedMajor(),
                     entitySpecificationBean.getFilteringType(), xMLentityValues, xMlUserSpecifications, xMLSessionSpecifications, xMLTimeSpecifications, entitySpecificationBean.getSelectedChartType(),
                     entitySpecificationBean.getSelectedChartEngine());
             GenIndicatorProps genIndicatorProps = new GenIndicatorProps();
@@ -673,12 +672,15 @@ public class GAIndicatorSystemController {
         GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         GLAIndicator glaIndicator = null;
+        IndicatorXMLData indicatorXMLData = null;
+
         long indicatorID = glaIndicatorBean.findIndicatorID(indName);
         glaIndicator = glaIndicatorBean.loadByIndicatorID(indicatorID);
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        Gson  gson2 = new Gson();
         if(loadTemplate != null && !glaIndicator.getGlaIndicatorProps().isComposite()) {
 
-            IndicatorXMLData indicatorXMLData = gson.fromJson(glaIndicator.getGlaIndicatorProps().getJson_data(), IndicatorXMLData.class);
+            indicatorXMLData = gson2.fromJson(glaIndicator.getGlaIndicatorProps().getJson_data(), IndicatorXMLData.class);
             entitySpecificationBean.setEntityValues(new ArrayList<EntityValues>(indicatorXMLData.getEntityValues().size()));
             Iterator<EntityValues> entityIterator = indicatorXMLData.getEntityValues().iterator();
             while(entityIterator.hasNext()) {

@@ -52,8 +52,8 @@ public class IndicatorXMLData implements Serializable {
 
     public IndicatorXMLData() {}
 
-    public IndicatorXMLData(List<String> source, String action, String platform, String major,
-                            String minor, String type,  List<EntityValues> entityValues,
+    public IndicatorXMLData(List<String> source, String platform, String action, String minor,
+                            String major, String type,  List<EntityValues> entityValues,
                             List<UserSearchSpecifications> userSpecifications,
                             List<SessionSpecifications> sessionSpecifications,
                             List<TimeSearchSpecifications> timeSpecifications,
@@ -72,6 +72,8 @@ public class IndicatorXMLData implements Serializable {
         this.selectedChartEngine = selectedChartEngine;
         this.selectedChartType = selectedChartType;
     }
+
+
 
     public List<String> getSource() {
         return source;

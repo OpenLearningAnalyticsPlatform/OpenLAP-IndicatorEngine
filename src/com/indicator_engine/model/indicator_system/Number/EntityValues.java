@@ -32,7 +32,7 @@ public class EntityValues implements Serializable,Cloneable {
     private String eValues;
     private String type;
     public EntityValues(){}
-    public EntityValues(String key, String type, String eValues){
+    public EntityValues(String key,String eValues, String type){
         this.eValues = eValues;
         this.type = type;
         this.key = key;
