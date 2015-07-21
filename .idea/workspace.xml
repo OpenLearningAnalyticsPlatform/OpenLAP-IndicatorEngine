@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="974e7feb-8792-4228-ab5d-100949817edf" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/ProcessUserFilters.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/ProcessUserFilters.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/dao/GLACategoryDaoImpl.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/dao/GLACategoryDaoImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path=".idea/dataSources.local.xml" />
@@ -39,27 +39,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GAIndicatorSystemController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java">
+      <file leaf-file-name="GLACategoryDaoImpl.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/dao/GLACategoryDaoImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="16620" max-vertical-offset="27975">
-              <caret line="682" column="122" selection-start-line="682" selection-start-column="122" selection-end-line="682" selection-end-column="122" />
-              <folding>
-                <element signature="e#0#59531#0" expanded="true" />
-                <element signature="imports" expanded="true" />
-                <element signature="e#2309#2351#0" expanded="true" />
-                <element signature="e#56171#56172#0" expanded="true" />
-                <element signature="e#56198#56199#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="1.1106472" vertical-offset="3018" max-vertical-offset="4350">
+              <caret line="168" column="57" selection-start-line="168" selection-start-column="57" selection-end-line="168" selection-end-column="57" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ProcessUserFilters.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/ProcessUserFilters.java">
+      <file leaf-file-name="GLAEntityDaoImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/dao/GLAEntityDaoImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="11.46748" vertical-offset="2433" max-vertical-offset="8475">
-              <caret line="354" column="35" selection-start-line="354" selection-start-column="35" selection-end-line="354" selection-end-column="35" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2400" max-vertical-offset="3600">
+              <caret line="133" column="57" selection-start-line="133" selection-start-column="7" selection-end-line="133" selection-end-column="57" />
               <folding />
             </state>
           </provider>
@@ -114,7 +108,6 @@
         <option value="$PROJECT_DIR$/web/pages/indicator_system/trial_run.jsp" />
         <option value="$PROJECT_DIR$/web/pages/indicator_system/run_results.jsp" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/IndicatorPreProcessing.java" />
-        <option value="$PROJECT_DIR$/src/com/indicator_engine/dao/GLACategoryDaoImpl.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/dao/GLAUserDaoImpl.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/dao/GLAEntityDaoImpl.java" />
         <option value="$PROJECT_DIR$/src/IndicatorEngine.properties" />
@@ -139,6 +132,7 @@
         <option value="$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java" />
         <option value="$PROJECT_DIR$/web/js/indicator_editor.js" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/ProcessUserFilters.java" />
+        <option value="$PROJECT_DIR$/src/com/indicator_engine/dao/GLACategoryDaoImpl.java" />
       </list>
     </option>
   </component>
@@ -191,6 +185,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -220,6 +216,10 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WEB-INF" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -304,6 +304,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -597,10 +611,30 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="indicator_engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controller" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -1018,7 +1052,10 @@
       <workItem from="1436068790015" duration="21649000" />
       <workItem from="1436600510141" duration="22740000" />
       <workItem from="1436942528637" duration="602000" />
-      <workItem from="1436953229067" duration="13267000" />
+      <workItem from="1436953229067" duration="13918000" />
+      <workItem from="1437043579212" duration="2408000" />
+      <workItem from="1437142545701" duration="1446000" />
+      <workItem from="1437488352857" duration="1695000" />
     </task>
     <task id="LOCAL-00001" summary="charting capabilities : init">
       <created>1431340261434</created>
@@ -1218,11 +1255,17 @@
       <option name="project" value="LOCAL" />
       <updated>1436993423489</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Time Filters : range Capability added">
+      <created>1436994559213</created>
+      <option name="number" value="00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1436994559213</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="469531000" />
+    <option name="totallyTimeSpent" value="475731000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1242,7 +1285,6 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32739422" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
@@ -1250,7 +1292,7 @@
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946696" sideWeight="0.50830567" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946696" sideWeight="0.49169436" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24946696" sideWeight="0.49169436" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
@@ -1261,6 +1303,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32739422" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1317,7 +1360,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="UI Changes :" />
     <MESSAGE value="UI Changes : Tooltip Integrated in the main Flow" />
     <MESSAGE value="UI Changes : Dialog Window Integrated" />
     <MESSAGE value="Final UI with Jquery" />
@@ -1342,7 +1384,8 @@
     <MESSAGE value="Time Filters : Date Exact Search Implemented" />
     <MESSAGE value="Template Load : Started" />
     <MESSAGE value="Template Load : Finished" />
-    <option name="LAST_COMMIT_MESSAGE" value="Template Load : Finished" />
+    <MESSAGE value="Time Filters : range Capability added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Time Filters : range Capability added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1355,27 +1398,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/otp/OTP.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5081301" vertical-offset="0" max-vertical-offset="775">
-          <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/datamodel/SecurityRoleEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="88" max-vertical-offset="1175">
-          <caret line="32" column="26" selection-start-line="32" selection-start-column="15" selection-end-line="32" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/model/app/QuestionRun.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1475">
-          <caret line="29" column="13" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/pages/indicator_system/view_indicator_details.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-6.147059" vertical-offset="2841" max-vertical-offset="4500">
@@ -1418,13 +1440,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/dao/GLACategoryDaoImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2307" max-vertical-offset="3200">
-          <caret line="125" column="35" selection-start-line="125" selection-start-column="35" selection-end-line="125" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/indicator_system/IndicatorPreProcessing.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="650" max-vertical-offset="2975">
@@ -1453,25 +1468,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/applicationContext.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="825" max-vertical-offset="3825">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/datamodel/GLAEntity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="1600">
           <caret line="32" column="19" selection-start-line="32" selection-start-column="19" selection-end-line="32" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/dao/GLAEntityDaoImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.620689" vertical-offset="2400" max-vertical-offset="3600">
-          <caret line="133" column="57" selection-start-line="133" selection-start-column="7" selection-end-line="133" selection-end-column="57" />
         </state>
       </provider>
     </entry>
@@ -1528,7 +1528,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.9463243" vertical-offset="2018" max-vertical-offset="2875">
           <caret line="47" column="13" selection-start-line="47" selection-start-column="13" selection-end-line="47" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1536,7 +1535,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2917153" vertical-offset="0" max-vertical-offset="3000">
           <caret line="45" column="94" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="94" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1544,7 +1542,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.4340723" vertical-offset="3243" max-vertical-offset="4100">
           <caret line="61" column="17" selection-start-line="61" selection-start-column="17" selection-end-line="61" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1628,102 +1625,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/EntitySpecification.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3218" max-vertical-offset="4250">
-          <caret line="242" column="34" selection-start-line="242" selection-start-column="34" selection-end-line="242" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#6827#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#1599#1613#0" expanded="false" />
-            <element signature="e#1695#1721#0" expanded="false" />
-            <element signature="e#1803#1826#0" expanded="false" />
-            <element signature="e#1908#1934#0" expanded="false" />
-            <element signature="e#3182#3183#0" expanded="false" />
-            <element signature="e#3219#3220#0" expanded="false" />
-            <element signature="e#3285#3286#0" expanded="false" />
-            <element signature="e#3337#3338#0" expanded="false" />
-            <element signature="e#3380#3381#0" expanded="false" />
-            <element signature="e#3419#3420#0" expanded="false" />
-            <element signature="e#3483#3484#0" expanded="false" />
-            <element signature="e#3539#3540#0" expanded="false" />
-            <element signature="e#3580#3581#0" expanded="false" />
-            <element signature="e#3617#3618#0" expanded="false" />
-            <element signature="e#3677#3678#0" expanded="false" />
-            <element signature="e#3729#3730#0" expanded="false" />
-            <element signature="e#3769#3770#0" expanded="false" />
-            <element signature="e#3805#3806#0" expanded="false" />
-            <element signature="e#3863#3864#0" expanded="false" />
-            <element signature="e#3913#3914#0" expanded="false" />
-            <element signature="e#3953#3954#0" expanded="false" />
-            <element signature="e#3989#3990#0" expanded="false" />
-            <element signature="e#4047#4048#0" expanded="false" />
-            <element signature="e#4097#4098#0" expanded="false" />
-            <element signature="e#4136#4137#0" expanded="false" />
-            <element signature="e#4171#4172#0" expanded="false" />
-            <element signature="e#4227#4228#0" expanded="false" />
-            <element signature="e#4275#4276#0" expanded="false" />
-            <element signature="e#4326#4327#0" expanded="false" />
-            <element signature="e#4361#4362#0" expanded="false" />
-            <element signature="e#4429#4430#0" expanded="false" />
-            <element signature="e#4477#4478#0" expanded="false" />
-            <element signature="e#4546#4547#0" expanded="false" />
-            <element signature="e#4587#4588#0" expanded="false" />
-            <element signature="e#4808#4809#0" expanded="false" />
-            <element signature="e#4852#4853#0" expanded="false" />
-            <element signature="e#5082#5083#0" expanded="false" />
-            <element signature="e#5123#5124#0" expanded="false" />
-            <element signature="e#5319#5320#0" expanded="false" />
-            <element signature="e#5359#5360#0" expanded="false" />
-            <element signature="e#5425#5426#0" expanded="false" />
-            <element signature="e#5483#5484#0" expanded="false" />
-            <element signature="e#5529#5530#0" expanded="false" />
-            <element signature="e#5571#5572#0" expanded="false" />
-            <element signature="e#5641#5642#0" expanded="false" />
-            <element signature="e#5703#5704#0" expanded="false" />
-            <element signature="e#5742#5743#0" expanded="false" />
-            <element signature="e#5777#5778#0" expanded="false" />
-            <element signature="e#5833#5834#0" expanded="false" />
-            <element signature="e#5881#5882#0" expanded="false" />
-            <element signature="e#5921#5922#0" expanded="false" />
-            <element signature="e#5957#5958#0" expanded="false" />
-            <element signature="e#6015#6016#0" expanded="false" />
-            <element signature="e#6065#6066#0" expanded="false" />
-            <element signature="e#6095#6096#0" expanded="false" />
-            <element signature="e#6121#6122#0" expanded="false" />
-            <element signature="e#6159#6160#0" expanded="false" />
-            <element signature="e#6189#6190#0" expanded="false" />
-            <element signature="e#6237#6238#0" expanded="false" />
-            <element signature="e#6278#6279#0" expanded="false" />
-            <element signature="e#6349#6350#0" expanded="false" />
-            <element signature="e#6409#6410#0" expanded="false" />
-            <element signature="e#6453#6454#0" expanded="false" />
-            <element signature="e#6493#6494#0" expanded="false" />
-            <element signature="e#6533#6534#0" expanded="false" />
-            <element signature="e#6569#6570#0" expanded="false" />
-            <element signature="e#6614#6615#0" expanded="false" />
-            <element signature="e#6655#6656#0" expanded="false" />
-            <element signature="e#6778#6779#0" expanded="false" />
-            <element signature="e#6824#6825#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/OperationNumberRules.drl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7957993" vertical-offset="4143" max-vertical-offset="5000">
-          <caret line="193" column="113" selection-start-line="193" selection-start-column="113" selection-end-line="193" selection-end-column="113" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/OperationNumberProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="391" max-vertical-offset="1300">
           <caret line="42" column="13" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#3142#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1738,47 +1643,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="375" max-vertical-offset="3175">
           <caret line="52" column="14" selection-start-line="52" selection-start-column="12" selection-end-line="52" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#5185#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#1961#1972#0" expanded="false" />
-            <element signature="e#3840#3841#0" expanded="false" />
-            <element signature="e#3865#3866#0" expanded="false" />
-            <element signature="e#3899#3900#0" expanded="false" />
-            <element signature="e#3927#3928#0" expanded="false" />
-            <element signature="e#3960#3961#0" expanded="false" />
-            <element signature="e#3989#3990#0" expanded="false" />
-            <element signature="e#4033#4034#0" expanded="false" />
-            <element signature="e#4069#4070#0" expanded="false" />
-            <element signature="e#4103#4104#0" expanded="false" />
-            <element signature="e#4133#4134#0" expanded="false" />
-            <element signature="e#4179#4180#0" expanded="false" />
-            <element signature="e#4217#4218#0" expanded="false" />
-            <element signature="e#4252#4253#0" expanded="false" />
-            <element signature="e#4283#4284#0" expanded="false" />
-            <element signature="e#4331#4332#0" expanded="false" />
-            <element signature="e#4371#4372#0" expanded="false" />
-            <element signature="e#4410#4411#0" expanded="false" />
-            <element signature="e#4442#4443#0" expanded="false" />
-            <element signature="e#4495#4496#0" expanded="false" />
-            <element signature="e#4537#4538#0" expanded="false" />
-            <element signature="e#4580#4581#0" expanded="false" />
-            <element signature="e#4611#4612#0" expanded="false" />
-            <element signature="e#4667#4668#0" expanded="false" />
-            <element signature="e#4707#4708#0" expanded="false" />
-            <element signature="e#4740#4741#0" expanded="false" />
-            <element signature="e#4769#4770#0" expanded="false" />
-            <element signature="e#4804#4805#0" expanded="false" />
-            <element signature="e#4834#4835#0" expanded="false" />
-            <element signature="e#4881#4882#0" expanded="false" />
-            <element signature="e#4919#4920#0" expanded="false" />
-            <element signature="e#4963#4964#0" expanded="false" />
-            <element signature="e#4999#5000#0" expanded="false" />
-            <element signature="e#5042#5043#0" expanded="false" />
-            <element signature="e#5076#5077#0" expanded="false" />
-            <element signature="e#5135#5136#0" expanded="false" />
-            <element signature="e#5181#5182#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1793,7 +1657,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="544">
           <caret line="0" column="25" selection-start-line="0" selection-start-column="25" selection-end-line="0" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1801,15 +1664,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3775" max-vertical-offset="6200">
           <caret line="151" column="35" selection-start-line="151" selection-start-column="35" selection-end-line="151" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/dao/GLAIndicatorDaoImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1785" max-vertical-offset="7475">
-          <caret line="114" column="30" selection-start-line="114" selection-start-column="30" selection-end-line="114" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1817,7 +1671,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="2975">
           <caret line="26" column="60" selection-start-line="26" selection-start-column="60" selection-end-line="26" selection-end-column="60" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1825,7 +1678,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="2475">
           <caret line="56" column="31" selection-start-line="56" selection-start-column="3" selection-end-line="56" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1833,7 +1685,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="450" max-vertical-offset="2100">
           <caret line="56" column="4" selection-start-line="56" selection-start-column="4" selection-end-line="56" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1841,7 +1692,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="858" max-vertical-offset="2875">
           <caret line="61" column="23" selection-start-line="61" selection-start-column="23" selection-end-line="61" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1849,7 +1699,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="59" max-vertical-offset="1325">
           <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1857,7 +1706,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="59" max-vertical-offset="1175">
           <caret line="15" column="20" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1865,7 +1713,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.586207" vertical-offset="3621" max-vertical-offset="8000">
           <caret line="206" column="31" selection-start-line="206" selection-start-column="12" selection-end-line="206" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1873,7 +1720,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.4206731" vertical-offset="11434" max-vertical-offset="21650">
           <caret line="481" column="65" selection-start-line="481" selection-start-column="50" selection-end-line="481" selection-end-column="65" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1881,111 +1727,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.8888889" vertical-offset="21575" max-vertical-offset="31000">
           <caret line="1273" column="56" selection-start-line="1273" selection-start-column="56" selection-end-line="1273" selection-end-column="56" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#842#896#0" expanded="false" />
-            <element signature="e#958#1029#0" expanded="false" />
-            <element signature="e#1079#1150#0" expanded="false" />
-            <element signature="e#1192#1266#0" expanded="false" />
-            <element signature="e#1307#1379#0" expanded="false" />
-            <element signature="e#1427#1498#0" expanded="false" />
-            <element signature="e#1549#1621#0" expanded="false" />
-            <element signature="e#2614#3073#0" expanded="false" />
-            <element signature="e#2654#2753#0" expanded="false" />
-            <element signature="e#2683#2743#0" expanded="false" />
-            <element signature="e#2794#2861#0" expanded="false" />
-            <element signature="e#2877#2943#0" expanded="false" />
-            <element signature="e#3117#3576#0" expanded="false" />
-            <element signature="e#3157#3256#0" expanded="false" />
-            <element signature="e#3186#3246#0" expanded="false" />
-            <element signature="e#3297#3364#0" expanded="false" />
-            <element signature="e#3380#3446#0" expanded="false" />
-            <element signature="e#3618#4077#0" expanded="false" />
-            <element signature="e#3658#3757#0" expanded="false" />
-            <element signature="e#3687#3747#0" expanded="false" />
-            <element signature="e#3798#3865#0" expanded="false" />
-            <element signature="e#3881#3947#0" expanded="false" />
-            <element signature="e#4113#4548#0" expanded="false" />
-            <element signature="e#4153#4252#0" expanded="false" />
-            <element signature="e#4182#4242#0" expanded="false" />
-            <element signature="e#4293#4360#0" expanded="false" />
-            <element signature="e#4376#4442#0" expanded="false" />
-            <element signature="e#4586#5045#0" expanded="false" />
-            <element signature="e#4626#4725#0" expanded="false" />
-            <element signature="e#4655#4715#0" expanded="false" />
-            <element signature="e#4766#4833#0" expanded="false" />
-            <element signature="e#4849#4915#0" expanded="false" />
-            <element signature="e#5095#5155#0" expanded="false" />
-            <element signature="e#5207#5270#0" expanded="false" />
-            <element signature="e#5320#5381#0" expanded="false" />
-            <element signature="e#12554#12705#0" expanded="false" />
-            <element signature="e#12783#12976#0" expanded="false" />
-            <element signature="e#12866#12970#0" expanded="false" />
-            <element signature="e#14768#16565#0" expanded="false" />
-            <element signature="e#14792#14880#0" expanded="false" />
-            <element signature="e#14907#14997#0" expanded="false" />
-            <element signature="e#15030#16563#0" expanded="false" />
-            <element signature="e#15250#15333#0" expanded="false" />
-            <element signature="e#15361#15520#0" expanded="false" />
-            <element signature="e#15549#16418#0" expanded="false" />
-            <element signature="e#15715#16257#0" expanded="false" />
-            <element signature="e#15830#15973#0" expanded="false" />
-            <element signature="e#15878#15955#0" expanded="false" />
-            <element signature="e#15990#16049#0" expanded="false" />
-            <element signature="e#16263#16408#0" expanded="false" />
-            <element signature="e#16486#16555#0" expanded="false" />
-            <element signature="n#!!block;n#createRequest#0" expanded="false" />
-            <element signature="e#16616#16663#0" expanded="false" />
-            <element signature="e#16677#16757#0" expanded="false" />
-            <element signature="e#16859#16895#0" expanded="false" />
-            <element signature="n#!!block;n#alert_questionName#0" expanded="false" />
-            <element signature="e#17279#18898#0" expanded="false" />
-            <element signature="e#17316#18892#0" expanded="false" />
-            <element signature="e#17369#17650#0" expanded="false" />
-            <element signature="e#17393#17564#0" expanded="false" />
-            <element signature="e#17705#18147#0" expanded="false" />
-            <element signature="e#17729#17868#0" expanded="false" />
-            <element signature="e#17892#18061#0" expanded="false" />
-            <element signature="e#18201#18454#0" expanded="false" />
-            <element signature="e#18225#18368#0" expanded="false" />
-            <element signature="e#18472#18882#0" expanded="false" />
-            <element signature="e#18542#18697#0" expanded="false" />
-            <element signature="e#18721#18866#0" expanded="false" />
-            <element signature="e#19384#19714#0" expanded="false" />
-            <element signature="e#19455#19627#0" expanded="false" />
-            <element signature="e#19769#20260#0" expanded="false" />
-            <element signature="e#19840#19979#0" expanded="false" />
-            <element signature="e#20003#20173#0" expanded="false" />
-            <element signature="e#20314#20614#0" expanded="false" />
-            <element signature="e#20385#20527#0" expanded="false" />
-            <element signature="e#20702#20858#0" expanded="false" />
-            <element signature="e#21246#21350#0" expanded="false" />
-            <element signature="n#!!block;n#platformChanged#0" expanded="false" />
-            <element signature="e#21428#21524#0" expanded="false" />
-            <element signature="e#21537#21640#0" expanded="false" />
-            <element signature="e#21742#21864#0" expanded="false" />
-            <element signature="e#21876#21977#0" expanded="false" />
-            <element signature="e#23103#23258#0" expanded="false" />
-            <element signature="e#23373#23496#0" expanded="false" />
-            <element signature="n#!!block;n#refreshEntityFilters#0" expanded="false" />
-            <element signature="n#!!block;n#deleteEntity#0" expanded="false" />
-            <element signature="n#!!block;n#searchUser#0" expanded="false" />
-            <element signature="n#!!block;n#displaySearchUserResults#0" expanded="false" />
-            <element signature="e#28544#28988#0" expanded="false" />
-            <element signature="e#28581#28982#0" expanded="false" />
-            <element signature="e#28825#28972#0" expanded="false" />
-            <element signature="n#!!block;n#addUserFilter#0" expanded="false" />
-            <element signature="n#!!block;n#refreshUserFilters#0" expanded="false" />
-            <element signature="n#!!block;n#deleteUserFilters#0" expanded="false" />
-            <element signature="e#32077#32219#0" expanded="false" />
-            <element signature="n#!!block;n#refreshTimeFilters#0" expanded="false" />
-            <element signature="n#!!block;n#deleteTimeFilters#0" expanded="false" />
-            <element signature="e#37751#37901#0" expanded="false" />
-            <element signature="e#43732#43900#0" expanded="false" />
-            <element signature="e#43957#44250#0" expanded="false" />
-            <element signature="e#44051#44209#0" expanded="false" />
-            <element signature="e#47947#48148#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1993,21 +1734,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.28735632" vertical-offset="50" max-vertical-offset="1175">
           <caret line="17" column="55" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="16620" max-vertical-offset="27975">
-          <caret line="682" column="122" selection-start-line="682" selection-start-column="122" selection-end-line="682" selection-end-column="122" />
-          <folding>
-            <element signature="e#0#59531#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-            <element signature="e#2309#2351#0" expanded="true" />
-            <element signature="e#56171#56172#0" expanded="true" />
-            <element signature="e#56198#56199#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2015,14 +1741,86 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.15977012" vertical-offset="236" max-vertical-offset="1300">
           <caret line="34" column="62" selection-start-line="34" selection-start-column="62" selection-end-line="34" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/applicationContext.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.538622" vertical-offset="3132" max-vertical-offset="3825">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/datamodel/GLAQuestionProps.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.63465554" vertical-offset="271" max-vertical-offset="1600">
+          <caret line="46" column="29" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/ProcessUserFilters.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="11.46748" vertical-offset="2433" max-vertical-offset="8475">
+        <state vertical-scroll-proportion="11.778706" vertical-offset="2433" max-vertical-offset="8475">
           <caret line="354" column="35" selection-start-line="354" selection-start-column="35" selection-end-line="354" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/OperationNumberRules.drl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.4237996" vertical-offset="4143" max-vertical-offset="5000">
+          <caret line="193" column="113" selection-start-line="193" selection-start-column="113" selection-end-line="193" selection-end-column="113" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7933194" vertical-offset="16620" max-vertical-offset="27925">
+          <caret line="682" column="122" selection-start-line="682" selection-start-column="122" selection-end-line="682" selection-end-column="122" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/EntitySpecification.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="8.08977" vertical-offset="0" max-vertical-offset="4150">
+          <caret line="242" column="34" selection-start-line="242" selection-start-column="34" selection-end-line="242" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/dao/GLAIndicatorDaoImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.25087515" vertical-offset="1785" max-vertical-offset="7475">
+          <caret line="111" column="7" selection-start-line="107" selection-start-column="4" selection-end-line="111" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/dao/GLAEntityDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.31609195" vertical-offset="0" max-vertical-offset="870">
+          <caret line="30" column="17" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/dao/GLAEntityDaoImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2400" max-vertical-offset="3600">
+          <caret line="133" column="57" selection-start-line="133" selection-start-column="7" selection-end-line="133" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/dao/GLACategoryDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="111" max-vertical-offset="725">
+          <caret line="30" column="17" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/dao/GLACategoryDaoImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.1106472" vertical-offset="3018" max-vertical-offset="4350">
+          <caret line="168" column="57" selection-start-line="168" selection-start-column="57" selection-end-line="168" selection-end-column="57" />
           <folding />
         </state>
       </provider>

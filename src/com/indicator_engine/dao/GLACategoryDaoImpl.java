@@ -40,6 +40,12 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
     private SessionFactory factory;
     @Override
     @Transactional
+
+    /**
+     * Adds a new GLACategory Item to the database.
+     * @param glaCategory GLACategory Item to be saved to DB.
+     * @return Returns the Category ID of the newly added Category.
+     */
     public long add(GLACategory glaCategory){
 
         log.info("Adding New GLA Category" + glaCategory);
@@ -49,6 +55,13 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
 
     }
 
+    /**
+     * Loads all the Category Items from Database..
+     * @param colName Column Name to be used for sorting the results before it returns.
+     * @param sortDirection Specifies the Sort Direction : asc or desc
+     * @param sort Turn Sorting On or Off.
+     * @return Returns all the Category Items present in DB.
+     */
     @Override
     @Transactional(readOnly = true)
     public List<GLACategory> loadAll(String colName, String sortDirection, boolean sort) {
@@ -65,6 +78,10 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
         return criteria.list();
     }
 
+    /**
+     * Returns the Total count of Category Items from Database.
+     * @return Total count of Category Items from Database.
+     */
     @Override
     @Transactional(readOnly = true)
     public int getTotalCategories() {
@@ -72,6 +89,10 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
         return ((Number) session.createCriteria(GLACategory.class).setProjection(Projections.rowCount()).uniqueResult()).intValue();
 
     }
+    /**
+     * Loads all the Minors Present in the Database.
+     * @return List of Minors present in DB.
+     */
     @Override
     @Transactional(readOnly = true)
     public List<String> selectAllMinors(){
@@ -81,6 +102,11 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
         return criteria.list();
     }
 
+    /**
+     * Loads a Category using its Name.
+     * @param categoryname Name used to search for a Category.
+     * @return Returns the loaded Category item.
+     */
     @Override
     @Transactional(readOnly = true)
     public GLACategory loadCategoryByName(String categoryname){
@@ -99,6 +125,11 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
         return glaCategory;
     }
 
+    /**
+     * Finds the Category ID of a Particular Minor.
+     * @param minor Minor whose Category ID is required.
+     * @return Returns the Category ID of a Particular Minor.
+     */
     @Override
     @Transactional(readOnly = true)
     public long findCategoryID(String minor){
@@ -113,6 +144,12 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
         return glaCategory.getId();
     }
 
+    /**
+     * Finds the Categories Using a Category ID and Entity Key.
+     * @param category_id Category ID to be used for searching.
+     * @param sentity Entity Key Term for Searching.
+     * @return Returns List of Matching Categories .
+     */
     @Override
     @Transactional(readOnly = true)
     public List<String> findCategoryByID(Long category_id, String sentity){
@@ -122,6 +159,15 @@ public class GLACategoryDaoImpl implements GLACategoryDao {
         return query.list();
     }
 
+    /**
+     * Searches Category Items based on a Minor Value.
+     * @param searchParameter Minor Value used for Searching.
+     * @param exactSearch Search Type : Exact or Likewise.
+     * @param colName Column Name used for Sorting the Results.
+     * @param sortDirection Sorting Direction : Ascending/Descending.
+     * @param sort Turn Sorting ON/OFF.
+     * @return Returns list of Matching GLACategory Items.
+     */
     @Override
     @Transactional(readOnly = true)
     public List<GLACategory> searchCategoryByMinor(String searchParameter, boolean exactSearch,
