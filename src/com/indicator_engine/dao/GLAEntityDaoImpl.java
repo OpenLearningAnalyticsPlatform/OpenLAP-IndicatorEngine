@@ -41,6 +41,12 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
     static Logger log = Logger.getLogger(GLAEventDaoImpl.class.getName());
     @Autowired
     private SessionFactory factory;
+
+    /**
+     * Adds a new GLA Entity Object to the Database.
+     * @param glaEntity New GLA Entity Object to be saved.
+     * @return ID of the Newly Created GLA Entity object in DB.
+     **/
     @Override
     @Transactional
     public long add(GLAEntity glaEntity){
@@ -50,6 +56,12 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
         return(glaEntity.getEntityId());
 
     }
+
+    /**
+     * Add a new GLA Entity Object in DB and associate it with an Existing GLA Event Object in Database.
+     * @param glaEntity New GLA Entity object to be saved.
+     * @param id Event ID to which the GLA Entity object would be associated..
+     */
     @Override
     @Transactional
     public void addWithExistingEvent(GLAEntity glaEntity, String id){
@@ -67,6 +79,13 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
         factory.getCurrentSession().save(glaEntity);
     }
 
+    /**
+     * Loads all GLA Entity Objects present in the Database.
+     * @param colName Sort the Results using this Column Name.
+     * @param sortDirection Specify Sort Direction : asc/desc.
+     * @param sort Turn Sorting ON/OFF
+     * @return Returns all GLA Entity Objects present in Database and sorted if specified.
+     **/
     @Override
     @Transactional(readOnly = true)
     public List<GLAEntity> loadAll(String colName, String sortDirection, boolean sort) {
@@ -89,6 +108,10 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
 
     }
 
+    /**
+     * Returns the Total Number of GLA Entity Objects present in the Database.
+     * @return Total Number of GLA Entity Objects present in the Database.
+     **/
     @Override
     @Transactional(readOnly = true)
     public int getTotalEntities() {
@@ -96,6 +119,12 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
         return ((Number) session.createCriteria(GLAEntity.class).setProjection(Projections.rowCount()).uniqueResult()).intValue();
 
     }
+
+    /**
+     * Loads all GLA Entity Objects present in the Database based on a specific Category ID.
+     * @param categoryID Category ID used for selecting relevant GLA Entity Objects.
+     * @return Returns all GLA Entity Objects present in Database and matching the specified Category ID.
+     **/
     @Override
     @Transactional(readOnly = true)
     public List<String> loadEntitiesByCategoryID(Long categoryID){
@@ -111,6 +140,11 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
 
     }
 
+    /**
+     * Loads all GLA Entity Objects present in the Database based on a specific Category ID.
+     * @param categoryID Category ID used for selecting relevant GLA Entity Objects.
+     * @return Returns all GLA Entity Objects present in Database and matching the specified Category ID.
+     **/
     @Override
     @Transactional(readOnly = true)
     public List<String> loadEntitiesByCategoryIDName(Long categoryID, String name){
@@ -126,6 +160,11 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
 
     }
 
+    /**
+     * Executes a Hibernate Query and Returns the Number of Records fetched
+     * @param hql Hibernate Query to Execute.
+     * @return Returns Number of Records fecthed by a specific HQL
+     **/
     @Override
     @Transactional(readOnly = true)
     public long findNumber(String hql) {
@@ -134,6 +173,15 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
         return ((Long) query.uniqueResult()).longValue();
     }
 
+    /**
+     * Search GLA Entity Objects based on Entity Key
+     * @param searchParameter Entity Key used for searching
+     * @param exactSearch Search Pattern : Exact or Likewise
+     * @param colName Sort Results based on this Column Name
+     * @param sortDirection Specify Sort Direction ASC/DESC
+     * @param sort Turn Sorting ON/OFF.
+     * @return Returns all GLA Entity Objects present in Database and matching the Search Criteria.
+     **/
     @Override
     @Transactional(readOnly = true)
     public List<GLAEntity> searchEntitiesByKey(String searchParameter, boolean exactSearch,
