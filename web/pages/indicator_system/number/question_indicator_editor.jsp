@@ -299,6 +299,15 @@
                                         </div>
                                     </tr>
                                     <tr>
+                                        <div class="row">
+                                            <div class="col-md-6 margin-bottom-15">
+                                                <label for="operationSelection">Select Indicator Type (Operation) </label>
+                                                <form:select multiple="false" class="form-control margin-bottom-15" title="You can select an Operation type for the Indicator."
+                                                             path="selectedOperation" items="${selectNumberParameters.operations}" name ="operationSelection" id="operationSelection" />
+                                            </div>
+                                        </div>
+                                    </tr>
+                                    <tr>
                                         <div class="row templatemo-form-buttons">
                                             <div class="col-md-12">
                                                 <label for="summaryOperations">Operations</label>
@@ -432,7 +441,7 @@
                                     <tr>
                                         <div class="row">
                                             <div class="col-md-6 margin-bottom-15">
-                                                <label for="actionSelection">Select Number of (Minors) </label>
+                                                <label for="actionSelection">Select a Category (Minors) </label>
                                                 <form:select class="form-control margin-bottom-15" title="Please select a Minor to populate the relevant Attributes"
                                                              path="selectedMinor" items="${selectNumberParameters.minors}" name ="selectedMinor" id="selectedMinor" onchange="populateEntities();" onfocus="this.selectedIndex = -1;"/>
                                             </div>
@@ -766,7 +775,7 @@
                     <h1>Use an Existing Indicator as a template</h1>
                     <p>Search an Existing Indicator</p>
                     <div class="col-md-12">
-                        <h2 >Listing of All Existing Indicators<br><br></h2>
+                        <h2 >Listing of All Existing Non-Composite Indicators<br><br></h2>
                         <table width="70%" style="border: 3px;background: rgb(243, 244, 248);"><tr><td>
                             <table id="indicatorData" class="display" cellspacing="0" width="100%">
                                 <thead>

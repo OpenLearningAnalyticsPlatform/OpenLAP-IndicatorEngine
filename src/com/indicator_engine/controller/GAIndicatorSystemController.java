@@ -900,10 +900,10 @@ public class GAIndicatorSystemController {
                     colName = "indicator_name";
                 else if (isortCol == 2)
                     colName = "short_name";
-                glaIndicatorList = glaIndicatorBean.displayall(colName, sortDirection, true);
+                glaIndicatorList = glaIndicatorBean.displayAllNonComposite(colName, sortDirection, true);
             }
             else
-                glaIndicatorList = glaIndicatorBean.displayall(colName, sortDirection, false);
+                glaIndicatorList = glaIndicatorBean.displayAllNonComposite(colName, sortDirection, false);
             if(idisplayStart != -1){
                 Integer endRange = idisplayStart+pageDisplayLength;
                 if(endRange >glaIndicatorList.size())

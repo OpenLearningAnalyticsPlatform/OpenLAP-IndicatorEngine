@@ -159,6 +159,38 @@ public class GLAIndicatorDaoImpl implements GLAIndicatorDao {
     }
 
     /**
+     * Lists all the Non-Composite Indicators present in the Database.
+     * @param colName
+     *            Column Name to be used for Sorting the results
+     * @param sortDirection
+     *            Sort Direction : Ascending/Descending
+     * @param sort
+     *            True for sorting Required and False to set sorting of results off.
+     * @return
+     *           Listing of all the Non-Composite Indicators.
+     *
+     */
+    @Override
+    @Transactional
+    public List<GLAIndicator> displayAllNonComposite(String colName, String sortDirection, boolean sort){
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAIndicator.class);
+        criteria.createAlias("glaIndicatorProps", "indProps");
+        criteria.setFetchMode("indProps", FetchMode.JOIN);
+        criteria.setFetchMode("glaQuestions", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("indProps.isComposite", false));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        if(sort) {
+            if(sortDirection.equals("asc"))
+                criteria.addOrder(Order.asc(colName));
+            else
+                criteria.addOrder(Order.desc(colName));
+        }
+        return criteria.list();
+    }
+
+
+    /**
      * Loads Indicators based on a given ID Range.
      * @param startRange Starting ID
      * @param endRange Ending ID

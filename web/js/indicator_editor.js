@@ -45,7 +45,7 @@ $(function() {
     });
     $( "#accordionIndicatorSummary" ).accordion({
         event: "click hoverintent",
-        heightStyle: "fill",
+        heightStyle: "fill"
     });
     $( document ).tooltip();
     $( "#toDate" ).datepicker();
@@ -1628,6 +1628,12 @@ function loadToEditor() {
                     o.selected = true;
                 }
             }
+            // Refresh the Filter Summary
+            $("#refreshSessionSettings").click();
+            $("#refreshTimeSettings").click();
+            $("#refreshUserSettings").click();
+            $("#refreshEntity").click();
+            populateCategories();
         }
     }
 }

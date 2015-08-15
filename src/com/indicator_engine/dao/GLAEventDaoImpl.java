@@ -49,6 +49,11 @@ public class GLAEventDaoImpl implements GLAEventDao {
     static Logger log = Logger.getLogger(GLAEventDaoImpl.class.getName());
     @Autowired
     private SessionFactory factory;
+    /**
+     * Adds a new GLA Event Object to the Database & associates with a Particular GLA Entity Object.
+     * @param glaEntity New GLA Entity Object to be saved.
+     * @return ID of the Newly Created GLA Entity object in DB.
+     **/
     @Override
     @Transactional(readOnly = true)
     public void add(GLAEvent gEvent, GLAEntity entity) {
@@ -60,6 +65,11 @@ public class GLAEventDaoImpl implements GLAEventDao {
         factory.getCurrentSession().save(entity);
     }
 
+    /**
+     * Adds a new GLA Entity Object to the Database.
+     * @param glaEntity New GLA Entity Object to be saved.
+     * @return ID of the Newly Created GLA Entity object in DB.
+     **/
     @Override
     @Transactional(readOnly = true)
     public List<GLAEvent> loadAllEvents(String colName, String sortDirection, boolean sort){
@@ -78,6 +88,11 @@ public class GLAEventDaoImpl implements GLAEventDao {
         return  criteria.list();
 
     }
+    /**
+     * Adds a new GLA Entity Object to the Database.
+     * @param glaEntity New GLA Entity Object to be saved.
+     * @return ID of the Newly Created GLA Entity object in DB.
+     **/
     @Override
     @Transactional(readOnly = true)
     public int getTotalEvents(){
@@ -86,6 +101,11 @@ public class GLAEventDaoImpl implements GLAEventDao {
 
     }
 
+    /**
+     * Adds a new GLA Entity Object to the Database.
+     * @param glaEntity New GLA Entity Object to be saved.
+     * @return ID of the Newly Created GLA Entity object in DB.
+     **/
     @Override
     @Transactional(readOnly = true)
     public List<String> selectAllEvents() {
@@ -96,6 +116,11 @@ public class GLAEventDaoImpl implements GLAEventDao {
 
     }
 
+    /**
+     * Adds a new GLA Entity Object to the Database.
+     * @param glaEntity New GLA Entity Object to be saved.
+     * @return ID of the Newly Created GLA Entity object in DB.
+     **/
     @Override
     @Transactional(readOnly = true)
     public GLAEvent loadEventByID(Long id)
@@ -114,6 +139,11 @@ public class GLAEventDaoImpl implements GLAEventDao {
         }
         return glaEvent;
     }
+    /**
+     * Adds a new GLA Entity Object to the Database.
+     * @param glaEntity New GLA Entity Object to be saved.
+     * @return ID of the Newly Created GLA Entity object in DB.
+     **/
     @Override
     @Transactional(readOnly = true)
     public List<String> loadEventByCategoryID(Long categoryID){
@@ -135,6 +165,11 @@ public class GLAEventDaoImpl implements GLAEventDao {
         log.info("Dumping Events By Category ID" + selectedEvents);
         return selectedEvents;
     }
+    /**
+     * Adds a new GLA Entity Object to the Database.
+     * @param glaEntity New GLA Entity Object to be saved.
+     * @return ID of the Newly Created GLA Entity object in DB.
+     **/
     @Override
     @Transactional(readOnly = true)
     public List<String> selectAll(String EventComponent){
@@ -148,6 +183,11 @@ public class GLAEventDaoImpl implements GLAEventDao {
         return query.list();
     }
 
+    /**
+     * Adds a new GLA Entity Object to the Database.
+     * @param glaEntity New GLA Entity Object to be saved.
+     * @return ID of the Newly Created GLA Entity object in DB.
+     **/
     @Override
     @Transactional(readOnly = true)
     public List<Long> findCategoryId(String action, String source, String platform){
@@ -158,6 +198,11 @@ public class GLAEventDaoImpl implements GLAEventDao {
 
     }
 
+    /**
+     * Adds a new GLA Entity Object to the Database.
+     * @param glaEntity New GLA Entity Object to be saved.
+     * @return ID of the Newly Created GLA Entity object in DB.
+     **/
     @Override
     @Transactional(readOnly = true)
     public List<String> searchSimilarSessionDetails(String searchType, String searchCriteria)
@@ -173,6 +218,12 @@ public class GLAEventDaoImpl implements GLAEventDao {
         log.info("Result of Search Session Hibernate Query " + query.list());
         return query.list();
     }
+
+    /**
+     * Adds a new GLA Entity Object to the Database.
+     * @param glaEntity New GLA Entity Object to be saved.
+     * @return ID of the Newly Created GLA Entity object in DB.
+     **/
     @Override
     @Transactional(readOnly = true)
     public List<Timestamp> searchSimilarTimeDetails(String searchType, String searchCriteria)
@@ -191,6 +242,11 @@ public class GLAEventDaoImpl implements GLAEventDao {
         return query.list();
     }
 
+    /**
+     * Adds a new GLA Entity Object to the Database.
+     * @param glaEntity New GLA Entity Object to be saved.
+     * @return ID of the Newly Created GLA Entity object in DB.
+     **/
     public static String getStackTrace(final Throwable throwable) {
         final StringWriter sw = new StringWriter();
         final PrintWriter pw = new PrintWriter(sw, true);
@@ -198,6 +254,11 @@ public class GLAEventDaoImpl implements GLAEventDao {
         return sw.getBuffer().toString();
     }
 
+    /**
+     * Adds a new GLA Entity Object to the Database.
+     * @param glaEntity New GLA Entity Object to be saved.
+     * @return ID of the Newly Created GLA Entity object in DB.
+     **/
     @Override
     @Transactional(readOnly = true)
     public List<GLAEvent> searchEventsByAction(String searchParameter, boolean exactSearch,

@@ -24,12 +24,15 @@ public class SelectNumberParameters implements Serializable{
     List<String> source =  new ArrayList<>();
     List<String> platform =  new ArrayList<>();
     List<String> action =  new ArrayList<>();
+    List<String> operations =  new ArrayList<>();
     @NotNull
     private List<String> selectedSource;
     @NotNull
     private String selectedPlatform;
     @NotNull
     private String selectedAction;
+
+    private String selectedOperation;
 
 
     List<String> minors =  new ArrayList<>();
@@ -94,9 +97,11 @@ public class SelectNumberParameters implements Serializable{
         this.selectedSource.clear();
         this.selectedPlatform  =null;
         this.selectedAction = null;
+        this.selectedOperation = null;
         this.source.clear();
         this.platform.clear();
         this.action.clear();
+        this.operations.clear();
 
         this.majors.clear();
         this.minors.clear();
@@ -530,6 +535,22 @@ public class SelectNumberParameters implements Serializable{
 
     public void setSelectedChartEngine(String selectedChartEngine) {
         this.selectedChartEngine = selectedChartEngine;
+    }
+
+    public List<String> getOperations() {
+        return operations;
+    }
+
+    public void setOperations(List<String> operations) {
+        this.operations = operations;
+    }
+
+    public String getSelectedOperation() {
+        return selectedOperation;
+    }
+
+    public void setSelectedOperation(String selectedOperation) {
+        this.selectedOperation = selectedOperation;
     }
 }
 

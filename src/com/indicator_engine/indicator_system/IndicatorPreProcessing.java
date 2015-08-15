@@ -45,9 +45,11 @@ public class IndicatorPreProcessing implements IndicatorPreProcessingDao {
         SelectNumberParameters obj = new SelectNumberParameters();
         //obj.getEntityValues().add(new EntityValues());
         GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
+        GLAOperationsDao glaOperationsBean = (GLAOperationsDao) appContext.getBean("glaOperations");
         obj.setSource(glaEventBean.selectAll("source"));
         obj.setPlatform(glaEventBean.selectAll("platform"));
         obj.setAction(glaEventBean.selectAll("action"));
+        obj.setOperations(glaOperationsBean.selectAllOperations());
         return obj;
     }
 

@@ -32,6 +32,7 @@ public interface GLAIndicatorDao {
     public GLAIndicator loadByIndicatorID(long ID);
     public List<GLAIndicator> displayall(String colName, String sortDirection, boolean sort);
     public List<GLAIndicator> loadIndicatorsRange(long startRange, long endRange);
+    public List<GLAIndicator> displayAllNonComposite(String colName, String sortDirection, boolean sort);
     public List<GLAIndicator> searchIndicatorsName(String searchParameter,boolean exactSearch,
                                                    String colName, String sortDirection, boolean sort);
     public int getTotalIndicators();
