@@ -482,10 +482,12 @@ $.event.special.hoverintent = {
 var request;
 function createRequest() {
     try {
-        request = new XMLHttpRequest();
+        var request = new XMLHttpRequest();
     } catch(failed){
         alert("Error creating request object!");
         request = null;
+    } finally {
+        return request;
     }
 }
 
@@ -499,16 +501,15 @@ function removeOptions(selectbox)
 }
 
 function validateQuestionName(){
-    createRequest();
-
+    var request = createRequest();
     var questionNameEntered = document.getElementById('questionNaming').value;
     var url ="/indicators/validateQName?qname="+questionNameEntered;
     request.open("GET",url,true);
-    request.onreadystatechange=alert_questionName;
+    request.onreadystatechange=function(){alert_questionName(request)};
     request.send(null);
 }
 
-function alert_questionName() {
+function alert_questionName(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
 
@@ -556,15 +557,15 @@ function alert_questionName() {
 }
 
 function validateIndicatorName(obj){
-    createRequest();
+    var request = createRequest();
     var indicatorNameEntered = document.getElementById('indicatorNaming').value;
     var url ="/indicators/validateIndName?indname="+indicatorNameEntered;
     request.open("GET",url,true);
-    request.onreadystatechange=alert_indicatorName;
+    request.onreadystatechange=function(){alert_indicatorName(request)};
     request.send(null);
 }
 
-function alert_indicatorName() {
+function alert_indicatorName(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
 
@@ -642,7 +643,7 @@ function platformChanged(){
 }
 
 function populateCategories(){
-    createRequest();
+    var request = createRequest();
     $.noty.defaults.killer = true;
     noty({
         text: '<strong>Success</strong> <br/> Action Selected <br/> Retreiving Minors...',
@@ -668,12 +669,12 @@ function populateCategories(){
     var selectedPlatform = document.getElementById('PlatformSelection').value;
     var url ="/indicators/populateCategories?action="+selectedAction+"&platform="+selectedPlatform+"&sources="+selectedSources;
     request.open("GET",url,true);
-    request.onreadystatechange=processReceivedCategories;
+    request.onreadystatechange=function(){processReceivedCategories(request)};
     request.send(null);
 
 }
 
-function processReceivedCategories() {
+function processReceivedCategories(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
@@ -688,7 +689,7 @@ function processReceivedCategories() {
 }
 
 function populateEntities() {
-    createRequest();
+    var request = createRequest();
     $.noty.defaults.killer = true;
     noty({
         text: '<strong>Success</strong> <br/> Minor Selected <br/> Retreiving Entities...',
@@ -708,11 +709,11 @@ function populateEntities() {
     var minorSelected = document.getElementById('selectedMinor').value;
     var url ="/indicators/populateEntities?minor="+minorSelected;
     request.open("GET",url,true);
-    request.onreadystatechange=processReceivedEntities;
+    request.onreadystatechange=function(){processReceivedEntities(request)};
     request.send(null);
 }
 
-function processReceivedEntities() {
+function processReceivedEntities(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
@@ -727,33 +728,33 @@ function processReceivedEntities() {
 }
 
 function addEntity(){
-    createRequest();
+    var request = createRequest();
     var keySelected = document.getElementById("entityKeySelection").value;
     var searchType = document.getElementById("specificationType").value;
     var evalue = document.getElementById("entityValue").value;
     var url ="/indicators/addEntity?key="+keySelected+"&search="+searchType+"&value="+evalue;
     request.open("GET",url,true);
-    request.onreadystatechange = function(){displayEntityFilters(1)};
+    request.onreadystatechange = function(){displayEntityFilters(1,request)};
     request.send(null);
 }
 
 function refreshEntityFilters() {
-    createRequest();
+    var request = createRequest();
     var url ="/indicators/getEntities";
     request.open("GET",url,true);
-    request.onreadystatechange = function(){displayEntityFilters(2)};
+    request.onreadystatechange = function(){displayEntityFilters(2,request)};
     request.send(null);
 }
 
 function deleteEntity(){
-    createRequest();
+    var request = createRequest();
     var url ="/indicators/deleteEntities";
     request.open("GET",url,true);
-    request.onreadystatechange = function(){displayEntityFilters(3)};
+    request.onreadystatechange = function(){displayEntityFilters(3,request)};
     request.send(null);
 }
 
-function displayEntityFilters(callstatus){
+function displayEntityFilters(callstatus,request){
     if (request.readyState == 4) {
         if (request.status == 200) {
             if(callstatus == 1) {
@@ -805,16 +806,16 @@ function displayEntityFilters(callstatus){
 }
 
 function searchUser() {
-    createRequest();
+    var request = createRequest();
     var userType = document.getElementById("userType").value;
     var searchUserString = document.getElementById("searchUserString").value;
     var url ="/indicators/searchUser?keyword="+searchUserString+"&searchtype="+userType;
     request.open("GET",url,true);
-    request.onreadystatechange=displaySearchUserResults;
+    request.onreadystatechange=function(){displaySearchUserResults(request)};
     request.send(null);
 }
 
-function displaySearchUserResults() {
+function displaySearchUserResults(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
@@ -829,33 +830,33 @@ function displaySearchUserResults() {
 }
 
 function addUserFilter() {
-    createRequest();
+    var request = createRequest();
     var userType = document.getElementById("userType").value;
     var userdata = document.getElementById("usersearchResults").value;
     var UsersearchType = document.getElementById("UsersearchType").value;
     var url ="/indicators/addUserFilter?userdata="+userdata+"&searchType="+UsersearchType+"&userType="+userType;
     request.open("GET",url,true);
-    request.onreadystatechange = function(){displayUserFilters(1)};
+    request.onreadystatechange = function(){displayUserFilters(1,request)};
     request.send(null);
 }
 
 function refreshUserFilters() {
-    createRequest();
+    var request = createRequest();
     var url ="/indicators/getUserFilters";
     request.open("GET",url,true);
-    request.onreadystatechange=  function(){displayUserFilters(2)};
+    request.onreadystatechange=  function(){displayUserFilters(2,request)};
     request.send(null);
 }
 
 function deleteUserFilters() {
-    createRequest();
+    var request = createRequest();
     var url ="/indicators/deleteUserFilters";
     request.open("GET",url,true);
-    request.onreadystatechange=  function(){displayUserFilters(3)};
+    request.onreadystatechange=  function(){displayUserFilters(3,request)};
     request.send(null);
 }
 
-function displayUserFilters(callstatus) {
+function displayUserFilters(callstatus,request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             if(callstatus == 1) {
@@ -907,16 +908,16 @@ function displayUserFilters(callstatus) {
 }
 
 function searchTime(){
-    createRequest();
+    var request = createRequest();
     var timeType = document.getElementById("timeSearchType").value;
     var searchTimeString = document.getElementById("timeSearchString").value;
     var url ="/indicators/searchTime?searchTime="+searchTimeString+"&timeType="+timeType;
     request.open("GET",url,true);
-    request.onreadystatechange=displaySearchTimeResults;
+    request.onreadystatechange=function(){displaySearchTimeResults(request)};
     request.send(null);
 }
 
-function displaySearchTimeResults() {
+function displaySearchTimeResults(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
@@ -932,14 +933,14 @@ function displaySearchTimeResults() {
 }
 
 function addTimeFilter() {
-    createRequest();
+    var request = createRequest();
     var timeSearchType = document.getElementById("timeSelectionType").value;
     if(timeSearchType === "EXACT"){
         var timeString = document.getElementById("timeSearchResults").value;
         var UTCDate = +(new Date(timeString));
         var url ="/indicators/addTimeFilter?time="+UTCDate+"&timeType="+timeSearchType;
         request.open("GET",url,true);
-        request.onreadystatechange= function(){displayTimeFilters(1)};
+        request.onreadystatechange= function(){displayTimeFilters(1,request)};
         request.send(null);
     }
     else {
@@ -948,32 +949,31 @@ function addTimeFilter() {
         var time = new Array();
         time[0] = +(new Date(startRange));
         time[1] = +(new Date(endRange));
-        console.log(time);
         url ="/indicators/addTimeFilter?time="+time+"&timeType="+timeSearchType;
         request.open("GET",url,true);
-        request.onreadystatechange= function(){displayTimeFilters(1)};
+        request.onreadystatechange= function(){displayTimeFilters(1,request)};
         request.send(null);
     }
 
 }
 
 function refreshTimeFilters() {
-    createRequest();
+    var request = createRequest();
     var url ="/indicators/getTimeFilters";
     request.open("GET",url,true);
-    request.onreadystatechange= function(){displayTimeFilters(2)};
+    request.onreadystatechange= function(){displayTimeFilters(2,request)};
     request.send(null);
 }
 
 function deleteTimeFilters() {
-    createRequest();
+    var request = createRequest();
     var url ="/indicators/deleteTimeFilters";
     request.open("GET",url,true);
-    request.onreadystatechange= function(){displayTimeFilters(3)};
+    request.onreadystatechange= function(){displayTimeFilters(3,request)};
     request.send(null);
 }
 
-function displayTimeFilters(callstatus) {
+function displayTimeFilters(callstatus,request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             if(callstatus == 1) {
@@ -1023,16 +1023,16 @@ function displayTimeFilters(callstatus) {
 }
 
 function searchSession() {
-    createRequest();
+    var request = createRequest();
     var SessionSearchType = document.getElementById("sessionSearchType").value;
     var sessionSearchString = document.getElementById("sessionSearchString").value;
     var url ="/indicators/searchSession?keyword="+sessionSearchString+"&searchType="+SessionSearchType;
     request.open("GET",url,true);
-    request.onreadystatechange=displaySearchSessionResults;
+    request.onreadystatechange=function(){displaySearchSessionResults(request)};
     request.send(null);
 }
 
-function displaySearchSessionResults() {
+function displaySearchSessionResults(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
@@ -1047,33 +1047,33 @@ function displaySearchSessionResults() {
 }
 
 function addSessionFilter() {
-    createRequest();
+    var request = createRequest();
     var SessionData = document.getElementById("SessionsearchResults").value;
     var SessionSearchType = document.getElementById("SessionsearchType").value;
     var url ="/indicators/addSessionFilter?sessionData="+SessionData+"&searchType="+SessionSearchType;
     request.open("GET",url,true);
-    request.onreadystatechange= function(){displaySessionFilters(1)};
+    request.onreadystatechange= function(){displaySessionFilters(1,request)};
     request.send(null);
 
 }
 
 function refreshSessionFilters() {
-    createRequest();
+    var request = createRequest();
     var url ="/indicators/getSessionFilters";
     request.open("GET",url,true);
-    request.onreadystatechange= function(){displaySessionFilters(2)};
+    request.onreadystatechange= function(){displaySessionFilters(2,request)};
     request.send(null);
 }
 
 function deleteSessionFilters() {
-    createRequest();
+    var request = createRequest();
     var url ="/indicators/deleteSessionFilters";
     request.open("GET",url,true);
-    request.onreadystatechange= function(){displaySessionFilters(3)};
+    request.onreadystatechange= function(){displaySessionFilters(3,request)};
     request.send(null);
 }
 
-function displaySessionFilters(callstatus) {
+function displaySessionFilters(callstatus, request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             if(callstatus == 1) {
@@ -1124,14 +1124,14 @@ function displaySessionFilters(callstatus) {
 }
 
 function refreshCurrentIndicator(){
-    createRequest();
+    var request = createRequest();
     var url ="/indicators/refreshCurrentIndicator";
     request.open("GET",url,true);
-    request.onreadystatechange =displayCurrentIndProps;
+    request.onreadystatechange =function(){displayCurrentIndProps(request)};
     request.send(null);
 }
 
-function displayCurrentIndProps() {
+function displayCurrentIndProps(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             $.noty.defaults.killer = true;
@@ -1208,11 +1208,11 @@ function refreshGraph(filterPresent) {
         var indicatorName = document.getElementById("indicatorNaming").value;
         var graphType = document.getElementById("selectedChartType").value;
         var graphEngine = document.getElementById("EngineSelect").value;
-        createRequest();
+        var request = createRequest();
         var url ="/indicators/refreshGraph?questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
             +"&graphEngine="+graphEngine;
         request.open("GET",url,true);
-        request.onreadystatechange=drawGraph;
+        request.onreadystatechange=function(){drawGraph(request)};
         request.send(null);
     }
     else {
@@ -1221,19 +1221,19 @@ function refreshGraph(filterPresent) {
 
 }
 function checkForDefaultRule(funcId) {
-    createRequest();
+    var request = createRequest();
     var url ="/indicators/getEntities?size=Y";
     request.open("GET",url,false);
-    request.onreadystatechange = function(){addDefaultRule(funcId)};
+    request.onreadystatechange = function(){addDefaultRule(funcId,request)};
     request.send(null);
 }
 
-function addDefaultRule(funcID) {
+function addDefaultRule(funcID,request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             if(request.responseText == 0) {
 
-                createRequest();
+                request = createRequest();
                 var keySelected = document.getElementById("entityKeySelection").value;
                 var searchType = document.getElementById("specificationType").value;
                 var evalue = 'ALL';
@@ -1256,7 +1256,7 @@ function addDefaultRule(funcID) {
     }
 }
 
-function drawGraph() {
+function drawGraph(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             $.noty.defaults.killer = true;
@@ -1277,14 +1277,14 @@ function drawGraph() {
 }
 
 function refreshQuestionSummary() {
-    createRequest();
+    var request = createRequest();
     var url ="/indicators/refreshQuestionSummary";
     request.open("GET",url,true);
-    request.onreadystatechange=postrefreshQuestionSummary;
+    request.onreadystatechange=function(){postrefreshQuestionSummary(request)};
     request.send(null);
 }
 
-function postrefreshQuestionSummary() {
+function postrefreshQuestionSummary(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
 
@@ -1305,7 +1305,7 @@ function postrefreshQuestionSummary() {
 
 function finalizeIndicator(filterPresent) {
     if(filterPresent) {
-        createRequest();
+        var request = createRequest();
         var questionName = document.getElementById("questionNaming").value;
         var indicatorName = document.getElementById("indicatorNaming").value;
         var graphType = document.getElementById("selectedChartType").value;
@@ -1313,7 +1313,7 @@ function finalizeIndicator(filterPresent) {
         var url ="/indicators/finalize?questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
             +"&graphEngine="+graphEngine;
         request.open("GET",url,true);
-        request.onreadystatechange=postrefreshQuestionSummary;
+        request.onreadystatechange=function(){postrefreshQuestionSummary(request)};
         request.send(null);
     }
     else
@@ -1322,14 +1322,14 @@ function finalizeIndicator(filterPresent) {
 }
 
 function addNewIndicator() {
-    createRequest();
+    var request = createRequest();
     var url ="/indicators/addNewIndicator";
     request.open("GET",url,true);
-    request.onreadystatechange=processScreenForNextIndicator;
+    request.onreadystatechange=function(){processScreenForNextIndicator(request)};
     request.send(null);
 }
 
-function processScreenForNextIndicator() {
+function processScreenForNextIndicator(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
@@ -1342,15 +1342,15 @@ function processScreenForNextIndicator() {
 }
 
 function SaveQuestionDB() {
-    createRequest();
+    var request = createRequest();
     var userName = document.getElementById("userName").value;
     var url ="/indicators/saveQuestionDB?userName="+userName;
     request.open("GET",url,true);
-    request.onreadystatechange=processScreenForNextQuestion;
+    request.onreadystatechange=function(){processScreenForNextQuestion(request)};
     request.send(null);
 }
 
-function processScreenForNextQuestion() {
+function processScreenForNextQuestion(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
@@ -1374,13 +1374,13 @@ function processScreenForNextQuestion() {
 }
 
 function QuestionVisualize() {
-    createRequest();
+    var request = createRequest();
     var url ="/indicators/refreshQuestionSummary";
     request.open("GET",url,true);
-    request.onreadystatechange=updateVisualisationTab;
+    request.onreadystatechange=function(){updateVisualisationTab(request)};
     request.send(null);
 }
-function updateVisualisationTab() {
+function updateVisualisationTab(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
@@ -1438,15 +1438,15 @@ function addCompositeIndicator() {
     var indicatorName = document.getElementById("compositeIndName").value;
     var graphType = document.getElementById("compositeGraphType").value;
     var graphEngine = document.getElementById("compositeGraphEngine").value;
-    createRequest();
+    var request = createRequest();
     var url ="/indicators/addCompositeIndicator?indName="+indicatorName+"&graphType="+graphType+"&graphEngine="+graphType
         +"&compositeSources="+checkedValues;
    request.open("GET",url,true);
-   request.onreadystatechange=postAddCompositeIndicator;
+   request.onreadystatechange=function(){postAddCompositeIndicator(request)};
    request.send(null);
 }
 
-function postAddCompositeIndicator() {
+function postAddCompositeIndicator(request) {
 
     if (request.readyState == 4) {
         if (request.status == 200) {
@@ -1471,14 +1471,14 @@ function loadIndfromDB() {
 function searchIndicator() {
     var searchString = document.getElementById("IndSearch").value;
     var searchIndType = document.getElementById("searchIndType").value;
-    createRequest();
+    var request = createRequest();
     var url ="/indicators/searchIndicator?searchString="+searchString+"&searchType="+searchIndType;
     request.open("GET",url,true);
-    request.onreadystatechange=displayReceivedIndicators;
+    request.onreadystatechange=function(){displayReceivedIndicators(request)};
     request.send(null);
 }
 
-function displayReceivedIndicators() {
+function displayReceivedIndicators(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
@@ -1499,14 +1499,14 @@ function displayReceivedIndicators() {
 
 function viewIndicatorProp() {
     var indName = document.getElementById("searchResults").value;
-    createRequest();
+    var request = createRequest();
     var url ="/indicators/loadIndicator?indName="+indName;
     request.open("GET",url,true);
-    request.onreadystatechange=displayIndicatorProp;
+    request.onreadystatechange=function(){displayIndicatorProp(request)};
     request.send(null);
 }
 
-function displayIndicatorProp() {
+function displayIndicatorProp(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
@@ -1568,14 +1568,14 @@ function loadFromTemplate() {
     var indName = document.getElementById("searchResults").value;
     var dvTable = document.getElementById("IndPropsFromDB");
     dvTable.innerHTML = "";
-    createRequest();
+    var request = createRequest();
     var url ="/indicators/loadIndicator?indName="+indName+"&loadTemplate=Y";
     request.open("GET",url,true);
-    request.onreadystatechange=loadToEditor;
+    request.onreadystatechange=function(){loadToEditor(request)};
     request.send(null);
 }
 
-function loadToEditor() {
+function loadToEditor(request) {
 
     if (request.readyState == 4) {
         if (request.status == 200) {

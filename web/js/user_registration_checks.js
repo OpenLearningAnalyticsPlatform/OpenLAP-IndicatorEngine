@@ -32,7 +32,7 @@ function createRequest() {
 }
 
 function checkPreExistingUserName(){
-    createRequest();
+    request = createRequest();
     var userNameEntered = document . getElementById("usernamesignup").value;
     var url ="/checkusername?username="+escape(userNameEntered);
     request.open("GET",url,true);
@@ -55,7 +55,7 @@ function alert_duplicateUserName() {
 }
 
 function checkPreExistingEmailID(){
-    createRequest();
+    request = createRequest();
     var emailEntered = document . getElementById("emailsignup").value;
     var url ="/checkemail?email="+escape(emailEntered);
     request.open("GET",url,true);

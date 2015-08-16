@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="974e7feb-8792-4228-ab5d-100949817edf" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/dao/GLAEventDaoImpl.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/dao/GLAEventDaoImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/dao/GLAIndicatorDao.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/dao/GLAIndicatorDao.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/dao/GLAIndicatorDaoImpl.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/dao/GLAIndicatorDaoImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/IndicatorPreProcessing.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/IndicatorPreProcessing.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/SelectNumberParameters.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/SelectNumberParameters.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/indicator_editor.js" afterPath="$PROJECT_DIR$/web/js/indicator_editor.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp" afterPath="$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/otp_validation.js" afterPath="$PROJECT_DIR$/web/js/otp_validation.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/questionIndicatorEditor.js" afterPath="$PROJECT_DIR$/web/js/questionIndicatorEditor.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/user_registration_checks.js" afterPath="$PROJECT_DIR$/web/js/user_registration_checks.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path=".idea/dataSources.local.xml" />
@@ -56,11 +52,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="question_indicator_editor.jsp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="question_indicator_editor.jsp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.38202247" vertical-offset="19255" max-vertical-offset="21875">
-              <caret line="777" column="67" selection-start-line="777" selection-start-column="67" selection-end-line="777" selection-end-column="67" />
+            <state vertical-scroll-proportion="-4.1904764" vertical-offset="15861" max-vertical-offset="21875">
+              <caret line="645" column="153" selection-start-line="645" selection-start-column="132" selection-end-line="645" selection-end-column="153" />
               <folding />
             </state>
           </provider>
@@ -106,13 +102,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="indicator_editor.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="indicator_editor.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/js/indicator_editor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="19100" max-vertical-offset="41100">
-              <caret line="737" column="1" selection-start-line="737" selection-start-column="1" selection-end-line="737" selection-end-column="1" />
+            <state vertical-scroll-proportion="0.36231884" vertical-offset="23600" max-vertical-offset="40750">
+              <caret line="956" column="0" selection-start-line="956" selection-start-column="0" selection-end-line="956" selection-end-column="0" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
+                <element signature="e#39595#40623#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -141,9 +138,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/com/indicator_engine/controller/LoginController.java" />
-        <option value="$PROJECT_DIR$/src/com/indicator_engine/controller/RegistrationController.java" />
-        <option value="$PROJECT_DIR$/src/com/indicator_engine/controller/ToolkitAdminController.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/model/app/UserProfileForm.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/UserSearchSpecifications.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/TimeSearchSpecifications.java" />
@@ -187,11 +181,14 @@
         <option value="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/IndicatorPreProcessing.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/SelectNumberParameters.java" />
         <option value="db-console:/f5b50d99/32ae7fb3-a50e-4b6f-a0a3-2b48e047367d/" />
-        <option value="$PROJECT_DIR$/web/js/indicator_editor.js" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/dao/GLAIndicatorDao.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/dao/GLAIndicatorDaoImpl.java" />
         <option value="$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp" />
+        <option value="$PROJECT_DIR$/web/js/otp_validation.js" />
+        <option value="$PROJECT_DIR$/web/js/questionIndicatorEditor.js" />
+        <option value="$PROJECT_DIR$/web/js/user_registration_checks.js" />
+        <option value="$PROJECT_DIR$/web/js/indicator_editor.js" />
       </list>
     </option>
   </component>
@@ -361,6 +358,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IndicatorEngine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="images" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1197,7 +1212,7 @@
       <workItem from="1438216737331" duration="1199000" />
       <workItem from="1438608416404" duration="9047000" />
       <workItem from="1439280369890" duration="8284000" />
-      <workItem from="1439518442693" duration="2505000" />
+      <workItem from="1439518442693" duration="11395000" />
     </task>
     <task id="LOCAL-00001" summary="charting capabilities : init">
       <created>1431340261434</created>
@@ -1415,11 +1430,17 @@
       <option name="project" value="LOCAL" />
       <updated>1437498374385</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Non Composite Indicator Listing Changes">
+      <created>1439669713112</created>
+      <option name="number" value="00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1439669713112</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="498706000" />
+    <option name="totallyTimeSpent" value="507596000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1443,14 +1464,15 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.42093542" sideWeight="0.4936034" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42093542" sideWeight="0.4936034" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946696" sideWeight="0.50830567" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24946696" sideWeight="0.49169436" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946696" sideWeight="0.49169436" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hibernate Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1459,7 +1481,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1486,12 +1507,12 @@
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42093542" sideWeight="0.4936034" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.42093542" sideWeight="0.4936034" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946696" sideWeight="0.50830567" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24946696" sideWeight="0.49169436" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946696" sideWeight="0.49169436" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
@@ -1514,7 +1535,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="Final UI with Jquery" />
     <MESSAGE value="Front end : features added &#10;Indicator Iteration (Memory)&#10;Indicator View Property (Memory)&#10;Indicator Delete Property (Memory)&#10;&#10;Entity Bean scoped to session : Major Bug Resolved" />
     <MESSAGE value="Front end : features added &#10;Time Stamp Search add  delete and view client side&#10;" />
     <MESSAGE value="Removed Redundant methods from Indicator Preprocessor" />
@@ -1539,7 +1559,8 @@
     <MESSAGE value="Time Filters : range Capability added" />
     <MESSAGE value="GLACategoryImpl : JavaDoc" />
     <MESSAGE value="GLAEntityImpl : JavaDoc" />
-    <option name="LAST_COMMIT_MESSAGE" value="GLAEntityImpl : JavaDoc" />
+    <MESSAGE value="Non Composite Indicator Listing Changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Non Composite Indicator Listing Changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1552,69 +1573,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="dbDummy://db-console:/f5b50d99/4400d7f1-20a6-4146-9e73-594f971efa40/">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5514706" vertical-offset="0" max-vertical-offset="625">
-          <caret line="12" column="26" selection-start-line="12" selection-start-column="26" selection-end-line="12" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/datamodel/GLAEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="1600">
-          <caret line="32" column="19" selection-start-line="32" selection-start-column="19" selection-end-line="32" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/Questions.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="1750">
-          <caret line="19" column="31" selection-start-line="19" selection-start-column="19" selection-end-line="19" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/GLAIndicatorJsonObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8833139" vertical-offset="293" max-vertical-offset="1250">
-          <caret line="63" column="5" selection-start-line="12" selection-start-column="4" selection-end-line="63" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/GenIndicatorProps.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="655" max-vertical-offset="1700">
-          <caret line="79" column="34" selection-start-line="79" selection-start-column="34" selection-end-line="79" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/pages/app/user_profile.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.2454435" vertical-offset="3825" max-vertical-offset="5975">
-          <caret line="112" column="152" selection-start-line="112" selection-start-column="31" selection-end-line="112" selection-end-column="152" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/datamodel/GLAOperations.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.28735632" vertical-offset="0" max-vertical-offset="950">
-          <caret line="33" column="19" selection-start-line="33" selection-start-column="19" selection-end-line="33" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GAToolKitDashBoardController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.9463243" vertical-offset="2018" max-vertical-offset="2875">
-          <caret line="47" column="13" selection-start-line="47" selection-start-column="13" selection-end-line="47" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/RegistrationController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.4340723" vertical-offset="3243" max-vertical-offset="4100">
-          <caret line="61" column="17" selection-start-line="61" selection-start-column="17" selection-end-line="61" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/dao/GLAQuestionDaoImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.43757293" vertical-offset="325" max-vertical-offset="5075">
@@ -1793,6 +1751,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1950" max-vertical-offset="3425">
           <caret line="78" column="144" selection-start-line="78" selection-start-column="144" selection-end-line="78" selection-end-column="144" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1822,6 +1781,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="25" max-vertical-offset="3025">
           <caret line="51" column="67" selection-start-line="51" selection-start-column="67" selection-end-line="51" selection-end-column="67" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1829,6 +1789,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="8930" max-vertical-offset="10000">
           <caret line="547" column="42" selection-start-line="547" selection-start-column="42" selection-end-line="547" selection-end-column="42" />
+          <folding>
+            <element signature="e#14546#14547#0" expanded="false" />
+            <element signature="e#14579#14580#0" expanded="false" />
+            <element signature="e#14637#14638#0" expanded="false" />
+            <element signature="e#14681#14682#0" expanded="false" />
+            <element signature="e#14765#14766#0" expanded="false" />
+            <element signature="e#14831#14832#0" expanded="false" />
+            <element signature="e#14889#14890#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1844,13 +1813,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="2818" max-vertical-offset="3825">
           <caret line="124" column="27" selection-start-line="124" selection-start-column="14" selection-end-line="124" selection-end-column="27" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/questionIndicatorEditor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="450" max-vertical-offset="2975">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1934,21 +1896,81 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/js/indicator_editor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="18275" max-vertical-offset="41100">
-          <caret line="737" column="1" selection-start-line="737" selection-start-column="1" selection-end-line="737" selection-end-column="1" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
+    <entry file="file://$PROJECT_DIR$/web/images/execute.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/images/finalize.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/images/refresh.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/images/refresh_graph.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/images/run.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/images/view.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/images/load.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38202247" vertical-offset="19255" max-vertical-offset="21875">
-          <caret line="777" column="67" selection-start-line="777" selection-start-column="67" selection-end-line="777" selection-end-column="67" />
+        <state vertical-scroll-proportion="-4.1904764" vertical-offset="15861" max-vertical-offset="21875">
+          <caret line="645" column="153" selection-start-line="645" selection-start-column="132" selection-end-line="645" selection-end-column="153" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/user_registration_checks.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="809" max-vertical-offset="2450">
+          <caret line="57" column="4" selection-start-line="57" selection-start-column="4" selection-end-line="57" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/questionIndicatorEditor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.38821137" vertical-offset="2134" max-vertical-offset="2975">
+          <caret line="110" column="4" selection-start-line="110" selection-start-column="4" selection-end-line="110" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/otp_validation.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.38821137" vertical-offset="309" max-vertical-offset="1225">
+          <caret line="37" column="4" selection-start-line="37" selection-start-column="4" selection-end-line="37" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/indicator_editor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36231884" vertical-offset="23600" max-vertical-offset="40750">
+          <caret line="956" column="0" selection-start-line="956" selection-start-column="0" selection-end-line="956" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#39595#40623#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

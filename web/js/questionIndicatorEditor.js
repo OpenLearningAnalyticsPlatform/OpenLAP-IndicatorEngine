@@ -41,7 +41,7 @@ function populateSPA() {
 }
 
 function FilterInit() {
-    createRequest();
+    request = createRequest();
     var url ="/indicators/initFilters";
     request.open("GET",url,false);
     request.onreadystatechange=processReceivedFilters;
@@ -64,7 +64,7 @@ function processReceivedFilters() {
 
 }
 function populateSources() {
-    createRequest();
+    request = createRequest();
     var url ="/indicators/initSources";
     request.open("GET",url,false);
     request.onreadystatechange=processReceivedSources;
@@ -86,7 +86,7 @@ function processReceivedSources() {
 }
 
 function populatePlatform() {
-    createRequest();
+    request = createRequest();
     var url ="/indicators/initPlatform";
     request.open("GET",url,false);
     request.onreadystatechange=processReceivedPlatforms;
@@ -108,7 +108,7 @@ function processReceivedPlatforms() {
 }
 
 function populateAction() {
-    createRequest();
+    request = createRequest();
     var url ="/indicators/initAction";
     request.open("GET",url,false);
     request.onreadystatechange=processReceivedActions;

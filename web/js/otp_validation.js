@@ -35,7 +35,7 @@ function createRequest() {
 }
 
 function validateOTP(){
-    createRequest();
+    request = createRequest();
     var otpEntered = document . getElementById("otp").value;
     var username = document . getElementById("username").value;;
     var url ="/validateotp?otp="+escape(otpEntered)+"&username="+escape(username);
