@@ -238,35 +238,19 @@ public class GraphController {
     private CategoryDataset createCategoryDataSet(GLAIndicator glaIndicator) {
 
         GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
-        long total = 0;
         Gson gson = new Gson();
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         if(glaIndicator.getGlaIndicatorProps().isComposite()) {
             CompositeQuery [] compositeQuery = gson.fromJson(glaIndicator.getHql(),CompositeQuery[].class);
+
             for(int i = 0; i < compositeQuery.length; i++) {
-                total += glaEntityBean.findNumber(compositeQuery[i].getQuery());
-            }
-            if(total != 0) {
-                for(int i = 0; i < compositeQuery.length; i++) {
-                    dataset.setValue((glaEntityBean.findNumber(compositeQuery[i].getQuery())*100)/total, compositeQuery[i].getParentIndName(),
-                            compositeQuery[i].getParentIndName());
-                }
-            }
-            else {
-                for(int i = 0; i < compositeQuery.length; i++) {
-                    dataset.setValue((glaEntityBean.findNumber(compositeQuery[i].getQuery())*100), compositeQuery[i].getParentIndName(),
-                            compositeQuery[i].getParentIndName());
-                }
+                dataset.setValue(glaEntityBean.findNumber(compositeQuery[i].getQuery()), compositeQuery[i].getParentIndName(),
+                        compositeQuery[i].getParentIndName());
             }
         }
         else {
-            total += glaEntityBean.findNumber(glaIndicator.getHql());
-            if(total != 0)
-                dataset.setValue((glaEntityBean.findNumber(glaIndicator.getHql())*100)/total, glaIndicator.getIndicator_name(),
-                        glaIndicator.getIndicator_name());
-            else
-                dataset.setValue((glaEntityBean.findNumber(glaIndicator.getHql())*100), glaIndicator.getIndicator_name(),
-                        glaIndicator.getIndicator_name());
+            dataset.setValue(glaEntityBean.findNumber(glaIndicator.getHql()), glaIndicator.getIndicator_name(),
+                    glaIndicator.getIndicator_name());
             // glaIndicatorBean.updateStatistics(glaIndicator.getId());
         }
 
@@ -276,19 +260,13 @@ public class GraphController {
     private CategoryDataset createCategoryDataSet(EntitySpecification entitySpecification) {
 
         GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
-        long total = 0;
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        total += glaEntityBean.findNumber(entitySpecification.getHql());
         /*if(entitySpecification.getQuestionsContainer().getGenQueries().size() !=0){
             for(GenQuery genQuery : entitySpecification.getQuestionsContainer().getGenQueries()) {
                 total += glaEntityBean.findNumber(genQuery.getQuery());
             }
         }*/
-        if(total != 0)
-            dataset.setValue((glaEntityBean.findNumber(entitySpecification.getHql()) *100)/total, entitySpecification.getIndicatorName(),
-                    entitySpecification.getIndicatorName());
-        else
-            dataset.setValue((glaEntityBean.findNumber(entitySpecification.getHql()) *100), entitySpecification.getIndicatorName(),
+        dataset.setValue(glaEntityBean.findNumber(entitySpecification.getHql()), entitySpecification.getIndicatorName(),
                     entitySpecification.getIndicatorName());
         /*if(entitySpecification.getQuestionsContainer().getGenQueries().size() !=0){
             for(GenQuery genQuery : entitySpecification.getQuestionsContainer().getGenQueries()) {
@@ -317,7 +295,7 @@ public class GraphController {
         final JFreeChart chart = ChartFactory.createBarChart(
                 chartTitle,         // chart title
                 "Indicators",               // domain axis label
-                "Percentage",                  // range axis label
+                "Count",                  // range axis label
                 dataset,                  // data
                 PlotOrientation.VERTICAL, // orientation
                 true,                     // include legend

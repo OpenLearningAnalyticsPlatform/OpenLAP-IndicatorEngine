@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="974e7feb-8792-4228-ab5d-100949817edf" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/OperationNumberRules.drl" afterPath="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/OperationNumberRules.drl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/indicator_editor.js" afterPath="$PROJECT_DIR$/web/js/indicator_editor.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/controller/GraphController.java" afterPath="$PROJECT_DIR$/src/com/indicator_engine/controller/GraphController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path=".idea/dataSources.local.xml" />
@@ -68,86 +67,26 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="22099" max-vertical-offset="26875">
               <caret line="905" column="74" selection-start-line="905" selection-start-column="74" selection-end-line="905" selection-end-column="74" />
-              <folding>
-                <element signature="e#0#59555#0" expanded="false" />
-                <element signature="imports" expanded="false" />
-                <element signature="e#2707#2708#0" expanded="false" />
-                <element signature="e#2782#2783#0" expanded="false" />
-                <element signature="e#20942#20956#0" expanded="false" />
-                <element signature="e#21302#21328#0" expanded="false" />
-                <element signature="e#21711#21734#0" expanded="false" />
-                <element signature="e#22131#22157#0" expanded="false" />
-                <element signature="e#33929#33943#0" expanded="false" />
-                <element signature="e#56195#56196#0" expanded="false" />
-                <element signature="e#56222#56223#0" expanded="false" />
-                <element signature="e#56262#56263#0" expanded="false" />
-                <element signature="e#56294#56295#0" expanded="false" />
-                <element signature="e#56326#56327#0" expanded="false" />
-                <element signature="e#56354#56355#0" expanded="false" />
-                <element signature="e#56396#56397#0" expanded="false" />
-                <element signature="e#56430#56431#0" expanded="false" />
-                <element signature="e#56462#56463#0" expanded="false" />
-                <element signature="e#56490#56491#0" expanded="false" />
-                <element signature="e#56532#56533#0" expanded="false" />
-                <element signature="e#56566#56567#0" expanded="false" />
-                <element signature="e#57467#57468#0" expanded="false" />
-                <element signature="e#57494#57495#0" expanded="false" />
-                <element signature="e#57534#57535#0" expanded="false" />
-                <element signature="e#57566#57567#0" expanded="false" />
-                <element signature="e#57601#57602#0" expanded="false" />
-                <element signature="e#57632#57633#0" expanded="false" />
-                <element signature="e#57680#57681#0" expanded="false" />
-                <element signature="e#57720#57721#0" expanded="false" />
-                <element signature="e#57753#57754#0" expanded="false" />
-                <element signature="e#57782#57783#0" expanded="false" />
-                <element signature="e#57826#57827#0" expanded="false" />
-                <element signature="e#57862#57863#0" expanded="false" />
-                <element signature="e#57898#57899#0" expanded="false" />
-                <element signature="e#57930#57931#0" expanded="false" />
-                <element signature="e#57980#57981#0" expanded="false" />
-                <element signature="e#58022#58023#0" expanded="false" />
-                <element signature="e#58060#58061#0" expanded="false" />
-                <element signature="e#58094#58095#0" expanded="false" />
-                <element signature="e#58148#58149#0" expanded="false" />
-                <element signature="e#58194#58195#0" expanded="false" />
-                <element signature="e#58224#58225#0" expanded="false" />
-                <element signature="e#58250#58251#0" expanded="false" />
-                <element signature="e#58288#58289#0" expanded="false" />
-                <element signature="e#58318#58319#0" expanded="false" />
-                <element signature="e#58355#58356#0" expanded="false" />
-                <element signature="e#58391#58392#0" expanded="false" />
-                <element signature="e#58446#58447#0" expanded="false" />
-                <element signature="e#58496#58497#0" expanded="false" />
-                <element signature="e#58531#58532#0" expanded="false" />
-                <element signature="e#58565#58566#0" expanded="false" />
-                <element signature="e#58616#58617#0" expanded="false" />
-                <element signature="e#58662#58663#0" expanded="false" />
-                <element signature="e#58700#58701#0" expanded="false" />
-                <element signature="e#58737#58738#0" expanded="false" />
-                <element signature="e#58794#58795#0" expanded="false" />
-                <element signature="e#58846#58847#0" expanded="false" />
-                <element signature="e#58881#58882#0" expanded="false" />
-                <element signature="e#58915#58916#0" expanded="false" />
-                <element signature="e#58966#58967#0" expanded="false" />
-                <element signature="e#59012#59013#0" expanded="false" />
-                <element signature="e#59264#59265#0" expanded="false" />
-                <element signature="e#59292#59293#0" expanded="false" />
-                <element signature="e#59334#59335#0" expanded="false" />
-                <element signature="e#59368#59369#0" expanded="false" />
-                <element signature="e#59408#59409#0" expanded="false" />
-                <element signature="e#59444#59445#0" expanded="false" />
-                <element signature="e#59502#59503#0" expanded="false" />
-                <element signature="e#59552#59553#0" expanded="false" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="OperationNumberRules.drl" pinned="false" current-in-tab="true">
+      <file leaf-file-name="OperationNumberRules.drl" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/OperationNumberRules.drl">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.1106472" vertical-offset="4843" max-vertical-offset="5750">
+            <state vertical-scroll-proportion="0.0" vertical-offset="4843" max-vertical-offset="5750">
               <caret line="215" column="46" selection-start-line="215" selection-start-column="46" selection-end-line="215" selection-end-column="46" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GraphController.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GraphController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.17062636" vertical-offset="5921" max-vertical-offset="7450">
+              <caret line="297" column="22" selection-start-line="297" selection-start-column="22" selection-end-line="297" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -204,7 +143,6 @@
         <option value="db-console:/f5b50d99/0aec1320-a4aa-495d-abf3-2f148ea7ede2/" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/GenIndicatorProps.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/EntitySpecification.java" />
-        <option value="$PROJECT_DIR$/src/com/indicator_engine/controller/GraphController.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/dao/GLAEventDao.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/datamodel/GLAEvent.java" />
         <option value="$PROJECT_DIR$/web/pages/indicator_system/viewall_indicators.jsp" />
@@ -227,6 +165,7 @@
         <option value="$PROJECT_DIR$/web/js/user_registration_checks.js" />
         <option value="$PROJECT_DIR$/web/js/indicator_editor.js" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/OperationNumberRules.drl" />
+        <option value="$PROJECT_DIR$/src/com/indicator_engine/controller/GraphController.java" />
       </list>
     </option>
   </component>
@@ -1251,7 +1190,7 @@
       <workItem from="1438608416404" duration="9047000" />
       <workItem from="1439280369890" duration="8284000" />
       <workItem from="1439518442693" duration="14417000" />
-      <workItem from="1439880534681" duration="2233000" />
+      <workItem from="1439880534681" duration="3223000" />
     </task>
     <task id="LOCAL-00001" summary="charting capabilities : init">
       <created>1431340261434</created>
@@ -1481,11 +1420,17 @@
       <option name="project" value="LOCAL" />
       <updated>1439755446063</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="Drools Rules for all Filters added">
+      <created>1439905685607</created>
+      <option name="number" value="00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1439905685607</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="512851000" />
+    <option name="totallyTimeSpent" value="513841000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1557,7 +1502,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946696" sideWeight="0.50830567" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24946696" sideWeight="0.49169436" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946696" sideWeight="0.49169436" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
@@ -1580,7 +1525,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="Front end : features added &#10;Time Stamp Search add  delete and view client side&#10;" />
     <MESSAGE value="Removed Redundant methods from Indicator Preprocessor" />
     <MESSAGE value="Spring Integration and Web Flow lib eliminated" />
     <MESSAGE value="UI : Indicator Definition : On Screen User Guidance and Notification Feature added" />
@@ -1605,7 +1549,8 @@
     <MESSAGE value="GLAEntityImpl : JavaDoc" />
     <MESSAGE value="Non Composite Indicator Listing Changes" />
     <MESSAGE value="Java Script Request Object Changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Java Script Request Object Changes" />
+    <MESSAGE value="Drools Rules for all Filters added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Drools Rules for all Filters added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1618,13 +1563,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/dao/GLAQuestionDaoImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.43757293" vertical-offset="325" max-vertical-offset="5075">
-          <caret line="63" column="60" selection-start-line="63" selection-start-column="49" selection-end-line="63" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/ToolkitAdminController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="15399" max-vertical-offset="20100">
@@ -1678,13 +1616,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="59" max-vertical-offset="1175">
           <caret line="15" column="20" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GraphController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.586207" vertical-offset="3621" max-vertical-offset="8000">
-          <caret line="206" column="31" selection-start-line="206" selection-start-column="12" selection-end-line="206" selection-end-column="31" />
         </state>
       </provider>
     </entry>
@@ -1969,84 +1900,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="22099" max-vertical-offset="26875">
-          <caret line="905" column="74" selection-start-line="905" selection-start-column="74" selection-end-line="905" selection-end-column="74" />
-          <folding>
-            <element signature="e#0#59555#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#2707#2708#0" expanded="false" />
-            <element signature="e#2782#2783#0" expanded="false" />
-            <element signature="e#20942#20956#0" expanded="false" />
-            <element signature="e#21302#21328#0" expanded="false" />
-            <element signature="e#21711#21734#0" expanded="false" />
-            <element signature="e#22131#22157#0" expanded="false" />
-            <element signature="e#33929#33943#0" expanded="false" />
-            <element signature="e#56195#56196#0" expanded="false" />
-            <element signature="e#56222#56223#0" expanded="false" />
-            <element signature="e#56262#56263#0" expanded="false" />
-            <element signature="e#56294#56295#0" expanded="false" />
-            <element signature="e#56326#56327#0" expanded="false" />
-            <element signature="e#56354#56355#0" expanded="false" />
-            <element signature="e#56396#56397#0" expanded="false" />
-            <element signature="e#56430#56431#0" expanded="false" />
-            <element signature="e#56462#56463#0" expanded="false" />
-            <element signature="e#56490#56491#0" expanded="false" />
-            <element signature="e#56532#56533#0" expanded="false" />
-            <element signature="e#56566#56567#0" expanded="false" />
-            <element signature="e#57467#57468#0" expanded="false" />
-            <element signature="e#57494#57495#0" expanded="false" />
-            <element signature="e#57534#57535#0" expanded="false" />
-            <element signature="e#57566#57567#0" expanded="false" />
-            <element signature="e#57601#57602#0" expanded="false" />
-            <element signature="e#57632#57633#0" expanded="false" />
-            <element signature="e#57680#57681#0" expanded="false" />
-            <element signature="e#57720#57721#0" expanded="false" />
-            <element signature="e#57753#57754#0" expanded="false" />
-            <element signature="e#57782#57783#0" expanded="false" />
-            <element signature="e#57826#57827#0" expanded="false" />
-            <element signature="e#57862#57863#0" expanded="false" />
-            <element signature="e#57898#57899#0" expanded="false" />
-            <element signature="e#57930#57931#0" expanded="false" />
-            <element signature="e#57980#57981#0" expanded="false" />
-            <element signature="e#58022#58023#0" expanded="false" />
-            <element signature="e#58060#58061#0" expanded="false" />
-            <element signature="e#58094#58095#0" expanded="false" />
-            <element signature="e#58148#58149#0" expanded="false" />
-            <element signature="e#58194#58195#0" expanded="false" />
-            <element signature="e#58224#58225#0" expanded="false" />
-            <element signature="e#58250#58251#0" expanded="false" />
-            <element signature="e#58288#58289#0" expanded="false" />
-            <element signature="e#58318#58319#0" expanded="false" />
-            <element signature="e#58355#58356#0" expanded="false" />
-            <element signature="e#58391#58392#0" expanded="false" />
-            <element signature="e#58446#58447#0" expanded="false" />
-            <element signature="e#58496#58497#0" expanded="false" />
-            <element signature="e#58531#58532#0" expanded="false" />
-            <element signature="e#58565#58566#0" expanded="false" />
-            <element signature="e#58616#58617#0" expanded="false" />
-            <element signature="e#58662#58663#0" expanded="false" />
-            <element signature="e#58700#58701#0" expanded="false" />
-            <element signature="e#58737#58738#0" expanded="false" />
-            <element signature="e#58794#58795#0" expanded="false" />
-            <element signature="e#58846#58847#0" expanded="false" />
-            <element signature="e#58881#58882#0" expanded="false" />
-            <element signature="e#58915#58916#0" expanded="false" />
-            <element signature="e#58966#58967#0" expanded="false" />
-            <element signature="e#59012#59013#0" expanded="false" />
-            <element signature="e#59264#59265#0" expanded="false" />
-            <element signature="e#59292#59293#0" expanded="false" />
-            <element signature="e#59334#59335#0" expanded="false" />
-            <element signature="e#59368#59369#0" expanded="false" />
-            <element signature="e#59408#59409#0" expanded="false" />
-            <element signature="e#59444#59445#0" expanded="false" />
-            <element signature="e#59502#59503#0" expanded="false" />
-            <element signature="e#59552#59553#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/dao/GLAIndicatorDaoImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3343" max-vertical-offset="8275">
@@ -2135,8 +1988,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/OperationNumberRules.drl">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.1106472" vertical-offset="4843" max-vertical-offset="5750">
+        <state vertical-scroll-proportion="0.0" vertical-offset="4843" max-vertical-offset="5750">
           <caret line="215" column="46" selection-start-line="215" selection-start-column="46" selection-end-line="215" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/cewolf-1.2.4/lib/jfreechart-1.0.14.jar!/org/jfree/chart/JFreeChart.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.18028846" vertical-offset="0" max-vertical-offset="16800">
+          <caret line="71" column="13" selection-start-line="71" selection-start-column="13" selection-end-line="71" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="22099" max-vertical-offset="26875">
+          <caret line="905" column="74" selection-start-line="905" selection-start-column="74" selection-end-line="905" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GraphController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.17062636" vertical-offset="5921" max-vertical-offset="7450">
+          <caret line="297" column="22" selection-start-line="297" selection-start-column="22" selection-end-line="297" selection-end-column="22" />
           <folding />
         </state>
       </provider>
