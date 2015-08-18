@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="974e7feb-8792-4228-ab5d-100949817edf" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/OperationNumberRules.drl" afterPath="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/OperationNumberRules.drl" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/indicator_editor.js" afterPath="$PROJECT_DIR$/web/js/indicator_editor.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/otp_validation.js" afterPath="$PROJECT_DIR$/web/js/otp_validation.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/questionIndicatorEditor.js" afterPath="$PROJECT_DIR$/web/js/questionIndicatorEditor.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/js/user_registration_checks.js" afterPath="$PROJECT_DIR$/web/js/user_registration_checks.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path=".idea/dataSources.local.xml" />
@@ -47,7 +45,10 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="5625" max-vertical-offset="8475">
               <caret line="193" column="17" selection-start-line="193" selection-start-column="17" selection-end-line="193" selection-end-column="17" />
-              <folding />
+              <folding>
+                <element signature="e#0#14929#0" expanded="false" />
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -55,7 +56,7 @@
       <file leaf-file-name="question_indicator_editor.jsp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.1904764" vertical-offset="15861" max-vertical-offset="21875">
+            <state vertical-scroll-proportion="0.0" vertical-offset="15861" max-vertical-offset="21875">
               <caret line="645" column="153" selection-start-line="645" selection-start-column="132" selection-end-line="645" selection-end-column="153" />
               <folding />
             </state>
@@ -65,52 +66,89 @@
       <file leaf-file-name="GAIndicatorSystemController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="19.793104" vertical-offset="22099" max-vertical-offset="26875">
+            <state vertical-scroll-proportion="0.0" vertical-offset="22099" max-vertical-offset="26875">
               <caret line="905" column="74" selection-start-line="905" selection-start-column="74" selection-end-line="905" selection-end-column="74" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GLAIndicatorDaoImpl.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/dao/GLAIndicatorDaoImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3343" max-vertical-offset="8275">
-              <caret line="180" column="58" selection-start-line="180" selection-start-column="58" selection-end-line="180" selection-end-column="58" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GLAIndicator.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/datamodel/GLAIndicator.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="450" max-vertical-offset="2100">
-              <caret line="56" column="48" selection-start-line="56" selection-start-column="31" selection-end-line="56" selection-end-column="48" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GLAIndicatorProps.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/datamodel/GLAIndicatorProps.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="500" max-vertical-offset="2475">
-              <caret line="56" column="31" selection-start-line="56" selection-start-column="20" selection-end-line="56" selection-end-column="31" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="indicator_editor.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/web/js/indicator_editor.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.36231884" vertical-offset="23600" max-vertical-offset="40750">
-              <caret line="956" column="0" selection-start-line="956" selection-start-column="0" selection-end-line="956" selection-end-column="0" />
               <folding>
-                <element signature="n#!!doc" expanded="true" />
-                <element signature="e#39595#40623#0" expanded="false" />
+                <element signature="e#0#59555#0" expanded="false" />
+                <element signature="imports" expanded="false" />
+                <element signature="e#2707#2708#0" expanded="false" />
+                <element signature="e#2782#2783#0" expanded="false" />
+                <element signature="e#20942#20956#0" expanded="false" />
+                <element signature="e#21302#21328#0" expanded="false" />
+                <element signature="e#21711#21734#0" expanded="false" />
+                <element signature="e#22131#22157#0" expanded="false" />
+                <element signature="e#33929#33943#0" expanded="false" />
+                <element signature="e#56195#56196#0" expanded="false" />
+                <element signature="e#56222#56223#0" expanded="false" />
+                <element signature="e#56262#56263#0" expanded="false" />
+                <element signature="e#56294#56295#0" expanded="false" />
+                <element signature="e#56326#56327#0" expanded="false" />
+                <element signature="e#56354#56355#0" expanded="false" />
+                <element signature="e#56396#56397#0" expanded="false" />
+                <element signature="e#56430#56431#0" expanded="false" />
+                <element signature="e#56462#56463#0" expanded="false" />
+                <element signature="e#56490#56491#0" expanded="false" />
+                <element signature="e#56532#56533#0" expanded="false" />
+                <element signature="e#56566#56567#0" expanded="false" />
+                <element signature="e#57467#57468#0" expanded="false" />
+                <element signature="e#57494#57495#0" expanded="false" />
+                <element signature="e#57534#57535#0" expanded="false" />
+                <element signature="e#57566#57567#0" expanded="false" />
+                <element signature="e#57601#57602#0" expanded="false" />
+                <element signature="e#57632#57633#0" expanded="false" />
+                <element signature="e#57680#57681#0" expanded="false" />
+                <element signature="e#57720#57721#0" expanded="false" />
+                <element signature="e#57753#57754#0" expanded="false" />
+                <element signature="e#57782#57783#0" expanded="false" />
+                <element signature="e#57826#57827#0" expanded="false" />
+                <element signature="e#57862#57863#0" expanded="false" />
+                <element signature="e#57898#57899#0" expanded="false" />
+                <element signature="e#57930#57931#0" expanded="false" />
+                <element signature="e#57980#57981#0" expanded="false" />
+                <element signature="e#58022#58023#0" expanded="false" />
+                <element signature="e#58060#58061#0" expanded="false" />
+                <element signature="e#58094#58095#0" expanded="false" />
+                <element signature="e#58148#58149#0" expanded="false" />
+                <element signature="e#58194#58195#0" expanded="false" />
+                <element signature="e#58224#58225#0" expanded="false" />
+                <element signature="e#58250#58251#0" expanded="false" />
+                <element signature="e#58288#58289#0" expanded="false" />
+                <element signature="e#58318#58319#0" expanded="false" />
+                <element signature="e#58355#58356#0" expanded="false" />
+                <element signature="e#58391#58392#0" expanded="false" />
+                <element signature="e#58446#58447#0" expanded="false" />
+                <element signature="e#58496#58497#0" expanded="false" />
+                <element signature="e#58531#58532#0" expanded="false" />
+                <element signature="e#58565#58566#0" expanded="false" />
+                <element signature="e#58616#58617#0" expanded="false" />
+                <element signature="e#58662#58663#0" expanded="false" />
+                <element signature="e#58700#58701#0" expanded="false" />
+                <element signature="e#58737#58738#0" expanded="false" />
+                <element signature="e#58794#58795#0" expanded="false" />
+                <element signature="e#58846#58847#0" expanded="false" />
+                <element signature="e#58881#58882#0" expanded="false" />
+                <element signature="e#58915#58916#0" expanded="false" />
+                <element signature="e#58966#58967#0" expanded="false" />
+                <element signature="e#59012#59013#0" expanded="false" />
+                <element signature="e#59264#59265#0" expanded="false" />
+                <element signature="e#59292#59293#0" expanded="false" />
+                <element signature="e#59334#59335#0" expanded="false" />
+                <element signature="e#59368#59369#0" expanded="false" />
+                <element signature="e#59408#59409#0" expanded="false" />
+                <element signature="e#59444#59445#0" expanded="false" />
+                <element signature="e#59502#59503#0" expanded="false" />
+                <element signature="e#59552#59553#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="OperationNumberRules.drl" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/OperationNumberRules.drl">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="1.1106472" vertical-offset="4843" max-vertical-offset="5750">
+              <caret line="215" column="46" selection-start-line="215" selection-start-column="46" selection-end-line="215" selection-end-column="46" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -167,7 +205,6 @@
         <option value="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/GenIndicatorProps.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/model/indicator_system/Number/EntitySpecification.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/controller/GraphController.java" />
-        <option value="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/OperationNumberRules.drl" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/dao/GLAEventDao.java" />
         <option value="$PROJECT_DIR$/src/com/indicator_engine/datamodel/GLAEvent.java" />
         <option value="$PROJECT_DIR$/web/pages/indicator_system/viewall_indicators.jsp" />
@@ -189,6 +226,7 @@
         <option value="$PROJECT_DIR$/web/js/questionIndicatorEditor.js" />
         <option value="$PROJECT_DIR$/web/js/user_registration_checks.js" />
         <option value="$PROJECT_DIR$/web/js/indicator_editor.js" />
+        <option value="$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/OperationNumberRules.drl" />
       </list>
     </option>
   </component>
@@ -241,6 +279,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -785,8 +825,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -1212,7 +1250,8 @@
       <workItem from="1438216737331" duration="1199000" />
       <workItem from="1438608416404" duration="9047000" />
       <workItem from="1439280369890" duration="8284000" />
-      <workItem from="1439518442693" duration="11395000" />
+      <workItem from="1439518442693" duration="14417000" />
+      <workItem from="1439880534681" duration="2233000" />
     </task>
     <task id="LOCAL-00001" summary="charting capabilities : init">
       <created>1431340261434</created>
@@ -1436,11 +1475,17 @@
       <option name="project" value="LOCAL" />
       <updated>1439669713112</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="Java Script Request Object Changes">
+      <created>1439755446063</created>
+      <option name="number" value="00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1439755446063</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="507596000" />
+    <option name="totallyTimeSpent" value="512851000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1464,7 +1509,7 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42093542" sideWeight="0.4936034" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.42093542" sideWeight="0.4936034" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946696" sideWeight="0.50830567" order="3" side_tool="true" content_ui="tabs" />
@@ -1472,7 +1517,6 @@
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hibernate Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1481,6 +1525,7 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1512,7 +1557,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946696" sideWeight="0.50830567" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24946696" sideWeight="0.49169436" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24946696" sideWeight="0.49169436" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
@@ -1535,7 +1580,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="Front end : features added &#10;Indicator Iteration (Memory)&#10;Indicator View Property (Memory)&#10;Indicator Delete Property (Memory)&#10;&#10;Entity Bean scoped to session : Major Bug Resolved" />
     <MESSAGE value="Front end : features added &#10;Time Stamp Search add  delete and view client side&#10;" />
     <MESSAGE value="Removed Redundant methods from Indicator Preprocessor" />
     <MESSAGE value="Spring Integration and Web Flow lib eliminated" />
@@ -1560,7 +1604,8 @@
     <MESSAGE value="GLACategoryImpl : JavaDoc" />
     <MESSAGE value="GLAEntityImpl : JavaDoc" />
     <MESSAGE value="Non Composite Indicator Listing Changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Non Composite Indicator Listing Changes" />
+    <MESSAGE value="Java Script Request Object Changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Java Script Request Object Changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1703,7 +1748,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="625" max-vertical-offset="1725">
           <caret line="56" column="47" selection-start-line="33" selection-start-column="0" selection-end-line="56" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1711,17 +1755,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="375" max-vertical-offset="6525">
           <caret line="68" column="26" selection-start-line="68" selection-start-column="26" selection-end-line="68" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#11377#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/OperationNumberRules.drl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.62077016" vertical-offset="543" max-vertical-offset="5000">
-          <caret line="43" column="4" selection-start-line="43" selection-start-column="4" selection-end-line="43" selection-end-column="4" />
         </state>
       </provider>
     </entry>
@@ -1736,7 +1769,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.35005835" vertical-offset="375" max-vertical-offset="3000">
           <caret line="62" column="5" selection-start-line="56" selection-start-column="4" selection-end-line="62" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1751,7 +1783,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1950" max-vertical-offset="3425">
           <caret line="78" column="144" selection-start-line="78" selection-start-column="144" selection-end-line="78" selection-end-column="144" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1773,7 +1804,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2300">
           <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1781,7 +1811,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="25" max-vertical-offset="3025">
           <caret line="51" column="67" selection-start-line="51" selection-start-column="67" selection-end-line="51" selection-end-column="67" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1789,15 +1818,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="8930" max-vertical-offset="10000">
           <caret line="547" column="42" selection-start-line="547" selection-start-column="42" selection-end-line="547" selection-end-column="42" />
-          <folding>
-            <element signature="e#14546#14547#0" expanded="false" />
-            <element signature="e#14579#14580#0" expanded="false" />
-            <element signature="e#14637#14638#0" expanded="false" />
-            <element signature="e#14681#14682#0" expanded="false" />
-            <element signature="e#14765#14766#0" expanded="false" />
-            <element signature="e#14831#14832#0" expanded="false" />
-            <element signature="e#14889#14890#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1852,7 +1872,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="5625" max-vertical-offset="8475">
           <caret line="193" column="17" selection-start-line="193" selection-start-column="17" selection-end-line="193" selection-end-column="17" />
-          <folding />
+          <folding>
+            <element signature="e#0#14929#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1860,7 +1883,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.40229884" vertical-offset="0" max-vertical-offset="870">
           <caret line="34" column="105" selection-start-line="34" selection-start-column="105" selection-end-line="34" selection-end-column="105" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1868,7 +1890,35 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="675" max-vertical-offset="2100">
           <caret line="56" column="48" selection-start-line="56" selection-start-column="31" selection-end-line="56" selection-end-column="48" />
-          <folding />
+          <folding>
+            <element signature="e#0#3403#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#1988#2001#0" expanded="false" />
+            <element signature="e#2033#2034#0" expanded="false" />
+            <element signature="e#2069#2070#0" expanded="false" />
+            <element signature="e#2404#2405#0" expanded="false" />
+            <element signature="e#2429#2430#0" expanded="false" />
+            <element signature="e#2484#2485#0" expanded="false" />
+            <element signature="e#2524#2525#0" expanded="false" />
+            <element signature="e#2693#2694#0" expanded="false" />
+            <element signature="e#2721#2722#0" expanded="false" />
+            <element signature="e#2762#2763#0" expanded="false" />
+            <element signature="e#2799#2800#0" expanded="false" />
+            <element signature="e#2859#2860#0" expanded="false" />
+            <element signature="e#2911#2912#0" expanded="false" />
+            <element signature="e#2948#2949#0" expanded="false" />
+            <element signature="e#2981#2982#0" expanded="false" />
+            <element signature="e#3033#3034#0" expanded="false" />
+            <element signature="e#3077#3078#0" expanded="false" />
+            <element signature="e#3107#3108#0" expanded="false" />
+            <element signature="e#3133#3134#0" expanded="false" />
+            <element signature="e#3171#3172#0" expanded="false" />
+            <element signature="e#3201#3202#0" expanded="false" />
+            <element signature="e#3250#3251#0" expanded="false" />
+            <element signature="e#3285#3286#0" expanded="false" />
+            <element signature="e#3351#3352#0" expanded="false" />
+            <element signature="e#3399#3400#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1876,15 +1926,124 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="500" max-vertical-offset="2475">
           <caret line="56" column="31" selection-start-line="56" selection-start-column="20" selection-end-line="56" selection-end-column="31" />
-          <folding />
+          <folding>
+            <element signature="e#0#3920#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#2414#2415#0" expanded="false" />
+            <element signature="e#2439#2440#0" expanded="false" />
+            <element signature="e#2473#2474#0" expanded="false" />
+            <element signature="e#2501#2502#0" expanded="false" />
+            <element signature="e#2549#2550#0" expanded="false" />
+            <element signature="e#2590#2591#0" expanded="false" />
+            <element signature="e#2661#2662#0" expanded="false" />
+            <element signature="e#2721#2722#0" expanded="false" />
+            <element signature="e#2760#2761#0" expanded="false" />
+            <element signature="e#2798#2799#0" expanded="false" />
+            <element signature="e#2857#2858#0" expanded="false" />
+            <element signature="e#2911#2912#0" expanded="false" />
+            <element signature="e#2956#2957#0" expanded="false" />
+            <element signature="e#2991#2992#0" expanded="false" />
+            <element signature="e#3053#3054#0" expanded="false" />
+            <element signature="e#3101#3102#0" expanded="false" />
+            <element signature="e#3136#3137#0" expanded="false" />
+            <element signature="e#3167#3168#0" expanded="false" />
+            <element signature="e#3215#3216#0" expanded="false" />
+            <element signature="e#3255#3256#0" expanded="false" />
+            <element signature="e#3291#3292#0" expanded="false" />
+            <element signature="e#3325#3326#0" expanded="false" />
+            <element signature="e#3378#3379#0" expanded="false" />
+            <element signature="e#3424#3425#0" expanded="false" />
+            <element signature="e#3460#3461#0" expanded="false" />
+            <element signature="e#3492#3493#0" expanded="false" />
+            <element signature="e#3542#3543#0" expanded="false" />
+            <element signature="e#3584#3585#0" expanded="false" />
+            <element signature="e#3620#3621#0" expanded="false" />
+            <element signature="e#3652#3653#0" expanded="false" />
+            <element signature="e#3702#3703#0" expanded="false" />
+            <element signature="e#3744#3745#0" expanded="false" />
+            <element signature="e#3782#3783#0" expanded="false" />
+            <element signature="e#3816#3817#0" expanded="false" />
+            <element signature="e#3870#3871#0" expanded="false" />
+            <element signature="e#3916#3917#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/controller/GAIndicatorSystemController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="19.793104" vertical-offset="22099" max-vertical-offset="26875">
+        <state vertical-scroll-proportion="0.0" vertical-offset="22099" max-vertical-offset="26875">
           <caret line="905" column="74" selection-start-line="905" selection-start-column="74" selection-end-line="905" selection-end-column="74" />
-          <folding />
+          <folding>
+            <element signature="e#0#59555#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#2707#2708#0" expanded="false" />
+            <element signature="e#2782#2783#0" expanded="false" />
+            <element signature="e#20942#20956#0" expanded="false" />
+            <element signature="e#21302#21328#0" expanded="false" />
+            <element signature="e#21711#21734#0" expanded="false" />
+            <element signature="e#22131#22157#0" expanded="false" />
+            <element signature="e#33929#33943#0" expanded="false" />
+            <element signature="e#56195#56196#0" expanded="false" />
+            <element signature="e#56222#56223#0" expanded="false" />
+            <element signature="e#56262#56263#0" expanded="false" />
+            <element signature="e#56294#56295#0" expanded="false" />
+            <element signature="e#56326#56327#0" expanded="false" />
+            <element signature="e#56354#56355#0" expanded="false" />
+            <element signature="e#56396#56397#0" expanded="false" />
+            <element signature="e#56430#56431#0" expanded="false" />
+            <element signature="e#56462#56463#0" expanded="false" />
+            <element signature="e#56490#56491#0" expanded="false" />
+            <element signature="e#56532#56533#0" expanded="false" />
+            <element signature="e#56566#56567#0" expanded="false" />
+            <element signature="e#57467#57468#0" expanded="false" />
+            <element signature="e#57494#57495#0" expanded="false" />
+            <element signature="e#57534#57535#0" expanded="false" />
+            <element signature="e#57566#57567#0" expanded="false" />
+            <element signature="e#57601#57602#0" expanded="false" />
+            <element signature="e#57632#57633#0" expanded="false" />
+            <element signature="e#57680#57681#0" expanded="false" />
+            <element signature="e#57720#57721#0" expanded="false" />
+            <element signature="e#57753#57754#0" expanded="false" />
+            <element signature="e#57782#57783#0" expanded="false" />
+            <element signature="e#57826#57827#0" expanded="false" />
+            <element signature="e#57862#57863#0" expanded="false" />
+            <element signature="e#57898#57899#0" expanded="false" />
+            <element signature="e#57930#57931#0" expanded="false" />
+            <element signature="e#57980#57981#0" expanded="false" />
+            <element signature="e#58022#58023#0" expanded="false" />
+            <element signature="e#58060#58061#0" expanded="false" />
+            <element signature="e#58094#58095#0" expanded="false" />
+            <element signature="e#58148#58149#0" expanded="false" />
+            <element signature="e#58194#58195#0" expanded="false" />
+            <element signature="e#58224#58225#0" expanded="false" />
+            <element signature="e#58250#58251#0" expanded="false" />
+            <element signature="e#58288#58289#0" expanded="false" />
+            <element signature="e#58318#58319#0" expanded="false" />
+            <element signature="e#58355#58356#0" expanded="false" />
+            <element signature="e#58391#58392#0" expanded="false" />
+            <element signature="e#58446#58447#0" expanded="false" />
+            <element signature="e#58496#58497#0" expanded="false" />
+            <element signature="e#58531#58532#0" expanded="false" />
+            <element signature="e#58565#58566#0" expanded="false" />
+            <element signature="e#58616#58617#0" expanded="false" />
+            <element signature="e#58662#58663#0" expanded="false" />
+            <element signature="e#58700#58701#0" expanded="false" />
+            <element signature="e#58737#58738#0" expanded="false" />
+            <element signature="e#58794#58795#0" expanded="false" />
+            <element signature="e#58846#58847#0" expanded="false" />
+            <element signature="e#58881#58882#0" expanded="false" />
+            <element signature="e#58915#58916#0" expanded="false" />
+            <element signature="e#58966#58967#0" expanded="false" />
+            <element signature="e#59012#59013#0" expanded="false" />
+            <element signature="e#59264#59265#0" expanded="false" />
+            <element signature="e#59292#59293#0" expanded="false" />
+            <element signature="e#59334#59335#0" expanded="false" />
+            <element signature="e#59368#59369#0" expanded="false" />
+            <element signature="e#59408#59409#0" expanded="false" />
+            <element signature="e#59444#59445#0" expanded="false" />
+            <element signature="e#59502#59503#0" expanded="false" />
+            <element signature="e#59552#59553#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1892,7 +2051,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3343" max-vertical-offset="8275">
           <caret line="180" column="58" selection-start-line="180" selection-start-column="58" selection-end-line="180" selection-end-column="58" />
-          <folding />
+          <folding>
+            <element signature="e#0#14167#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1933,7 +2095,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web/pages/indicator_system/number/question_indicator_editor.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.1904764" vertical-offset="15861" max-vertical-offset="21875">
+        <state vertical-scroll-proportion="0.0" vertical-offset="15861" max-vertical-offset="21875">
           <caret line="645" column="153" selection-start-line="645" selection-start-column="132" selection-end-line="645" selection-end-column="153" />
           <folding />
         </state>
@@ -1943,7 +2105,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="809" max-vertical-offset="2450">
           <caret line="57" column="4" selection-start-line="57" selection-start-column="4" selection-end-line="57" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1951,7 +2112,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.38821137" vertical-offset="2134" max-vertical-offset="2975">
           <caret line="110" column="4" selection-start-line="110" selection-start-column="4" selection-end-line="110" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1959,18 +2119,25 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.38821137" vertical-offset="309" max-vertical-offset="1225">
           <caret line="37" column="4" selection-start-line="37" selection-start-column="4" selection-end-line="37" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/js/indicator_editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36231884" vertical-offset="23600" max-vertical-offset="40750">
-          <caret line="956" column="0" selection-start-line="956" selection-start-column="0" selection-end-line="956" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="39870" max-vertical-offset="40750">
+          <caret line="1631" column="42" selection-start-line="1631" selection-start-column="12" selection-end-line="1631" selection-end-column="42" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
             <element signature="e#39595#40623#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/indicator_engine/indicator_system/Number/OperationNumberRules.drl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.1106472" vertical-offset="4843" max-vertical-offset="5750">
+          <caret line="215" column="46" selection-start-line="215" selection-start-column="46" selection-end-line="215" selection-end-column="46" />
+          <folding />
         </state>
       </provider>
     </entry>

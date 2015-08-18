@@ -1581,11 +1581,6 @@ function loadToEditor(request) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
             var parsedindProp = JSON.parse(parsedJSON.glaIndicatorProps.json_data);
-            $.noty.defaults.killer = true;
-            noty({
-                text: '<strong>Success</strong> <br/>  Selected Indicator has been loaded as a Template',
-                type: 'success'
-            });
 
             var sel = document.getElementById('PlatformSelection');
             var opts = sel.options;
@@ -1634,6 +1629,11 @@ function loadToEditor(request) {
             $("#refreshUserSettings").click();
             $("#refreshEntity").click();
             populateCategories();
+            $.noty.defaults.killer = true;
+            noty({
+                text: '<strong>Success</strong> <br/>  Selected Indicator has been loaded as a Template',
+                type: 'success'
+            });
         }
     }
 }
