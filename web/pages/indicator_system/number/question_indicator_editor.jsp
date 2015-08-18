@@ -576,6 +576,7 @@
                                                 <div id="entity_filters">
                                                 </div>
                                                 <br/>
+                                                <form:select class="form-control margin-bottom-15" path="selectedKeys" name ="entityFilterListing" id="entityFilterListing" />
                                                 <div class="row templatemo-form-buttons">
                                                     <div class="col-md-12">
                                                         <button   type="button" id="refreshEntity" value="Refresh" onclick="refreshEntityFilters()">
@@ -596,6 +597,7 @@
                                                 <div id="user_filters">
                                                 </div>
                                                 <br/>
+                                                <form:select class="form-control margin-bottom-15" path="selectedKeys" name ="userFilterListing" id="userFilterListing" />
                                                 <div class="row templatemo-form-buttons">
                                                     <div class="col-md-12">
                                                         <button   type="button" id="refreshUserSettings" value="Refresh" onclick="refreshUserFilters()">
@@ -616,6 +618,7 @@
                                                 <div id="session_filters">
                                                 </div>
                                                 <br/>
+                                                <form:select class="form-control margin-bottom-15" path="selectedKeys" name ="sessionFilterListing" id="sessionFilterListing" />
                                                 <div class="row templatemo-form-buttons">
                                                     <div class="col-md-12">
                                                         <button  type="button" id="refreshSessionSettings" value="Refresh" onclick="refreshSessionFilters()">
@@ -636,6 +639,7 @@
                                                 <div id="time_filters">
                                                 </div>
                                                 <br/>
+                                                <form:select class="form-control margin-bottom-15" path="selectedKeys" name ="timeFilterListing" id="timeFilterListing" />
                                                 <div class="row templatemo-form-buttons">
                                                     <div class="col-md-12">
                                                         <button  type="button" id="refreshTimeSettings" value="Refresh" onclick="refreshTimeFilters()">

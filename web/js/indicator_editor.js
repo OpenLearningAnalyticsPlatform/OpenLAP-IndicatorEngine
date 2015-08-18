@@ -739,13 +739,14 @@ function refreshEntityFilters() {
 
 function deleteEntity(){
     var request = createRequest();
-    var url ="/indicators/deleteEntities";
+    var entityFilterListing = document.getElementById("entityFilterListing");
+    var url ="/indicators/deleteEntities?filter="+entityFilterListing.value;
     request.open("GET",url,true);
-    request.onreadystatechange = function(){displayEntityFilters(3,request)};
+    request.onreadystatechange = function(){displayEntityFilters(3,request,entityFilterListing.value)};
     request.send(null);
 }
 
-function displayEntityFilters(callstatus,request){
+function displayEntityFilters(callstatus,request,msg){
     if (request.readyState == 4) {
         if (request.status == 200) {
             if(callstatus == 1) {
@@ -774,7 +775,7 @@ function displayEntityFilters(callstatus,request){
 
                 $.noty.defaults.killer = true;
                 noty({
-                    text: '<strong>Success</strong> <br/>  <strong>All Attribute Filters </strong> successfully deleted. <br/>',
+                    text: '<strong>Success</strong> <br/>  <strong>'+msg+' Attribute Filter </strong> successfully deleted. <br/>',
                     type: 'success'
                 });
             }
@@ -793,6 +794,16 @@ function displayEntityFilters(callstatus,request){
             }
         }
         addTable(heading,data, "entity_filters");
+        var entityFilterListing = document.getElementById("entityFilterListing");
+        removeOptions(entityFilterListing);
+        var newOption = new Option('ALL', 'ALL');
+        for (var i=0;i< parsedJSON.length;i++) {
+            if(i==0)
+                entityFilterListing.appendChild(newOption);
+            var txt = parsedJSON[i].key+'_'+parsedJSON[i].eValues+'_'+parsedJSON[i].type;
+            newOption = new Option(txt, txt);
+            entityFilterListing.appendChild(newOption);
+        }
     }
 }
 
@@ -841,13 +852,14 @@ function refreshUserFilters() {
 
 function deleteUserFilters() {
     var request = createRequest();
-    var url ="/indicators/deleteUserFilters";
+    var userFilterListing = document.getElementById("userFilterListing");
+    var url ="/indicators/deleteUserFilters?filter="+userFilterListing.value;
     request.open("GET",url,true);
-    request.onreadystatechange=  function(){displayUserFilters(3,request)};
+    request.onreadystatechange=  function(){displayUserFilters(3,request,userFilterListing.value)};
     request.send(null);
 }
 
-function displayUserFilters(callstatus,request) {
+function displayUserFilters(callstatus,request,msg) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             if(callstatus == 1) {
@@ -876,7 +888,7 @@ function displayUserFilters(callstatus,request) {
 
                 $.noty.defaults.killer = true;
                 noty({
-                    text: '<strong>Success</strong> <br/>  <strong>All User Filters </strong> successfully deleted. <br/>',
+                    text: '<strong>Success</strong> <br/>  <strong>'+msg+' User Filter </strong> successfully deleted. <br/>',
                     type: 'success'
                 });
             }
@@ -895,6 +907,16 @@ function displayUserFilters(callstatus,request) {
             }
         }
         addTable(heading,data,"user_filters");
+        var userFilterListing = document.getElementById("userFilterListing");
+        removeOptions(userFilterListing);
+        var newOption = new Option('ALL', 'ALL');
+        for (var i=0;i< parsedJSON.length;i++) {
+            if(i==0)
+                userFilterListing.appendChild(newOption);
+            var txt = parsedJSON[i].userSearchType+'_'+parsedJSON[i].userSearch+'_'+parsedJSON[i].searchPattern;
+            newOption = new Option(txt, txt);
+            userFilterListing.appendChild(newOption);
+        }
     }
 }
 
@@ -958,13 +980,14 @@ function refreshTimeFilters() {
 
 function deleteTimeFilters() {
     var request = createRequest();
-    var url ="/indicators/deleteTimeFilters";
+    var timeFilterListing = document.getElementById("timeFilterListing");
+    var url ="/indicators/deleteTimeFilters?filter="+timeFilterListing.value;
     request.open("GET",url,true);
-    request.onreadystatechange= function(){displayTimeFilters(3,request)};
+    request.onreadystatechange= function(){displayTimeFilters(3,request,timeFilterListing.value)};
     request.send(null);
 }
 
-function displayTimeFilters(callstatus,request) {
+function displayTimeFilters(callstatus,request,msg) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             if(callstatus == 1) {
@@ -993,7 +1016,7 @@ function displayTimeFilters(callstatus,request) {
 
                 $.noty.defaults.killer = true;
                 noty({
-                    text: '<strong>Success</strong> <br/>  <strong>All Time Filters </strong> successfully deleted. <br/>',
+                    text: '<strong>Success</strong> <br/>  <strong>'+msg+' Time Filter </strong> successfully deleted. <br/>',
                     type: 'success'
                 });
             }
@@ -1010,6 +1033,16 @@ function displayTimeFilters(callstatus,request) {
             }
         }
         addTable(heading,data,"time_filters");
+        var timeFilterListing = document.getElementById("timeFilterListing");
+        removeOptions(timeFilterListing);
+        var newOption = new Option('ALL', 'ALL');
+        for (var i=0;i< parsedJSON.length;i++) {
+            if(i==0)
+                timeFilterListing.appendChild(newOption);
+            var txt = parsedJSON[i].type+'_'+parsedJSON[i].timestamp;
+            newOption = new Option(txt, txt);
+            timeFilterListing.appendChild(newOption);
+        }
     }
 }
 
@@ -1058,13 +1091,14 @@ function refreshSessionFilters() {
 
 function deleteSessionFilters() {
     var request = createRequest();
-    var url ="/indicators/deleteSessionFilters";
+    var sessionFilterListing = document.getElementById("sessionFilterListing");
+    var url ="/indicators/deleteSessionFilters?filter="+sessionFilterListing.value;
     request.open("GET",url,true);
-    request.onreadystatechange= function(){displaySessionFilters(3,request)};
+    request.onreadystatechange= function(){displaySessionFilters(3,request,sessionFilterListing)};
     request.send(null);
 }
 
-function displaySessionFilters(callstatus, request) {
+function displaySessionFilters(callstatus, request,msg) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             if(callstatus == 1) {
@@ -1093,7 +1127,7 @@ function displaySessionFilters(callstatus, request) {
 
                 $.noty.defaults.killer = true;
                 noty({
-                    text: '<strong>Success</strong> <br/>  <strong>All Session Filters </strong> successfully deleted. <br/>',
+                    text: '<strong>Success</strong> <br/>  <strong>'+msg+' Session Filter </strong> successfully deleted. <br/>',
                     type: 'success'
                 });
             }
@@ -1111,6 +1145,16 @@ function displaySessionFilters(callstatus, request) {
             }
         }
         addTable(heading,data,"session_filters");
+        var sessionFilterListing = document.getElementById("sessionFilterListing");
+        removeOptions(sessionFilterListing);
+        var newOption = new Option('ALL', 'ALL');
+        for (var i=0;i< parsedJSON.length;i++) {
+            if(i==0)
+                sessionFilterListing.appendChild(newOption);
+            var txt = parsedJSON[i].session+'_'+parsedJSON[i].type;
+            newOption = new Option(txt, txt);
+            sessionFilterListing.appendChild(newOption);
+        }
     }
 }
 

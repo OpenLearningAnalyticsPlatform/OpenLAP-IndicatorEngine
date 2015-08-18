@@ -26,6 +26,7 @@ import com.indicator_engine.datamodel.*;
 import com.indicator_engine.graphgenerator.cewolf.PageViewCountData;
 import com.indicator_engine.indicator_system.IndicatorPreProcessing;
 import com.indicator_engine.indicator_system.Number.OperationNumberProcessorDao;
+import com.indicator_engine.learningcontextdata.Entity;
 import com.indicator_engine.misc.NumberChecks;
 import com.indicator_engine.model.app.QuestionRun;
 import com.indicator_engine.model.app.SearchQuestionForm;
@@ -227,10 +228,21 @@ public class GAIndicatorSystemController {
     }
     @RequestMapping(value = "/deleteEntities", method = RequestMethod.GET)
     public @ResponseBody
-    String  deleteEntities(Model model) {
+    String  deleteEntities(Model model, @RequestParam(value="filter", required = true) String filter) {
         Gson gson = new Gson();
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        entitySpecificationBean.getEntityValues().clear();
+        if(filter.equals("ALL"))
+            entitySpecificationBean.getEntityValues().clear();
+        else {
+            String[] filterTerms = filter.split("_");
+            for (Iterator<EntityValues> entityValues = entitySpecificationBean.getEntityValues().iterator(); entityValues.hasNext(); ) {
+                EntityValues aEntityValue = entityValues.next();
+                if (aEntityValue.getKey().equals(filterTerms[0]) && aEntityValue.geteValues().equals(filterTerms[1]) && aEntityValue.getType().equals(filterTerms[2])) {
+                    entityValues.remove();
+                    break;
+                }
+            }
+        }
         return gson.toJson(entitySpecificationBean.getEntityValues());
     }
 
@@ -269,10 +281,22 @@ public class GAIndicatorSystemController {
 
     @RequestMapping(value = "/deleteUserFilters", method = RequestMethod.GET)
     public @ResponseBody
-    String  deleteUserFilters(Model model) {
+    String  deleteUserFilters(Model model,  @RequestParam(value="filter", required = true) String filter) {
         Gson gson = new Gson();
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        entitySpecificationBean.getUserSpecifications().clear();
+        if(filter.equals("ALL"))
+            entitySpecificationBean.getUserSpecifications().clear();
+        else
+        {
+            String[] filterTerms = filter.split("_");
+            for (Iterator<UserSearchSpecifications> userSearchSpecifications = entitySpecificationBean.getUserSpecifications().iterator(); userSearchSpecifications.hasNext(); ) {
+                UserSearchSpecifications aUserSearchSpecifications = userSearchSpecifications.next();
+                if (aUserSearchSpecifications.getUserSearchType().equals(filterTerms[0]) && aUserSearchSpecifications.getUserSearch().equals(filterTerms[1]) && aUserSearchSpecifications.getSearchPattern().equals(filterTerms[2])) {
+                    userSearchSpecifications.remove();
+                    break;
+                }
+            }
+        }
         return gson.toJson(entitySpecificationBean.getUserSpecifications());
     }
 
@@ -309,10 +333,28 @@ public class GAIndicatorSystemController {
 
     @RequestMapping(value = "/deleteTimeFilters", method = RequestMethod.GET)
     public @ResponseBody
-    String  deleteTimeFilters(Model model) {
+    String  deleteTimeFilters(Model model, @RequestParam(value="filter", required = true) String filter) {
         Gson gson = new Gson();
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        entitySpecificationBean.getTimeSpecifications().clear();
+        if(filter.equals("ALL"))
+            entitySpecificationBean.getTimeSpecifications().clear();
+        else {
+            String[] filterTerms = filter.split("_");
+
+            for (Iterator<TimeSearchSpecifications> timeSearchSpecifications = entitySpecificationBean.getTimeSpecifications().iterator(); timeSearchSpecifications.hasNext(); ) {
+                TimeSearchSpecifications aTimeSearchSpecifications = timeSearchSpecifications.next();
+                String timestamp="";
+                for(int i=0; i<aTimeSearchSpecifications.getTimestamp().size();i++){
+                    if(i > 0)
+                        timestamp += ",";
+                    timestamp += aTimeSearchSpecifications.getTimestamp().get(i);
+                }
+                if (aTimeSearchSpecifications.getType().equals(filterTerms[0]) && timestamp.equals(filterTerms[1])) {
+                    timeSearchSpecifications.remove();
+                    break;
+                }
+            }
+        }
         return gson.toJson(entitySpecificationBean.getTimeSpecifications());
     }
 
@@ -350,10 +392,21 @@ public class GAIndicatorSystemController {
     }
     @RequestMapping(value = "/deleteSessionFilters", method = RequestMethod.GET)
     public @ResponseBody
-    String  deleteSessionFilters(Model model) {
+    String  deleteSessionFilters(Model model, @RequestParam(value="filter", required = true) String filter) {
         Gson gson = new Gson();
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        entitySpecificationBean.getSessionSpecifications().clear();
+        if(filter.equals("ALL"))
+            entitySpecificationBean.getSessionSpecifications().clear();
+        else {
+            String[] filterTerms = filter.split("_");
+            for (Iterator<SessionSpecifications> sessionSpecifications = entitySpecificationBean.getSessionSpecifications().iterator(); sessionSpecifications.hasNext(); ) {
+                SessionSpecifications aSessionSpecifications = sessionSpecifications.next();
+                if (aSessionSpecifications.getSession().equals(filterTerms[0]) && aSessionSpecifications.getType().equals(filterTerms[1])) {
+                    sessionSpecifications.remove();
+                    break;
+                }
+            }
+        }
         return gson.toJson(entitySpecificationBean.getSessionSpecifications());
     }
 
