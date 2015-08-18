@@ -76,7 +76,6 @@
                 <ul class="templatemo-submenu">
                     <li><a href="/indicators/indicators_definition"><i class="fa fa-file"></i><span class="badge pull-right"></span>Define New</a></li>
                     <li><a href="/indicators/viewall"><i class="fa fa-th-large"></i><span class="badge pull-right"></span>View Existing</a></li>
-                    <li><a href="/indicators/trialrun"><i class="fa fa-play"></i><span class="badge pull-right"></span>Trial Run</a></li>
                 </ul>
             </li>
 
@@ -148,7 +147,15 @@
                     </tbody>
                 </table>
             </div>
-
+            <div class="margin-bottom-30">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="nav nav-pills">
+                            <li class="active"><a href="/indicators/viewall">Back<span class="badge"></span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
 
 

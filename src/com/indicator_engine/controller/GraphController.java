@@ -36,7 +36,10 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.labels.PieSectionLabelGenerator;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
@@ -57,6 +60,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.GradientPaint;
 import java.awt.Color;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -211,7 +215,6 @@ public class GraphController {
                 log.info("PIE CHART DATA : COMPOSITE \n" + compositeQuery[i].getQuery());
                 dpd.setValue(compositeQuery[i].getParentIndName(), glaEntityBean.findNumber(compositeQuery[i].getQuery()));
             }
-
         }
         else {
 
@@ -286,6 +289,9 @@ public class GraphController {
         plot.setStartAngle(290);
         plot.setDirection(Rotation.CLOCKWISE);
         plot.setForegroundAlpha(0.5f);
+        PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator(
+                "{0}: {1} ({2})", new DecimalFormat("0"), new DecimalFormat("0%"));
+        plot.setLabelGenerator(gen);
         return chart;
     }
 

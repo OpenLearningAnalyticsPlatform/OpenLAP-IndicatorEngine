@@ -206,7 +206,7 @@ $(function() {
             dataType: "json", // json
             success:function(response){
                 if (response == null ) {
-                    $("#indDeleteDialog").html("The Selected Indicator Property cannot be viewed as it a Composite Indicator. It can only be deleted/Saved to DB.");
+                    $("#indDeleteDialog").html("The selected Indicator's property cannot be viewed as it a composite Indicator or a NULL value.");
                     refreshQuestionSummary();
                     $('.indDeleteDialog').dialog('option', 'title', 'Indicator View Message');
                     $("#indDeleteDialog").dialog("open");
@@ -254,15 +254,15 @@ $(function() {
             dataType: "json",
             success: function(response){
                 if (response == null ) {
-                    $("#indDeleteDialog").html("The Selected Indicator Cannot be Loaded as it a Composite Indicator. It can only be deleted/Saved to DB.");
+                    $("#indDeleteDialog").html("The selected Indicator cannot be loaded into the editor as it a composite Indicator or a NULL value.");
                     refreshQuestionSummary();
                     $('.indDeleteDialog').dialog('option', 'title', 'Indicator Load Message');
                     $("#indDeleteDialog").dialog("open");
                 }
                 else {
-                    $("#indDeleteDialog").html("The Selected Indicator has been successfully loaded into the Editor.<br/> Please note that it has been <strong>deleted</strong>" +
-                    "from the Question Set. So after making changes, please save it again if you want it to bve associated with the current indicator. <br/>" +
-                    "Also note that you have to select again Platform and Axction to populate the List of Minors.");
+                    $("#indDeleteDialog").html("The selected Indicator has been successfully loaded into the Editor.<br/> Please note that it has been <strong>deleted </strong>" +
+                    "from the Question. So after making changes, please save it again if you want it to be associated with the Question. <br/>" +
+                    "Also note that you have to select again Platform and Action to populate the List of Categories.");
                     $('.indDeleteDialog').dialog('option', 'title', 'Indicator Load Message');
                     refreshQuestionSummary();
                     updateScreenAfterLoadInd(response);
@@ -608,7 +608,7 @@ function alert_indicatorName(request) {
                 });
 
                 noty({
-                    text: '<strong>Next Step</strong> <br/> Select 1 or more sources. !',
+                    text: '<strong>Next Step</strong> <br/> Select 1 or more sources in the <strong>Indicator Information</strong> window.',
                     type: 'information'
                 });
             }
@@ -650,7 +650,7 @@ function populateCategories(){
         type: 'success'
     });
     noty({
-        text: '<strong>Next Step</strong> <br/> Select a Minor!',
+        text: '<strong>Next Step</strong> <br/> Select a Category!',
         type: 'information'
     });
     var selectedSources = "";
@@ -692,7 +692,7 @@ function populateEntities() {
     var request = createRequest();
     $.noty.defaults.killer = true;
     noty({
-        text: '<strong>Success</strong> <br/> Minor Selected <br/> Retreiving Entities...',
+        text: '<strong>Success</strong> <br/> Category Selected <br/> Retreiving Entities...',
         type: 'success'
     });
 
@@ -768,7 +768,7 @@ function displayEntityFilters(callstatus,request){
                 noty({
                     text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
                     '<strong>Session Filters</strong>, <strong>Time Filters</strong>, which are available in this filter sub-tab. <br/>' +
-                    'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
+                    'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> window.',
                     type: 'information'
                 });
             }
@@ -1280,11 +1280,11 @@ function refreshQuestionSummary() {
     var request = createRequest();
     var url ="/indicators/refreshQuestionSummary";
     request.open("GET",url,true);
-    request.onreadystatechange=function(){postrefreshQuestionSummary(request)};
+    request.onreadystatechange=function(){postrefreshQuestionSummary(request,1)};
     request.send(null);
 }
 
-function postrefreshQuestionSummary(request) {
+function postrefreshQuestionSummary(request,callstatus) {
     if (request.readyState == 4) {
         if (request.status == 200) {
 
@@ -1294,9 +1294,26 @@ function postrefreshQuestionSummary(request) {
             removeOptions(associatedIndicators);
             qNamefromBean.value = parsedJSON.questionName;
             for (var i=0;i< parsedJSON.genQueries.length;i++) {
-
                 var newOption = new Option(parsedJSON.genQueries[i].indicatorName, parsedJSON.genQueries[i].indicatorName);
                 associatedIndicators.appendChild(newOption);
+            }
+            if(callstatus == 1) {
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Success</strong> <br/> <strong>Question Summary</strong> successfully refreshed. <br/>',
+                    type: 'success'
+                });
+            }
+            else if(callstatus == 2) {
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Success</strong> <br/> <strong>Current Indicator</strong> successfully saved. <br/>',
+                    type: 'success'
+                });
+                noty({
+                    text: '<strong>Success</strong> <br/> <strong>Question Summary</strong> successfully refreshed. <br/>',
+                    type: 'success'
+                });
             }
         }
     }
@@ -1313,7 +1330,7 @@ function finalizeIndicator(filterPresent) {
         var url ="/indicators/finalize?questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
             +"&graphEngine="+graphEngine;
         request.open("GET",url,true);
-        request.onreadystatechange=function(){postrefreshQuestionSummary(request)};
+        request.onreadystatechange=function(){postrefreshQuestionSummary(request,2)};
         request.send(null);
     }
     else

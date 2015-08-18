@@ -137,7 +137,6 @@
                 <ul class="templatemo-submenu">
                     <li><a href="/indicators/indicators_definition"><i class="fa fa-file"></i><span class="badge pull-right"></span>Define New</a></li>
                     <li><a href="/indicators/viewall"><i class="fa fa-th-large"></i><span class="badge pull-right"></span>View Existing</a></li>
-                    <li><a href="/indicators/trialrun"><i class="fa fa-play"></i><span class="badge pull-right"></span>Trial Run</a></li>
                 </ul>
             </li>
 
@@ -462,7 +461,7 @@
                                                          value="Refresh Graph" onclick="refreshGraph()" >
                                                     <img src="${pageContext.request.contextPath}/images/refresh_graph.png" alt="button" width="48" height="48"/>
                                                 </button>
-                                                <button  type="button" title="Click to finalize the Current Indicator Settings."
+                                                <button  type="button" title="Click to save the current Indicator."
                                                          name="graphGeneration" value="Finalize Settings" onclick="finalizeIndicator()" >
                                                     <img src="${pageContext.request.contextPath}/images/finalize.png" alt="button" width="48" height="48"/>
                                                 </button>
@@ -808,10 +807,10 @@
                             <select class="form-control margin-bottom-15" id="searchResults">
 
                             </select>
-                            <button  type="button" name="CompositeIndButton" value="Add" onclick="viewIndicatorProp()" >
+                            <button  type="button" name="CompositeIndButton" title="Click to view the properties of the selected Indicator." value="Add" onclick="viewIndicatorProp()" >
                                 <img src="${pageContext.request.contextPath}/images/view.png" alt="button" width="48" height="48"/>
                             </button>
-                            <button  type="button" name="CompositeIndButton" value="Add" onclick="loadFromTemplate()" >
+                            <button  type="button" name="CompositeIndButton" title="Click to use the selected Indicator as a template." value="Add" onclick="loadFromTemplate()" >
                                 <img src="${pageContext.request.contextPath}/images/load.png" alt="button" width="48" height="48"/>
                             </button>
                             <br/>
