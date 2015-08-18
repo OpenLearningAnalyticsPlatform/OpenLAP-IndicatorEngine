@@ -257,6 +257,19 @@ public class GAIndicatorSystemController {
         return gson.toJson(searchResults);
     }
 
+    @RequestMapping(value = "/searchAttributeValues", method = RequestMethod.GET)
+    public @ResponseBody
+    String  searchAttributesValues(@RequestParam(value="minor", required = true) String minor,
+                                   @RequestParam(value="key", required = true) String key,
+                        Model model) {
+        GLACategoryDao glacategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
+        Gson gson = new Gson();
+        long category_id = glacategoryBean.findCategoryID(minor);
+        GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
+        List<String> keyValues = new ArrayList<String>(new HashSet<String>(glaEntityBean.loadEntityKeyValuesByCategoryID(category_id, key)));
+        return gson.toJson(keyValues);
+    }
+
     @RequestMapping(value = "/addUserFilter", method = RequestMethod.GET)
     public @ResponseBody
     String  addUserFilter(@RequestParam(value="userdata", required = true) String userdata,

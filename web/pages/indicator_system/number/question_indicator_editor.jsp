@@ -475,10 +475,17 @@
                                                 <p>
                                                     <label for="entityKeySelection">Select an Attribute </label>
                                                         <form:select class="form-control margin-bottom-15" path="selectedKeys" items="${selectNumberParameters.keys}" name ="entityKeySelection" id="entityKeySelection" />
+                                                    <br/>
+                                                    <button  type="button" name="_eventId_searchAttributes" value="Search" onfocus="searchAttributes()" >
+                                                        <img src="${pageContext.request.contextPath}/images/search.png" alt="button" width="48" height="48"/>
+                                                    </button>
+                                                    <br/>
+                                                    <label for="multipleSelect">Search Results </label>
+                                                    <form:select class="form-control" path="evalue"  name="entityValue" id ="entityValue">
+                                                        <form:options items="${selectNumberParameters.searchResults}" />
+                                                    </form:select>
                                                     <label for="specificationType">Select Specification Type </label>
                                                         <form:select class="form-control margin-bottom-15" path="selectedentityValueTypes" items="${selectNumberParameters.entityValueTypes}" name ="specificationType" id="specificationType" />
-                                                    <label for="entityValue" class="control-label">Search Keyword</label>
-                                                        <form:input class="form-control" path="evalue"  name="entityValue" id ="entityValue"/>
                                                     <br/>
                                                 <div class="alert alert-success alert-dismissible" role="alert">
                                                     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>

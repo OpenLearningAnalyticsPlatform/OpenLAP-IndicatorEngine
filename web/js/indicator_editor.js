@@ -827,6 +827,11 @@ function displaySearchUserResults(request) {
                 var newOption = new Option(parsedJSON[i], parsedJSON[i]);
                 userSearchResults.appendChild(newOption);
             }
+            $.noty.defaults.killer = true;
+            noty({
+                text: '<strong>Success</strong> <br/>  User values has been retreived from DB.',
+                type: 'success'
+            });
         }
     }
 }
@@ -940,6 +945,11 @@ function displaySearchTimeResults(request) {
                 var newOption = new Option(parsedJSON[i], parsedJSON[i]);
                 timeSearchResults.appendChild(newOption);
             }
+            $.noty.defaults.killer = true;
+            noty({
+                text: '<strong>Success</strong> <br/>  Time values has been retreived from DB.',
+                type: 'success'
+            });
         }
     }
 
@@ -1066,6 +1076,11 @@ function displaySearchSessionResults(request) {
                 var newOption = new Option(parsedJSON[i], parsedJSON[i]);
                 SessionSearchResults.appendChild(newOption);
             }
+            $.noty.defaults.killer = true;
+            noty({
+                text: '<strong>Success</strong> <br/>  Session values has been retreived from DB.',
+                type: 'success'
+            });
         }
     }
 }
@@ -1770,4 +1785,35 @@ function displayIndInfoIcons() {
         ', as this is the last step of the Indicator Definition process. ',
         type: 'alert'
     });
+}
+
+function searchAttributes() {
+
+    var request = createRequest();
+    var key = document.getElementById("entityKeySelection").value;
+    var minor = document.getElementById('selectedMinor').value;
+    var url ="/indicators/searchAttributeValues?minor="+minor+"&key="+key;
+    request.open("GET",url,true);
+    request.onreadystatechange=function(){processReceivedAttributeValues(request)};
+    request.send(null);
+}
+
+function processReceivedAttributeValues(request) {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            var entityValue = document.getElementById("entityValue");
+            removeOptions(entityValue);
+            for (var i=0;i< parsedJSON.length;i++) {
+                var newOption = new Option(parsedJSON[i], parsedJSON[i]);
+                entityValue.appendChild(newOption);
+            }
+            $.noty.defaults.killer = true;
+            noty({
+                text: '<strong>Success</strong> <br/>  Attribute values has been retreived.',
+                type: 'success'
+            });
+        }
+    }
+
 }

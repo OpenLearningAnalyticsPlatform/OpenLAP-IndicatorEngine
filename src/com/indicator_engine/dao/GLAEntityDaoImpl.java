@@ -141,6 +141,27 @@ public class GLAEntityDaoImpl implements GLAEntityDao{
     }
 
     /**
+     * Loads all GLA Entity Keys present in the Database based on a specific Category ID.
+     * @param categoryID Category ID used for selecting relevant GLA Entity Objects.
+     * @return Returns all GLA Entity Keys present in Database and matching the specified Category ID.
+     **/
+    @Override
+    @Transactional(readOnly = true)
+    public List<String> loadEntityKeyValuesByCategoryID(Long categoryID, String key){
+        Session session = factory.getCurrentSession();
+        Criteria criteria = session.createCriteria(GLAEntity.class);
+        criteria.createAlias("glaEvent", "events");
+        criteria.setFetchMode("events", FetchMode.JOIN);
+        criteria.createAlias("events.glaCategory", "category");
+        criteria.setFetchMode("category", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("category.id", categoryID));
+        criteria.add(Restrictions.eq("key", key));
+        criteria.setProjection(Projections.property("value"));
+        return criteria.list();
+
+    }
+
+    /**
      * Loads all GLA Entity Objects present in the Database based on a specific Category ID.
      * @param categoryID Category ID used for selecting relevant GLA Entity Objects.
      * @return Returns all GLA Entity Objects present in Database and matching the specified Category ID.

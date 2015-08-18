@@ -38,6 +38,7 @@ public interface GLAEntityDao {
     public long findNumber(String hql);
     public List<GLAEntity> searchEntitiesByKey(String searchParameter, boolean exactSearch,
                                                String colName, String sortDirection, boolean sort);
+    public List<String> loadEntityKeyValuesByCategoryID(Long categoryID, String key);
 
 }
 
