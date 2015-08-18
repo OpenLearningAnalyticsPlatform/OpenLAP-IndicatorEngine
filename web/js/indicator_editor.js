@@ -190,15 +190,6 @@ $(function() {
         resizable: false
     });
 
-    $( "#helpQuestionInfo" ).click(function() {
-        $( "#questionHelpDialog" ).dialog( "open" );
-    });
-    $( "#helpQuestionSummary" ).click(function() {
-        $( "#questionSummaryDialog" ).dialog( "open" );
-    });
-    $( "#helpIndicatorInfo" ).click(function() {
-        $( "#indicatorHelpDialog" ).dialog( "open" );
-    });
     $( "#indView" ).click(function(e){
         $.ajax({type: "GET",
             url: "/indicators/refreshQuestionSummary",
@@ -1640,17 +1631,99 @@ function loadToEditor(request) {
                     o.selected = true;
                 }
             }
-            // Refresh the Filter Summary
-            $("#refreshSessionSettings").click();
-            $("#refreshTimeSettings").click();
-            $("#refreshUserSettings").click();
-            $("#refreshEntity").click();
-            populateCategories();
+            // Refresh the Session Filter Summary but without any on-screen notification.
+            var sessionRequest = createRequest();
+            var sessionUrl ="/indicators/getSessionFilters";
+            sessionRequest.open("GET",sessionUrl,true);
+            sessionRequest.onreadystatechange= function(){displaySessionFilters(0,sessionRequest)};
+            sessionRequest.send(null);
+            // Refresh the Time Filter Summary but without any on-screen notification.
+            var timeRequest = createRequest();
+            var timeUrl ="/indicators/getTimeFilters";
+            timeRequest.open("GET",timeUrl,true);
+            timeRequest.onreadystatechange= function(){displayTimeFilters(0,timeRequest)};
+            timeRequest.send(null);
+            // Refresh the User Filter Summary but without any on-screen notification.
+            var userRequest = createRequest();
+            var userUrl ="/indicators/getUserFilters";
+            userRequest.open("GET",userUrl,true);
+            userRequest.onreadystatechange=  function(){displayUserFilters(0,userRequest)};
+            userRequest.send(null);
+            // Refresh the Attribute Filter Summary but without any on-screen notification.
+            var entityRequest = createRequest();
+            var entityUrl ="/indicators/getEntities";
+            entityRequest.open("GET",entityUrl,true);
+            entityRequest.onreadystatechange = function(){displayEntityFilters(0,entityRequest)};
+            entityRequest.send(null);
+
+            // Populate the Categories but without any on-screen notification.
+            var categoryRequest = createRequest();
+            var selectedSources = "";
+            var selectedArray = new Array();
+            var selObj = document.getElementById('sourceSelection');
+            var i;
+            var count = 0;
+            for (i=0; i<selObj.options.length; i++) {
+                if (selObj.options[i].selected) {
+                    selectedArray[count] = selObj.options[i].value;
+                    count++;
+                }
+            }
+            selectedSources = selectedArray;
+            var selectedAction = document.getElementById('actionSelection').value;
+            var selectedPlatform = document.getElementById('PlatformSelection').value;
+            var categoryUrl ="/indicators/populateCategories?action="+selectedAction+"&platform="+selectedPlatform+"&sources="+selectedSources;
+            categoryRequest.open("GET",categoryUrl,true);
+            categoryRequest.onreadystatechange=function(){processReceivedCategories(categoryRequest)};
+            categoryRequest.send(null);
+
             $.noty.defaults.killer = true;
             noty({
-                text: '<strong>Success</strong> <br/>  Selected Indicator has been loaded as a Template',
+                text: '<strong>Success</strong> <br/>  Selected Indicator has been loaded as a Template. All its properties have been loaded except the name.',
                 type: 'success'
             });
+            noty({
+                text: '<strong>Note</strong> <br/>  Please give a name for the Indicator. The name is not loaded as the system does not allow duplicate Indicator names. ',
+                type: 'information'
+            });
+
+            $('#qiEditorTab a[href="#QuestionIndicatorEditor"]').tab('show');
         }
     }
+}
+
+function displayQnInfoIcons() {
+
+    $.noty.defaults.killer = true;
+    noty({
+        text: '<strong>Icons in Question Information Area</strong> <br/>  ' +
+        '<img src="../images/template.png" alt="button" width="48" height="48"/> : Load an existing Indicator from DB and use it as a template.' +
+        '<br/> <img src="../images/new.png" alt="button" width="48" height="48"/> : Define a new Indicator for the current Question.' +
+        '<br/> <img  src="../images/run.png" alt="button" width="48" height="48"/> : Run the Entire Question and all its idicators.'+
+        '<br/> <img  src="../images/save.png" alt="button" width="48" height="48"/> : Save the Question with its indicators. ',
+        type: 'alert'
+    });
+}
+
+function displayQnSummaryIcons() {
+    $.noty.defaults.killer = true;
+    noty({
+        text: '<strong>Icons in Question Summary Area</strong> <br/>  ' +
+        '<img  src="../images/refresh.png" alt="button" width="48" height="48"/> : Refresh the Question Summary.' +
+        '<br/> <img  src="../images/view.png" alt="button" width="48" height="48"/> : View the selected Indicator Summary.' +
+        '<br/> <img  src="../images/load.png" alt="button" width="48" height="48"/> : Load the selected Indicator for editing.'+
+        '<br/> <img  src="../images/delete.png" alt="button" width="48" height="48"/> : Delete the selected Indicator from this Question. ',
+        type: 'alert'
+    });
+}
+
+function displayIndInfoIcons() {
+    $.noty.defaults.killer = true;
+    noty({
+        text: '<strong>Indicator Information Area Help</strong> <br/>  ' +
+        'Please select all filters and click <img src="../images/refresh_graph.png" alt="button" width="48" height="48"/>' +
+        'to view the graph. <br/> If you are satisfied then please click <img src="../images/finalize.png" alt="button" width="48" height="48">'+
+        ', as this is the last step of the Indicator Definition process. ',
+        type: 'alert'
+    });
 }

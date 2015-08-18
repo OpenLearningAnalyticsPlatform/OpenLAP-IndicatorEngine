@@ -237,30 +237,6 @@
             </div>
             <div id="indDeleteDialog" >
             </div>
-            <div id="questionHelpDialog" title="Icons in Question Information Area">
-                <img src="${pageContext.request.contextPath}/images/template.png" alt="button" width="48" height="48"/> : Load an exisitng Indicator from DB and use it as a template.
-                <br/>
-                <img src="${pageContext.request.contextPath}/images/new.png" alt="button" width="48" height="48"/> : Define a new Indicator for the current Question.
-                <br/>
-                <img  src="${pageContext.request.contextPath}/images/run.png" alt="button" width="48" height="48"/> : Run the Entire Question and all its idicators.
-                <br/>
-                <img  src="${pageContext.request.contextPath}/images/save.png" alt="button" width="48" height="48"/> : Save the Question with its indicators.
-            </div>
-            <div id="questionSummaryDialog" title="Icons in Question Summary Area">
-                <img  src="${pageContext.request.contextPath}/images/refresh.png" alt="button" width="48" height="48"/> : Refresh the Question Summary.
-                <br/>
-                <img  src="${pageContext.request.contextPath}/images/view.png" alt="button" width="48" height="48"/> : View the selected Indicator Summary.
-                <br/>
-                <img  src="${pageContext.request.contextPath}/images/load.png" alt="button" width="48" height="48"/> : Load the selected Indicator for editing.
-                <br/>
-                <img  src="${pageContext.request.contextPath}/images/delete.png" alt="button" width="48" height="48"/> : Delete the selected Indicator from this Question.
-            </div>
-            <div id="indicatorHelpDialog" title="Indicator Information Area Help">
-                Please select all filters and click <img src="${pageContext.request.contextPath}/images/refresh_graph.png" alt="button" width="48" height="48"/>
-                to view the graph. <br/>
-                If you are satisfied then please click <img src="${pageContext.request.contextPath}/images/finalize.png" alt="button" width="48" height="48">
-                , as this is the last step of the Indicator Definition process.
-            </div>
             <ul class="nav nav-tabs" role="tablist" id="qiEditorTab">
                 <li class="active"><a href="#QuestionIndicatorEditor" role="tab" data-toggle="tab">Editor</a></li>
                 <li><a href="#TemplateLoad" role="tab" data-toggle="tab">Template Load</a></li>
@@ -327,7 +303,7 @@
                                                     <img src="${pageContext.request.contextPath}/images/save.png" alt="button" width="48" height="48"/>
                                                 </button>
                                                 <button  type="button" name="helpQuestionInfo" id ="helpQuestionInfo" title="Click to know the icon & Process details"
-                                                         value="Help" >
+                                                         value="Help" onclick="displayQnInfoIcons()" >
                                                     <img src="${pageContext.request.contextPath}/images/help.png" alt="button" width="48" height="48"/>
                                                 </button>
                                             </div>
@@ -380,16 +356,16 @@
                                                          value="Refresh" onclick="refreshQuestionSummary()">
                                                     <img  src="${pageContext.request.contextPath}/images/refresh.png" alt="button" width="48" height="48"/>
                                                 </button>
-                                                <button  type="button" id="indView" title="View Summary of the selected Indicator" value="View"  onclick="refreshQuestionSummary()">
+                                                <button  type="button" id="indView" title="View Summary of the selected Indicator" value="View">
                                                     <img  src="${pageContext.request.contextPath}/images/view.png" alt="button" width="48" height="48"/>
                                                 </button>
-                                                <button  type="button" id="indLoad" title="Load the Selected Indicator in Editor" value="Load" onclick="refreshQuestionSummary()">
+                                                <button  type="button" id="indLoad" title="Load the Selected Indicator in Editor" value="Load">
                                                     <img  src="${pageContext.request.contextPath}/images/load.png" alt="button" width="48" height="48"/>
                                                 </button>
-                                                <button  type="button" id="indDelete" title="Delete the Selected Indicator" value="Delete" onclick="refreshQuestionSummary()">
+                                                <button  type="button" id="indDelete" title="Delete the Selected Indicator" value="Delete">
                                                     <img  src="${pageContext.request.contextPath}/images/delete.png" alt="button" width="48" height="48"/>
                                                 </button>
-                                                <button  type="button" name="helpQuestionSummary" id ="helpQuestionSummary" title="Click to know the icon & Process details"
+                                                <button  type="button" name="helpQuestionSummary" onclick="displayQnSummaryIcons()" id ="helpQuestionSummary" title="Click to know the icon & Process details"
                                                          value="Help" >
                                                     <img src="${pageContext.request.contextPath}/images/help.png" alt="button" width="48" height="48"/>
                                                 </button>
@@ -465,7 +441,7 @@
                                                          name="graphGeneration" value="Finalize Settings" onclick="finalizeIndicator()" >
                                                     <img src="${pageContext.request.contextPath}/images/finalize.png" alt="button" width="48" height="48"/>
                                                 </button>
-                                                <button  type="button" name="helpIndicatorInfo" id ="helpIndicatorInfo" title="Click to know the icon & Process details"
+                                                <button  type="button" name="helpIndicatorInfo" onclick="displayIndInfoIcons()" id ="helpIndicatorInfo" title="Click to know the icon & Process details"
                                                          value="Help" >
                                                     <img src="${pageContext.request.contextPath}/images/help.png" alt="button" width="48" height="48"/>
                                                 </button>
