@@ -162,7 +162,7 @@
                         </div>
                         <div class="row templatemo-form-buttons">
                             <div class="col-md-12">
-                                <input class="btn btn-default" type="submit" name="action"
+                                <input class="btn btn-primary" type="submit" name="action"
                                        value="search"  />
                             </div>
                         </div>
@@ -178,6 +178,8 @@
                             <div class="col-md-12">
                                 <input class="btn btn-primary" type="submit" name="action"
                                        value="load" />
+                                <input class="btn btn-primary" type="submit" name="action"
+                                       value="Visualize" />
                             </div>
                         </div>
 

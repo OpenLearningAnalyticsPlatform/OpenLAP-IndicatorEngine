@@ -738,32 +738,7 @@ public class GAIndicatorSystemController {
                 model.addObject("question", retrieveQuestion(searchQuestionForm.getSelectedQuestionName()));
             }
         }
-        return model;
-    }
-
-    @RequestMapping(value = "/trialrun", method = RequestMethod.GET)
-    public String getQuestionsTrialRun(Map<String, Object> model) {
-        SearchQuestionForm searchQuestionForm = new SearchQuestionForm();
-        model.put("searchQuestionForm", searchQuestionForm);
-        return "indicator_system/trial_run";
-    }
-
-    @RequestMapping(value = "/trialrun", method = RequestMethod.POST)
-    public ModelAndView processTrialRun( @RequestParam String action,
-                                   @Valid @ModelAttribute("searchQuestionForm") SearchQuestionForm searchQuestionForm,
-                                   BindingResult bindingResult) {
-
-        ModelAndView model = null;
-        if (bindingResult.hasErrors()) {
-            return new ModelAndView("indicator_system/trial_run");
-        }
-        if(action.equals("search")){
-
-            processSearchParams(searchQuestionForm);
-            model = new ModelAndView("indicator_system/trial_run");
-            model.addObject("searchQuestionForm", searchQuestionForm);
-        }
-        if(action.equals("Visualize")){
+        else if(action.equals("Visualize")){
 
             model = new ModelAndView("indicator_system/run_results");
             model.addObject("chartType", "Pie");
@@ -771,8 +746,7 @@ public class GAIndicatorSystemController {
             model.addObject("question", retrieveQuestion(searchQuestionForm.getSelectedQuestionName()));
 
         }
-
-       return model;
+        return model;
     }
 
     @RequestMapping(value = "/fetchExistingQuestionsData.web", method = RequestMethod.GET, produces = "application/json")
