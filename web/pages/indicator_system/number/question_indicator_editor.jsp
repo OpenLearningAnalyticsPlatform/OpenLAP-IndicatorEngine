@@ -439,7 +439,7 @@
                                                 </button>
                                                 <button  type="button" title="Click to save the current Indicator."
                                                          name="graphGeneration" value="Finalize Settings" onclick="finalizeIndicator()" >
-                                                    <img src="${pageContext.request.contextPath}/images/finalize.png" alt="button" width="48" height="48"/>
+                                                    <img src="${pageContext.request.contextPath}/images/save.png" alt="button" width="48" height="48"/>
                                                 </button>
                                                 <button  type="button" name="helpIndicatorInfo" onclick="displayIndInfoIcons()" id ="helpIndicatorInfo" title="Click to know the icon & Process details"
                                                          value="Help" >

@@ -804,6 +804,7 @@ function displayEntityFilters(callstatus,request,msg){
             newOption = new Option(txt, txt);
             entityFilterListing.appendChild(newOption);
         }
+        removeOptions(document.getElementById("entityValue"));
     }
 }
 
@@ -922,6 +923,8 @@ function displayUserFilters(callstatus,request,msg) {
             newOption = new Option(txt, txt);
             userFilterListing.appendChild(newOption);
         }
+        document.getElementById("searchUserString").value = null;
+        removeOptions(document.getElementById("usersearchResults"));
     }
 }
 
@@ -1053,6 +1056,10 @@ function displayTimeFilters(callstatus,request,msg) {
             newOption = new Option(txt, txt);
             timeFilterListing.appendChild(newOption);
         }
+        document.getElementById("timeSearchString").value = null;
+        document.getElementById("fromDate").value = null;
+        document.getElementById("toDate").value = null;
+        removeOptions(document.getElementById("timeSearchResults"));
     }
 }
 
@@ -1170,6 +1177,8 @@ function displaySessionFilters(callstatus, request,msg) {
             newOption = new Option(txt, txt);
             sessionFilterListing.appendChild(newOption);
         }
+        document.getElementById("sessionSearchString").value = null;
+        removeOptions(document.getElementById("SessionsearchResults"));
     }
 }
 
