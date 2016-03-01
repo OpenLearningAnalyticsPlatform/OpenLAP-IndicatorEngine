@@ -56,11 +56,12 @@
         <property name="packagesToScan" value="com.indicator_engine.datamodel"/>
         <property name="hibernateProperties">
             <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="current_session_context_class">thread</prop>
                 <prop key="connection.pool_size">10</prop>
-                <prop key="hibernate.connection.url">jdbc:sqlserver://Lenovo-PC:1433;databaseName=Goal_LA</prop>
+                <prop key="hibernate.connection.url">jdbc:sqlserver://137.226.231.13;databaseName=Goal_LA</prop>
                 <prop key="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</prop>
             </props>
         </property>
