@@ -1348,7 +1348,7 @@ function postrefreshQuestionSummary(request,callstatus) {
         if (request.status == 200) {
 
             var parsedJSON = JSON.parse(request.responseText);
-            var qNamefromBean = document.getElementById("qNamefromBean");
+            var qNamefromBean = document.getElementById("questionNaming");
             var associatedIndicators = document.getElementById("associatedIndicators");
             removeOptions(associatedIndicators);
             qNamefromBean.value = parsedJSON.questionName;
