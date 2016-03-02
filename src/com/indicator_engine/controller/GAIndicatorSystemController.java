@@ -74,8 +74,9 @@ public class GAIndicatorSystemController {
         IndicatorPreProcessing indicatorPreProcessor = (IndicatorPreProcessing) appContext.getBean("indicatorPreProcessor");
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         SelectNumberParameters selectNumberParameters = indicatorPreProcessor.initSelectNumberParametersObject();
-        model.put("selectNumberParameters",selectNumberParameters);
-        return "indicator_system/number/question_indicator_editor";
+        model.put("selectNumberParameters", selectNumberParameters);
+//        return "indicator_system/number/question_indicator_editor";
+        return "indicator_system/number/question_indicator_editor_new";
     }
 
     @RequestMapping(value = "/initSources", method = RequestMethod.GET)
