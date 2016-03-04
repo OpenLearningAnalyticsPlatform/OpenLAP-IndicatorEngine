@@ -110,6 +110,7 @@
 
 </head>
 <body>
+
 <div class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
         <div class="logo"><h1>Question - Indicator Editor</h1></div>
@@ -151,14 +152,14 @@
                 <li><a href="/home/dashboard">Dashboard</a></li>
                 <li><a href="/indicators/home">Indicator Home</a></li>
             </ol>
-            <h1>Question with Indicator Definition</h1>
+            <h5>Question with Indicator Definition</h5>
             <input type="hidden" name="userName" id="userName" value="${sessionScope.userName}" />
 
             <!--FORM for Indicator Editor-->
             <div class="tab-content">
                 <form:form role="form" id="sessionSelection"  method="POST" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">
                     <!--Select GOAL-->
-                    <div class="col-md-12">
+                    <div class="col s12 m6 card">
                         <div class="panel panel-primary">
                             <div class="panel-heading">Goal</div>
                             <div class="panel-body">
@@ -181,7 +182,7 @@
                         </div>
                     </div>
                     <!--Enter QUESTION-->
-                    <div class="col-md-12">
+                    <div class="col s12 m6 card">
                         <div class="panel panel-primary">
                             <div class="panel-heading">Question</div>
                             <div class="panel-body">
