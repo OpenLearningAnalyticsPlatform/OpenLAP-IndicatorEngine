@@ -1,4 +1,5 @@
 <%@ include file="../_partials/header.jsp" %>
+
     <div class="templatemo-content-wrapper">
         <div class="templatemo-content">
             <ol class="breadcrumb">
@@ -58,13 +59,9 @@
                                         </tr>
                                         <tr>
                                             <div class="row">
-                                                <div class="col-md-6 margin-bottom-15">
+                                                <div class="col-md-12 margin-bottom-15">
                                                     <label for="associatedIndicators">Associated Indicators </label>
-                                                    <%--<div id="associatedIndicators"></div>--%>
-                                                    <div class="chip">
-                                                        Tag
-                                                        <i class="material-icons">close</i>
-                                                    </div>
+                                                    <div id="associatedIndicatorsDiv"></div>
                                                     <select class="form-control margin-bottom-15"  title="List of Indicators already defined for this Question"
                                                             name ="associatedIndicators" id="associatedIndicators" onfocus="this.selectedIndex = -1;"/>
                                                 </div>
