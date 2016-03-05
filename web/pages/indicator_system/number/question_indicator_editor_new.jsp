@@ -1,5 +1,4 @@
 <%@ include file="../_partials/header.jsp" %>
-
     <div class="templatemo-content-wrapper">
         <div class="templatemo-content">
             <ol class="breadcrumb">
@@ -50,12 +49,22 @@
                                                                 id="questionNaming" onchange="validateQuestionName()" required="required"
                                                                 placeholder="Type your Question Name" title="Question Name msut be unique & must be more than 3 characters."/>
                                                 </div>
+                                                <div class="col-md-6 margin-bottom-15">
+                                                    <button class="btn-info btn" type="button" title="Click to add new current Indicator."
+                                                            name="addIndicator" id="addIndicator" value="New Indicator" >Add Indicator
+                                                    </button>
+                                                </div>
                                             </div>
                                         </tr>
                                         <tr>
                                             <div class="row">
                                                 <div class="col-md-6 margin-bottom-15">
                                                     <label for="associatedIndicators">Associated Indicators </label>
+                                                    <%--<div id="associatedIndicators"></div>--%>
+                                                    <div class="chip">
+                                                        Tag
+                                                        <i class="material-icons">close</i>
+                                                    </div>
                                                     <select class="form-control margin-bottom-15"  title="List of Indicators already defined for this Question"
                                                             name ="associatedIndicators" id="associatedIndicators" onfocus="this.selectedIndex = -1;"/>
                                                 </div>
@@ -67,7 +76,7 @@
                         </div>
                     </div>
                     <!--Enter INDICATOR-->
-                    <div class="col-md-12">
+                    <div id="indicatorDefinition" class="col-md-12">
                         <div class="panel panel-primary">
                             <div class="panel-heading">Indicator</div>
                             <div class="panel-body">
@@ -301,9 +310,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 margin-bottom-15">
-                        <button class="btn-info btn pull-right" type="button" title="Click to save the current Indicator."
+                    <div class="col s12 m6 l10 right-align">
+                        <button class="btn waves-effect waves-light" type="button" title="Click to save the current Indicator."
                                 name="graphGeneration" value="Finalize Settings" onclick="finalizeIndicator()">Save
+                        </button>
+                        <button class="btn waves-effect waves-light" type="button" title="Click to cancel the current Indicator."
+                                name="cancelIndicator" id="cancelIndicator" value="Cancel Indicator">Cancel
                         </button>
                     </div>
                 </form:form>
@@ -311,5 +323,4 @@
 
         </div>
     </div>
-
 <%@ include file="../_partials/footer.jsp" %>
