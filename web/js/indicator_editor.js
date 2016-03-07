@@ -1352,14 +1352,14 @@ function postrefreshQuestionSummary(request,callstatus) {
             var associatedIndicators = document.getElementById("associatedIndicators");
             removeOptions(associatedIndicators);
             $(function() {
-                $('#associatedIndicators').empty();
+                $('#associatedIndicatorsDiv').empty();
             });
             qNamefromBean.value = parsedJSON.questionName;
             for (var i=0;i< parsedJSON.genQueries.length;i++) {
                 var newOption = new Option(parsedJSON.genQueries[i].indicatorName, parsedJSON.genQueries[i].indicatorName);
                 associatedIndicators.appendChild(newOption);
                 $(function() {
-                    $('#associatedIndicatorsDiv').append("<div class='chip'>" + parsedJSON.genQueries[i].indicatorName + "<i class='material-icons'>close</i></div>");
+                    $('#associatedIndicatorsDiv').append("<div class='chip' id='" + parsedJSON.genQueries[i].indicatorName + "' onclick='loadIndicator(this);'>" + parsedJSON.genQueries[i].indicatorName + "<i class='material-icons'>close</i></div>");
                 });
             }
             if(callstatus == 1) {
@@ -1400,6 +1400,13 @@ function finalizeIndicator(filterPresent) {
     }
     else
         checkForDefaultRule(2);
+
+    $(function() {
+        $("#indicatorDefinition").hide();
+        $('body').animate({
+            scrollTop: $("body").offset().top
+        }, 2000);
+    });
 
 }
 
