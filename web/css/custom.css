@@ -1,0 +1,10 @@
+.panel-default > .panel-heading {
+    color: #ffffff;
+    background-color: #26a69a;
+    border-color: #26a69a;
+}
+.chip {
+    background-color: #e0f2f1 !important;
+    margin: 7px 7px 7px 7px;
+    color: black !important;
+}
