@@ -47,6 +47,7 @@
     <meta name="author" content="Tanmaya Mahapatra" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/custom.css">
     <link href="${pageContext.request.contextPath}/js/jquery-ui/jquery-ui.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/indicator_editor.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/animate.css" rel="stylesheet">
