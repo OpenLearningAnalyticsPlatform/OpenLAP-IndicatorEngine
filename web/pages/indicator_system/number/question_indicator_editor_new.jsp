@@ -57,18 +57,14 @@
                                                     <button class="waves-effect waves-light btn" type="button" name="QuestionSave" title="Click to save the Question & all its indicators."
                                                              value="Save Question" onclick="SaveQuestionDB()">Save Question
                                                     </button>
-                                                    <button class="waves-effect waves-light btn" type="button" id="indLoad" title="Load the Selected Indicator in Editor" value="Load">Load Indicator
-                                                    </button>
                                                 </div>
                                             </div>
                                         </tr>
                                         <tr>
                                             <div class="row">
                                                 <div class="col-md-12 margin-bottom-15">
-                                                    <label for="associatedIndicators">Associated Indicators </label>
+                                                    <label for="associatedIndicatorsDiv">Associated Indicators </label>
                                                     <div id="associatedIndicatorsDiv"></div>
-                                                    <select class="form-control margin-bottom-15"  title="List of Indicators already defined for this Question"
-                                                            name ="associatedIndicators" id="associatedIndicators" onfocus="this.selectedIndex = -1;"/>
                                                 </div>
                                             </div>
                                         </tr>

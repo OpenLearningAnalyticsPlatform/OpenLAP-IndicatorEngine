@@ -17,6 +17,10 @@ $(function() {
 
 function loadIndicator(indicatorName){
     $(function() {
+        $("#indicatorDefinition").show();
+        $('body').animate({
+            scrollTop: $("#indicatorDefinition").offset().top
+        }, 2000);
         $.ajax({
             type: "GET",
             url: "/indicators/loadIndFromQnSetToEditor",
