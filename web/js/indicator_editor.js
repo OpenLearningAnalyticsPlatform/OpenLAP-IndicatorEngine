@@ -1351,17 +1351,19 @@ function postrefreshQuestionSummary(request,callstatus) {
             var qNamefromBean = document.getElementById("questionNaming");
             //var associatedIndicators = document.getElementById("associatedIndicators");
             //removeOptions(associatedIndicators);
-            $(function() {
-                $('#associatedIndicatorsDiv').empty();
-            });
-            qNamefromBean.value = parsedJSON.questionName;
-            for (var i=0;i< parsedJSON.genQueries.length;i++) {
-                var newOption = new Option(parsedJSON.genQueries[i].indicatorName, parsedJSON.genQueries[i].indicatorName);
-                //associatedIndicators.appendChild(newOption);
-                $(function() {
-                    $('#associatedIndicatorsDiv').append("<div class='chip' id='" + parsedJSON.genQueries[i].indicatorName + "' onclick='loadIndicator(this);'>" + parsedJSON.genQueries[i].indicatorName + "<i class='material-icons'>close</i></div>");
+            //if(parsedJSON.genQueries.length > 0) {
+                $(function () {
+                    $('#associatedIndicatorsDiv').empty();
                 });
-            }
+                qNamefromBean.value = parsedJSON.questionName;
+                for (var i = 0; i < parsedJSON.genQueries.length; i++) {
+                    var newOption = new Option(parsedJSON.genQueries[i].indicatorName, parsedJSON.genQueries[i].indicatorName);
+                    //associatedIndicators.appendChild(newOption);
+                    $(function () {
+                        $('#associatedIndicatorsDiv').append("<div class='chip' id='" + parsedJSON.genQueries[i].indicatorName + "' onclick='loadIndicator(this);'>" + parsedJSON.genQueries[i].indicatorName + "<i class='material-icons'>close</i></div>");
+                    });
+                }
+            //}
             if(callstatus == 1) {
                 $.noty.defaults.killer = true;
                 noty({
