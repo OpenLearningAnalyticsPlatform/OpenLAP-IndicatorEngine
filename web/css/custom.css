@@ -9,3 +9,6 @@
     color: black !important;
     cursor: pointer;
 }
+.collapsible-header{
+    background-color: #e0f2f1 !important;
+}
