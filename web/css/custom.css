@@ -77,3 +77,8 @@ input[type=text]:focus:not([readonly]) {
     width: 20px !important;
     height: 20px !important;
 }
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
