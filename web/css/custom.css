@@ -8,7 +8,72 @@
     margin: 7px 7px 7px 7px;
     color: black !important;
     cursor: pointer;
+    /*max-width: 25%;*/
+    /*width: 130px;*/
+    /*overflow: hidden;*/
+    /*text-overflow: ellipsis;*/
 }
-.collapsible-header{
+.composite-chip {
+    background-color: #f2e3a0 !important;
+    margin: 7px 7px 7px 7px;
+    color: black !important;
+    cursor: default;
+}
+.chip-bg {
+    background-color: #26a69a  !important;
+}
+.collapsible-header {
     background-color: #e0f2f1 !important;
+}
+.btn-group-vertical > button {
+    margin-bottom:10px;
+    border-radius:10px !important;
+}
+.modal-footer > button {
+    margin: 5px 5px 5px 5px !important;
+}
+.materialize-breadcrumb {
+    font-size: 14px !important;
+    /*color: #26a69a;*/
+}
+label {
+    color: black !important;
+    font-size: 1.0rem !important;
+    margin: 10px 0 0 0 !important;
+}
+.fixed-action-btn > ul > li {
+    margin-top: 0px !important;
+}
+.fixed-action-btn.horizontal ul {
+    left: -323px !important;
+    transform: translateY(-50%) !important;
+}
+#associatedIndicatorsDiv {
+    line-height: 42px;
+    margin: 7px 7px 7px 0px;
+}
+.panel-heading {
+    font-size: 16px;
+}
+#saveQuestion, #saveIndicator {
+    min-width: 12%;
+}
+.tabs .tab a {
+    color: #0288d1 !important;
+}
+.tabs .tab .active {
+    background-color: #e1f5fe !important;
+}
+.tabs .tab a:hover {
+    color: #0288d1 !important;
+}
+.tabs .indicator {
+    background-color: #0288d1 !important;
+}
+input[type=text]:focus:not([readonly]) {
+    border-color: #0288d1 !important;
+}
+.preloader-wrapper.small {
+    width: 20px !important;
+    height: 20px !important;
 }

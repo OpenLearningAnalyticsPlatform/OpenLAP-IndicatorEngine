@@ -227,16 +227,18 @@ $(function() {
             }});
     });
     $( "#indDelete" ).click(function(e){
-        $.ajax({type: "GET",
+        $.ajax({
+            type: "GET",
             url: "/indicators/deleteIndFromQn",
-            data: { indName: $("#associatedIndicators").val() },
+            data: {indName: $("#associatedIndicators").val()},
             dataType: "html",
-            success:function(response){
+            success: function (response) {
                 $("#indDeleteDialog").text(response);
                 $('.indDeleteDialog').dialog('option', 'title', 'Indicator Deletion Message');
                 refreshQuestionSummary();
                 $("#indDeleteDialog").dialog("open");
-            }});
+            }
+        });
     });
     $( "#indLoad" ).click(function(e){
         $.ajax({type: "GET",
@@ -1328,9 +1330,12 @@ function drawGraph(request) {
                 '<strong> Indicator Properties & Summary </strong> Window',
                 type: 'information'
             });
-            var graphImage = document.getElementById("graphImage");
-            graphImage.src="/graphs/jgraph?bean=true"+"&time="+new Date().getTime();
-            $('#templatemo-tabs a[href="#graphGeneration"]').tab('show');
+            //var graphImage = document.getElementById("graphImage");
+            //graphImage.src="/graphs/jgraph?bean=true"+"&time="+new Date().getTime();
+            //$('#templatemo-tabs a[href="#graphGeneration"]').tab('show');
+            $(function() {
+                $('#graphGeneration > img').attr("src","/graphs/jgraph?bean=true" + "&time=" + new Date().getTime());
+            });
         }
     }
 }
@@ -1346,24 +1351,43 @@ function refreshQuestionSummary() {
 function postrefreshQuestionSummary(request,callstatus) {
     if (request.readyState == 4) {
         if (request.status == 200) {
-
             var parsedJSON = JSON.parse(request.responseText);
             var qNamefromBean = document.getElementById("questionNaming");
             //var associatedIndicators = document.getElementById("associatedIndicators");
             //removeOptions(associatedIndicators);
-            //if(parsedJSON.genQueries.length > 0) {
-                $(function () {
-                    $('#associatedIndicatorsDiv').empty();
-                });
-                qNamefromBean.value = parsedJSON.questionName;
+            $(function () {
+                $('#associatedIndicatorsDiv').empty();
+                if(parsedJSON == null || parsedJSON.genQueries.length == 0) {
+                    $('#associatedIndicatorsDiv').append("No Associated Indicators Found");
+                }
+            });
+            if(parsedJSON != null) {
+                if (parsedJSON.genQueries.length > 0) {
+                    qNamefromBean.value = parsedJSON.questionName;
+                }
+                //document.getElementById("questionNaming").value = parsedJSON;
+
                 for (var i = 0; i < parsedJSON.genQueries.length; i++) {
-                    var newOption = new Option(parsedJSON.genQueries[i].indicatorName, parsedJSON.genQueries[i].indicatorName);
+                    //comment it back
+                    //var newOption = new Option(parsedJSON.genQueries[i].indicatorName, parsedJSON.genQueries[i].indicatorName);
                     //associatedIndicators.appendChild(newOption);
+
                     $(function () {
-                        $('#associatedIndicatorsDiv').append("<div class='chip' id='" + parsedJSON.genQueries[i].indicatorName + "' onclick='loadIndicator(this);'>" + parsedJSON.genQueries[i].indicatorName + "<i class='material-icons'>close</i></div>");
+                        if(parsedJSON.genQueries[i].genIndicatorProps['isComposite']) {
+                            $('#associatedIndicatorsDiv').append("<div class='chip composite-chip' name='chip-" + i + "' id='" + parsedJSON.genQueries[i].indicatorName
+                                + "' title='" + parsedJSON.genQueries[i].indicatorName
+                                +"'><span>" + parsedJSON.genQueries[i].indicatorName
+                                + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
+                        }
+                        else {
+                            $('#associatedIndicatorsDiv').append("<div class='chip' name='chip-" + i + "' id='" + parsedJSON.genQueries[i].indicatorName
+                                + "' title='" + parsedJSON.genQueries[i].indicatorName
+                                + "' onclick='loadIndicator(this);'><span >" + parsedJSON.genQueries[i].indicatorName
+                                + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
+                        }
                     });
                 }
-            //}
+            }
             if(callstatus == 1) {
                 $.noty.defaults.killer = true;
                 noty({
@@ -1388,14 +1412,17 @@ function postrefreshQuestionSummary(request,callstatus) {
 }
 
 function finalizeIndicator(filterPresent) {
+    $(".chip").removeClass('chip-bg');
     if(filterPresent) {
         var request = createRequest();
         var questionName = document.getElementById("questionNaming").value;
         var indicatorName = document.getElementById("indicatorNaming").value;
         var graphType = document.getElementById("selectedChartType").value;
         var graphEngine = document.getElementById("EngineSelect").value;
+        var indicatorIndex = localStorage.getItem("selectedIndicatorIndex");
+        localStorage.removeItem("selectedIndicatorIndex");
         var url ="/indicators/finalize?questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
-            +"&graphEngine="+graphEngine;
+            +"&graphEngine="+graphEngine+"&indicatorIndex="+indicatorIndex;
         request.open("GET",url,true);
         request.onreadystatechange=function(){postrefreshQuestionSummary(request,2)};
         request.send(null);
@@ -1432,6 +1459,14 @@ function processScreenForNextIndicator(request) {
     }
 }
 
+function resetSession() {
+    var request = createRequest();
+    var url ="/indicators/deleteDataFromSession";
+    request.open("GET",url,true);
+    request.onreadystatechange=function(){processScreenForNextQuestion(request, true)};
+    request.send(null);
+}
+
 function SaveQuestionDB() {
     var request = createRequest();
     var userName = document.getElementById("userName").value;
@@ -1441,25 +1476,34 @@ function SaveQuestionDB() {
     request.send(null);
 }
 
-function processScreenForNextQuestion(request) {
+function processScreenForNextQuestion(request, isResetSession) {
+    isResetSession = isResetSession || false;
     if (request.readyState == 4) {
         if (request.status == 200) {
-            var parsedJSON = JSON.parse(request.responseText);
+            if(request.responseText) {
+                var parsedJSON = JSON.parse(request.responseText);
+            }
             document.getElementById("questionNaming").value = "";
             document.getElementById("indicatorNaming").value = "";
             var selectedMinor = document.getElementById("selectedMinor");
             removeOptions(selectedMinor);
             refreshQuestionSummary();
-            $.noty.defaults.killer = true;
-            noty({
-                text: '<strong>Success</strong> <br/>  <strong>Congratulations ! </strong> Your Question and all its indicators have been saved.',
-                type: 'success'
+            $(function () {
+                $("#saveQuestion").attr('disabled', 'disabled');
             });
-            noty({
-                text: '<strong>Information</strong> <br/>  You can define a new Question or you can view all existing Questions by clicking the ' +
-                '<strong> View Existing <strong> link of the left side of the page.',
-                type: 'information'
-            });
+
+            if(!isResetSession) {
+                $.noty.defaults.killer = true;
+                noty({
+                    text: '<strong>Success</strong> <br/>  <strong>Congratulations ! </strong> Your Question and all its indicators have been saved.',
+                    type: 'success'
+                });
+                noty({
+                    text: '<strong>Information</strong> <br/>  You can define a new Question or you can view all existing Questions by clicking the ' +
+                    '<strong> View Existing <strong> link of the left side of the page.',
+                    type: 'information'
+                });
+            }
         }
     }
 }
@@ -1476,6 +1520,30 @@ function updateVisualisationTab(request) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
             if(parsedJSON.genQueries.length ==0) {
+                var compositeModelHtml = document.getElementById("runIndMem");
+                var visualizeQModelHtml = document.getElementById("visualizeQuestionContent");
+                compositeModelHtml.innerHTML = "";
+                visualizeQModelHtml.innerHTML = "";
+
+                var div = document.createElement("div");
+                div.className = "alert alert-warning";
+                var alertDescription = document.createTextNode("Please add Indicators to build composite Indicators.");
+                div.appendChild(alertDescription);
+                compositeModelHtml.appendChild(div);
+
+                var div1 = document.createElement("div");
+                div1.className = "alert alert-warning";
+                var alertDescription1 = document.createTextNode("Please add Indicators for visualization.");
+                div1.appendChild(alertDescription1);
+                visualizeQModelHtml.appendChild(div1);
+
+                $(function() {
+                    $("#compositeIndicatorModelContentDesc").hide();
+                    $("#compositeIndicatorModelContentControls").hide();
+                    $('#CompositeIndButton').hide();
+                    $('#CompositeClosedButton').show();
+                });
+
                 $.noty.defaults.killer = true;
                 noty({
                     text: '<strong>Error</strong> <br/>  No Indicators have been defined for Visualization',
@@ -1488,26 +1556,182 @@ function updateVisualisationTab(request) {
                     text: '<strong>Success</strong> <br/>  Current Question has been visualized successfully.',
                     type: 'success'
                 });
+                $(function() {
+                    $('#CompositeIndButton').show();
+                    $('#CompositeClosedButton').hide();
+                });
                 var src = document.getElementById("runIndMem");
+                var src1 = document.getElementById("visualizeQuestionContent");
                 src.innerHTML = "";
+                src1.innerHTML = "";
                 for(i=0; i<parsedJSON.genQueries.length; i++) {
 
+                    //var label= document.createElement("label");
+                    //var description = document.createTextNode(parsedJSON.genQueries[i].indicatorName);
+                    //var checkbox = document.createElement("input");
+                    //checkbox.type = "checkbox";    // make the element a checkbox
+                    //checkbox.name = parsedJSON.genQueries[i].indicatorName;      // give it a name we can check on the server side
+                    //checkbox.value = parsedJSON.genQueries[i].indicatorName;         // make its value "pair"
+                    //checkbox.className = "messageCheckbox";
+                    //
+                    //label.appendChild(checkbox);   // add the box to the element
+                    //label.appendChild(description);// add the description to the element
+                    //// add the label element to your div
+                    //src.appendChild(label);
+                    //var img = document.createElement("img");
+                    //img.src = "/graphs/jgraph?runFromMemory=true&indicator="+parsedJSON.genQueries[i].indicatorName;
+                    //src.appendChild(img);
+
+                    var pTag= document.createElement("p");
                     var label= document.createElement("label");
+                    label.setAttribute("for", "checkbox-" + parsedJSON.genQueries[i].indicatorName);
                     var description = document.createTextNode(parsedJSON.genQueries[i].indicatorName);
                     var checkbox = document.createElement("input");
+                    checkbox.id = "checkbox-" + parsedJSON.genQueries[i].indicatorName;
                     checkbox.type = "checkbox";    // make the element a checkbox
                     checkbox.name = parsedJSON.genQueries[i].indicatorName;      // give it a name we can check on the server side
                     checkbox.value = parsedJSON.genQueries[i].indicatorName;         // make its value "pair"
-                    checkbox.className = "messageCheckbox";
+                    checkbox.className = "filled-in";
 
-                    label.appendChild(checkbox);   // add the box to the element
+
                     label.appendChild(description);// add the description to the element
+                    pTag.appendChild(checkbox);   // add the box to the element
+                    pTag.appendChild(label);   // add the box to the element
                     // add the label element to your div
-                    src.appendChild(label);
+                    src.appendChild(pTag);
+
+                    var imgDiv = document.createElement("div");
+                    imgDiv.className = "card col-md-10";
                     var img = document.createElement("img");
                     img.src = "/graphs/jgraph?runFromMemory=true&indicator="+parsedJSON.genQueries[i].indicatorName;
-                    src.appendChild(img);
+                    img.className = "responsive-img center-align";
+                    imgDiv.appendChild(img);
+                    src.appendChild(imgDiv);
+
+                    //var imgDiv1 = document.createElement("div");
+                    //imgDiv1.className = "card col-md-12";
+                    //var img1 = document.createElement("img");
+                    //img1.src = "/graphs/jgraph?runFromMemory=true&indicator="+parsedJSON.genQueries[i].indicatorName;
+                    //img1.className = "responsive-img center-align";
+                    //imgDiv1.appendChild(img1);
+                    //src1.appendChild(imgDiv1);
+
+
+                    var cardDiv = document.createElement("div");
+                    cardDiv.className = "card small col-md-6";
+
+                    var cardImageDiv = document.createElement("div");
+                    cardImageDiv.className = "card-image waves-effect waves-block waves-light";
+
+                    var cardImg = document.createElement("img");
+                    cardImg.src = "/graphs/jgraph?runFromMemory=true&indicator="+parsedJSON.genQueries[i].indicatorName;
+                    cardImg.className = "activator";
+
+                    cardImageDiv.appendChild(cardImg);
+
+                    cardDiv.appendChild(cardImageDiv);
+
+                    var cardContentDiv = document.createElement("div");
+                    cardContentDiv.className = "card-content";
+
+                    var cardContentSpan = document.createElement("span");
+                    cardContentSpan.className = "card-title activator grey-text text-darken-4";
+                    var cardTitle = document.createTextNode(parsedJSON.genQueries[i].indicatorName);
+                    cardContentSpan.appendChild(cardTitle);
+                    var cardMoreIcon = document.createElement("i");
+                    cardMoreIcon.className = "material-icons right";
+                    var cardMoreIconText = document.createTextNode("more_vert");
+                    cardMoreIcon.appendChild(cardMoreIconText);
+                    cardContentSpan.appendChild(cardMoreIcon);
+
+                    cardContentDiv.appendChild(cardContentSpan);
+
+                    cardDiv.appendChild(cardContentDiv);
+
+
+
+
+                    var cardRevealDiv = document.createElement("div");
+                    cardRevealDiv.className = "card-reveal";
+
+                    var cardRevealSpan = document.createElement("span");
+                    cardRevealSpan.className = "card-title grey-text text-darken-4";
+                    var cardRevealTitle = document.createTextNode(parsedJSON.genQueries[i].indicatorName);
+                    cardRevealSpan.appendChild(cardRevealTitle);
+                    var cardCloseIcon = document.createElement("i");
+                    cardCloseIcon.className = "material-icons right";
+                    var cardCloseIconText = document.createTextNode("close");
+                    cardCloseIcon.appendChild(cardCloseIconText);
+                    cardRevealSpan.appendChild(cardCloseIcon);
+
+                    cardRevealDiv.appendChild(cardRevealSpan);
+
+                    var cardRevealTextPara = document.createElement("p");
+                    var cardRevealText = document.createTextNode(
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on.");
+
+                    cardRevealTextPara.appendChild(cardRevealText);
+                    cardRevealDiv.appendChild(cardRevealTextPara);
+
+
+                    cardDiv.appendChild(cardRevealDiv);
+
+
+                    src1.appendChild(cardDiv);
+
+                //<div class="card small">
+                //        <div class="card-image waves-effect waves-block waves-light">
+                //        <img class="activator" src="images/office.jpg">
+                //        </div>
+                //        <div class="card-content">
+                //        <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
+                //    </div>
+                //    <div class="card-reveal">
+                //        <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
+                //    <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                //    </div>
+                //    </div>
+
+
                 }
+                $(function() {
+                    $("#saveQuestion").removeAttr('disabled');
+                });
                 $('#qiEditorTab a[href="#QuestionRun"]').tab('show');
 
             }
@@ -1667,7 +1891,6 @@ function loadFromTemplate() {
 }
 
 function loadToEditor(request) {
-
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
@@ -1771,6 +1994,11 @@ function loadToEditor(request) {
             });
 
             $('#qiEditorTab a[href="#QuestionIndicatorEditor"]').tab('show');
+
+            $("#indicatorDefinition").show();
+            $('body').animate({
+                scrollTop: $("#indicatorDefinition").offset().top
+            }, 2000);
         }
     }
 }
