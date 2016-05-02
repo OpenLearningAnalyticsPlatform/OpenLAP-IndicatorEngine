@@ -455,6 +455,7 @@ public class GAIndicatorSystemController {
                               @RequestParam(value="indicatorName", required = true) String indicatorName,
                               @RequestParam(value="graphType", required = true) String graphType,
                               @RequestParam(value="graphEngine", required = true) String graphEngine,
+                              @RequestParam(value="indicatorIndex", required = true) String indicatorIndex,
                               Model model) {
         Gson gson = new Gson();
         GLACategoryDao glaCategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
@@ -495,8 +496,6 @@ public class GAIndicatorSystemController {
         while(timeSpecIterator.hasNext()){
             xMLTimeSpecifications.add(timeSpecIterator.next().clone());
         }
-
-
         if(entitySpecificationBean.getQuestionsContainer().getGenQueries().size() == 0 ) {
             Questions questions = new Questions();
             GenIndicatorProps genIndicatorProps = new GenIndicatorProps();
@@ -520,8 +519,12 @@ public class GAIndicatorSystemController {
             genIndicatorProps.setChartEngine(entitySpecificationBean.getSelectedChartEngine());
             genIndicatorProps.setChartType(entitySpecificationBean.getSelectedChartType());
             genIndicatorProps.setComposite(entitySpecificationBean.isComposite());
-            entitySpecificationBean.getQuestionsContainer().getGenQueries().add(new GenQuery(entitySpecificationBean.getHql(),entitySpecificationBean.getIndicatorName(),1, indicatorXMLData, genIndicatorProps));
 
+            if(indicatorIndex.equals("null")) {
+                entitySpecificationBean.getQuestionsContainer().getGenQueries().add(new GenQuery(entitySpecificationBean.getHql(), entitySpecificationBean.getIndicatorName(), 1, indicatorXMLData, genIndicatorProps));
+            } else {
+                entitySpecificationBean.getQuestionsContainer().getGenQueries().set(Integer.parseInt(indicatorIndex), new GenQuery(entitySpecificationBean.getHql(),entitySpecificationBean.getIndicatorName(),1, indicatorXMLData, genIndicatorProps));
+            }
         }
         return gson.toJson(entitySpecificationBean.getQuestionsContainer());
     }
@@ -549,7 +552,7 @@ public class GAIndicatorSystemController {
                 }
             }
         }
-        entitySpecificationBean.getQuestionsContainer().getGenQueries().add(new GenQuery(gson.toJson(compositeQueryList),indicatorName,1, null, genIndicatorProps));
+        entitySpecificationBean.getQuestionsContainer().getGenQueries().add(new GenQuery(gson.toJson(compositeQueryList), indicatorName, 1, null, genIndicatorProps));
         return gson.toJson(entitySpecificationBean.getQuestionsContainer());
 
     }
@@ -621,9 +624,10 @@ public class GAIndicatorSystemController {
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         String msg = null;
         if (indicatorName != null) {
+            Questions temp = entitySpecificationBean.getQuestionsContainer();
             for (Iterator<GenQuery> genQuery = entitySpecificationBean.getQuestionsContainer().getGenQueries().iterator(); genQuery.hasNext(); ) {
                 GenQuery agenQuery = genQuery.next();
-                    if (agenQuery.getIndicatorName().equals(indicatorName) && !agenQuery.getGenIndicatorProps().isComposite()) {
+                if (agenQuery.getIndicatorName().equals(indicatorName) && !agenQuery.getGenIndicatorProps().isComposite()) {
                     entitySpecificationBean.setEntityValues(new ArrayList<EntityValues>(agenQuery.getIndicatorXMLData().getEntityValues().size()));
                     Iterator<EntityValues> entityIterator = agenQuery.getIndicatorXMLData().getEntityValues().iterator();
                     while(entityIterator.hasNext()) {
@@ -644,7 +648,7 @@ public class GAIndicatorSystemController {
                     while(timeSpecIterator.hasNext()){
                         entitySpecificationBean.getTimeSpecifications().add(timeSpecIterator.next().clone());
                     }
-                    genQuery.remove();
+//                    genQuery.remove();
                     return gson.toJson(agenQuery);
                 }
             }
@@ -702,6 +706,14 @@ public class GAIndicatorSystemController {
 
         return gson.toJson(qid);
 
+    }
+
+    @RequestMapping(value = "/deleteDataFromSession", method = RequestMethod.GET)
+    public @ResponseBody
+    void deleteDataFromSession() {
+
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        entitySpecificationBean.completeReset();
     }
 
     @RequestMapping(value = "/searchIndicator", method = RequestMethod.GET)
