@@ -392,6 +392,14 @@ function updateScreenAfterLoadInd(data) {
             break;
         }
     }
+    sel = document.getElementById('analyticsMethod');
+    var opts = sel.options;
+    for(var opt, j = 0; opt = opts[j]; j++) {
+        if(opt.value == data.genIndicatorProps.analyticsMethodId) {
+            sel.selectedIndex = j;
+            break;
+        }
+    }
     var optionsToSelect = data.indicatorXMLData.source;
     var select = document.getElementById( 'sourceSelection' );
 
@@ -1420,9 +1428,10 @@ function finalizeIndicator(filterPresent) {
         var graphType = document.getElementById("selectedChartType").value;
         var graphEngine = document.getElementById("EngineSelect").value;
         var indicatorIndex = localStorage.getItem("selectedIndicatorIndex");
+        var analyticsMethod = document.getElementById("analyticsMethod").value;
         localStorage.removeItem("selectedIndicatorIndex");
         var url ="/indicators/finalize?questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
-            +"&graphEngine="+graphEngine+"&indicatorIndex="+indicatorIndex;
+            +"&graphEngine="+graphEngine+"&indicatorIndex="+indicatorIndex+"&analyticsMethod="+analyticsMethod;
         request.open("GET",url,true);
         request.onreadystatechange=function(){postrefreshQuestionSummary(request,2)};
         request.send(null);
@@ -1893,6 +1902,7 @@ function loadFromTemplate() {
 function loadToEditor(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
+
             var parsedJSON = JSON.parse(request.responseText);
             var parsedindProp = JSON.parse(parsedJSON.glaIndicatorProps.json_data);
 
