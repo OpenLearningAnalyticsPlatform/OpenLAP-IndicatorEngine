@@ -1,4 +1,8 @@
 $(function() {
+    populateAnalyticsMethods();
+    populateAnalyticsGoal();
+    populateVisualizationFrameworks();
+
 
     $('.modal-trigger').leanModal();
 
@@ -90,4 +94,151 @@ function loadIndicator(indicatorName){
             }
         });
     });
+}
+
+function populateAnalyticsMethods(){
+    var request = createRequest();
+    var url = "/engine/listAllAnalyticsMethods";
+    request.open("GET",url,true);
+    request.onreadystatechange=function(){processReceivedAnalyticsMethods(request)};
+    request.send(null);
+
+}
+
+function processReceivedAnalyticsMethods(request) {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+
+            var analyticsMethodSelection = document.getElementById("analyticsMethod");
+            removeOptions(analyticsMethodSelection);
+            for (var i=0;i< parsedJSON.length;i++) {
+                var newOption = new Option(parsedJSON[i].name, parsedJSON[i].id);
+                analyticsMethodSelection.appendChild(newOption);
+            }
+        }
+    }
+}
+
+function populateAnalyticsGoal(){
+    var request = createRequest();
+    var url = "/engine/listAllGoals";
+    request.open("GET",url,true);
+    request.onreadystatechange=function(){processReceivedAnalyticsGoal(request)};
+    request.send(null);
+
+}
+
+function processReceivedAnalyticsGoal(request) {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+
+            var goalSelection = document.getElementById("GoalSelection");
+            removeOptions(goalSelection);
+            for (var i=0;i< parsedJSON.length;i++) {
+                var newOption = new Option(parsedJSON[i].name, parsedJSON[i].id);
+                goalSelection.appendChild(newOption);
+            }
+        }
+    }
+}
+
+function populateVisualizationFrameworks(){
+    var request = createRequest();
+    var url = "/engine/listAllVisualizationFrameworks";
+    request.open("GET",url,true);
+    request.onreadystatechange=function(){processReceivedVisualizationFrameworks(request)};
+    request.send(null);
+
+}
+
+function processReceivedVisualizationFrameworks(request) {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+
+            var visualizationFrameworksSelection = document.getElementById("EngineSelect");
+            removeOptions(visualizationFrameworksSelection);
+            for (var i=0;i< parsedJSON.length;i++) {
+                var newOption = new Option(parsedJSON[i].name, parsedJSON[i].id);
+                visualizationFrameworksSelection.appendChild(newOption);
+            }
+        }
+    }
+}
+
+function getIndicatorPreviewVisualizationCode(){
+    var request = createRequest();
+    var url = "/engine/getIndicatorPreviewVisualizationCode?width=" + $('#chart_wrap').parent().width()
+                                                                + "&height=" + $('#chart_wrap').parent().height()
+                                                                + "&analyticsMethodId=" + $( "#analyticsMethod" ).val()
+                                                                + "&EngineSelect=" + $( "#EngineSelect" ).val()
+                                                                + "&indicatorNaming=" + $( "#indicatorNaming" ).val();
+    request.open("GET",url,true);
+    request.onreadystatechange=function(){embedIndicatorPreviewVisualizationCode(request)};
+    request.send(null);
+
+}
+
+function embedIndicatorPreviewVisualizationCode(request) {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            if ((typeof google === 'undefined') || (typeof google.visualization === 'undefined')) {
+                console.log('Google Charts Lib is not loaded');
+            }
+            else {
+                var parsedJSON = JSON.parse(request.responseText);
+                var decodedGraphData = decodeURIComponent(parsedJSON);
+                decodedGraphData = "<TemporaryDiv>" + decodedGraphData + "</TemporaryDiv>";
+
+                var parser = new DOMParser();
+                var dataDOMObj = parser.parseFromString(decodedGraphData, "text/xml");
+
+                var scriptTagData = dataDOMObj.getElementsByTagName('script')[0];
+                var randomNo = Math.floor((Math.random() * 100000) + 1000);
+                scriptTagData.insertAdjacentHTML('afterbegin', '<script type="text/javascript"> google.charts.setOnLoadCallback(drawChart_' + randomNo + '); function drawChart_' + randomNo + '() {');
+                scriptTagData.insertAdjacentHTML('beforeend', '} </script>');
+
+                var divTagData = dataDOMObj.getElementsByTagName('div')[0];
+                $("#preview_chart").html(dataDOMObj.getElementsByTagName('TemporaryDiv')[0].textContent + divTagData.outerHTML);
+            }
+        }
+    }
+}
+
+function getQuestionVisualizationCode(){
+    var request = createRequest();
+    var url = "/engine/getQuestionVisualizationCode?width=" + $('#chart_wrap').parent().width()
+        + "&height=" + $('#chart_wrap').parent().height();
+    request.open("GET",url,true);
+    request.onreadystatechange=function(){embedIndicatorPreviewVisualizationCode(request)};
+    request.send(null);
+
+}
+
+function embedQuestionVisualizationCode(request) {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            if ((typeof google === 'undefined') || (typeof google.visualization === 'undefined')) {
+                console.log('Google Charts Lib is not loaded');
+            }
+            else {
+                var parsedJSON = JSON.parse(request.responseText);
+                var decodedGraphData = decodeURIComponent(parsedJSON);
+                decodedGraphData = "<TemporaryDiv>" + decodedGraphData + "</TemporaryDiv>";
+
+                var parser = new DOMParser();
+                var dataDOMObj = parser.parseFromString(decodedGraphData, "text/xml");
+
+                var scriptTagData = dataDOMObj.getElementsByTagName('script')[0];
+                var randomNo = Math.floor((Math.random() * 100000) + 1000);
+                scriptTagData.insertAdjacentHTML('afterbegin', '<script type="text/javascript"> google.charts.setOnLoadCallback(drawChart_' + randomNo + '); function drawChart_' + randomNo + '() {');
+                scriptTagData.insertAdjacentHTML('beforeend', '} </script>');
+
+                var divTagData = dataDOMObj.getElementsByTagName('div')[0];
+                $("#preview_chart").html(dataDOMObj.getElementsByTagName('TemporaryDiv')[0].textContent + divTagData.outerHTML);
+            }
+        }
+    }
 }
