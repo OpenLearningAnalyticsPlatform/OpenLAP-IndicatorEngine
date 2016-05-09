@@ -55,6 +55,7 @@ public class EntitySpecification implements Serializable {
     private String selectedChartEngine;
 
     private boolean isComposite;
+    private long analyticsMethodId;
 
     private final String  persistenceObject;
     private final String filteringType;
@@ -247,4 +248,8 @@ public class EntitySpecification implements Serializable {
     public void setComposite(boolean isComposite) {
         this.isComposite = isComposite;
     }
+
+    public long getAnalyticsMethodId() { return analyticsMethodId; }
+
+    public void setAnalyticsMethodId(long analyticsMethodId) { this.analyticsMethodId = analyticsMethodId; }
 }
