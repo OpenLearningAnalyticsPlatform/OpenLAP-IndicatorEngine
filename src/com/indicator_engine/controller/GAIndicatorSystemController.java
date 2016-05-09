@@ -21,6 +21,7 @@
 package com.indicator_engine.controller;
 
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import com.indicator_engine.dao.*;
 import com.indicator_engine.datamodel.*;
 import com.indicator_engine.graphgenerator.cewolf.PageViewCountData;
@@ -39,6 +40,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -456,6 +458,7 @@ public class GAIndicatorSystemController {
                               @RequestParam(value="graphType", required = true) String graphType,
                               @RequestParam(value="graphEngine", required = true) String graphEngine,
                               @RequestParam(value="indicatorIndex", required = true) String indicatorIndex,
+                              @RequestParam(value="analyticsMethod", required = true) String analyticsMethod,
                               Model model) {
         Gson gson = new Gson();
         GLACategoryDao glaCategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
@@ -464,6 +467,7 @@ public class GAIndicatorSystemController {
         entitySpecificationBean.setSelectedChartType(graphType);
         entitySpecificationBean.setSelectedChartEngine(graphEngine);
         entitySpecificationBean.setComposite(false);
+        entitySpecificationBean.setAnalyticsMethodId(Long.parseLong(analyticsMethod));
         //entitySpecificationBean.setQuestionName(questionName);
         entitySpecificationBean.setIndicatorName(indicatorName);
         //If user Directly finalizes the Indicator, then we have to implicitly generate the HQL
@@ -502,6 +506,7 @@ public class GAIndicatorSystemController {
             genIndicatorProps.setChartEngine(entitySpecificationBean.getSelectedChartEngine());
             genIndicatorProps.setChartType(entitySpecificationBean.getSelectedChartType());
             genIndicatorProps.setComposite(entitySpecificationBean.isComposite());
+            genIndicatorProps.setAnalyticsMethodId(entitySpecificationBean.getAnalyticsMethodId());
             IndicatorXMLData indicatorXMLData = new IndicatorXMLData(entitySpecificationBean.getSelectedSource(), entitySpecificationBean.getSelectedPlatform(),
                     entitySpecificationBean.getSelectedAction(),entitySpecificationBean.getSelectedMinor(),entitySpecificationBean.getSelectedMajor(),
                     entitySpecificationBean.getFilteringType(),xMLentityValues, xMlUserSpecifications, xMLSessionSpecifications, xMLTimeSpecifications, entitySpecificationBean.getSelectedChartType(),
@@ -519,6 +524,7 @@ public class GAIndicatorSystemController {
             genIndicatorProps.setChartEngine(entitySpecificationBean.getSelectedChartEngine());
             genIndicatorProps.setChartType(entitySpecificationBean.getSelectedChartType());
             genIndicatorProps.setComposite(entitySpecificationBean.isComposite());
+            genIndicatorProps.setAnalyticsMethodId(entitySpecificationBean.getAnalyticsMethodId());
 
             if(indicatorIndex.equals("null")) {
                 entitySpecificationBean.getQuestionsContainer().getGenQueries().add(new GenQuery(entitySpecificationBean.getHql(), entitySpecificationBean.getIndicatorName(), 1, indicatorXMLData, genIndicatorProps));
