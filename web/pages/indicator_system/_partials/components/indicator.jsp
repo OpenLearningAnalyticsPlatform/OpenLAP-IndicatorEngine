@@ -209,11 +209,8 @@
                     <div class="collapsible-body panel-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <label for="timeSelectionType">Select a Method</label>
-                                <form:select class="form-control" title="Please select a method." path="selectedPlatform" name ="MethodSelection" id="MethodSelection" onfocus="this.selectedIndex = -1;">
-                                    <form:option value="Count" label="Count" />
-                                    <form:option value="Sum" label="Sum" />
-                                    <form:option value="Average" label="Average" />
+                                <label for="analyticsMethod">Select a Method</label>
+                                <form:select class="form-control" title="Please select a method." path="selectedPlatform" name ="analyticsMethod" id="analyticsMethod" onfocus="this.selectedIndex = -1;">
                                 </form:select>
                             </div>
                         </div>
@@ -226,21 +223,27 @@
                             <div class="col-md-6">
                                 <label for="selectedChartType">Select Graph Type </label>
                                 <form:select class="form-control" path="selectedChartType"
-                                             items="${selectNumberParameters.chartTypes}" name ="selectedChartType" id="selectedChartType" title="Select Graph type for Visulaization" />
+                                             items="${selectNumberParameters.chartTypes}" name ="selectedChartType" id="selectedChartType" title="Select Graph type for Visualization" />
                                 <label for="EngineSelect">Select Graph Engine </label>
                                 <form:select class="form-control" path="selectedChartEngine"
-                                             items="${selectNumberParameters.chartEngines}" name ="EngineSelect" id="EngineSelect" title="Select Graph Engine for Visulaization" />
+                                             items="${selectNumberParameters.chartEngines}" name ="EngineSelect" id="EngineSelect" title="Select Graph Engine for Visulualization" />
                                 <br/>
                                 <div class="right-align">
+                                    <%--<button class="btn waves-effect waves-light light-blue darken-2" type="button" title="Apply to generate Graph."--%>
+                                            <%--name="generateGraph" id="generateGraph" value="Generate Graph"onclick="refreshGraph()">Apply--%>
+                                    <%--</button>--%>
                                     <button class="btn waves-effect waves-light light-blue darken-2" type="button" title="Apply to generate Graph."
-                                            name="generateGraph" id="generateGraph" value="Generate Graph"onclick="refreshGraph()">Apply
+                                            name="generateGraph" id="generateGraph" value="Generate Graph" onclick="getIndicatorPreviewVisualizationCode()">Apply
                                     </button>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div id="graphGeneration">
-                                    <img src="/graphs/jgraph?default=true" id="graphImage" title="Generated Graph" style="width: 100%;"/>
+                                <div id="chart_wrap">
+                                    <div id="preview_chart"></div>
                                 </div>
+                                <%--<div id="graphGeneration">--%>
+                                    <%--<img src="/graphs/jgraph?default=true" id="graphImage" title="Generated Graph" style="width: 100%;"/>--%>
+                                <%--</div>--%>
                             </div>
                         </div>
                     </div>

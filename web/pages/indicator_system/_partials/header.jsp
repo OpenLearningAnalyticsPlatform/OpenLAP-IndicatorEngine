@@ -63,6 +63,11 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/indicator_editor.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/materialize/js/materialize.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/ui_tricks.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load("current", {packages:["corechart"]});
+    </script>
+
     <script type="text/javascript">
 
         (function($) {

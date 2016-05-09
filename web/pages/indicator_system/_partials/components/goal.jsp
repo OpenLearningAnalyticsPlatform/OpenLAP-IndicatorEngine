@@ -6,8 +6,6 @@
                 <div class="col-md-6">
                     <label for="GoalSelection">Select Goal </label>
                     <form:select class="form-control" title="Please select a goal." path="selectedPlatform" name ="GoalSelection" id="GoalSelection" onfocus="this.selectedIndex = -1;">
-                        <form:option value="Monitoring" label="Monitoring" />
-                        <form:option value="Statistic" label="Statistic" />
                     </form:select>
                 </div>
             </div>
