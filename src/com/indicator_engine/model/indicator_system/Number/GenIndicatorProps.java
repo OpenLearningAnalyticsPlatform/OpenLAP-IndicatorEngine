@@ -16,10 +16,11 @@ public class GenIndicatorProps implements Serializable {
     private String chartEngine;
     private String userName;
     private boolean isComposite;
+    private long analyticsMethodId;
 
     public GenIndicatorProps(){}
     public GenIndicatorProps(long props_id, Timestamp last_executionTime, int totalExecutions,
-                             String chartType,String chartEngine, String userName, boolean isComposite){
+                             String chartType,String chartEngine, String userName, boolean isComposite, long analyticsMethodId){
         this.props_id = props_id;
         this.last_executionTime = last_executionTime;
         this.totalExecutions = totalExecutions;
@@ -27,6 +28,7 @@ public class GenIndicatorProps implements Serializable {
         this.chartType = chartType;
         this.userName = userName;
         this.isComposite = isComposite;
+        this.analyticsMethodId = analyticsMethodId;
     }
 
     public long getProps_id() {
@@ -84,4 +86,13 @@ public class GenIndicatorProps implements Serializable {
     public void setComposite(boolean isComposite) {
         this.isComposite = isComposite;
     }
+
+    public long getAnalyticsMethodId() {
+        return analyticsMethodId;
+    }
+
+    public void setAnalyticsMethodId(long analyticsMethodId) {
+        this.analyticsMethodId = analyticsMethodId;
+    }
+
 }
