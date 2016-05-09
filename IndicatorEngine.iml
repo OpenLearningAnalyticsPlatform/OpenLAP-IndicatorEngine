@@ -68,5 +68,6 @@
     <orderEntry type="library" name="jcommon-1.0.0" level="project" />
     <orderEntry type="library" name="cewolf-1.2.4" level="project" />
     <orderEntry type="library" name="cewolf-support" level="project" />
+    <orderEntry type="library" name="OpenLAP-Common" level="project" />
   </component>
 </module>
