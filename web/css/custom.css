@@ -19,6 +19,10 @@
     color: black !important;
     cursor: default;
 }
+.filter-chip {
+    background-color: beige !important;
+    cursor: default;
+}
 .chip-bg {
     background-color: #26a69a  !important;
 }
@@ -56,7 +60,7 @@ label {
     font-size: 16px;
 }
 #saveQuestion, #saveIndicator {
-    min-width: 12%;
+    min-width: 125px;
 }
 .tabs .tab a {
     color: #0288d1 !important;
@@ -94,4 +98,52 @@ input[type=text]:focus:not([readonly]) {
     min-height: 80% !important;
     min-width: 80% !important;
     top: 0 !important;
+}
+#associatedIndicatorsLabelDiv {
+    padding-left: 0px;
+}
+#floatingButtonDiv {
+    margin-left: -50px;
+}
+label {
+    width: 100%;
+}
+label:after {
+    -moz-transition-property: all !important;
+    -o-transition-property: all !important;
+    -webkit-transition-property: all !important;
+    transition-property: all !important;
+    font-size: 0.8rem;
+    -moz-transform: none;
+    -ms-transform: none;
+    -o-transform: none;
+    -webkit-transform: none;
+    transform: none;
+}
+label:not(.active):after {
+    -moz-transform: translateY(-140%);
+    -ms-transform: translateY(-140%);
+    -o-transform: translateY(-140%);
+    -webkit-transform: translateY(-140%);
+    transform: translateY(-140%);
+}
+select.invalid {
+    border: 2px solid red;
+}
+.select-desc {
+    position: relative;
+    display: inline-block;
+    margin-top: 40px;
+    text-align: left;
+    color: grey;
+    font-size: 13px;
+}
+#analyticsMethodDesc > i {
+    vertical-align: middle !important;
+    font-size: 20px;
+}
+input,
+input::-webkit-input-placeholder {
+    font-size: 13px;
+    line-height: 2;
 }
