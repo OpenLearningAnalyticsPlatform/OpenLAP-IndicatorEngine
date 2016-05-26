@@ -265,51 +265,51 @@ $(function() {
         });
     });
 
-    $.noty.defaults = {
-        layout: 'bottomRight',
-        theme: 'relax', // or 'relax'
-        type: 'information',
-        text: '', // can be html or string
-        dismissQueue: true, // If you want to use queue feature set this true
-        template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
-        animation: {
-            open: 'animated bounceInLeft', // Animate.css class names
-            close: 'animated bounceOutLeft', // Animate.css class names
-            easing: 'swing', // unavailable - no need
-            speed: 500 // unavailable - no need
-        },
-        timeout: 30000, // delay for closing event. Set false for sticky notifications
-        force: false, // adds notification to the beginning of queue when set to true
-        modal: false,
-        maxVisible: 7, // you can set max visible notification for dismissQueue true option,
-        killer: false, // for close all notifications before show
-        closeWith: ['click'], // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
-        callback: {
-            onShow: function() {},
-            afterShow: function() {},
-            onClose: function() {},
-            afterClose: function() {},
-            onCloseClick: function() {}
-        },
-        buttons: false // an array of buttons
-    };
+    // $.noty.defaults = {
+    //     layout: 'bottomRight',
+    //     theme: 'relax', // or 'relax'
+    //     type: 'information',
+    //     text: '', // can be html or string
+    //     dismissQueue: true, // If you want to use queue feature set this true
+    //     template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
+    //     animation: {
+    //         open: 'animated bounceInLeft', // Animate.css class names
+    //         close: 'animated bounceOutLeft', // Animate.css class names
+    //         easing: 'swing', // unavailable - no need
+    //         speed: 500 // unavailable - no need
+    //     },
+    //     timeout: 30000, // delay for closing event. Set false for sticky notifications
+    //     force: false, // adds notification to the beginning of queue when set to true
+    //     modal: false,
+    //     maxVisible: 7, // you can set max visible notification for dismissQueue true option,
+    //     killer: false, // for close all notifications before show
+    //     closeWith: ['click'], // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+    //     callback: {
+    //         onShow: function() {},
+    //         afterShow: function() {},
+    //         onClose: function() {},
+    //         afterClose: function() {},
+    //         onCloseClick: function() {}
+    //     },
+    //     buttons: false // an array of buttons
+    // };
 
 
 });
-$(window).load(function(){
-    $.noty.defaults.killer = true;
-    noty({
-        text: '<strong>Warning</strong> <br/> Please do not click any icons. <br/>' +
-        'The <strong> Question : Indicator </strong> Definition process has started. Please follow the instructions in the Information Notification Area to continue.<br/>' +
-        'You would receive further instructions as you proceed.',
-        type: 'warning'
-    });
-    $.noty.defaults.killer = true;
-    noty({
-        text: '<strong>Information</strong> <br/>Please Type the Question Name to continue...',
-        type: 'information'
-    });
-})
+// $(window).load(function(){
+//     $.noty.defaults.killer = true;
+//     noty({
+//         text: '<strong>Warning</strong> <br/> Please do not click any icons. <br/>' +
+//         'The <strong> Question : Indicator </strong> Definition process has started. Please follow the instructions in the Information Notification Area to continue.<br/>' +
+//         'You would receive further instructions as you proceed.',
+//         type: 'warning'
+//     });
+//     $.noty.defaults.killer = true;
+//     noty({
+//         text: '<strong>Information</strong> <br/>Please Type the Question Name to continue...',
+//         type: 'information'
+//     });
+// })
 function  GenerateTable(data) {
 
     var indicatorData = new Array();
@@ -359,47 +359,54 @@ function  GenerateTable(data) {
 }
 
 function updateScreenAfterLoadInd(data) {
-    document.getElementById('indicatorNaming').value = data.indicatorName;
-    var sel = document.getElementById('PlatformSelection');
-    var opts = sel.options;
-    for(var opt, j = 0; opt = opts[j]; j++) {
-        if(opt.value == data.indicatorXMLData.platform) {
-            sel.selectedIndex = j;
-            break;
-        }
-    }
-    sel = document.getElementById('actionSelection');
-    var opts = sel.options;
-    for(var opt, j = 0; opt = opts[j]; j++) {
-        if(opt.value == data.indicatorXMLData.action) {
-            sel.selectedIndex = j;
-            break;
-        }
-    }
-    sel = document.getElementById('selectedChartType');
-    var opts = sel.options;
-    for(var opt, j = 0; opt = opts[j]; j++) {
-        if(opt.value == data.genIndicatorProps.chartType) {
-            sel.selectedIndex = j;
-            break;
-        }
-    }
-    sel = document.getElementById('EngineSelect');
-    var opts = sel.options;
-    for(var opt, j = 0; opt = opts[j]; j++) {
-        if(opt.value == data.genIndicatorProps.chartEngine) {
-            sel.selectedIndex = j;
-            break;
-        }
-    }
-    sel = document.getElementById('analyticsMethod');
-    var opts = sel.options;
-    for(var opt, j = 0; opt = opts[j]; j++) {
-        if(opt.value == data.genIndicatorProps.analyticsMethodId) {
-            sel.selectedIndex = j;
-            break;
-        }
-    }
+    $('#indicatorNaming').val(data.indicatorName);
+    // document.getElementById('indicatorNaming').value = data.indicatorName;
+    $('#PlatformSelection').val(data.indicatorXMLData.platform);
+    // var sel = document.getElementById('PlatformSelection');
+    // var opts = sel.options;
+    // for(var opt, j = 0; opt = opts[j]; j++) {
+    //     if(opt.value == data.indicatorXMLData.platform) {
+    //         sel.selectedIndex = j;
+    //         break;
+    //     }
+    // }
+    $('#actionSelection').val(data.indicatorXMLData.action);
+    // sel = document.getElementById('actionSelection');
+    // var opts = sel.options;
+    // for(var opt, j = 0; opt = opts[j]; j++) {
+    //     if(opt.value == data.indicatorXMLData.action) {
+    //         sel.selectedIndex = j;
+    //         break;
+    //     }
+    // }
+    $('#selectedChartType').val(data.genIndicatorProps.chartType);
+    // sel = document.getElementById('selectedChartType');
+    // var opts = sel.options;
+    // for(var opt, j = 0; opt = opts[j]; j++) {
+    //     if(opt.value == data.genIndicatorProps.chartType) {
+    //         sel.selectedIndex = j;
+    //         break;
+    //     }
+    // }
+    $('#EngineSelect').val(data.genIndicatorProps.chartEngine);
+    // sel = document.getElementById('EngineSelect');
+    // var opts = sel.options;
+    // for(var opt, j = 0; opt = opts[j]; j++) {
+    //     if(opt.value == data.genIndicatorProps.chartEngine) {
+    //         sel.selectedIndex = j;
+    //         break;
+    //     }
+    // }
+    $('#analyticsMethod').val(data.genIndicatorProps.analyticsMethodId);
+    // sel = document.getElementById('analyticsMethod');
+    // var opts = sel.options;
+    // for(var opt, j = 0; opt = opts[j]; j++) {
+    //     if(opt.value == data.genIndicatorProps.analyticsMethodId) {
+    //         sel.selectedIndex = j;
+    //         break;
+    //     }
+    // }
+
     var optionsToSelect = data.indicatorXMLData.source;
     var select = document.getElementById( 'sourceSelection' );
 
@@ -412,7 +419,13 @@ function updateScreenAfterLoadInd(data) {
         }
     }
 
+    var entityValues = data.indicatorXMLData.entityValues;
+    var userSpecs = data.indicatorXMLData.userSpecifications;
+    var sessionSpecs = data.indicatorXMLData.sessionSpecifications;
+    var timeSpecs = data.indicatorXMLData.timeSpecifications;
+    loadIndicatorAssociatedFilters(entityValues, userSpecs, sessionSpecs, timeSpecs);
 
+    populateCategories(data.indicatorXMLData.minor);
 }
 /*
  * hoverIntent | Copyright 2011 Brian Cherne
@@ -516,42 +529,46 @@ function alert_questionName(request) {
 
             if (request.responseText == "exists") {
 
-                noty({
-                    text: '<strong>Error</strong> <br/> Question name already Existing. Duplicate names not allowed',
-                    type: 'error'
-                });
-                document.getElementById("questionNaming").value=null;
+                // noty({
+                //     text: '<strong>Error</strong> <br/> Question name already Existing. Duplicate names not allowed',
+                //     type: 'error'
+                // });
+                // document.getElementById("questionNaming").value=null;
+                return "Question name already Existing. Duplicate names not allowed";
             }
             else if (request.responseText == "short") {
 
-                noty({
-                    text: '<strong>Error</strong> <br/> Question Name is too Short!',
-                    type: 'error'
-                });
-                noty({
-                    text: '<strong>Information</strong> <br/> Question Name must have at least 6 characters',
-                    type: 'information'
-                });
-                document.getElementById("questionNaming").value=null;
+                // noty({
+                //     text: '<strong>Error</strong> <br/> Question Name is too Short!',
+                //     type: 'error'
+                // });
+                // noty({
+                //     text: '<strong>Information</strong> <br/> Question Name must have at least 6 characters',
+                //     type: 'information'
+                // });
+                // document.getElementById("questionNaming").value=null;
+                return "Question Name must have at least 6 characters";
             }
             else if (request.responseText == "null") {
 
-                noty({
-                    text: '<strong>Error</strong> <br/> Question Name cannot be Empty !',
-                    type: 'error'
-                });
-                document.getElementById("questionNaming").value=null;
+                // noty({
+                //     text: '<strong>Error</strong> <br/> Question Name cannot be Empty !',
+                //     type: 'error'
+                // });
+                // document.getElementById("questionNaming").value=null;
+                return "Question Name cannot be Empty";
             }
             else {
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Success</strong> <br/> Question Name satisfies all constraints',
-                    type: 'success'
-                });
-                noty({
-                    text: '<strong>Next Step</strong> <br/> Type the Indicator Name',
-                    type: 'information'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/> Question Name satisfies all constraints',
+                //     type: 'success'
+                // });
+                // noty({
+                //     text: '<strong>Next Step</strong> <br/> Type the Indicator Name',
+                //     type: 'information'
+                // });
+                return true;
             }
         }
     }
@@ -572,88 +589,92 @@ function alert_indicatorName(request) {
 
             if (request.responseText == "exists") {
 
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Error</strong> <br/> Indicator name already Existing. Duplicate names not allowed',
-                    type: 'error'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Error</strong> <br/> Indicator name already Existing. Duplicate names not allowed',
+                //     type: 'error'
+                // });
                 document.getElementById("indicatorNaming").value=null;
             }
             else if (request.responseText == "short") {
 
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Error</strong> <br/> Indicator Name is too Short',
-                    type: 'error'
-                });
-                noty({
-                    text: '<strong>Information</strong> <br/> Indicator Name must have at least 6 characters',
-                    type: 'information'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Error</strong> <br/> Indicator Name is too Short',
+                //     type: 'error'
+                // });
+                // noty({
+                //     text: '<strong>Information</strong> <br/> Indicator Name must have at least 6 characters',
+                //     type: 'information'
+                // });
                 document.getElementById("indicatorNaming").value=null;
             }
             else if (request.responseText == "null") {
 
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Error</strong> <br/> Indicator Name cannot be Empty',
-                    type: 'error'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Error</strong> <br/> Indicator Name cannot be Empty',
+                //     type: 'error'
+                // });
                 document.getElementById("indicatorNaming").value=null;
             }
             else {
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Success</strong> <br/> Indicator Name satisfies all constraints',
-                    type: 'success'
-                });
-
-                noty({
-                    text: '<strong>Next Step</strong> <br/> Select 1 or more sources in the <strong>Indicator Information</strong> window.',
-                    type: 'information'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/> Indicator Name satisfies all constraints',
+                //     type: 'success'
+                // });
+                //
+                // noty({
+                //     text: '<strong>Next Step</strong> <br/> Select 1 or more sources in the <strong>Indicator Information</strong> window.',
+                //     type: 'information'
+                // });
             }
         }
     }
 }
 
 function sourceChanged() {
-    $.noty.defaults.killer = true;
-    noty({
-        text: '<strong>Success</strong> <br/>Source Selected',
-        type: 'success'
-    });
-
-    noty({
-        text: '<strong>Next Step</strong> <br/>Select a Platform !',
-        type: 'information'
-    });
+    // $.noty.defaults.killer = true;
+    // noty({
+    //     text: '<strong>Success</strong> <br/>Source Selected',
+    //     type: 'success'
+    // });
+    //
+    // noty({
+    //     text: '<strong>Next Step</strong> <br/>Select a Platform !',
+    //     type: 'information'
+    // });
 }
 
 function platformChanged(){
-    $.noty.defaults.killer = true;
-    noty({
-        text: '<strong>Success</strong> <br/>Platform Selected',
-        type: 'success'
-    });
-
-    noty({
-        text: '<strong>Next Step</strong> <br/>Select an Action !',
-        type: 'information'
-    });
+    // $.noty.defaults.killer = true;
+    // noty({
+    //     text: '<strong>Success</strong> <br/>Platform Selected',
+    //     type: 'success'
+    // });
+    //
+    // noty({
+    //     text: '<strong>Next Step</strong> <br/>Select an Action !',
+    //     type: 'information'
+    // });
 }
 
-function populateCategories(){
-    var request = createRequest();
-    $.noty.defaults.killer = true;
-    noty({
-        text: '<strong>Success</strong> <br/> Action Selected <br/> Retreiving Minors...',
-        type: 'success'
-    });
-    noty({
-        text: '<strong>Next Step</strong> <br/> Select a Category!',
-        type: 'information'
-    });
+    function populateCategories(selectedValue){
+    var selectedValue = selectedValue || null;
+    var spinner = $('#selectedMinorSpinner');
+    spinner.show();
+    // var request = createRequest();
+    // $.noty.defaults.killer = true;
+    // noty({
+    //     text: '<strong>Success</strong> <br/> Action Selected <br/> Retreiving Minors...',
+    //     type: 'success'
+    // });
+    // noty({
+    //     text: '<strong>Next Step</strong> <br/> Select a Category!',
+    //     type: 'information'
+    // });
+
     var selectedSources = "";
     var selectedArray = new Array();
     var selObj = document.getElementById('sourceSelection');
@@ -665,13 +686,35 @@ function populateCategories(){
             count++;
         }
     }
+
     selectedSources = selectedArray;
-    var selectedAction = document.getElementById('actionSelection').value;
-    var selectedPlatform = document.getElementById('PlatformSelection').value;
-    var url ="/indicators/populateCategories?action="+selectedAction+"&platform="+selectedPlatform+"&sources="+selectedSources;
-    request.open("GET",url,true);
-    request.onreadystatechange=function(){processReceivedCategories(request)};
-    request.send(null);
+    // var selectedAction = document.getElementById('actionSelection').value;
+    // var selectedPlatform = document.getElementById('PlatformSelection').value;
+    var selectedAction = $('#actionSelection').val();
+    var selectedPlatform = $('#PlatformSelection').val();
+    // var url ="/indicators/populateCategories?action="+selectedAction+"&platform="+selectedPlatform+"&sources="+selectedSources;
+    // request.open("GET",url,true);
+    // request.onreadystatechange=function(){processReceivedCategories(request)};
+    // request.send(null);
+    $.ajax({
+        context: true,
+        type: "GET",
+        url: "/indicators/populateCategories?action="+selectedAction+"&platform="+selectedPlatform+"&sources="+selectedSources,
+        dataType: "json",
+        success: function (response) {
+            var selectedMinor = document.getElementById("selectedMinor");
+            removeOptions(selectedMinor);
+            for (var i = 0; i < response.length; i++) {
+                var newOption = new Option(response[i].minor, response[i].minor);
+                selectedMinor.appendChild(newOption);
+            }
+            if(selectedValue !== null) {
+                $('#selectedMinor').val(selectedValue);
+            }
+            spinner.hide();
+            populateEntities();
+        }
+    });
 
 }
 
@@ -687,31 +730,51 @@ function processReceivedCategories(request) {
             }
         }
     }
+    $('#selectedMinorSpinner').hide();
 }
 
-function populateEntities() {
-    var request = createRequest();
-    $.noty.defaults.killer = true;
-    noty({
-        text: '<strong>Success</strong> <br/> Category Selected <br/> Retreiving Entities...',
-        type: 'success'
-    });
+function populateEntities(data) {
+    // var request = createRequest();
+    // $.noty.defaults.killer = true;
+    // noty({
+    //     text: '<strong>Success</strong> <br/> Category Selected <br/> Retreiving Entities...',
+    //     type: 'success'
+    // });
+    //
+    // noty({
+    //     text: '<strong>Next Step</strong> <br/> You may add <strong> Filters </strong> to your Indicator in the <strong> Indicator Properties & Summary </strong> window.<br/> ' +
+    //     'You can click on the Graph icon to generate a graph which can be viewed in <strong> Graph Preview </strong> Tab.',
+    //     type: 'information'
+    // });
+    // noty({
+    //     text: '<strong>Warning</strong> <br/> We will add a default filter to select all values from the data sources selected above if you do not add any Filter !',
+    //     type: 'warning'
+    // });
 
-    noty({
-        text: '<strong>Next Step</strong> <br/> You may add <strong> Filters </strong> to your Indicator in the <strong> Indicator Properties & Summary </strong> window.<br/> ' +
-        'You can click on the Graph icon to generate a graph which can be viewed in <strong> Graph Preview </strong> Tab.',
-        type: 'information'
-    });
-    noty({
-        text: '<strong>Warning</strong> <br/> We will add a default filter to select all values from the data sources selected above if you do not add any Filter !',
-        type: 'warning'
-    });
+    // var minorSelected = $('#selectedMinor').val();
+    // // var minorSelected = document.getElementById('selectedMinor').value;
+    // var url ="/indicators/populateEntities?minor="+minorSelected;
+    // request.open("GET",url,true);
+    // request.onreadystatechange=function(){processReceivedEntities(request)};
+    // request.send(null);
 
-    var minorSelected = document.getElementById('selectedMinor').value;
-    var url ="/indicators/populateEntities?minor="+minorSelected;
-    request.open("GET",url,true);
-    request.onreadystatechange=function(){processReceivedEntities(request)};
-    request.send(null);
+    $.ajax({
+        type: "GET",
+        url: "/indicators/populateEntities",
+        data: {
+            minor: $('#selectedMinor').val()
+        },
+        dataType: "json",
+        success: function (response) {
+            // var parsedJSON = JSON.parse(request.responseText);
+            var entityKeySelection = document.getElementById("entityKeySelection");
+            removeOptions(entityKeySelection);
+            for (var i=0;i< response.length;i++) {
+                var newOption = new Option(response[i], response[i]);
+                entityKeySelection.appendChild(newOption);
+            }
+        }
+    });
 }
 
 function processReceivedEntities(request) {
@@ -760,37 +823,39 @@ function displayEntityFilters(callstatus,request,msg){
     if (request.readyState == 4) {
         if (request.status == 200) {
             if(callstatus == 1) {
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Success</strong> <br/> 1 <strong>Attribute Filter</strong> successfully added. <br/>' +
-                    'You can view the newly added filter in <strong> Attribute Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
-                    'Deletion of Filters is also possible from there.',
-                    type: 'success'
-                });
-                noty({
-                    text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
-                    '<strong>Session Filters</strong>, <strong>Time Filters</strong>, which are available in this filter sub-tab. <br/>' +
-                    'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> window.',
-                    type: 'information'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/> 1 <strong>Attribute Filter</strong> successfully added. <br/>' +
+                //     'You can view the newly added filter in <strong> Attribute Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
+                //     'Deletion of Filters is also possible from there.',
+                //     type: 'success'
+                // });
+                // noty({
+                //     text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
+                //     '<strong>Session Filters</strong>, <strong>Time Filters</strong>, which are available in this filter sub-tab. <br/>' +
+                //     'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> window.',
+                //     type: 'information'
+                // });
             }
             else if(callstatus == 2) {
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Success</strong> <br/>  <strong>Attribute Filter Summary</strong> successfully refreshed. <br/>',
-                    type: 'success'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/>  <strong>Attribute Filter Summary</strong> successfully refreshed. <br/>',
+                //     type: 'success'
+                // });
             }
             else if (callstatus == 3) {
 
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Success</strong> <br/>  <strong>'+msg+' Attribute Filter </strong> successfully deleted. <br/>',
-                    type: 'success'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/>  <strong>'+msg+' Attribute Filter </strong> successfully deleted. <br/>',
+                //     type: 'success'
+                // });
             }
 
+            console.log(request.responseText);
             var parsedJSON = JSON.parse(request.responseText);
+            loadIndicatorAssociatedFilters(parsedJSON, [], [], []);
             var heading = new Array();
             heading[0] = "S/L";
             heading[1] = "Key";
@@ -838,11 +903,11 @@ function displaySearchUserResults(request) {
                 var newOption = new Option(parsedJSON[i], parsedJSON[i]);
                 userSearchResults.appendChild(newOption);
             }
-            $.noty.defaults.killer = true;
-            noty({
-                text: '<strong>Success</strong> <br/>  User values has been retreived from DB.',
-                type: 'success'
-            });
+            // $.noty.defaults.killer = true;
+            // noty({
+            //     text: '<strong>Success</strong> <br/>  User values has been retreived from DB.',
+            //     type: 'success'
+            // });
         }
     }
 }
@@ -879,34 +944,34 @@ function displayUserFilters(callstatus,request,msg) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             if(callstatus == 1) {
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Success</strong> <br/> 1 <strong>User Filter</strong> successfully added. <br/>' +
-                    'You can view the newly added filter in <strong> User Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
-                    'Deletion of Filters is also possible from there.',
-                    type: 'success'
-                });
-                noty({
-                    text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>Attribute Filters</strong>,' +
-                    '<strong>Session Filters</strong>, <strong>Time Filters</strong>, which are available in this sub-tab. <br/>' +
-                    'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
-                    type: 'information'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/> 1 <strong>User Filter</strong> successfully added. <br/>' +
+                //     'You can view the newly added filter in <strong> User Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
+                //     'Deletion of Filters is also possible from there.',
+                //     type: 'success'
+                // });
+                // noty({
+                //     text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>Attribute Filters</strong>,' +
+                //     '<strong>Session Filters</strong>, <strong>Time Filters</strong>, which are available in this sub-tab. <br/>' +
+                //     'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
+                //     type: 'information'
+                // });
             }
             else if(callstatus == 2) {
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Success</strong> <br/>  <strong>User Filter Summary</strong> successfully refreshed. <br/>',
-                    type: 'success'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/>  <strong>User Filter Summary</strong> successfully refreshed. <br/>',
+                //     type: 'success'
+                // });
             }
             else if (callstatus == 3) {
 
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Success</strong> <br/>  <strong>'+msg+' User Filter </strong> successfully deleted. <br/>',
-                    type: 'success'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/>  <strong>'+msg+' User Filter </strong> successfully deleted. <br/>',
+                //     type: 'success'
+                // });
             }
 
             var parsedJSON = JSON.parse(request.responseText);
@@ -958,11 +1023,11 @@ function displaySearchTimeResults(request) {
                 var newOption = new Option(parsedJSON[i], parsedJSON[i]);
                 timeSearchResults.appendChild(newOption);
             }
-            $.noty.defaults.killer = true;
-            noty({
-                text: '<strong>Success</strong> <br/>  Time values has been retreived from DB.',
-                type: 'success'
-            });
+            // $.noty.defaults.killer = true;
+            // noty({
+            //     text: '<strong>Success</strong> <br/>  Time values has been retreived from DB.',
+            //     type: 'success'
+            // });
         }
     }
 
@@ -1014,34 +1079,34 @@ function displayTimeFilters(callstatus,request,msg) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             if(callstatus == 1) {
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Success</strong> <br/> 1 <strong>Time Filter</strong> successfully added. <br/>' +
-                    'You can view the newly added filter in <strong> Time Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
-                    'Deletion of Filters is also possible from there.',
-                    type: 'success'
-                });
-                noty({
-                    text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
-                    '<strong>Session Filters</strong>, <strong>Attribute Filters</strong>, which are available below in this sub-tab. <br/>' +
-                    'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
-                    type: 'information'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/> 1 <strong>Time Filter</strong> successfully added. <br/>' +
+                //     'You can view the newly added filter in <strong> Time Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
+                //     'Deletion of Filters is also possible from there.',
+                //     type: 'success'
+                // });
+                // noty({
+                //     text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
+                //     '<strong>Session Filters</strong>, <strong>Attribute Filters</strong>, which are available below in this sub-tab. <br/>' +
+                //     'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
+                //     type: 'information'
+                // });
             }
             else if(callstatus == 2) {
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Success</strong> <br/>  <strong>Time Filter Summary</strong> successfully refreshed. <br/>',
-                    type: 'success'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/>  <strong>Time Filter Summary</strong> successfully refreshed. <br/>',
+                //     type: 'success'
+                // });
             }
             else if (callstatus == 3) {
 
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Success</strong> <br/>  <strong>'+msg+' Time Filter </strong> successfully deleted. <br/>',
-                    type: 'success'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/>  <strong>'+msg+' Time Filter </strong> successfully deleted. <br/>',
+                //     type: 'success'
+                // });
             }
             var parsedJSON = JSON.parse(request.responseText);
             var heading = new Array();
@@ -1093,11 +1158,11 @@ function displaySearchSessionResults(request) {
                 var newOption = new Option(parsedJSON[i], parsedJSON[i]);
                 SessionSearchResults.appendChild(newOption);
             }
-            $.noty.defaults.killer = true;
-            noty({
-                text: '<strong>Success</strong> <br/>  Session values has been retreived from DB.',
-                type: 'success'
-            });
+            // $.noty.defaults.killer = true;
+            // noty({
+            //     text: '<strong>Success</strong> <br/>  Session values has been retreived from DB.',
+            //     type: 'success'
+            // });
         }
     }
 }
@@ -1134,34 +1199,34 @@ function displaySessionFilters(callstatus, request,msg) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             if(callstatus == 1) {
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Success</strong> <br/> 1 <strong>Session Filter</strong> successfully added. <br/>' +
-                    'You can view the newly added filter in <strong> Session Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
-                    'Deletion of Filters is also possible from there.',
-                    type: 'success'
-                });
-                noty({
-                    text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
-                    '<strong>Attribute Filters</strong>, <strong>Time Filters</strong>, which are available in this sub-tab. <br/>' +
-                    'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
-                    type: 'information'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/> 1 <strong>Session Filter</strong> successfully added. <br/>' +
+                //     'You can view the newly added filter in <strong> Session Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
+                //     'Deletion of Filters is also possible from there.',
+                //     type: 'success'
+                // });
+                // noty({
+                //     text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
+                //     '<strong>Attribute Filters</strong>, <strong>Time Filters</strong>, which are available in this sub-tab. <br/>' +
+                //     'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
+                //     type: 'information'
+                // });
             }
             else if(callstatus == 2) {
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Success</strong> <br/>  <strong>Session Filter Summary</strong> successfully refreshed. <br/>',
-                    type: 'success'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/>  <strong>Session Filter Summary</strong> successfully refreshed. <br/>',
+                //     type: 'success'
+                // });
             }
             else if (callstatus == 3) {
 
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Success</strong> <br/>  <strong>'+msg+' Session Filter </strong> successfully deleted. <br/>',
-                    type: 'success'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/>  <strong>'+msg+' Session Filter </strong> successfully deleted. <br/>',
+                //     type: 'success'
+                // });
             }
 
             var parsedJSON = JSON.parse(request.responseText);
@@ -1203,11 +1268,11 @@ function refreshCurrentIndicator(){
 function displayCurrentIndProps(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
-            $.noty.defaults.killer = true;
-            noty({
-                text: '<strong>Success</strong> <br/>  <strong>Current Indicator Summary</strong> successfully refreshed. <br/>',
-                type: 'success'
-            });
+            // $.noty.defaults.killer = true;
+            // noty({
+            //     text: '<strong>Success</strong> <br/>  <strong>Current Indicator Summary</strong> successfully refreshed. <br/>',
+            //     type: 'success'
+            // });
             var parsedJSON = JSON.parse(request.responseText);
 
             var placementDiv = document.getElementById("current_ind_basic_info");
@@ -1328,16 +1393,16 @@ function addDefaultRule(funcID,request) {
 function drawGraph(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
-            $.noty.defaults.killer = true;
-            noty({
-                text: '<strong>Success</strong> <br/>  <strong>Congratulations ! </strong> Your graph for the current Indicator has been generated',
-                type: 'success'
-            });
-            noty({
-                text: '<strong>Information</strong> <br/>  You can view the graph by clicking on the <strong> Graph Preview</strong>  tab in the ' +
-                '<strong> Indicator Properties & Summary </strong> Window',
-                type: 'information'
-            });
+            // $.noty.defaults.killer = true;
+            // noty({
+            //     text: '<strong>Success</strong> <br/>  <strong>Congratulations ! </strong> Your graph for the current Indicator has been generated',
+            //     type: 'success'
+            // });
+            // noty({
+            //     text: '<strong>Information</strong> <br/>  You can view the graph by clicking on the <strong> Graph Preview</strong>  tab in the ' +
+            //     '<strong> Indicator Properties & Summary </strong> Window',
+            //     type: 'information'
+            // });
             //var graphImage = document.getElementById("graphImage");
             //graphImage.src="/graphs/jgraph?bean=true"+"&time="+new Date().getTime();
             //$('#templatemo-tabs a[href="#graphGeneration"]').tab('show');
@@ -1365,6 +1430,11 @@ function postrefreshQuestionSummary(request,callstatus) {
             //removeOptions(associatedIndicators);
             $(function () {
                 $('#associatedIndicatorsDiv').empty();
+
+                $('#appliedFiltersDiv').empty();
+                $('#appliedFiltersDiv').hide();
+                $('#appliedFiltersLabel').hide();
+
                 if(parsedJSON == null || parsedJSON.genQueries.length == 0) {
                     $('#associatedIndicatorsDiv').append("No Associated Indicators Found");
                 }
@@ -1393,26 +1463,82 @@ function postrefreshQuestionSummary(request,callstatus) {
                                 + "' onclick='loadIndicator(this);'><span >" + parsedJSON.genQueries[i].indicatorName
                                 + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
                         }
+
+                        // var entityValues = parsedJSON.genQueries[i].indicatorXMLData.entityValues;
+                        // var userSpecs = parsedJSON.genQueries[i].indicatorXMLData.userSpecifications;
+                        // var sessionSpecs = parsedJSON.genQueries[i].indicatorXMLData.sessionSpecifications;
+                        // var timeSpecs = parsedJSON.genQueries[i].indicatorXMLData.timeSpecifications;
+                        //
+                        // if (entityValues.length > 0 || userSpecs.length > 0 || sessionSpecsIndex.length > 0 || timeSpecs.length > 0) {
+                        //     $('#appliedFiltersDiv').show();
+                        //     $('#appliedFiltersLabel').show();
+                        // }
+                        //
+                        // for (var entityValuesIndex = 0;
+                        //      entityValuesIndex < entityValues.length;
+                        //      entityValuesIndex++) {
+                        //
+                        //     var entityValue = entityValues[entityValuesIndex];
+                        //     $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
+                        //         + "' id='entity-" + i + "' title='Attr-" + i + "-" + entityValue.key +"'><span>Attr-" + i + "-" + entityValue.key
+                        //         + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
+                        // }
+                        //
+                        // for (var userSpecsIndex = 0;
+                        //      userSpecsIndex < userSpecs.length;
+                        //      userSpecsIndex++) {
+                        //     var userSpec = userSpecs[userSpecsIndex];
+                        //     $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
+                        //         + "' id='user-" + i + "' title='User-" + i + "-" + userSpec.key +"'><span>User-" + i + "-" + userSpec.key
+                        //         + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
+                        // }
+                        //
+                        // for (var sessionSpecsIndex = 0;
+                        //      sessionSpecsIndex < sessionSpecsIndex.length;
+                        //      sessionSpecsIndex++) {
+                        //     var sessionSpec = sessionSpecs[sessionSpecsIndex];
+                        //     $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
+                        //         + "' id='session-" + i + "' title='Session-" + i + "-" + sessionSpec.key + "'><span>Session-" + i + "-" + sessionSpec.key
+                        //         + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
+                        // }
+                        //
+                        // for (var sessionSpecsIndex = 0;
+                        //      sessionSpecsIndex < sessionSpecsIndex.length;
+                        //      sessionSpecsIndex++) {
+                        //     var sessionSpec = sessionSpecs[sessionSpecsIndex];
+                        //     $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
+                        //         + "' id='session-" + i + "' title='Session-" + i + "-" + sessionSpec.key + "'><span>Session-" + i + "-" + sessionSpec.key
+                        //         + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
+                        // }
+                        //
+                        // for (var timeSpecsIndex = 0;
+                        //      timeSpecsIndex < timeSpecsIndex.length;
+                        //      timeSpecsIndex++) {
+                        //     var timeSpec = timeSpecs[timeSpecsIndex];
+                        //     $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
+                        //         + "' id='time-" + i + "' title='Time-" + i + "-" + timeSpec.key + "'><span>Time-" + i + "-" + timeSpec.key
+                        //         + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
+                        // }
                     });
                 }
             }
             if(callstatus == 1) {
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Success</strong> <br/> <strong>Question Summary</strong> successfully refreshed. <br/>',
-                    type: 'success'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/> <strong>Question Summary</strong> successfully refreshed. <br/>',
+                //     type: 'success'
+                // });
             }
             else if(callstatus == 2) {
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Success</strong> <br/> <strong>Current Indicator</strong> successfully saved. <br/>',
-                    type: 'success'
-                });
-                noty({
-                    text: '<strong>Success</strong> <br/> <strong>Question Summary</strong> successfully refreshed. <br/>',
-                    type: 'success'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/> <strong>Current Indicator</strong> successfully saved. <br/>',
+                //     type: 'success'
+                // });
+                // noty({
+                //     text: '<strong>Success</strong> <br/> <strong>Question Summary</strong> successfully refreshed. <br/>',
+                //     type: 'success'
+                // });
             }
         }
     }
@@ -1460,6 +1586,7 @@ function processScreenForNextIndicator(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
+            $("#graphImage").hide();
             document.getElementById("indicatorNaming").value = "";
             var selectedMinor = document.getElementById("selectedMinor");
             removeOptions(selectedMinor);
@@ -1502,16 +1629,16 @@ function processScreenForNextQuestion(request, isResetSession) {
             });
 
             if(!isResetSession) {
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Success</strong> <br/>  <strong>Congratulations ! </strong> Your Question and all its indicators have been saved.',
-                    type: 'success'
-                });
-                noty({
-                    text: '<strong>Information</strong> <br/>  You can define a new Question or you can view all existing Questions by clicking the ' +
-                    '<strong> View Existing <strong> link of the left side of the page.',
-                    type: 'information'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/>  <strong>Congratulations ! </strong> Your Question and all its indicators have been saved.',
+                //     type: 'success'
+                // });
+                // noty({
+                //     text: '<strong>Information</strong> <br/>  You can define a new Question or you can view all existing Questions by clicking the ' +
+                //     '<strong> View Existing <strong> link of the left side of the page.',
+                //     type: 'information'
+                // });
             }
         }
     }
@@ -1521,9 +1648,284 @@ function QuestionVisualize() {
     var request = createRequest();
     var url ="/indicators/refreshQuestionSummary";
     request.open("GET",url,true);
-    request.onreadystatechange=function(){updateVisualisationTab(request)};
+    request.onreadystatechange=function(){updateVisualizationModal(request)};
     request.send(null);
 }
+function updateVisualizationModal(request) {
+
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            if(parsedJSON.genQueries.length ==0) {
+
+                var visualizeQModelHtml = document.getElementById("visualizeQuestionContent");
+                visualizeQModelHtml.innerHTML = "";
+
+                var div1 = document.createElement("div");
+                div1.className = "alert alert-warning";
+                var alertDescription1 = document.createTextNode("Please add Indicators for visualization.");
+                div1.appendChild(alertDescription1);
+                visualizeQModelHtml.appendChild(div1);
+
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Error</strong> <br/>  No Indicators have been defined for Visualization',
+                //     type: 'error'
+                // });
+            }
+            else {
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/>  Current Question has been visualized successfully.',
+                //     type: 'success'
+                // });
+                var visualizeQModelHtml = document.getElementById("visualizeQuestionContent");
+                visualizeQModelHtml.innerHTML = "";
+                for(i=0; i<parsedJSON.genQueries.length; i++) {
+
+                    //visualization card
+                    var cardDiv = document.createElement("div");
+                    cardDiv.className = "card small col-md-6";
+
+                    var cardImageDiv = document.createElement("div");
+                    cardImageDiv.className = "card-image waves-effect waves-block waves-light";
+
+                    var divId = "visualizeCardGraph_" + parsedJSON.genQueries[i].indicatorName.replace(/ /g,"_");
+                    cardImageDiv.id = divId;
+
+                    cardDiv.appendChild(cardImageDiv);
+
+                    var cardContentDiv = document.createElement("div");
+                    cardContentDiv.className = "card-content";
+
+                    var cardContentSpan = document.createElement("span");
+                    cardContentSpan.className = "card-title activator grey-text text-darken-4";
+                    var cardTitle = document.createTextNode(parsedJSON.genQueries[i].indicatorName);
+                    cardContentSpan.appendChild(cardTitle);
+                    var cardMoreIcon = document.createElement("i");
+                    cardMoreIcon.className = "material-icons right";
+                    var cardMoreIconText = document.createTextNode("more_vert");
+                    cardMoreIcon.appendChild(cardMoreIconText);
+                    cardContentSpan.appendChild(cardMoreIcon);
+
+                    cardContentDiv.appendChild(cardContentSpan);
+
+                    cardDiv.appendChild(cardContentDiv);
+
+
+                    var cardRevealDiv = document.createElement("div");
+                    cardRevealDiv.className = "card-reveal";
+
+                    var cardRevealSpan = document.createElement("span");
+                    cardRevealSpan.className = "card-title grey-text text-darken-4";
+                    var cardRevealTitle = document.createTextNode(parsedJSON.genQueries[i].indicatorName);
+                    cardRevealSpan.appendChild(cardRevealTitle);
+                    var cardCloseIcon = document.createElement("i");
+                    cardCloseIcon.className = "material-icons right";
+                    var cardCloseIconText = document.createTextNode("close");
+                    cardCloseIcon.appendChild(cardCloseIconText);
+                    cardRevealSpan.appendChild(cardCloseIcon);
+
+                    cardRevealDiv.appendChild(cardRevealSpan);
+
+                    var cardRevealTextPara = document.createElement("p");
+                    var cardRevealText = document.createTextNode(
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on." +
+                        "Here is some more information about this product that is only revealed once clicked on.");
+
+                    cardRevealTextPara.appendChild(cardRevealText);
+                    cardRevealDiv.appendChild(cardRevealTextPara);
+
+                    cardDiv.appendChild(cardRevealDiv);
+
+                    visualizeQModelHtml.appendChild(cardDiv);
+
+                    $.ajax(
+                        {
+                            context: this,
+                            async: false,
+                            type: "GET",
+                            url: "/engine/getQuestionVisualizationCode?width=" + $('#'+divId).parent().width() + "&height=" + $('#'+divId).parent().height(),
+                            success: function(response) {
+
+                                var parsedJSON = JSON.parse(response);
+                                var decodedGraphData = decodeURIComponent(parsedJSON);
+                                // decodedGraphData = "<TemporaryDiv>" + decodedGraphData + "</TemporaryDiv>";
+
+                                // var parser = new DOMParser();
+                                // var dataDOMObj = parser.parseFromString(decodedGraphData, "text/xml");
+                                //
+                                // var scriptTagData = dataDOMObj.getElementsByTagName('script')[0];
+                                // var randomNo = Math.floor((Math.random() * 100000) + 1000);
+                                // scriptTagData.insertAdjacentHTML('afterbegin', '<script type="text/javascript"> google.charts.setOnLoadCallback(drawChart_' + randomNo + '); function drawChart_' + randomNo + '() {');
+                                // scriptTagData.insertAdjacentHTML('beforeend', '} </script>');
+                                //
+                                // var divTagData = dataDOMObj.getElementsByTagName('div')[0];
+                                // console.log(dataDOMObj.getElementsByTagName('TemporaryDiv')[0].textContent + divTagData.outerHTML);
+
+                                // $('#'+divId).html(dataDOMObj.getElementsByTagName('TemporaryDiv')[0].textContent + divTagData.outerHTML);
+                                $('#'+divId).html(decodedGraphData);
+                            }
+                        });
+
+                }
+                $(function() {
+                    $("#saveQuestion").removeAttr('disabled');
+                });
+
+            }
+
+        }
+    }
+}
+
+function LoadIndicatorVisualizations() {
+    var request = createRequest();
+    var url ="/indicators/refreshQuestionSummary";
+    request.open("GET",url,true);
+    request.onreadystatechange=function(){updateCompositeModal(request)};
+    request.send(null);
+}
+function updateCompositeModal(request) {
+
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+            if(parsedJSON.genQueries.length ==0) {
+
+                var compositeModelHtml = document.getElementById("runIndMem");
+                compositeModelHtml.innerHTML = "";
+
+                var div = document.createElement("div");
+                div.className = "alert alert-warning";
+                var alertDescription = document.createTextNode("Please add Indicators to build composite Indicators.");
+                div.appendChild(alertDescription);
+                compositeModelHtml.appendChild(div);
+
+                $(function() {
+                    $("#compositeIndicatorModelContentDesc").hide();
+                    $("#compositeIndicatorModelContentControls").hide();
+                    $('#CompositeIndButton').hide();
+                    $('#CompositeClosedButton').show();
+                });
+
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Error</strong> <br/>  No Indicators have been defined for Visualization',
+                //     type: 'error'
+                // });
+            }
+            else {
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/>  Current Question has been visualized successfully.',
+                //     type: 'success'
+                // });
+                $(function() {
+                    $('#CompositeIndButton').show();
+                    $('#CompositeClosedButton').hide();
+                });
+                var compositeModelHtml = document.getElementById("runIndMem");
+                compositeModelHtml.innerHTML = "";
+
+                for(i=0; i<parsedJSON.genQueries.length; i++) {
+
+                    //composite Indicator
+                    var pTag= document.createElement("p");
+                    var label= document.createElement("label");
+                    label.setAttribute("for", "checkbox-" + parsedJSON.genQueries[i].indicatorName);
+                    var description = document.createTextNode(parsedJSON.genQueries[i].indicatorName);
+                    var checkbox = document.createElement("input");
+                    checkbox.id = "checkbox-" + parsedJSON.genQueries[i].indicatorName;
+                    checkbox.type = "checkbox";    // make the element a checkbox
+                    checkbox.name = parsedJSON.genQueries[i].indicatorName;      // give it a name we can check on the server side
+                    checkbox.value = parsedJSON.genQueries[i].indicatorName;         // make its value "pair"
+                    checkbox.className = "filled-in";
+
+
+                    label.appendChild(description);// add the description to the element
+                    pTag.appendChild(checkbox);   // add the box to the element
+                    pTag.appendChild(label);   // add the box to the element
+                    // add the label element to your div
+                    compositeModelHtml.appendChild(pTag);
+
+                    var imgDiv = document.createElement("div");
+                    imgDiv.className = "card col-md-10";
+
+                    var compositeGraphId = "compositeIndicatorGraph_" + parsedJSON.genQueries[i].indicatorName.replace(/ /g,"_");
+                    imgDiv.id = compositeGraphId;
+                    imgDiv.style.width = "500px";
+                    imgDiv.style.height = "400px";
+
+                    compositeModelHtml.appendChild(imgDiv);
+
+                    $.ajax(
+                        {
+                            context: this,
+                            async: false,
+                            type: "GET",
+                            url: "/engine/getQuestionVisualizationCode?width=400&height=400",
+                            success: function(response) {
+
+                                var parsedJSON = JSON.parse(response);
+                                var decodedGraphData = decodeURIComponent(parsedJSON);
+                                decodedGraphData = "<TemporaryDiv>" + decodedGraphData + "</TemporaryDiv>";
+
+                                var parser = new DOMParser();
+                                var dataDOMObj = parser.parseFromString(decodedGraphData, "text/xml");
+
+                                var scriptTagData = dataDOMObj.getElementsByTagName('script')[0];
+                                var randomNo = Math.floor((Math.random() * 100000) + 1000);
+                                scriptTagData.insertAdjacentHTML('afterbegin', '<script type="text/javascript"> google.charts.setOnLoadCallback(drawChart_' + randomNo + '); function drawChart_' + randomNo + '() {');
+                                scriptTagData.insertAdjacentHTML('beforeend', '} </script>');
+
+                                var divTagData = dataDOMObj.getElementsByTagName('div')[0];
+
+                                $('#'+compositeGraphId).html(dataDOMObj.getElementsByTagName('TemporaryDiv')[0].textContent + divTagData.outerHTML);
+                            }
+                        });
+
+                }
+            }
+
+        }
+    }
+}
+
 function updateVisualisationTab(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
@@ -1553,18 +1955,18 @@ function updateVisualisationTab(request) {
                     $('#CompositeClosedButton').show();
                 });
 
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Error</strong> <br/>  No Indicators have been defined for Visualization',
-                    type: 'error'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Error</strong> <br/>  No Indicators have been defined for Visualization',
+                //     type: 'error'
+                // });
             }
             else {
-                $.noty.defaults.killer = true;
-                noty({
-                    text: '<strong>Success</strong> <br/>  Current Question has been visualized successfully.',
-                    type: 'success'
-                });
+                // $.noty.defaults.killer = true;
+                // noty({
+                //     text: '<strong>Success</strong> <br/>  Current Question has been visualized successfully.',
+                //     type: 'success'
+                // });
                 $(function() {
                     $('#CompositeIndButton').show();
                     $('#CompositeClosedButton').hide();
@@ -1775,11 +2177,11 @@ function postAddCompositeIndicator(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
-            $.noty.defaults.killer = true;
-            noty({
-                text: '<strong>Success</strong> <br/>  A New composite Indicator has been added',
-                type: 'success'
-            });
+            // $.noty.defaults.killer = true;
+            // noty({
+            //     text: '<strong>Success</strong> <br/>  A New composite Indicator has been added',
+            //     type: 'success'
+            // });
             refreshQuestionSummary();
             $('#qiEditorTab a[href="#QuestionIndicatorEditor"]').tab('show');
 
@@ -1806,11 +2208,11 @@ function displayReceivedIndicators(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
-            $.noty.defaults.killer = true;
-            noty({
-                text: '<strong>Success</strong> <br/>  Matching Indicators have been fetched from DB',
-                type: 'success'
-            });
+            // $.noty.defaults.killer = true;
+            // noty({
+            //     text: '<strong>Success</strong> <br/>  Matching Indicators have been fetched from DB',
+            //     type: 'success'
+            // });
             var searchResults = document.getElementById("searchResults");
             removeOptions(searchResults);
             for (var i=0;i< parsedJSON.length;i++) {
@@ -1835,11 +2237,11 @@ function displayIndicatorProp(request) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
             var parsedindProp = JSON.parse(parsedJSON.glaIndicatorProps.json_data);
-            $.noty.defaults.killer = true;
-            noty({
-                text: '<strong>Success</strong> <br/>  Selected Indicator Property loaded',
-                type: 'success'
-            });
+            // $.noty.defaults.killer = true;
+            // noty({
+            //     text: '<strong>Success</strong> <br/>  Selected Indicator Property loaded',
+            //     type: 'success'
+            // });
             var indicatorData = new Array();
             indicatorData.push(["S/L", "Property", "Value"]);
             indicatorData.push([1, "Indicator Name", parsedJSON.indicator_name]);
@@ -1993,15 +2395,15 @@ function loadToEditor(request) {
             categoryRequest.onreadystatechange=function(){processReceivedCategories(categoryRequest)};
             categoryRequest.send(null);
 
-            $.noty.defaults.killer = true;
-            noty({
-                text: '<strong>Success</strong> <br/>  Selected Indicator has been loaded as a Template. All its properties have been loaded except the name.',
-                type: 'success'
-            });
-            noty({
-                text: '<strong>Note</strong> <br/>  Please give a name for the Indicator. The name is not loaded as the system does not allow duplicate Indicator names. ',
-                type: 'information'
-            });
+            // $.noty.defaults.killer = true;
+            // noty({
+            //     text: '<strong>Success</strong> <br/>  Selected Indicator has been loaded as a Template. All its properties have been loaded except the name.',
+            //     type: 'success'
+            // });
+            // noty({
+            //     text: '<strong>Note</strong> <br/>  Please give a name for the Indicator. The name is not loaded as the system does not allow duplicate Indicator names. ',
+            //     type: 'information'
+            // });
 
             $('#qiEditorTab a[href="#QuestionIndicatorEditor"]').tab('show');
 
@@ -2015,49 +2417,67 @@ function loadToEditor(request) {
 
 function displayQnInfoIcons() {
 
-    $.noty.defaults.killer = true;
-    noty({
-        text: '<strong>Icons in Question Information Area</strong> <br/>  ' +
-        '<img src="../images/template.png" alt="button" width="48" height="48"/> : Load an existing Indicator from DB and use it as a template.' +
-        '<br/> <img src="../images/new.png" alt="button" width="48" height="48"/> : Define a new Indicator for the current Question.' +
-        '<br/> <img  src="../images/run.png" alt="button" width="48" height="48"/> : Run the Entire Question and all its idicators.'+
-        '<br/> <img  src="../images/save.png" alt="button" width="48" height="48"/> : Save the Question with its indicators. ',
-        type: 'alert'
-    });
+    // $.noty.defaults.killer = true;
+    // noty({
+    //     text: '<strong>Icons in Question Information Area</strong> <br/>  ' +
+    //     '<img src="../images/template.png" alt="button" width="48" height="48"/> : Load an existing Indicator from DB and use it as a template.' +
+    //     '<br/> <img src="../images/new.png" alt="button" width="48" height="48"/> : Define a new Indicator for the current Question.' +
+    //     '<br/> <img  src="../images/run.png" alt="button" width="48" height="48"/> : Run the Entire Question and all its idicators.'+
+    //     '<br/> <img  src="../images/save.png" alt="button" width="48" height="48"/> : Save the Question with its indicators. ',
+    //     type: 'alert'
+    // });
 }
 
 function displayQnSummaryIcons() {
-    $.noty.defaults.killer = true;
-    noty({
-        text: '<strong>Icons in Question Summary Area</strong> <br/>  ' +
-        '<img  src="../images/refresh.png" alt="button" width="48" height="48"/> : Refresh the Question Summary.' +
-        '<br/> <img  src="../images/view.png" alt="button" width="48" height="48"/> : View the selected Indicator Summary.' +
-        '<br/> <img  src="../images/load.png" alt="button" width="48" height="48"/> : Load the selected Indicator for editing.'+
-        '<br/> <img  src="../images/delete.png" alt="button" width="48" height="48"/> : Delete the selected Indicator from this Question. ',
-        type: 'alert'
-    });
+    // $.noty.defaults.killer = true;
+    // noty({
+    //     text: '<strong>Icons in Question Summary Area</strong> <br/>  ' +
+    //     '<img  src="../images/refresh.png" alt="button" width="48" height="48"/> : Refresh the Question Summary.' +
+    //     '<br/> <img  src="../images/view.png" alt="button" width="48" height="48"/> : View the selected Indicator Summary.' +
+    //     '<br/> <img  src="../images/load.png" alt="button" width="48" height="48"/> : Load the selected Indicator for editing.'+
+    //     '<br/> <img  src="../images/delete.png" alt="button" width="48" height="48"/> : Delete the selected Indicator from this Question. ',
+    //     type: 'alert'
+    // });
 }
 
 function displayIndInfoIcons() {
-    $.noty.defaults.killer = true;
-    noty({
-        text: '<strong>Indicator Information Area Help</strong> <br/>  ' +
-        'Please select all filters and click <img src="../images/refresh_graph.png" alt="button" width="48" height="48"/>' +
-        'to view the graph. <br/> If you are satisfied then please click <img src="../images/finalize.png" alt="button" width="48" height="48">'+
-        ', as this is the last step of the Indicator Definition process. ',
-        type: 'alert'
-    });
+    // $.noty.defaults.killer = true;
+    // noty({
+    //     text: '<strong>Indicator Information Area Help</strong> <br/>  ' +
+    //     'Please select all filters and click <img src="../images/refresh_graph.png" alt="button" width="48" height="48"/>' +
+    //     'to view the graph. <br/> If you are satisfied then please click <img src="../images/finalize.png" alt="button" width="48" height="48">'+
+    //     ', as this is the last step of the Indicator Definition process. ',
+    //     type: 'alert'
+    // });
 }
 
 function searchAttributes() {
+    // var request = createRequest();
+    // var key = document.getElementById("entityKeySelection").value;
+    // var minor = document.getElementById('selectedMinor').value;
 
-    var request = createRequest();
-    var key = document.getElementById("entityKeySelection").value;
-    var minor = document.getElementById('selectedMinor').value;
-    var url ="/indicators/searchAttributeValues?minor="+minor+"&key="+key;
-    request.open("GET",url,true);
-    request.onreadystatechange=function(){processReceivedAttributeValues(request)};
-    request.send(null);
+    var key = $('#entityKeySelection').val();
+    var minor = $('#selectedMinor').val();
+
+    // var url ="/indicators/searchAttributeValues?minor="+minor+"&key="+key;
+    // request.open("GET",url,true);
+    // request.onreadystatechange=function(){processReceivedAttributeValues(request)};
+    // request.send(null);
+
+    $.ajax({
+        context: true,
+        type: "GET",
+        url: "/indicators/searchAttributeValues?minor="+minor+"&key="+key,
+        dataType: "json",
+        success: function (response) {
+            var entityValue = document.getElementById("entityValue");
+            removeOptions(entityValue);
+            for (var i=0;i< response.length;i++) {
+                var newOption = new Option(response[i], response[i]);
+                entityValue.appendChild(newOption);
+            }
+        }
+    });
 }
 
 function processReceivedAttributeValues(request) {
@@ -2070,11 +2490,11 @@ function processReceivedAttributeValues(request) {
                 var newOption = new Option(parsedJSON[i], parsedJSON[i]);
                 entityValue.appendChild(newOption);
             }
-            $.noty.defaults.killer = true;
-            noty({
-                text: '<strong>Success</strong> <br/>  Attribute values has been retreived.',
-                type: 'success'
-            });
+            // $.noty.defaults.killer = true;
+            // noty({
+            //     text: '<strong>Success</strong> <br/>  Attribute values has been retreived.',
+            //     type: 'success'
+            // });
         }
     }
 
