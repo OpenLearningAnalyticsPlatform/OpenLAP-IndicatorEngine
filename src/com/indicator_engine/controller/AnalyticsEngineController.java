@@ -129,6 +129,7 @@ public class AnalyticsEngineController {
                                          @RequestParam(value="width", required = true) String width,
                                          @RequestParam(value="analyticsMethodId", required = true) String analyticsMethodId,
                                          @RequestParam(value="EngineSelect", required = true) String engineSelectId,
+                                         @RequestParam(value="selectedChartType", required = true) String selectedChartType,
                                          @RequestParam(value="indicatorNaming", required = true) String indicatorName) {
 
 
@@ -146,9 +147,11 @@ public class AnalyticsEngineController {
 
         IndicatorPreviewRequest indicatorPreviewRequest = new IndicatorPreviewRequest();
         indicatorPreviewRequest.setAnalyticsMethodId(Long.parseLong(analyticsMethodId));
-        indicatorPreviewRequest.setVisualizationMethodId(Long.parseLong(analyticsMethodId));
+        indicatorPreviewRequest.setVisualizationMethodId(Long.parseLong(selectedChartType));
         indicatorPreviewRequest.setVisualizationFrameworkId(Long.parseLong(engineSelectId));
+        //        entitySpecificationBean.setretrievable
         indicatorPreviewRequest.setQuery(entitySpecificationBean.getHql());
+//        indicatorPreviewRequest.setMethodToVisualizationConfig();
 
         Gson gson = new Gson();
         RestTemplate restTemplate = new RestTemplate();
