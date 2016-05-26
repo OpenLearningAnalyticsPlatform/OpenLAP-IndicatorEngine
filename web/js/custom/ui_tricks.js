@@ -1,21 +1,33 @@
 $(function() {
+
     populateAnalyticsMethods();
     populateAnalyticsGoal();
     populateVisualizationFrameworks();
 
-
     $('.modal-trigger').leanModal();
 
+    $('#selectedMinorSpinner').hide();
     $("#indicatorDefinition").hide();
     $("#CompositeClosedButton").hide();
     $("#graphImage").hide();
     $("#saveQuestion").attr('disabled', 'disabled');
     $("#loadIndicatorTemplateModelTable").hide();
 
-
     if( $('#associatedIndicatorsDiv').is(':empty') ) {
         $('#associatedIndicatorsDiv').append("No Associated Indicators Found");
     }
+
+    if( $('#appliedFiltersDiv').is(':empty') ) {
+        // $('#appliedFiltersDiv').append("No Applied Filters");
+        $('#appliedFiltersDiv').hide();
+        $('#appliedFiltersLabel').hide();
+    }
+
+    $('#saveIndicator').click(function() {
+        if ($('#sessionSelection').valid()) {
+            finalizeIndicator();
+        }
+    });
 
     $("#generateGraph").click(function() {
         $("#graphImage").show();
@@ -35,12 +47,34 @@ $(function() {
         }, 2000);
     });
     $("#compositeIndicator").click(function() {
-        QuestionVisualize();
+        LoadIndicatorVisualizations();
     });
     $('#toggleLoadIndicatorTemplateModelTable').click(function() {
         $('#loadIndicatorTemplateModelTable').toggle();
     });
+    $('#analyticsMethod').change(function() {
+        updateAnalyticsMethodDesc();
+    });
 });
+
+function updateAnalyticsMethodDesc() {
+    $('#analyticsMethodDesc').html('<i class="material-icons">info</i>' + "&nbsp;" + $('#analyticsMethod').find('option:selected').attr('description'));
+};
+
+function deleteEntityFilter(filter, event) {
+    var e = event;
+    $(function() {
+        $.ajax({
+            type: "GET",
+            url: "/indicators/deleteEntities",
+            data: {filter: $(filter).closest('div').attr("id")},
+            dataType: "json",
+            success: function (response) {
+                e.stopPropagation();
+            }
+        });
+    });
+}
 
 function deleteIndicator(indicatorName, event) {
     var e = event;
@@ -60,6 +94,7 @@ function deleteIndicator(indicatorName, event) {
         });
     });
 }
+
 function loadIndicator(indicatorName){
     $(function() {
         $(indicatorName).addClass("chip-bg").siblings().removeClass('chip-bg');
@@ -88,12 +123,64 @@ function loadIndicator(indicatorName){
                         "Also note that you have to select again Platform and Action to populate the List of Categories.");
                     $('.indDeleteDialog').dialog('option', 'title', 'Indicator Load Message');
                     //refreshQuestionSummary();
+                    console.log(response);
                     updateScreenAfterLoadInd(response);
                     $("#indDeleteDialog").dialog("open");
                 }
             }
         });
     });
+}
+
+function loadIndicatorAssociatedFilters(entityValues, userSpecs, sessionSpecs, timeSpecs) {
+
+    if (entityValues.length > 0 || userSpecs.length > 0 || sessionSpecs.length > 0 || timeSpecs.length > 0) {
+        $('#appliedFiltersDiv').empty();
+        $('#appliedFiltersDiv').show();
+        $('#appliedFiltersLabel').show();
+    }
+
+    for (var entityValuesIndex = 0;
+         entityValuesIndex < entityValues.length;
+         entityValuesIndex++) {
+
+        var entityValue = entityValues[entityValuesIndex];
+        $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
+            + "' id='" + entityValue.key + "_" + entityValue.eValues + "_" + entityValue.type + "' " +
+            "title='Attr_" + entityValue.key + "_" + entityValue.eValues + "_" + entityValue.type +"'>" +
+            "<span>Attr_" + entityValue.key + ":" + entityValue.eValues
+            + "</span><i class='material-icons' onclick='deleteEntityFilter(this, event);'>close</i></div>");
+    }
+
+    for (var userSpecsIndex = 0;
+         userSpecsIndex < userSpecs.length;
+         userSpecsIndex++) {
+        var userSpec = userSpecs[userSpecsIndex];
+        $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
+            + "' id='user-" + userSpecsIndex + "' title='User-" + userSpecsIndex + "-" + userSpec.key +"'>" +
+            "<span>User-" + userSpecsIndex + "-" + userSpec.key
+            + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
+    }
+
+    for (var sessionSpecsIndex = 0;
+         sessionSpecsIndex < sessionSpecsIndex.length;
+         sessionSpecsIndex++) {
+        var sessionSpec = sessionSpecs[sessionSpecsIndex];
+        $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
+            + "' id='session-" + sessionSpecsIndex + "' title='Session-" + sessionSpecsIndex + "-" + sessionSpec.key + "'>" +
+            "<span>Session-" + sessionSpecsIndex + "-" + sessionSpec.key
+            + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
+    }
+
+    for (var timeSpecsIndex = 0;
+         timeSpecsIndex < timeSpecsIndex.length;
+         timeSpecsIndex++) {
+        var timeSpec = timeSpecs[timeSpecsIndex];
+        $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
+            + "' id='time-" + timeSpecsIndex + "' title='Time-" + timeSpecsIndex + "-" + timeSpec.key + "'>" +
+            "<span>Time-" + timeSpecsIndex + "-" + timeSpec.key
+            + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
+    }
 }
 
 function populateAnalyticsMethods(){
@@ -114,8 +201,11 @@ function processReceivedAnalyticsMethods(request) {
             removeOptions(analyticsMethodSelection);
             for (var i=0;i< parsedJSON.length;i++) {
                 var newOption = new Option(parsedJSON[i].name, parsedJSON[i].id);
+                newOption.setAttribute('description', parsedJSON[i].description);
                 analyticsMethodSelection.appendChild(newOption);
             }
+            analyticsMethodSelection.selectedIndex = 0;
+            updateAnalyticsMethodDesc();
         }
     }
 }
@@ -140,6 +230,7 @@ function processReceivedAnalyticsGoal(request) {
                 var newOption = new Option(parsedJSON[i].name, parsedJSON[i].id);
                 goalSelection.appendChild(newOption);
             }
+            goalSelection.selectedIndex = 0;
         }
     }
 }
@@ -157,13 +248,21 @@ function processReceivedVisualizationFrameworks(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
-
             var visualizationFrameworksSelection = document.getElementById("EngineSelect");
+            var chartTypeSelection = document.getElementById("selectedChartType");
             removeOptions(visualizationFrameworksSelection);
+            removeOptions(chartTypeSelection);
             for (var i=0;i< parsedJSON.length;i++) {
                 var newOption = new Option(parsedJSON[i].name, parsedJSON[i].id);
                 visualizationFrameworksSelection.appendChild(newOption);
+
+                for (var j=0; j<parsedJSON[i].visualizationMethods.length; j++) {
+                    var newChartTypeOption = new Option(parsedJSON[i].visualizationMethods[j].name, parsedJSON[i].visualizationMethods[j].id);
+                    chartTypeSelection.appendChild(newChartTypeOption);
+                }
             }
+            visualizationFrameworksSelection.selectedIndex = 0;
+            chartTypeSelection.selectedIndex = 0;
         }
     }
 }
@@ -174,6 +273,7 @@ function getIndicatorPreviewVisualizationCode(){
                                                                 + "&height=" + $('#chart_wrap').parent().height()
                                                                 + "&analyticsMethodId=" + $( "#analyticsMethod" ).val()
                                                                 + "&EngineSelect=" + $( "#EngineSelect" ).val()
+                                                                + "&selectedChartType=" + $( "#selectedChartType" ).val()
                                                                 + "&indicatorNaming=" + $( "#indicatorNaming" ).val();
     request.open("GET",url,true);
     request.onreadystatechange=function(){embedIndicatorPreviewVisualizationCode(request)};
@@ -190,18 +290,19 @@ function embedIndicatorPreviewVisualizationCode(request) {
             else {
                 var parsedJSON = JSON.parse(request.responseText);
                 var decodedGraphData = decodeURIComponent(parsedJSON);
-                decodedGraphData = "<TemporaryDiv>" + decodedGraphData + "</TemporaryDiv>";
-
-                var parser = new DOMParser();
-                var dataDOMObj = parser.parseFromString(decodedGraphData, "text/xml");
-
-                var scriptTagData = dataDOMObj.getElementsByTagName('script')[0];
-                var randomNo = Math.floor((Math.random() * 100000) + 1000);
-                scriptTagData.insertAdjacentHTML('afterbegin', '<script type="text/javascript"> google.charts.setOnLoadCallback(drawChart_' + randomNo + '); function drawChart_' + randomNo + '() {');
-                scriptTagData.insertAdjacentHTML('beforeend', '} </script>');
-
-                var divTagData = dataDOMObj.getElementsByTagName('div')[0];
-                $("#preview_chart").html(dataDOMObj.getElementsByTagName('TemporaryDiv')[0].textContent + divTagData.outerHTML);
+                // decodedGraphData = "<TemporaryDiv>" + decodedGraphData + "</TemporaryDiv>";
+                //
+                // var parser = new DOMParser();
+                // var dataDOMObj = parser.parseFromString(decodedGraphData, "text/xml");
+                //
+                // var scriptTagData = dataDOMObj.getElementsByTagName('script')[0];
+                // var randomNo = Math.floor((Math.random() * 100000) + 1000);
+                // scriptTagData.insertAdjacentHTML('afterbegin', '<script type="text/javascript"> google.charts.setOnLoadCallback(drawChart_' + randomNo + '); function drawChart_' + randomNo + '() {');
+                // scriptTagData.insertAdjacentHTML('beforeend', '} </script>');
+                //
+                // var divTagData = dataDOMObj.getElementsByTagName('div')[0];
+                // $("#preview_chart").html(dataDOMObj.getElementsByTagName('TemporaryDiv')[0].textContent + divTagData.outerHTML);
+                $("#preview_chart").html(decodedGraphData);
             }
         }
     }
@@ -212,7 +313,7 @@ function getQuestionVisualizationCode(){
     var url = "/engine/getQuestionVisualizationCode?width=" + $('#chart_wrap').parent().width()
         + "&height=" + $('#chart_wrap').parent().height();
     request.open("GET",url,true);
-    request.onreadystatechange=function(){embedIndicatorPreviewVisualizationCode(request)};
+    request.onreadystatechange=function(){embedQuestionVisualizationCode(request)};
     request.send(null);
 
 }
