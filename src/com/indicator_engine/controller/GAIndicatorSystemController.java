@@ -137,12 +137,16 @@ public class GAIndicatorSystemController {
     @RequestMapping(value = "/validateIndName", method = RequestMethod.GET)
     public @ResponseBody
     String processAJAXRequest_validateIndicatorName(
-            @RequestParam(value="indname", required = true) String indicatorName, Model model) {
+            @RequestParam(value="indname", required = true) String indicatorName,
+            @RequestParam(value="indicatorIndex", required = false, defaultValue = "-1") String indicatorIndex,
+            Model model) {
 
         String status = null;
         GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         List<GLAIndicator> glaIndicatorList = glaIndicatorBean.displayall(null, null, false);
+        int targetIndicatorIndex = Integer.parseInt(indicatorIndex);
+
         if (indicatorName.isEmpty())
             status = "null";
         else{
@@ -156,11 +160,14 @@ public class GAIndicatorSystemController {
                         break;
                     }
                 }
+                int index = 0;
                 for(GenQuery genQuery : entitySpecificationBean.getQuestionsContainer().getGenQueries()) {
-                    if(genQuery.getIndicatorName().equals(indicatorName)) {
+                    if(genQuery.getIndicatorName().equals(indicatorName) && targetIndicatorIndex != index) {
                         status = "exists";
+//                        status = Integer.toString(index);
                         break;
                     }
+                    index++;
                 }
             }
         }
@@ -215,7 +222,19 @@ public class GAIndicatorSystemController {
                           Model model) {
             Gson gson = new Gson();
             EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-            entitySpecificationBean.getEntityValues().add(new EntityValues(key, value, search));
+
+            boolean hasEntity = false;
+            for (Iterator<EntityValues> entityValues = entitySpecificationBean.getEntityValues().iterator(); entityValues.hasNext(); ) {
+                EntityValues aEntityValue = entityValues.next();
+                if (aEntityValue.getKey().equals(key) && aEntityValue.geteValues().equals(value) && aEntityValue.getType().equals(search)) {
+                    hasEntity = true;
+                    break;
+                }
+            }
+            if (!hasEntity) {
+                entitySpecificationBean.getEntityValues().add(new EntityValues(key, value, search));
+            }
+
             return gson.toJson(entitySpecificationBean.getEntityValues());
 
     }
