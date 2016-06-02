@@ -2,6 +2,7 @@ package com.indicator_engine.model.indicator_system.Number;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.util.comparator.BooleanComparator;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,12 +15,22 @@ import java.util.List;
 @Scope("session")
 @SuppressWarnings({"unused", "unchecked"})
 public class UserSearchSpecifications implements Serializable,Cloneable {
+    private String key;
+    private String value;
     private String userSearchType;
     private String searchPattern;
     private String userSearch ;
 
     public UserSearchSpecifications() {}
     public UserSearchSpecifications(String userSearchType, String userSearch, String searchPattern){
+        this.userSearchType = userSearchType;
+        this.userSearch = userSearch;
+        this.searchPattern =searchPattern;
+    }
+
+    public UserSearchSpecifications(String key, String value, String userSearchType, String userSearch, String searchPattern){
+        this.key = key;
+        this.value = value;
         this.userSearchType = userSearchType;
         this.userSearch = userSearch;
         this.searchPattern =searchPattern;
@@ -36,6 +47,22 @@ public class UserSearchSpecifications implements Serializable,Cloneable {
         }
         return clone;
 
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public String getUserSearchType() {
