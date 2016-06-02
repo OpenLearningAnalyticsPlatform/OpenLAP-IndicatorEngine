@@ -1,8 +1,18 @@
 $(function() {
 
-    populateAnalyticsMethods();
+    $('.datepicker').pickadate({
+        selectMonths: true, // Creates a dropdown to control month
+        selectYears: 15 // Creates a dropdown of 15 years to control year
+    });
+
     populateAnalyticsGoal();
-    populateVisualizationFrameworks();
+    populateAnalyticsMethods();
+    toggleVisibilityMethodMappingTable();
+    toggleVisibilityVisualizerMappingTable();
+
+    localStorage.removeItem("selectedMethods");
+    localStorage.removeItem("methodMappings");
+    localStorage.removeItem("visualizationMappings");
 
     $('.modal-trigger').leanModal();
 
@@ -18,7 +28,6 @@ $(function() {
     }
 
     if( $('#appliedFiltersDiv').is(':empty') ) {
-        // $('#appliedFiltersDiv').append("No Applied Filters");
         $('#appliedFiltersDiv').hide();
         $('#appliedFiltersLabel').hide();
     }
@@ -60,21 +69,6 @@ $(function() {
 function updateAnalyticsMethodDesc() {
     $('#analyticsMethodDesc').html('<i class="material-icons">info</i>' + "&nbsp;" + $('#analyticsMethod').find('option:selected').attr('description'));
 };
-
-function deleteEntityFilter(filter, event) {
-    var e = event;
-    $(function() {
-        $.ajax({
-            type: "GET",
-            url: "/indicators/deleteEntities",
-            data: {filter: $(filter).closest('div').attr("id")},
-            dataType: "json",
-            success: function (response) {
-                e.stopPropagation();
-            }
-        });
-    });
-}
 
 function deleteIndicator(indicatorName, event) {
     var e = event;
@@ -132,57 +126,6 @@ function loadIndicator(indicatorName){
     });
 }
 
-function loadIndicatorAssociatedFilters(entityValues, userSpecs, sessionSpecs, timeSpecs) {
-
-    if (entityValues.length > 0 || userSpecs.length > 0 || sessionSpecs.length > 0 || timeSpecs.length > 0) {
-        $('#appliedFiltersDiv').empty();
-        $('#appliedFiltersDiv').show();
-        $('#appliedFiltersLabel').show();
-    }
-
-    for (var entityValuesIndex = 0;
-         entityValuesIndex < entityValues.length;
-         entityValuesIndex++) {
-
-        var entityValue = entityValues[entityValuesIndex];
-        $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
-            + "' id='" + entityValue.key + "_" + entityValue.eValues + "_" + entityValue.type + "' " +
-            "title='Attr_" + entityValue.key + "_" + entityValue.eValues + "_" + entityValue.type +"'>" +
-            "<span>Attr_" + entityValue.key + ":" + entityValue.eValues
-            + "</span><i class='material-icons' onclick='deleteEntityFilter(this, event);'>close</i></div>");
-    }
-
-    for (var userSpecsIndex = 0;
-         userSpecsIndex < userSpecs.length;
-         userSpecsIndex++) {
-        var userSpec = userSpecs[userSpecsIndex];
-        $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
-            + "' id='user-" + userSpecsIndex + "' title='User-" + userSpecsIndex + "-" + userSpec.key +"'>" +
-            "<span>User-" + userSpecsIndex + "-" + userSpec.key
-            + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
-    }
-
-    for (var sessionSpecsIndex = 0;
-         sessionSpecsIndex < sessionSpecsIndex.length;
-         sessionSpecsIndex++) {
-        var sessionSpec = sessionSpecs[sessionSpecsIndex];
-        $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
-            + "' id='session-" + sessionSpecsIndex + "' title='Session-" + sessionSpecsIndex + "-" + sessionSpec.key + "'>" +
-            "<span>Session-" + sessionSpecsIndex + "-" + sessionSpec.key
-            + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
-    }
-
-    for (var timeSpecsIndex = 0;
-         timeSpecsIndex < timeSpecsIndex.length;
-         timeSpecsIndex++) {
-        var timeSpec = timeSpecs[timeSpecsIndex];
-        $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
-            + "' id='time-" + timeSpecsIndex + "' title='Time-" + timeSpecsIndex + "-" + timeSpec.key + "'>" +
-            "<span>Time-" + timeSpecsIndex + "-" + timeSpec.key
-            + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
-    }
-}
-
 function populateAnalyticsMethods(){
     var request = createRequest();
     var url = "/engine/listAllAnalyticsMethods";
@@ -204,8 +147,8 @@ function processReceivedAnalyticsMethods(request) {
                 newOption.setAttribute('description', parsedJSON[i].description);
                 analyticsMethodSelection.appendChild(newOption);
             }
-            analyticsMethodSelection.selectedIndex = 0;
-            updateAnalyticsMethodDesc();
+            analyticsMethodSelection.selectedIndex = -1;
+            populateVisualizationFrameworks();
         }
     }
 }
@@ -261,20 +204,30 @@ function processReceivedVisualizationFrameworks(request) {
                     chartTypeSelection.appendChild(newChartTypeOption);
                 }
             }
-            visualizationFrameworksSelection.selectedIndex = 0;
-            chartTypeSelection.selectedIndex = 0;
+            visualizationFrameworksSelection.selectedIndex = -1;
+            chartTypeSelection.selectedIndex = -1;
+            // getVisualizationMethodInputs();
         }
     }
 }
 
 function getIndicatorPreviewVisualizationCode(){
+
+    var methodMappings = localStorage.getItem('methodMappings') || "";
+    var visualizationMappings = localStorage.getItem('visualizationMappings') || "";
+    var selectedMethods = localStorage.getItem('selectedMethods') || "";
+    selectedMethods = JSON.parse(selectedMethods).join(',');
+
     var request = createRequest();
     var url = "/engine/getIndicatorPreviewVisualizationCode?width=" + $('#chart_wrap').parent().width()
                                                                 + "&height=" + $('#chart_wrap').parent().height()
                                                                 + "&analyticsMethodId=" + $( "#analyticsMethod" ).val()
                                                                 + "&EngineSelect=" + $( "#EngineSelect" ).val()
                                                                 + "&selectedChartType=" + $( "#selectedChartType" ).val()
-                                                                + "&indicatorNaming=" + $( "#indicatorNaming" ).val();
+                                                                + "&indicatorNaming=" + $( "#indicatorNaming" ).val()
+                                                                + "&methodMappings=" + methodMappings
+                                                                + "&visualizationMappings=" + visualizationMappings
+                                                                + "&selectedMethods=" + selectedMethods;
     request.open("GET",url,true);
     request.onreadystatechange=function(){embedIndicatorPreviewVisualizationCode(request)};
     request.send(null);
