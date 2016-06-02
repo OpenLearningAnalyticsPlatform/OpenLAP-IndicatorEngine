@@ -21,15 +21,12 @@
 package com.indicator_engine.controller;
 
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 import com.indicator_engine.dao.*;
 import com.indicator_engine.datamodel.*;
 import com.indicator_engine.graphgenerator.cewolf.PageViewCountData;
 import com.indicator_engine.indicator_system.IndicatorPreProcessing;
 import com.indicator_engine.indicator_system.Number.OperationNumberProcessorDao;
-import com.indicator_engine.learningcontextdata.Entity;
 import com.indicator_engine.misc.NumberChecks;
-import com.indicator_engine.model.app.QuestionRun;
 import com.indicator_engine.model.app.SearchQuestionForm;
 import com.indicator_engine.model.indicator_system.Number.*;
 import org.apache.log4j.Logger;
@@ -40,13 +37,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -292,18 +287,18 @@ public class GAIndicatorSystemController {
         return gson.toJson(keyValues);
     }
 
-    @RequestMapping(value = "/addUserFilter", method = RequestMethod.GET)
-    public @ResponseBody
-    String  addUserFilter(@RequestParam(value="userdata", required = true) String userdata,
-                        @RequestParam(value="searchType", required = true) String searchType,
-                          @RequestParam(value="userType", required = true) String userType,
-                        Model model) {
-        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        Gson gson = new Gson();
-        entitySpecificationBean.getUserSpecifications().add(new UserSearchSpecifications(userType, userdata, searchType));
-        return gson.toJson(entitySpecificationBean.getUserSpecifications());
-
-    }
+//    @RequestMapping(value = "/addUserFilter", method = RequestMethod.GET)
+//    public @ResponseBody
+//    String  addUserFilter(@RequestParam(value="userdata", required = true) String userdata,
+//                        @RequestParam(value="searchType", required = true) String searchType,
+//                          @RequestParam(value="userType", required = true) String userType,
+//                        Model model) {
+//        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+//        Gson gson = new Gson();
+//        entitySpecificationBean.getUserSpecifications().add(new UserSearchSpecifications(userType, userdata, searchType));
+//        return gson.toJson(entitySpecificationBean.getUserSpecifications());
+//
+//    }
 
     @RequestMapping(value = "/getUserFilters", method = RequestMethod.GET)
     public @ResponseBody
@@ -314,26 +309,26 @@ public class GAIndicatorSystemController {
 
     }
 
-    @RequestMapping(value = "/deleteUserFilters", method = RequestMethod.GET)
-    public @ResponseBody
-    String  deleteUserFilters(Model model,  @RequestParam(value="filter", required = true) String filter) {
-        Gson gson = new Gson();
-        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        if(filter.equals("ALL"))
-            entitySpecificationBean.getUserSpecifications().clear();
-        else
-        {
-            String[] filterTerms = filter.split("_");
-            for (Iterator<UserSearchSpecifications> userSearchSpecifications = entitySpecificationBean.getUserSpecifications().iterator(); userSearchSpecifications.hasNext(); ) {
-                UserSearchSpecifications aUserSearchSpecifications = userSearchSpecifications.next();
-                if (aUserSearchSpecifications.getUserSearchType().equals(filterTerms[0]) && aUserSearchSpecifications.getUserSearch().equals(filterTerms[1]) && aUserSearchSpecifications.getSearchPattern().equals(filterTerms[2])) {
-                    userSearchSpecifications.remove();
-                    break;
-                }
-            }
-        }
-        return gson.toJson(entitySpecificationBean.getUserSpecifications());
-    }
+//    @RequestMapping(value = "/deleteUserFilters", method = RequestMethod.GET)
+//    public @ResponseBody
+//    String  deleteUserFilters(Model model,  @RequestParam(value="filter", required = true) String filter) {
+//        Gson gson = new Gson();
+//        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+//        if(filter.equals("ALL"))
+//            entitySpecificationBean.getUserSpecifications().clear();
+//        else
+//        {
+//            String[] filterTerms = filter.split("_");
+//            for (Iterator<UserSearchSpecifications> userSearchSpecifications = entitySpecificationBean.getUserSpecifications().iterator(); userSearchSpecifications.hasNext(); ) {
+//                UserSearchSpecifications aUserSearchSpecifications = userSearchSpecifications.next();
+//                if (aUserSearchSpecifications.getUserSearchType().equals(filterTerms[0]) && aUserSearchSpecifications.getUserSearch().equals(filterTerms[1]) && aUserSearchSpecifications.getSearchPattern().equals(filterTerms[2])) {
+//                    userSearchSpecifications.remove();
+//                    break;
+//                }
+//            }
+//        }
+//        return gson.toJson(entitySpecificationBean.getUserSpecifications());
+//    }
 
     @RequestMapping(value = "/searchTime", method = RequestMethod.GET)
     public @ResponseBody
@@ -348,12 +343,30 @@ public class GAIndicatorSystemController {
 
     @RequestMapping(value = "/addTimeFilter", method = RequestMethod.GET)
     public @ResponseBody
-    String  addTimeFilter(@RequestParam(value="time", required = false) List<String> time,
+    String  addTimeFilter(@RequestParam(value="time", required = true) List<String> time,
                           @RequestParam(value="timeType", required = true) String timeType,
+                          @RequestParam(value="isUserData", required = false, defaultValue = "false") String isUserData,
                           Model model) {
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         Gson gson = new Gson();
-        entitySpecificationBean.getTimeSpecifications().add(new TimeSearchSpecifications(timeType,time));
+        boolean hasTimeFilter = false;
+        for (Iterator<TimeSearchSpecifications> timeSearchSpecifications = entitySpecificationBean.getTimeSpecifications().iterator(); timeSearchSpecifications.hasNext(); ) {
+            TimeSearchSpecifications aTimeSearchSpecifications = timeSearchSpecifications.next();
+
+            if (aTimeSearchSpecifications.getType().equals(timeType)) {
+                hasTimeFilter = true;
+                break;
+            }
+        }
+        if (!hasTimeFilter) {
+            entitySpecificationBean.getTimeSpecifications().add(new TimeSearchSpecifications(timeType,time));
+        }
+
+        boolean isUserDataSet = Boolean.parseBoolean(isUserData);
+        if (isUserDataSet) {
+            UserSearchSpecifications aUserSearchSpecifications = new UserSearchSpecifications("isUserDataSet", isUserData, "", "", "");
+            entitySpecificationBean.getUserSpecifications().add(0, aUserSearchSpecifications);
+        }
         return gson.toJson(entitySpecificationBean.getTimeSpecifications());
     }
 
@@ -371,23 +384,14 @@ public class GAIndicatorSystemController {
     String  deleteTimeFilters(Model model, @RequestParam(value="filter", required = true) String filter) {
         Gson gson = new Gson();
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        if(filter.equals("ALL"))
-            entitySpecificationBean.getTimeSpecifications().clear();
-        else {
-            String[] filterTerms = filter.split("_");
+        String[] filterTerms = filter.split("_");
 
-            for (Iterator<TimeSearchSpecifications> timeSearchSpecifications = entitySpecificationBean.getTimeSpecifications().iterator(); timeSearchSpecifications.hasNext(); ) {
-                TimeSearchSpecifications aTimeSearchSpecifications = timeSearchSpecifications.next();
-                String timestamp="";
-                for(int i=0; i<aTimeSearchSpecifications.getTimestamp().size();i++){
-                    if(i > 0)
-                        timestamp += ",";
-                    timestamp += aTimeSearchSpecifications.getTimestamp().get(i);
-                }
-                if (aTimeSearchSpecifications.getType().equals(filterTerms[0]) && timestamp.equals(filterTerms[1])) {
-                    timeSearchSpecifications.remove();
-                    break;
-                }
+        for (Iterator<TimeSearchSpecifications> timeSearchSpecifications = entitySpecificationBean.getTimeSpecifications().iterator(); timeSearchSpecifications.hasNext(); ) {
+            TimeSearchSpecifications aTimeSearchSpecifications = timeSearchSpecifications.next();
+
+            if (aTimeSearchSpecifications.getType().equals(filterTerms[0]) && aTimeSearchSpecifications.getTimestamp().get(0).equals(filterTerms[1])) {
+                timeSearchSpecifications.remove();
+                break;
             }
         }
         return gson.toJson(entitySpecificationBean.getTimeSpecifications());
