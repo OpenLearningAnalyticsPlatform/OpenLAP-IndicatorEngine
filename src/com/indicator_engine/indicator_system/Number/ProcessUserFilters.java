@@ -63,7 +63,7 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
         return hibenateQuery;
     }
 
-    @Override
+    /*@Override
     public String processEntities( List<EntityValues> entityValues , String filter){
         String entityTextAllQuery = "AND key IN (";
         String entityTextValueQuery = "AND key IN (";
@@ -156,9 +156,62 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
         if(entityRegexValueCounter > 0)
             hibernateQuery += entityRegexValueQuery;
         return hibernateQuery;
-    }
+    }*/
 
     @Override
+    public String processEntities( List<EntityValues> entityValues , String filter){
+        String hibernateQuery = "";
+
+        int entityValueCounter = 0;
+
+        String key, type, eValue;
+        key = type = eValue = null;
+
+        int totalLength = entityValues.size();
+
+        for (EntityValues eV : entityValues)
+        {
+            key = eV.getKey();
+            type = eV.getType();
+            eValue = eV.geteValues();
+            if(type.equals("Text"))
+            {
+                if(!eValue.equals("ALL"))
+                {
+                    if(entityValueCounter == 0)
+                    {
+                        hibernateQuery += " " + key + " = '" + eValue + "' ";
+                        entityValueCounter++;
+                    }
+                    else
+                    {
+                        hibernateQuery += filter + " " + key + " = '" + eValue + "' ";
+                        entityValueCounter++;
+                    }
+                }
+            }
+            else if(type.equals("REGEX"))
+            {
+                if(!eValue.equals("ALL"))
+                {
+                    if(entityValueCounter == 0)
+                    {
+                        hibernateQuery += " " + key + " LIKE '%" + eValue + "%' ";
+                        entityValueCounter++;
+                    }
+                    else
+                    {
+                        hibernateQuery += filter + " " + key + " LIKE '%" + eValue + "%' ";
+                        entityValueCounter++;
+                    }
+                }
+            }
+        }
+        return hibernateQuery;
+    }
+
+
+    /*@Override
     public String processUsers( List<UserSearchSpecifications>  userSpecifications, String filter){
         String hibernateQuery=" ";
         String hibernateUserNameQuery =" AND glaEvent.glaUser.username IN (";
@@ -249,8 +302,18 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
             hibernateQuery += hibernateLikeEmailQuery;
         return hibernateQuery;
 
+    }*/
+
+    @Override
+    public String processUsers( List<UserSearchSpecifications>  userSpecifications, String filter){
+        String hibernateQuery="";
+
+        // Need to implement to get the Name of the current user and return that.
+
+        return hibernateQuery;
     }
 
+    /*
     public String processSessions( List<SessionSpecifications>  sessionSpecifications, String filter){
         String hibernateQuery=" ";
         String hibernateExactSession =" AND glaEvent.session IN (";
@@ -296,7 +359,55 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
             hibernateQuery += hibernateLikeSession;
 
         return hibernateQuery;
+    }*/
+
+    public String processSessions( List<SessionSpecifications>  sessionSpecifications, String filter){
+        String hibernateQuery="AND (";
+        String hibernateExactSession =" E.Session IN (";
+        String hibernateLikeSession ="";
+        String session , type;
+        session = type = null;
+        int counterSession = 0;
+        int counterLikeSesion = 0;
+        for(SessionSpecifications sessionSpec : sessionSpecifications){
+            session = sessionSpec.getSession();
+            type = sessionSpec.getType();
+            if(type.equals("EXACT")) {
+                if(counterSession <= 0)
+                    hibernateExactSession += "'"+ session + "'";
+                else
+                    hibernateExactSession += ", '"+ session + "'";
+                counterSession++;
+            }
+            if(type.equals("REGEX")) {
+                if(counterLikeSesion == 0)
+                    hibernateLikeSession += " E.Session LIKE '%"+ session + "%'";
+                else
+                    hibernateLikeSession += filter + " E.Session LIKE '%"+ session + "%'";
+                counterLikeSesion++;
+            }
+        }
+
+        hibernateExactSession += ")";
+
+        if(counterSession > 0)
+            hibernateQuery += hibernateExactSession;
+
+        if(counterSession > 0 && counterLikeSesion > 0)
+            hibernateQuery += filter + hibernateLikeSession;
+        else if(counterSession <= 0 && counterLikeSesion > 0)
+            hibernateQuery += hibernateLikeSession;
+
+        hibernateQuery += ")";
+
+        //When there are not filters than clearing the hibernate query
+        if(counterSession <= 0 && counterLikeSesion <= 0)
+            hibernateQuery = "";
+
+        return hibernateQuery;
     }
+
+    /*
     public String processTime( List<TimeSearchSpecifications>  timeSearchSpecifications, String filter){
         String hibernateQuery=" ";
         String hibernateExactTime =" AND glaEvent.timestamp IN (";
@@ -359,6 +470,30 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
             hibernateQuery += hibernateRangeTime;
 
         return hibernateQuery;
+    }*/
+
+    public String processTime( List<TimeSearchSpecifications>  timeSearchSpecifications, String filter){
+        String hibernateStartTime = "";
+        String hibernateEndTime = "";
+        String type = null;
+        List<String> time = new ArrayList<>();
+        int counterTime = 0;
+        int counterRangeTime = 0;
+
+        for(TimeSearchSpecifications timeSpec : timeSearchSpecifications){
+            time = timeSpec.getTimestamp();
+            type = timeSpec.getType();
+
+            Date date = new Date(Long.parseLong(time.get(0))); // *1000 is to convert seconds to milliseconds
+            long uDate = date.getTime() / 1000L;
+
+            if(type.equals("startdate") && uDate > 0)
+                hibernateStartTime = " AND E.Timestamp >= " + uDate;
+            else if(type.equals("enddate") && uDate > 0)
+                hibernateEndTime = " AND E.Timestamp <= " + uDate;
+
+        }
+        return hibernateStartTime + hibernateEndTime;
     }
 
 }
