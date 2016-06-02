@@ -48,8 +48,8 @@ $(function() {
         heightStyle: "fill"
     });
     $( document ).tooltip();
-    $( "#toDate" ).datepicker();
-    $( "#fromDate" ).datepicker();
+    // $( "#toDate" ).datepicker();
+    // $( "#fromDate" ).datepicker();
 
     var indPropEntityFilterTable = $('#indEntityFilters').dataTable({
         "aoColumns": [
@@ -766,13 +766,13 @@ function populateEntities(data) {
         },
         dataType: "json",
         success: function (response) {
-            // var parsedJSON = JSON.parse(request.responseText);
             var entityKeySelection = document.getElementById("entityKeySelection");
             removeOptions(entityKeySelection);
             for (var i=0;i< response.length;i++) {
                 var newOption = new Option(response[i], response[i]);
                 entityKeySelection.appendChild(newOption);
             }
+            getDataColumns();
         }
     });
 }
@@ -853,7 +853,6 @@ function displayEntityFilters(callstatus,request,msg){
                 // });
             }
 
-            console.log(request.responseText);
             var parsedJSON = JSON.parse(request.responseText);
             loadIndicatorAssociatedFilters(parsedJSON, [], [], []);
             var heading = new Array();
@@ -1033,30 +1032,30 @@ function displaySearchTimeResults(request) {
 
 }
 
-function addTimeFilter() {
-    var request = createRequest();
-    var timeSearchType = document.getElementById("timeSelectionType").value;
-    if(timeSearchType === "EXACT"){
-        var timeString = document.getElementById("timeSearchResults").value;
-        var UTCDate = +(new Date(timeString));
-        var url ="/indicators/addTimeFilter?time="+UTCDate+"&timeType="+timeSearchType;
-        request.open("GET",url,true);
-        request.onreadystatechange= function(){displayTimeFilters(1,request)};
-        request.send(null);
-    }
-    else {
-        var startRange = document.getElementById("fromDate").value;
-        var endRange = document.getElementById("toDate").value;
-        var time = new Array();
-        time[0] = +(new Date(startRange));
-        time[1] = +(new Date(endRange));
-        url ="/indicators/addTimeFilter?time="+time+"&timeType="+timeSearchType;
-        request.open("GET",url,true);
-        request.onreadystatechange= function(){displayTimeFilters(1,request)};
-        request.send(null);
-    }
-
-}
+// function addTimeFilter() {
+//     var request = createRequest();
+//     var timeSearchType = document.getElementById("timeSelectionType").value;
+//     if(timeSearchType === "EXACT"){
+//         var timeString = document.getElementById("timeSearchResults").value;
+//         var UTCDate = +(new Date(timeString));
+//         var url ="/indicators/addTimeFilter?time="+UTCDate+"&timeType="+timeSearchType;
+//         request.open("GET",url,true);
+//         request.onreadystatechange= function(){displayTimeFilters(1,request)};
+//         request.send(null);
+//     }
+//     else {
+//         var startRange = document.getElementById("fromDate").value;
+//         var endRange = document.getElementById("toDate").value;
+//         var time = new Array();
+//         time[0] = +(new Date(startRange));
+//         time[1] = +(new Date(endRange));
+//         url ="/indicators/addTimeFilter?time="+time+"&timeType="+timeSearchType;
+//         request.open("GET",url,true);
+//         request.onreadystatechange= function(){displayTimeFilters(1,request)};
+//         request.send(null);
+//     }
+//
+// }
 
 function refreshTimeFilters() {
     var request = createRequest();
@@ -1066,14 +1065,14 @@ function refreshTimeFilters() {
     request.send(null);
 }
 
-function deleteTimeFilters() {
-    var request = createRequest();
-    var timeFilterListing = document.getElementById("timeFilterListing");
-    var url ="/indicators/deleteTimeFilters?filter="+timeFilterListing.value;
-    request.open("GET",url,true);
-    request.onreadystatechange= function(){displayTimeFilters(3,request,timeFilterListing.value)};
-    request.send(null);
-}
+// function deleteTimeFilters() {
+//     var request = createRequest();
+//     var timeFilterListing = document.getElementById("timeFilterListing");
+//     var url ="/indicators/deleteTimeFilters?filter="+timeFilterListing.value;
+//     request.open("GET",url,true);
+//     request.onreadystatechange= function(){displayTimeFilters(3,request,timeFilterListing.value)};
+//     request.send(null);
+// }
 
 function displayTimeFilters(callstatus,request,msg) {
     if (request.readyState == 4) {
