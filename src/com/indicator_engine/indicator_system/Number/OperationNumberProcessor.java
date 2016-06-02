@@ -19,10 +19,7 @@
 
 package com.indicator_engine.indicator_system.Number;
 
-import com.indicator_engine.dao.GLAEntityDao;
-import com.indicator_engine.dao.GLAEventDao;
 import com.indicator_engine.model.indicator_system.Number.EntitySpecification;
-import com.indicator_engine.model.indicator_system.Number.SelectNumberParameters;
 import org.apache.log4j.Logger;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
@@ -33,8 +30,6 @@ import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-
-import java.util.List;
 
 /**
  * Created by Tanmaya Mahapatra on 01-04-2015.

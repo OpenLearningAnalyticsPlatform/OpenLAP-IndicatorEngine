@@ -25,10 +25,8 @@ import com.indicator_engine.dao.GLAIndicatorDao;
 import com.indicator_engine.dao.GLAQuestionDao;
 import com.indicator_engine.datamodel.GLAIndicator;
 import com.indicator_engine.datamodel.GLAIndicatorProps;
-import com.indicator_engine.datamodel.GLAQuestion;
 import com.indicator_engine.model.indicator_system.Number.EntitySpecification;
 import com.indicator_engine.model.indicator_system.Number.GenQuery;
-import com.indicator_engine.model.indicator_system.Number.Questions;
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
@@ -39,7 +37,6 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.PieSectionLabelGenerator;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
@@ -55,15 +52,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.GradientPaint;
 import java.awt.Color;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Tanmaya Mahapatra on 11-05-2015.
