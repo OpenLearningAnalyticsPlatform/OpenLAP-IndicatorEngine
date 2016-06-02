@@ -147,3 +147,12 @@ input::-webkit-input-placeholder {
     font-size: 13px;
     line-height: 2;
 }
+table#methodMappingTable {
+    font-size: 13px;
+}
+table#visualizerMappingTable {
+    font-size: 13px;
+}
+i {
+    cursor: pointer;
+}
