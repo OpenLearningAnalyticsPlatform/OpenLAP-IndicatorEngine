@@ -68,6 +68,8 @@ $(document).ready(function() {
 
 
     $('#sessionSelection').validate({
+        ignore: false,
+        onkeyup: false,
         rules: {
             "questionsContainer.questionName": {
                 required: true,
@@ -106,7 +108,6 @@ $(document).ready(function() {
         },
         messages: {
         },
-        onkeyup: false,
         errorClass: 'invalid',
         errorPlacement: function (error, element) {
             element.next("label").attr("data-error", error.contents().text());
