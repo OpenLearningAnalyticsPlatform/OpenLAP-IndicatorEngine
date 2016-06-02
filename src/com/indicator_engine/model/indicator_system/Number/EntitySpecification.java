@@ -59,14 +59,14 @@ public class EntitySpecification implements Serializable {
 
     private final String  persistenceObject;
     private final String filteringType;
-    private final String retrievableObjects;
+    private String retrievableObjects;
 
     private Questions questionsContainer = new Questions();
 
     public EntitySpecification() {
         this.persistenceObject = "GLAEntity";
         this.filteringType  ="AND";
-        this.retrievableObjects = " COUNT(*) ";
+        //this.retrievableObjects = " COUNT(*) ";
 
     }
 
@@ -241,6 +241,9 @@ public class EntitySpecification implements Serializable {
         return retrievableObjects;
     }
 
+    public void setRetrievableObjects(String retrievableObjects) {
+        this.retrievableObjects = retrievableObjects;
+    }
     public boolean isComposite() {
         return isComposite;
     }
@@ -249,7 +252,11 @@ public class EntitySpecification implements Serializable {
         this.isComposite = isComposite;
     }
 
-    public long getAnalyticsMethodId() { return analyticsMethodId; }
+    public long getAnalyticsMethodId() {
+        return analyticsMethodId;
+    }
 
-    public void setAnalyticsMethodId(long analyticsMethodId) { this.analyticsMethodId = analyticsMethodId; }
+    public void setAnalyticsMethodId(long analyticsMethodId) {
+        this.analyticsMethodId = analyticsMethodId;
+    }
 }
