@@ -19,6 +19,9 @@
 
 package com.indicator_engine.controller;
 
+import DataSet.OLAPColumnConfigurationData;
+import DataSet.OLAPPortConfiguration;
+import DataSet.OLAPPortMapping;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.indicator_engine.dao.GLACategoryDao;
@@ -130,7 +133,10 @@ public class AnalyticsEngineController {
                                          @RequestParam(value="analyticsMethodId", required = true) String analyticsMethodId,
                                          @RequestParam(value="EngineSelect", required = true) String engineSelectId,
                                          @RequestParam(value="selectedChartType", required = true) String selectedChartType,
-                                         @RequestParam(value="indicatorNaming", required = true) String indicatorName) {
+                                         @RequestParam(value="indicatorNaming", required = true) String indicatorName,
+                                         @RequestParam(value="methodMappings", required = true) String methodMappings,
+                                         @RequestParam(value="visualizationMappings", required = true) String visualizationMappings,
+                                         @RequestParam(value="selectedMethods", required = true) String selectedMethodDataColumns) {
 
 
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
@@ -149,11 +155,28 @@ public class AnalyticsEngineController {
         indicatorPreviewRequest.setAnalyticsMethodId(Long.parseLong(analyticsMethodId));
         indicatorPreviewRequest.setVisualizationMethodId(Long.parseLong(selectedChartType));
         indicatorPreviewRequest.setVisualizationFrameworkId(Long.parseLong(engineSelectId));
-        //        entitySpecificationBean.setretrievable
+        entitySpecificationBean.setRetrievableObjects(selectedMethodDataColumns);
         indicatorPreviewRequest.setQuery(entitySpecificationBean.getHql());
-//        indicatorPreviewRequest.setMethodToVisualizationConfig();
 
         Gson gson = new Gson();
+
+        Type olapPortMappingType = new TypeToken<List<OLAPPortMapping>>(){}.getType();
+        List<OLAPPortMapping> methodOLAPPortMappingList = gson.fromJson(methodMappings, olapPortMappingType);
+        OLAPPortConfiguration config = new OLAPPortConfiguration();
+        for (OLAPPortMapping methodPortMapping : methodOLAPPortMappingList) {
+            config.getMapping().add(methodPortMapping);
+        }
+        indicatorPreviewRequest.setQueryToMethodConfig(config);
+
+
+        List<OLAPPortMapping> visualizationOLAPPortMappingList = gson.fromJson(visualizationMappings, olapPortMappingType);
+        config = new OLAPPortConfiguration();
+        for (OLAPPortMapping visualizationPortMapping : visualizationOLAPPortMappingList) {
+            config.getMapping().add(visualizationPortMapping);
+        }
+        indicatorPreviewRequest.setMethodToVisualizationConfig(config);
+
+
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://137.226.117.226:8080/AnalyticsEngine/GetIndicatorPreview";
         String requestJson = gson.toJson(indicatorPreviewRequest);
@@ -182,5 +205,86 @@ public class AnalyticsEngineController {
 
         Gson gson = new Gson();
         return gson.toJson(result);
+    }
+
+    /**
+     * Get data columns by category name to populate Analytics methods mapping
+     * @return String JSON string containing ids, titles and description of each data column
+     */
+    @RequestMapping(value = "/getDataColumnsByCatName", method = RequestMethod.GET)
+    public @ResponseBody
+    String getDataColumnsByCatName(@RequestParam(value="categoryName", required = true) String categoryName) {
+
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject (
+                "http://137.226.117.226:8080/AnalyticsEngine/GetDataColumnsByCatName?categoryName=" + categoryName,
+                String.class);
+
+        Gson gson = new Gson();
+        Type olapColumnConfigurationDataListType = new TypeToken<List<OLAPColumnConfigurationData>>(){}.getType();
+        List<OLAPColumnConfigurationData> olapColumnConfigurationDataList = gson.fromJson(result, olapColumnConfigurationDataListType);
+
+        return gson.toJson(olapColumnConfigurationDataList);
+    }
+
+    /**
+     * Get analytics method inputs to populate Analytics methods mapping
+     * @return String JSON string containing ids, titles and description of each input
+     */
+    @RequestMapping(value = "/getAnalyticsMethodInputs", method = RequestMethod.GET)
+    public @ResponseBody
+    String getAnalyticsMethodInputs(@RequestParam(value="id", required = true) String id) {
+
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject (
+                "http://137.226.117.226:8080/AnalyticsEngine/GetAnalyticsMethodInputs?id=" + id,
+                String.class);
+
+        Gson gson = new Gson();
+        Type olapColumnConfigurationDataListType = new TypeToken<List<OLAPColumnConfigurationData>>(){}.getType();
+        List<OLAPColumnConfigurationData> olapColumnConfigurationDataList = gson.fromJson(result, olapColumnConfigurationDataListType);
+
+        return gson.toJson(olapColumnConfigurationDataList);
+    }
+
+    /**
+     * Get visualization method inputs to populate visualization mapping
+     * @return String JSON string containing ids, titles and description of each input
+     */
+    @RequestMapping(value = "/getVisualizationMethodInputs", method = RequestMethod.GET)
+    public @ResponseBody
+    String getVisualizationMethodInputs(@RequestParam(value="frameworkId", required = true) String frameworkId,
+                                            @RequestParam(value="methodId", required = true) String methodId) {
+
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject (
+                "http://137.226.117.226:8080/AnalyticsEngine/GetVisualizationMethodInputs?frameworkId=" + frameworkId + "&methodId=" + methodId,
+                String.class);
+
+        Gson gson = new Gson();
+        Type olapColumnConfigurationDataListType = new TypeToken<List<OLAPColumnConfigurationData>>(){}.getType();
+        List<OLAPColumnConfigurationData> olapColumnConfigurationDataList = gson.fromJson(result, olapColumnConfigurationDataListType);
+
+        return gson.toJson(olapColumnConfigurationDataList);
+    }
+
+    /**
+     * Get analytics method inputs to populate visualization mapping
+     * @return String JSON string containing ids, titles and description of each input
+     */
+    @RequestMapping(value = "/getAnalyticsMethodOutputs", method = RequestMethod.GET)
+    public @ResponseBody
+    String getAnalyticsMethodOutputs(@RequestParam(value="id", required = true) String id) {
+
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject (
+                "http://137.226.117.226:8080/AnalyticsEngine/GetAnalyticsMethodOutputs?id=" + id,
+                String.class);
+
+        Gson gson = new Gson();
+        Type olapColumnConfigurationDataListType = new TypeToken<List<OLAPColumnConfigurationData>>(){}.getType();
+        List<OLAPColumnConfigurationData> olapColumnConfigurationDataList = gson.fromJson(result, olapColumnConfigurationDataListType);
+
+        return gson.toJson(olapColumnConfigurationDataList);
     }
 }
