@@ -81,7 +81,7 @@
                             <div class="col s12 m8 l6">
                                 <label id="appliedFiltersLabel" for="appliedFiltersDiv">Applied Filters </label>
                             </div>
-                            <div class="col s9 m9 l9">
+                            <div class="col s12 m12 l12">
                                 <div id="appliedFiltersDiv"></div>
                             </div>
                             <div class="col s12 m12 l12">
@@ -92,14 +92,13 @@
                             <div class="col s12">
                                 <ul class="tabs">
                                     <li class="tab col s3"><a href="#attribute" class="active">Attribute</a></li>
-                                    <li class="tab col s3"><a href="#user">User</a></li>
                                     <li class="tab col s3"><a href="#session">Session</a></li>
-                                    <li class="tab col s3"><a href="#time">Time</a></li>
+                                    <li class="tab col s3"><a href="#userAndTime">User & Time</a></li>
                                 </ul>
                             </div>
                             <div id="attribute" class="col s12">
                                 <div class="row">
-                                    <div class="col-md-7">
+                                    <div class="col s12 m6 l6">
                                         <br/>
                                         <label for="entityKeySelection">Select an Attribute </label>
                                         <form:select class="browser-default" path="selectedKeys" items="${selectNumberParameters.keys}" name ="entityKeySelection" id="entityKeySelection" title="Select Attribute"/>
@@ -127,35 +126,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="user" class="col s12">
-                                <div class="row">
-                                    <div class="col-md-7">
-                                        <br/>
-                                        <label for="userType">User Type </label>
-                                        <form:select class="browser-default" path="selecteduserSearchTypes" items="${selectNumberParameters.userSearchTypes}" name ="userType" id="userType" title="Select User Type"/>
-                                        <label for="searchUserString" class="control-label">Search Keyword</label>
-                                        <form:input class="form-control" path="searchUserString"  name="searchUserString" id ="searchUserString" title="Enter Keywords"/>
-                                        <br/>
-                                        <div class="right-align">
-                                            <button class="waves-effect waves-light btn light-blue" type="button" name="_eventId_searchUser" value="Search" onfocus="searchUser()" title="Search for Users">Search</button>
-                                        </div>
-                                        <br/>
-                                        <label for="multipleSelect">Search Results </label>
-                                        <form:select class="browser-default" path="selectedUserString" name="multipleSelect" id="usersearchResults" title="Select from Search Results">
-                                            <form:options items="${selectNumberParameters.searchResults}" />
-                                        </form:select>
-                                        <label for="UsersearchType">Search Type </label>
-                                        <form:select class="browser-default" path="selectedSearchType" items="${selectNumberParameters.searchType}" name ="UsersearchType" id="UsersearchType" title="Select Search Type"/>
-                                        <br/>
-                                        <div class="right-align">
-                                            <button class="waves-effect waves-light btn light-blue" type="button" name="_eventId_specifyUser" value="Add" onclick="addUserFilter()" title="Apply User Filter">Apply</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div id="session" class="col s12">
                                 <div class="row">
-                                    <div class="col-md-7">
+                                    <div class="col s12 m6 l6">
                                         <br/>
                                         <label for="sessionSearchType">Session Search Type </label>
                                         <form:select class="browser-default" path="selectedsessionSearchType" items="${selectNumberParameters.sessionSearchType}" name ="sessionSearchType" id="sessionSearchType" title="Select Session Type" />
@@ -179,30 +152,29 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="time" class="col s12">
+                            <div id="userAndTime" class="col s12">
                                 <div class="row">
-                                    <div class="col-md-7">
+                                    <div class="col s12 m6 l6">
                                         <br/>
-                                        <label for="timeSearchType">Timestamp Search Type </label>
-                                        <form:select class="browser-default" path="selectedTimeSearchType" items="${selectNumberParameters.timeSearchType}" name ="timeSearchType" id="timeSearchType" title="Select Timestamp Type"/>
-                                        <label for="timeSearchString" class="control-label">Search Keyword</label>
-                                        <input class="form-control" path="timeSearch"  name="searchString" id ="timeSearchString" title="Enter Search Keywords"/>
                                         <br/>
-                                        <div class="right-align">
-                                            <button class="waves-effect waves-light btn light-blue" type="button" name="_eventId_searchTime" onclick="searchTime()" value="Search" title="Search for Timestamp">Search</button>
+                                        <input type="checkbox" id="isMyData"/>
+                                        <label for="isMyData">My data only</label>
+                                        <br/>
+                                        <br/>
+                                        <div class="col s12 m12 l12">
+                                            <div class="divider"></div>
                                         </div>
                                         <br/>
-                                        <label for="multipleSelect">Search Results </label>
-                                        <form:select class="browser-default" path="selectedSearchStrings" id = "timeSearchResults" name="multipleSelect" title="Select from Search Results">
-                                            <form:options items="${selectNumberParameters.searchResults}" />
-                                        </form:select>
                                         <br/>
-                                        <label for="fromDate">From Date: </label>
-                                        <input type="text" id="fromDate" title="Enter From Date">
-                                        <label for="fromDate">To Date: </label>
-                                        <input type="text" id="toDate" title="Enter To Date">
-                                        <label for="timeSelectionType">Timestamp Search Type</label>
-                                        <form:select class="browser-default" path="selectedTimeType" items="${selectNumberParameters.timeType}" name ="timeSelectionType" id="timeSelectionType" title="Search Type" />
+                                        <label for="dateType">Date Type</label>
+                                        <select class="browser-default" title="Please select a date type." name ="dateType" id="dateType">
+                                            <option value="toDate">Start date</option>
+                                            <option value="fromDate">End Date</option>
+                                        </select>
+
+                                        <label for="dateFilterVal">Date</label>
+                                        <input type="date" class="datepicker" id="dateFilterVal" title="Enter Date">
+
                                         <br/>
                                         <div class="right-align">
                                             <button class="waves-effect waves-light btn light-blue" type="button" name="_eventId_specifyTime" onclick="addTimeFilter()" value="Add" title="Apply Timestamp Filter">Apply</button>
@@ -219,12 +191,57 @@
                         <div class="row">
                             <div class="col s12 m6 l6">
                                 <label for="analyticsMethod">Select a Method</label>
-                                <select class="browser-default" title="Please select a method." name ="analyticsMethod" id="analyticsMethod"></select>
+                                <select class="browser-default" title="Please select a method." name ="analyticsMethod" id="analyticsMethod"
+                                        onchange="getAnalyticsMethodInputs();"></select>
                             </div>
                             <div class="col m6 l6">
                                 <div class="select-desc hide-on-small-only">
                                     <span id="analyticsMethodDesc"></span>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <br/>
+                            <div class="col s12 m6 l6">
+                                <label>Mappings </label>
+                                <div class="divider"></div>
+                            </div>
+                            <br/>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m6 l6">
+                                <div class="col s6 m6 l6">
+                                    <label for="methodDataColumns">Data Columns</label>
+                                    <select class="form-control browser-default" title="You can select output mapping in here"
+                                            name ="methodDataColumns" id="methodDataColumns" size="4">
+                                    </select>
+                                </div>
+                                <div class="col s6 m6 l6">
+                                    <label for="inputForMethods">Input for Methods</label>
+                                    <select class="form-control browser-default" title="You can select input mapping in here"
+                                            name ="inputForMethods" id="inputForMethods" size="4"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m6 l6 right-align">
+                                <button class="btn waves-effect waves-light light-blue" type="button" title="Click to add mapping."
+                                        id="addMethodMapping" name="addMethodMapping" value="Add Mapping" onclick="addMethodMappingToTable();">Add
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m6 l6 right-align">
+                                <table id="methodMappingTable" class="centered">
+                                    <thead>
+                                        <tr>
+                                            <th data-field="id">Data Column</th>
+                                            <th data-field="name">Input for Methods</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -233,30 +250,74 @@
                     <div class="light-blue lighten-5 collapsible-header">Visualization</div>
                     <div class="collapsible-body panel-body">
                         <div class="row">
-                            <div class="col-md-6">
-                                <label for="EngineSelect">Select Graph Library </label>
-                                <form:select class="browser-default" path="selectedChartEngine"
-                                             items="${selectNumberParameters.chartEngines}" name ="EngineSelect" id="EngineSelect" title="Select Graph Library for Visualization" />
-                                <label for="selectedChartType">Select Graph Type </label>
-                                <form:select class="browser-default" path="selectedChartType"
-                                             items="${selectNumberParameters.chartTypes}" name ="selectedChartType" id="selectedChartType" title="Select Graph type for Visualization" />
-                                <br/>
-                                <div class="right-align">
-                                    <%--<button class="btn waves-effect waves-light light-blue darken-2" type="button" title="Apply to generate Graph."--%>
-                                            <%--name="generateGraph" id="generateGraph" value="Generate Graph"onclick="refreshGraph()">Apply--%>
-                                    <%--</button>--%>
-                                    <button class="btn waves-effect waves-light light-blue" type="button" title="Apply to generate Graph."
-                                            name="generateGraph" id="generateGraph" value="Generate Graph" onclick="getIndicatorPreviewVisualizationCode()">Apply
-                                    </button>
+                            <div class="col s6 m6 l6">
+                                <div class="row">
+                                    <label for="EngineSelect">Select Graph Library </label>
+                                    <select class="browser-default" name ="EngineSelect" id="EngineSelect" title="Select Graph Library for Visualization" onchange="getVisualizationMethodInputs();">
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <label for="selectedChartType">Select Graph Type </label>
+                                    <select class="browser-default" name ="selectedChartType" id="selectedChartType" title="Select Graph type for Visualization"></select>
+                                </div>
+                                <div class="row">
+                                    <br/>
+                                    <div class="col s12 m12 l12">
+                                        <label>Mappings </label>
+                                        <div class="divider"></div>
+                                    </div>
+                                    <br/>
+                                </div>
+                                <div class="row">
+                                    <div class="col s6 m6 l6">
+                                        <label for="outputForMethods">Output for Methods</label>
+                                        <select class="form-control browser-default" title="You can select output mapping in here"
+                                                name ="outputForMethods" id="outputForMethods" size="4">
+                                        </select>
+                                    </div>
+                                    <div class="col s6 m6 l6">
+                                        <label for="inputForVisualizer">Input for Visualizer</label>
+                                        <select class="form-control browser-default" title="You can select input mapping in here"
+                                                name ="inputForVisualizer" id="inputForVisualizer" size="4"></select>
+                                        <br/>
+                                        <div class="right-align">
+                                            <button class="btn waves-effect waves-light light-blue" type="button" title="Click to add mapping."
+                                                    id="addVisualizationMapping" name="addVisualizationMapping" value="Add Mapping" onclick="addVisualizationMappingToTable();">Add
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12 m12 l12">
+                                        <div class="divider"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12 m12 l12 right-align">
+                                        <table id="visualizerMappingTable" class="centered">
+                                            <thead>
+                                            <tr>
+                                                <th data-field="id">Output for Methods</th>
+                                                <th data-field="name">Input for Visualizer</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="right-align">
+                                            <button class="btn waves-effect waves-light light-blue" type="button" title="Apply to generate Graph."
+                                                    name="generateGraph" id="generateGraph" value="Generate Graph" onclick="getIndicatorPreviewVisualizationCode()">Apply
+                                            </button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col s6 m6 l6">
                                 <div id="chart_wrap">
                                     <div id="preview_chart" id="graphImage"></div>
                                 </div>
-                                <%--<div id="graphGeneration">--%>
-                                    <%--<img src="/graphs/jgraph?default=true" id="graphImage" title="Generated Graph" style="width: 100%;"/>--%>
-                                <%--</div>--%>
                             </div>
                         </div>
                     </div>
