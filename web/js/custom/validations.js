@@ -66,6 +66,16 @@ $(document).ready(function() {
         return $valid;
     },'');
 
+    $.validator.addMethod("hasNoOptionLeft",function(val, elem){
+        var $valid = false;
+        var optionsSize =  elem.options.length;
+        if (optionsSize == 0) {
+            $valid = true;
+        }
+        $.validator.messages["hasNoOptionLeft"] = "All inputs must be selected";
+        return $valid;
+    },'');
+
 
     $('#sessionSelection').validate({
         ignore: false,
@@ -104,6 +114,12 @@ $(document).ready(function() {
             },
             selectedChartType: {
                 required: true
+            },
+            inputForMethods: {
+                hasNoOptionLeft: true
+            },
+            inputForVisualizer: {
+                hasNoOptionLeft: true
             }
         },
         messages: {
