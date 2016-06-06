@@ -17,6 +17,7 @@ $(function() {
     $('.modal-trigger').leanModal();
 
     $('#selectedMinorSpinner').hide();
+    $('#graphLoaderSpinner').hide();
     $("#indicatorDefinition").hide();
     $("#CompositeClosedButton").hide();
     $("#graphImage").hide();
@@ -27,9 +28,17 @@ $(function() {
         $('#associatedIndicatorsDiv').append("No Associated Indicators Found");
     }
 
-    if( $('#appliedFiltersDiv').is(':empty') ) {
-        $('#appliedFiltersDiv').hide();
-        $('#appliedFiltersLabel').hide();
+    if( $('#appliedAttributeFiltersDiv').is(':empty') ) {
+        $('#appliedAttributeFiltersDiv').hide();
+        $('#appliedAttributeFiltersLabel').hide();
+    }
+    if( $('#appliedSessionFiltersDiv').is(':empty') ) {
+        $('#appliedSessionFiltersDiv').hide();
+        $('#appliedSessionFiltersLabel').hide();
+    }
+    if( $('#appliedUserTimeFiltersDiv').is(':empty') ) {
+        $('#appliedUserTimeFiltersDiv').hide();
+        $('#appliedUserTimeFiltersLabel').hide();
     }
 
     $('#saveIndicator').click(function() {
@@ -38,9 +47,10 @@ $(function() {
         }
     });
 
-    $("#generateGraph").click(function() {
-        $("#graphImage").show();
-    });
+    // $("#generateGraph").click(function() {
+    //     $("#graphImage").show();
+    // });
+
     $("#addIndicator").click(function() {
         addNewIndicator();
         $("#indicatorDefinition").show();
@@ -211,32 +221,39 @@ function processReceivedVisualizationFrameworks(request) {
     }
 }
 
-function getIndicatorPreviewVisualizationCode(){
+function getIndicatorPreviewVisualizationCode() {
 
-    var methodMappings = localStorage.getItem('methodMappings') || "";
-    var visualizationMappings = localStorage.getItem('visualizationMappings') || "";
-    var selectedMethods = localStorage.getItem('selectedMethods') || "";
-    selectedMethods = JSON.parse(selectedMethods).join(',');
+    if ($('#sessionSelection').valid()) {
 
-    var request = createRequest();
-    var url = "/engine/getIndicatorPreviewVisualizationCode?width=" + $('#chart_wrap').parent().width()
-                                                                + "&height=" + $('#chart_wrap').parent().height()
-                                                                + "&analyticsMethodId=" + $( "#analyticsMethod" ).val()
-                                                                + "&EngineSelect=" + $( "#EngineSelect" ).val()
-                                                                + "&selectedChartType=" + $( "#selectedChartType" ).val()
-                                                                + "&indicatorNaming=" + $( "#indicatorNaming" ).val()
-                                                                + "&methodMappings=" + methodMappings
-                                                                + "&visualizationMappings=" + visualizationMappings
-                                                                + "&selectedMethods=" + selectedMethods;
-    request.open("GET",url,true);
-    request.onreadystatechange=function(){embedIndicatorPreviewVisualizationCode(request)};
-    request.send(null);
+        $('#graphLoaderSpinner').show();
 
+        var methodMappings = localStorage.getItem('methodMappings') || "";
+        var visualizationMappings = localStorage.getItem('visualizationMappings') || "";
+        var selectedMethods = localStorage.getItem('selectedMethods') || "";
+        selectedMethods = JSON.parse(selectedMethods).join(',');
+
+        var request = createRequest();
+        var url = "/engine/getIndicatorPreviewVisualizationCode?width=" + $('#chart_wrap').parent().width()
+            + "&height=" + $('#chart_wrap').parent().height()
+            + "&analyticsMethodId=" + $("#analyticsMethod").val()
+            + "&EngineSelect=" + $("#EngineSelect").val()
+            + "&selectedChartType=" + $("#selectedChartType").val()
+            + "&indicatorNaming=" + $("#indicatorNaming").val()
+            + "&methodMappings=" + methodMappings
+            + "&visualizationMappings=" + visualizationMappings
+            + "&selectedMethods=" + selectedMethods;
+        request.open("GET", url, true);
+        request.onreadystatechange = function () {
+            embedIndicatorPreviewVisualizationCode(request)
+        };
+        request.send(null);
+    }
 }
 
 function embedIndicatorPreviewVisualizationCode(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
+            $('#graphLoaderSpinner').hide();
             if ((typeof google === 'undefined') || (typeof google.visualization === 'undefined')) {
                 console.log('Google Charts Lib is not loaded');
             }
@@ -280,18 +297,19 @@ function embedQuestionVisualizationCode(request) {
             else {
                 var parsedJSON = JSON.parse(request.responseText);
                 var decodedGraphData = decodeURIComponent(parsedJSON);
-                decodedGraphData = "<TemporaryDiv>" + decodedGraphData + "</TemporaryDiv>";
-
-                var parser = new DOMParser();
-                var dataDOMObj = parser.parseFromString(decodedGraphData, "text/xml");
-
-                var scriptTagData = dataDOMObj.getElementsByTagName('script')[0];
-                var randomNo = Math.floor((Math.random() * 100000) + 1000);
-                scriptTagData.insertAdjacentHTML('afterbegin', '<script type="text/javascript"> google.charts.setOnLoadCallback(drawChart_' + randomNo + '); function drawChart_' + randomNo + '() {');
-                scriptTagData.insertAdjacentHTML('beforeend', '} </script>');
-
-                var divTagData = dataDOMObj.getElementsByTagName('div')[0];
-                $("#preview_chart").html(dataDOMObj.getElementsByTagName('TemporaryDiv')[0].textContent + divTagData.outerHTML);
+                // decodedGraphData = "<TemporaryDiv>" + decodedGraphData + "</TemporaryDiv>";
+                //
+                // var parser = new DOMParser();
+                // var dataDOMObj = parser.parseFromString(decodedGraphData, "text/xml");
+                //
+                // var scriptTagData = dataDOMObj.getElementsByTagName('script')[0];
+                // var randomNo = Math.floor((Math.random() * 100000) + 1000);
+                // scriptTagData.insertAdjacentHTML('afterbegin', '<script type="text/javascript"> google.charts.setOnLoadCallback(drawChart_' + randomNo + '); function drawChart_' + randomNo + '() {');
+                // scriptTagData.insertAdjacentHTML('beforeend', '} </script>');
+                //
+                // var divTagData = dataDOMObj.getElementsByTagName('div')[0];
+                // $("#preview_chart").html(dataDOMObj.getElementsByTagName('TemporaryDiv')[0].textContent + divTagData.outerHTML);
+                $("#preview_chart").html(decodedGraphData);
             }
         }
     }
