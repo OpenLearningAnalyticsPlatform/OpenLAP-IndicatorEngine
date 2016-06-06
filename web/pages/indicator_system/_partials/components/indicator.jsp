@@ -78,17 +78,6 @@
                     <div class="light-blue lighten-5 collapsible-header active">Filters</div>
                     <div class="collapsible-body panel-body">
                         <div class="row">
-                            <div class="col s12 m8 l6">
-                                <label id="appliedFiltersLabel" for="appliedFiltersDiv">Applied Filters </label>
-                            </div>
-                            <div class="col s12 m12 l12">
-                                <div id="appliedFiltersDiv"></div>
-                            </div>
-                            <div class="col s12 m12 l12">
-                                <div class="divider"></div>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col s12">
                                 <ul class="tabs">
                                     <li class="tab col s3"><a href="#attribute" class="active">Attribute</a></li>
@@ -97,6 +86,17 @@
                                 </ul>
                             </div>
                             <div id="attribute" class="col s12">
+                                <div class="row">
+                                    <div class="col s12 m8 l6">
+                                        <label id="appliedAttributeFiltersLabel" for="appliedAttributeFiltersDiv">Applied Attribute Filters </label>
+                                    </div>
+                                    <div class="col s12 m12 l12">
+                                        <div id="appliedAttributeFiltersDiv"></div>
+                                    </div>
+                                    <div class="col s12 m12 l12">
+                                        <div class="divider"></div>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col s12 m6 l6">
                                         <br/>
@@ -128,6 +128,17 @@
                             </div>
                             <div id="session" class="col s12">
                                 <div class="row">
+                                    <div class="col s12 m8 l6">
+                                        <label id="appliedSessionFiltersLabel" for="appliedSessionFiltersDiv">Applied Session Filters </label>
+                                    </div>
+                                    <div class="col s12 m12 l12">
+                                        <div id="appliedSessionFiltersDiv"></div>
+                                    </div>
+                                    <div class="col s12 m12 l12">
+                                        <div class="divider"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col s12 m6 l6">
                                         <br/>
                                         <label for="sessionSearchType">Session Search Type </label>
@@ -153,6 +164,17 @@
                                 </div>
                             </div>
                             <div id="userAndTime" class="col s12">
+                                <div class="row">
+                                    <div class="col s12 m8 l6">
+                                        <label id="appliedUserTimeFiltersLabel" for="appliedUserTimeFiltersDiv">Applied User&Time Filters </label>
+                                    </div>
+                                    <div class="col s12 m12 l12">
+                                        <div id="appliedUserTimeFiltersDiv"></div>
+                                    </div>
+                                    <div class="col s12 m12 l12">
+                                        <div class="divider"></div>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col s12 m6 l6">
                                         <br/>
@@ -253,12 +275,12 @@
                             <div class="col s6 m6 l6">
                                 <div class="row">
                                     <label for="EngineSelect">Select Graph Library </label>
-                                    <select class="browser-default" name ="EngineSelect" id="EngineSelect" title="Select Graph Library for Visualization" onchange="getVisualizationMethodInputs();">
+                                    <select class="browser-default" name ="EngineSelect" id="EngineSelect" title="Select Graph Library for Visualization">
                                     </select>
                                 </div>
                                 <div class="row">
                                     <label for="selectedChartType">Select Graph Type </label>
-                                    <select class="browser-default" name ="selectedChartType" id="selectedChartType" title="Select Graph type for Visualization"></select>
+                                    <select class="browser-default" name ="selectedChartType" id="selectedChartType" title="Select Graph type for Visualization" onchange="getVisualizationMethodInputs();"></select>
                                 </div>
                                 <div class="row">
                                     <br/>
@@ -315,6 +337,17 @@
                                 </div>
                             </div>
                             <div class="col s6 m6 l6">
+                                <div id="graphLoaderSpinner" class="preloader-wrapper big active graphLoader">
+                                    <div class="spinner-layer spinner-blue-only">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div><div class="gap-patch">
+                                        <div class="circle"></div>
+                                    </div><div class="circle-clipper right">
+                                        <div class="circle"></div>
+                                    </div>
+                                    </div>
+                                </div>
                                 <div id="chart_wrap">
                                     <div id="preview_chart" id="graphImage"></div>
                                 </div>
