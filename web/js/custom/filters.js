@@ -1,10 +1,11 @@
 
-function loadIndicatorAssociatedFilters(entityValues, userSpecs, sessionSpecs, timeSpecs) {
 
-    if (entityValues.length > 0 || userSpecs.length > 0 || sessionSpecs.length > 0 || timeSpecs.length > 0) {
-        $('#appliedFiltersDiv').empty();
-        $('#appliedFiltersDiv').show();
-        $('#appliedFiltersLabel').show();
+function loadAssociatedEntityFilters(entityValues) {
+
+    if (entityValues.length > 0) {
+        $('#appliedAttributeFiltersDiv').empty();
+        $('#appliedAttributeFiltersDiv').show();
+        $('#appliedAttributeFiltersLabel').show();
     }
 
     for (var entityValuesIndex = 0;
@@ -12,32 +13,50 @@ function loadIndicatorAssociatedFilters(entityValues, userSpecs, sessionSpecs, t
          entityValuesIndex++) {
 
         var entityValue = entityValues[entityValuesIndex];
-        $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
+        $('#appliedAttributeFiltersDiv').append("<div class='chip filter-chip'"
             + "' id='" + entityValue.key + "_" + entityValue.eValues + "_" + entityValue.type + "' " +
-            "title='Attr_" + entityValue.key + "_" + entityValue.eValues + "_" + entityValue.type +"'>" +
-            "<span>Attr_" + entityValue.key + ": " + entityValue.eValues
+            "title='" + entityValue.key + "_" + entityValue.eValues + "_" + entityValue.type +"'>" +
+            "<span>" + entityValue.key + ": " + entityValue.eValues
             + "</span><i class='material-icons' onclick='deleteEntityFilter(this, event);'>close</i></div>");
     }
+}
 
-    for (var userSpecsIndex = 0;
-         userSpecsIndex < userSpecs.length;
-         userSpecsIndex++) {
-        var userSpec = userSpecs[userSpecsIndex];
-        $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
-            + "' id='" + userSpec.key + "_" + userSpec.value +
-            "' title='User_" + userSpec.key + "-" + userSpec.value +"'>" +
-            "<span>User_" + userSpec.key + ": " + userSpec.value
-            + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
+function loadAssociatedSessionFilters(sessionSpecs) {
+
+    if (sessionSpecs.length > 0) {
+        $('#appliedSessionFiltersDiv').empty();
+        $('#appliedSessionFiltersDiv').show();
+        $('#appliedSessionFiltersLabel').show();
     }
 
     for (var sessionSpecsIndex = 0;
          sessionSpecsIndex < sessionSpecsIndex.length;
          sessionSpecsIndex++) {
         var sessionSpec = sessionSpecs[sessionSpecsIndex];
-        $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
+        $('#appliedSessionFiltersDiv').append("<div class='chip filter-chip'"
             + "' id='session-" + sessionSpecsIndex + "' title='Session-" + sessionSpecsIndex + "-" + sessionSpec.key + "'>" +
             "<span>Session-" + sessionSpecsIndex + "-" + sessionSpec.key
             + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
+    }
+}
+
+function loadAssociatedUserTimeFilters(userSpecs, timeSpecs) {
+
+    if (userSpecs.length > 0 || timeSpecs.length > 0) {
+        $('#appliedUserTimeFiltersDiv').empty();
+        $('#appliedUserTimeFiltersDiv').show();
+        $('#appliedUserTimeFiltersLabel').show();
+    }
+
+    for (var userSpecsIndex = 0;
+         userSpecsIndex < userSpecs.length;
+         userSpecsIndex++) {
+        var userSpec = userSpecs[userSpecsIndex];
+        $('#appliedUserTimeFiltersDiv').append("<div class='chip filter-chip'"
+            + "' id='" + userSpec.key + "_" + userSpec.value +
+            "' title='" + userSpec.key + "-" + userSpec.value +"'>" +
+            "<span>" + userSpec.key + ": " + userSpec.value
+            + "</span><i class='material-icons' onclick='deleteUserFilter(this, event);'>close</i></div>");
     }
 
     for (var timeSpecsIndex = 0;
@@ -46,10 +65,10 @@ function loadIndicatorAssociatedFilters(entityValues, userSpecs, sessionSpecs, t
         var timeSpec = timeSpecs[timeSpecsIndex];
         var parsedDate = new Date(parseInt(timeSpec.timestamp[0]));
         var formattedDate = parsedDate.toDateString();
-        $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
+        $('#appliedUserTimeFiltersDiv').append("<div class='chip filter-chip'"
             + "' id='" + timeSpec.type + "_" + timeSpec.timestamp[0] +
-            "' title='Time_" + timeSpec.type + "_" + formattedDate + "'>" +
-            "<span>Time_" + timeSpec.type + ": " + formattedDate
+            "' title='" + timeSpec.type + "_" + formattedDate + "'>" +
+            "<span>" + timeSpec.type + ": " + formattedDate
             + "</span><i class='material-icons' onclick='deleteTimeFilter(this, event);'>close</i></div>");
     }
 }
@@ -80,8 +99,17 @@ function addTimeFilter() {
             type: "GET",
             url: "/indicators/addTimeFilter?time=" + date + "&timeType=" + dateType + "&isUserData=" + isUserData,
             dataType: "json",
-            success: function (response) {
-                loadIndicatorAssociatedFilters([], [], [], response);
+            success: function (timeFilterResponse) {
+                if (timeFilterResponse.length > 0) {
+                    $.ajax({
+                        type: "GET",
+                        url: "/indicators/getUserFilters",
+                        dataType: "json",
+                        success: function (userFilterResponse) {
+                            loadAssociatedUserTimeFilters(userFilterResponse, timeFilterResponse);
+                        }
+                    });
+                }
             }
         });
     });
@@ -93,6 +121,21 @@ function deleteTimeFilter(filter, event) {
         $.ajax({
             type: "GET",
             url: "/indicators/deleteTimeFilters",
+            data: {filter: $(filter).closest('div').attr("id")},
+            dataType: "json",
+            success: function (response) {
+                e.stopPropagation();
+            }
+        });
+    });
+}
+
+function deleteUserFilter(filter, event) {
+    var e = event;
+    $(function() {
+        $.ajax({
+            type: "GET",
+            url: "/indicators/deleteUserFilters",
             data: {filter: $(filter).closest('div').attr("id")},
             dataType: "json",
             success: function (response) {
