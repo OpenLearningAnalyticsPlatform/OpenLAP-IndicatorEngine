@@ -156,3 +156,11 @@ table#visualizerMappingTable {
 i {
     cursor: pointer;
 }
+.divider {
+    background-color: #03a9f4 !important;
+}
+.graphLoader{
+    display: inline-block;
+    left: 200px;
+    top: 200px;
+}
