@@ -140,6 +140,7 @@ public class AnalyticsEngineController {
 
 
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        entitySpecificationBean.setRetrievableObjects(selectedMethodDataColumns);
         GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
         GLACategoryDao glaCategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
         OperationNumberProcessorDao operationNumberProcessorBean =  (OperationNumberProcessorDao) appContext.getBean("operationNumberProcessor");
@@ -155,7 +156,6 @@ public class AnalyticsEngineController {
         indicatorPreviewRequest.setAnalyticsMethodId(Long.parseLong(analyticsMethodId));
         indicatorPreviewRequest.setVisualizationMethodId(Long.parseLong(selectedChartType));
         indicatorPreviewRequest.setVisualizationFrameworkId(Long.parseLong(engineSelectId));
-        entitySpecificationBean.setRetrievableObjects(selectedMethodDataColumns);
         indicatorPreviewRequest.setQuery(entitySpecificationBean.getHql());
 
         Gson gson = new Gson();
