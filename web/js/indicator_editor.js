@@ -423,7 +423,9 @@ function updateScreenAfterLoadInd(data) {
     var userSpecs = data.indicatorXMLData.userSpecifications;
     var sessionSpecs = data.indicatorXMLData.sessionSpecifications;
     var timeSpecs = data.indicatorXMLData.timeSpecifications;
-    loadIndicatorAssociatedFilters(entityValues, userSpecs, sessionSpecs, timeSpecs);
+    loadAssociatedEntityFilters(entityValues);
+    loadAssociatedSessionFilters(sessionSpecs);
+    loadAssociatedUserTimeFilters(userSpecs, timeSpecs);
 
     populateCategories(data.indicatorXMLData.minor);
 }
@@ -854,7 +856,7 @@ function displayEntityFilters(callstatus,request,msg){
             }
 
             var parsedJSON = JSON.parse(request.responseText);
-            loadIndicatorAssociatedFilters(parsedJSON, [], [], []);
+            loadAssociatedEntityFilters(parsedJSON);
             var heading = new Array();
             heading[0] = "S/L";
             heading[1] = "Key";
@@ -1425,14 +1427,21 @@ function postrefreshQuestionSummary(request,callstatus) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
             var qNamefromBean = document.getElementById("questionNaming");
-            //var associatedIndicators = document.getElementById("associatedIndicators");
-            //removeOptions(associatedIndicators);
+
             $(function () {
                 $('#associatedIndicatorsDiv').empty();
 
-                $('#appliedFiltersDiv').empty();
-                $('#appliedFiltersDiv').hide();
+                $('#appliedAttributeFiltersDiv').empty();
+                $('#appliedAttributeFiltersDiv').hide();
                 $('#appliedFiltersLabel').hide();
+
+                $('#appliedSessionFiltersDiv').empty();
+                $('#appliedSessionFiltersDiv').hide();
+                $('#appliedSessionFiltersLabel').hide();
+
+                $('#appliedSessionFiltersDiv').empty();
+                $('#appliedSessionFiltersDiv').hide();
+                $('#appliedSessionFiltersLabel').hide();
 
                 if(parsedJSON == null || parsedJSON.genQueries.length == 0) {
                     $('#associatedIndicatorsDiv').append("No Associated Indicators Found");
@@ -1442,13 +1451,8 @@ function postrefreshQuestionSummary(request,callstatus) {
                 if (parsedJSON.genQueries.length > 0) {
                     qNamefromBean.value = parsedJSON.questionName;
                 }
-                //document.getElementById("questionNaming").value = parsedJSON;
 
                 for (var i = 0; i < parsedJSON.genQueries.length; i++) {
-                    //comment it back
-                    //var newOption = new Option(parsedJSON.genQueries[i].indicatorName, parsedJSON.genQueries[i].indicatorName);
-                    //associatedIndicators.appendChild(newOption);
-
                     $(function () {
                         if(parsedJSON.genQueries[i].genIndicatorProps['isComposite']) {
                             $('#associatedIndicatorsDiv').append("<div class='chip composite-chip' name='chip-" + i + "' id='" + parsedJSON.genQueries[i].indicatorName
@@ -1462,62 +1466,6 @@ function postrefreshQuestionSummary(request,callstatus) {
                                 + "' onclick='loadIndicator(this);'><span >" + parsedJSON.genQueries[i].indicatorName
                                 + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
                         }
-
-                        // var entityValues = parsedJSON.genQueries[i].indicatorXMLData.entityValues;
-                        // var userSpecs = parsedJSON.genQueries[i].indicatorXMLData.userSpecifications;
-                        // var sessionSpecs = parsedJSON.genQueries[i].indicatorXMLData.sessionSpecifications;
-                        // var timeSpecs = parsedJSON.genQueries[i].indicatorXMLData.timeSpecifications;
-                        //
-                        // if (entityValues.length > 0 || userSpecs.length > 0 || sessionSpecsIndex.length > 0 || timeSpecs.length > 0) {
-                        //     $('#appliedFiltersDiv').show();
-                        //     $('#appliedFiltersLabel').show();
-                        // }
-                        //
-                        // for (var entityValuesIndex = 0;
-                        //      entityValuesIndex < entityValues.length;
-                        //      entityValuesIndex++) {
-                        //
-                        //     var entityValue = entityValues[entityValuesIndex];
-                        //     $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
-                        //         + "' id='entity-" + i + "' title='Attr-" + i + "-" + entityValue.key +"'><span>Attr-" + i + "-" + entityValue.key
-                        //         + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
-                        // }
-                        //
-                        // for (var userSpecsIndex = 0;
-                        //      userSpecsIndex < userSpecs.length;
-                        //      userSpecsIndex++) {
-                        //     var userSpec = userSpecs[userSpecsIndex];
-                        //     $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
-                        //         + "' id='user-" + i + "' title='User-" + i + "-" + userSpec.key +"'><span>User-" + i + "-" + userSpec.key
-                        //         + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
-                        // }
-                        //
-                        // for (var sessionSpecsIndex = 0;
-                        //      sessionSpecsIndex < sessionSpecsIndex.length;
-                        //      sessionSpecsIndex++) {
-                        //     var sessionSpec = sessionSpecs[sessionSpecsIndex];
-                        //     $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
-                        //         + "' id='session-" + i + "' title='Session-" + i + "-" + sessionSpec.key + "'><span>Session-" + i + "-" + sessionSpec.key
-                        //         + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
-                        // }
-                        //
-                        // for (var sessionSpecsIndex = 0;
-                        //      sessionSpecsIndex < sessionSpecsIndex.length;
-                        //      sessionSpecsIndex++) {
-                        //     var sessionSpec = sessionSpecs[sessionSpecsIndex];
-                        //     $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
-                        //         + "' id='session-" + i + "' title='Session-" + i + "-" + sessionSpec.key + "'><span>Session-" + i + "-" + sessionSpec.key
-                        //         + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
-                        // }
-                        //
-                        // for (var timeSpecsIndex = 0;
-                        //      timeSpecsIndex < timeSpecsIndex.length;
-                        //      timeSpecsIndex++) {
-                        //     var timeSpec = timeSpecs[timeSpecsIndex];
-                        //     $('#appliedFiltersDiv').append("<div class='chip filter-chip'"
-                        //         + "' id='time-" + i + "' title='Time-" + i + "-" + timeSpec.key + "'><span>Time-" + i + "-" + timeSpec.key
-                        //         + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
-                        // }
                     });
                 }
             }
@@ -1678,6 +1626,8 @@ function updateVisualizationModal(request) {
                 //     text: '<strong>Success</strong> <br/>  Current Question has been visualized successfully.',
                 //     type: 'success'
                 // });
+
+
                 var visualizeQModelHtml = document.getElementById("visualizeQuestionContent");
                 visualizeQModelHtml.innerHTML = "";
                 for(i=0; i<parsedJSON.genQueries.length; i++) {
@@ -1778,7 +1728,8 @@ function updateVisualizationModal(request) {
                             context: this,
                             async: false,
                             type: "GET",
-                            url: "/engine/getQuestionVisualizationCode?width=" + $('#'+divId).parent().width() + "&height=" + $('#'+divId).parent().height(),
+                            url: "/engine/getQuestionVisualizationCode?width=400&height=205",
+                            // url: "/engine/getQuestionVisualizationCode?width=" + $('#'+divId).parent().width() + "&height=" + $('#'+divId).parent().height(),
                             success: function(response) {
 
                                 var parsedJSON = JSON.parse(response);
@@ -1902,19 +1853,20 @@ function updateCompositeModal(request) {
 
                                 var parsedJSON = JSON.parse(response);
                                 var decodedGraphData = decodeURIComponent(parsedJSON);
-                                decodedGraphData = "<TemporaryDiv>" + decodedGraphData + "</TemporaryDiv>";
-
-                                var parser = new DOMParser();
-                                var dataDOMObj = parser.parseFromString(decodedGraphData, "text/xml");
-
-                                var scriptTagData = dataDOMObj.getElementsByTagName('script')[0];
-                                var randomNo = Math.floor((Math.random() * 100000) + 1000);
-                                scriptTagData.insertAdjacentHTML('afterbegin', '<script type="text/javascript"> google.charts.setOnLoadCallback(drawChart_' + randomNo + '); function drawChart_' + randomNo + '() {');
-                                scriptTagData.insertAdjacentHTML('beforeend', '} </script>');
-
-                                var divTagData = dataDOMObj.getElementsByTagName('div')[0];
-
-                                $('#'+compositeGraphId).html(dataDOMObj.getElementsByTagName('TemporaryDiv')[0].textContent + divTagData.outerHTML);
+                                // decodedGraphData = "<TemporaryDiv>" + decodedGraphData + "</TemporaryDiv>";
+                                //
+                                // var parser = new DOMParser();
+                                // var dataDOMObj = parser.parseFromString(decodedGraphData, "text/xml");
+                                //
+                                // var scriptTagData = dataDOMObj.getElementsByTagName('script')[0];
+                                // var randomNo = Math.floor((Math.random() * 100000) + 1000);
+                                // scriptTagData.insertAdjacentHTML('afterbegin', '<script type="text/javascript"> google.charts.setOnLoadCallback(drawChart_' + randomNo + '); function drawChart_' + randomNo + '() {');
+                                // scriptTagData.insertAdjacentHTML('beforeend', '} </script>');
+                                //
+                                // var divTagData = dataDOMObj.getElementsByTagName('div')[0];
+                                //
+                                // $('#'+compositeGraphId).html(dataDOMObj.getElementsByTagName('TemporaryDiv')[0].textContent + divTagData.outerHTML);
+                                $('#'+compositeGraphId).html(decodedGraphData);
                             }
                         });
 
