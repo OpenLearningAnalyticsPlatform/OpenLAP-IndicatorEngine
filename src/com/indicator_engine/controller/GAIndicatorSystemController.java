@@ -309,26 +309,22 @@ public class GAIndicatorSystemController {
 
     }
 
-//    @RequestMapping(value = "/deleteUserFilters", method = RequestMethod.GET)
-//    public @ResponseBody
-//    String  deleteUserFilters(Model model,  @RequestParam(value="filter", required = true) String filter) {
-//        Gson gson = new Gson();
-//        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-//        if(filter.equals("ALL"))
-//            entitySpecificationBean.getUserSpecifications().clear();
-//        else
-//        {
-//            String[] filterTerms = filter.split("_");
-//            for (Iterator<UserSearchSpecifications> userSearchSpecifications = entitySpecificationBean.getUserSpecifications().iterator(); userSearchSpecifications.hasNext(); ) {
-//                UserSearchSpecifications aUserSearchSpecifications = userSearchSpecifications.next();
-//                if (aUserSearchSpecifications.getUserSearchType().equals(filterTerms[0]) && aUserSearchSpecifications.getUserSearch().equals(filterTerms[1]) && aUserSearchSpecifications.getSearchPattern().equals(filterTerms[2])) {
-//                    userSearchSpecifications.remove();
-//                    break;
-//                }
-//            }
-//        }
-//        return gson.toJson(entitySpecificationBean.getUserSpecifications());
-//    }
+    @RequestMapping(value = "/deleteUserFilters", method = RequestMethod.GET)
+    public @ResponseBody
+    String  deleteUserFilters(Model model,  @RequestParam(value="filter", required = true) String filter) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+
+        String[] filterTerms = filter.split("_");
+        for (Iterator<UserSearchSpecifications> userSearchSpecifications = entitySpecificationBean.getUserSpecifications().iterator(); userSearchSpecifications.hasNext(); ) {
+            UserSearchSpecifications aUserSearchSpecifications = userSearchSpecifications.next();
+            if (aUserSearchSpecifications.getKey().equals(filterTerms[0]) && aUserSearchSpecifications.getValue().equals(filterTerms[1])) {
+                userSearchSpecifications.remove();
+                break;
+            }
+        }
+        return gson.toJson(entitySpecificationBean.getUserSpecifications());
+    }
 
     @RequestMapping(value = "/searchTime", method = RequestMethod.GET)
     public @ResponseBody
@@ -359,13 +355,17 @@ public class GAIndicatorSystemController {
             }
         }
         if (!hasTimeFilter) {
-            entitySpecificationBean.getTimeSpecifications().add(new TimeSearchSpecifications(timeType,time));
+            entitySpecificationBean.getTimeSpecifications().add(new TimeSearchSpecifications(timeType, time));
         }
 
         boolean isUserDataSet = Boolean.parseBoolean(isUserData);
         if (isUserDataSet) {
             UserSearchSpecifications aUserSearchSpecifications = new UserSearchSpecifications("isUserDataSet", isUserData, "", "", "");
-            entitySpecificationBean.getUserSpecifications().add(0, aUserSearchSpecifications);
+            if (entitySpecificationBean.getUserSpecifications().size() > 0) {
+                entitySpecificationBean.getUserSpecifications().set(0, aUserSearchSpecifications);
+            } else {
+                entitySpecificationBean.getUserSpecifications().add(0, aUserSearchSpecifications);
+            }
         }
         return gson.toJson(entitySpecificationBean.getTimeSpecifications());
     }
