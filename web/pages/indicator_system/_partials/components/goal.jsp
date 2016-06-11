@@ -4,7 +4,7 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-6">
-                    <label for="GoalSelection">Select Goal </label>
+                    <label for="GoalSelection">Goal </label>
                     <select class="browser-default" title="Please select a goal." name ="GoalSelection" id="GoalSelection"></select>
                 </div>
             </div>
@@ -13,7 +13,6 @@
                     New Question
                 </button>
             </div>
-
         </div>
     </div>
 </div>

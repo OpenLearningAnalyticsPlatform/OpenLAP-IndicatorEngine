@@ -20,8 +20,8 @@
                             <tr>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label for="sourceSelection">Select a Source</label>
-                                        <form:select multiple="true" class="form-control browser-default" title="You can select multiple sources i.e from where the data comes."
+                                        <label for="sourceSelection">Source</label>
+                                        <form:select multiple="true" class="form-control browser-default" title="Multiple sources can be selected i.e from where the data comes."
                                                      path="selectedSource" items="${selectNumberParameters.source}" name ="sourceSelection" id="sourceSelection" onchange="sourceChanged();" />
                                     </div>
                                 </div>
@@ -29,8 +29,8 @@
                             <tr>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label for="PlatformSelection">Select a Platform</label>
-                                        <form:select class="browser-default" title="You can select a single platform."
+                                        <label for="PlatformSelection">Platform</label>
+                                        <form:select class="browser-default" title="Select a platform."
                                                      path="selectedPlatform" items="${selectNumberParameters.platform}" name ="PlatformSelection" id="PlatformSelection" onchange="platformChanged();"/>
                                     </div>
                                 </div>
@@ -38,8 +38,8 @@
                             <tr>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label for="actionSelection">Select an Action </label>
-                                        <form:select class="browser-default" title="Please select an action to poulate the Available Minors."
+                                        <label for="actionSelection">Action </label>
+                                        <form:select class="browser-default" title="Please select an action to populate related Category/Minors."
                                                      path="selectedAction" items="${selectNumberParameters.action}" name ="actionSelection" id="actionSelection"  onchange="populateCategories();"/>
                                     </div>
                                 </div>
@@ -48,7 +48,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="pull-left">
-                                            <label for="selectedMinor">Select a Category (Minors) &nbsp;</label>
+                                            <label for="selectedMinor">Category &nbsp;</label>
                                         </div>
                                         <div style="padding-top: 10px">
                                             <div id="selectedMinorSpinner" class="preloader-wrapper small active">
@@ -80,18 +80,18 @@
                         <div class="row">
                             <div class="col s12">
                                 <ul class="tabs">
-                                    <li class="tab col s3"><a href="#attribute" class="active">Attribute</a></li>
-                                    <li class="tab col s3"><a href="#session">Session</a></li>
-                                    <li class="tab col s3"><a href="#userAndTime">User & Time</a></li>
+                                    <li class="tab col s3"><a title="Attribute Filters" href="#attribute" class="active">Attribute</a></li>
+                                    <li class="tab col s3"><a title="Session Filters"href="#session">Session</a></li>
+                                    <li class="tab col s3"><a title="User and Time Filters" href="#userAndTime">User & Time</a></li>
                                 </ul>
                             </div>
                             <div id="attribute" class="col s12">
                                 <div class="row">
                                     <div class="col s12 m8 l6">
-                                        <label id="appliedAttributeFiltersLabel" for="appliedAttributeFiltersDiv">Applied Attribute Filters </label>
+                                        <label id="appliedAttributeFiltersLabel" for="appliedAttributeFiltersDiv" title="Associated Attribute Filters to the Indicator">Applied Attribute Filters </label>
                                     </div>
                                     <div class="col s12 m12 l12">
-                                        <div id="appliedAttributeFiltersDiv"></div>
+                                        <div id="appliedAttributeFiltersDiv"  title="Associated Attribute Filters to the Indicator"></div>
                                     </div>
                                     <div class="col s12 m12 l12">
                                         <div class="divider"></div>
@@ -129,10 +129,10 @@
                             <div id="session" class="col s12">
                                 <div class="row">
                                     <div class="col s12 m8 l6">
-                                        <label id="appliedSessionFiltersLabel" for="appliedSessionFiltersDiv">Applied Session Filters </label>
+                                        <label id="appliedSessionFiltersLabel" for="appliedSessionFiltersDiv" title="Associated Session Filters to the Indicator">Applied Session Filters </label>
                                     </div>
                                     <div class="col s12 m12 l12">
-                                        <div id="appliedSessionFiltersDiv"></div>
+                                        <div id="appliedSessionFiltersDiv" title="Associated Session Filters to the Indicator"></div>
                                     </div>
                                     <div class="col s12 m12 l12">
                                         <div class="divider"></div>
@@ -166,10 +166,10 @@
                             <div id="userAndTime" class="col s12">
                                 <div class="row">
                                     <div class="col s12 m8 l6">
-                                        <label id="appliedUserTimeFiltersLabel" for="appliedUserTimeFiltersDiv">Applied User&Time Filters </label>
+                                        <label id="appliedUserTimeFiltersLabel" for="appliedUserTimeFiltersDiv" title="Associated User&Time Filters to the Indicator">Applied User&Time Filters </label>
                                     </div>
                                     <div class="col s12 m12 l12">
-                                        <div id="appliedUserTimeFiltersDiv"></div>
+                                        <div id="appliedUserTimeFiltersDiv" title="Associated User&Time Filters to the Indicator"></div>
                                     </div>
                                     <div class="col s12 m12 l12">
                                         <div class="divider"></div>
@@ -212,20 +212,20 @@
                     <div class="collapsible-body panel-body">
                         <div class="row">
                             <div class="col s12 m6 l6">
-                                <label for="analyticsMethod">Select a Method</label>
+                                <label for="analyticsMethod">Method</label>
                                 <select class="browser-default" title="Please select a method." name ="analyticsMethod" id="analyticsMethod"
                                         onchange="getAnalyticsMethodInputs();"></select>
                             </div>
                             <div class="col m6 l6">
                                 <div class="select-desc hide-on-small-only">
-                                    <span id="analyticsMethodDesc"></span>
+                                    <span id="analyticsMethodDesc" title="Analytics method description"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <br/>
                             <div class="col s12 m6 l6">
-                                <label>Mappings </label>
+                                <label title="Mappings between Data Columns and Method Inputs">Mappings </label>
                                 <div class="divider"></div>
                             </div>
                             <br/>
@@ -234,20 +234,20 @@
                             <div class="col s12 m6 l6">
                                 <div class="col s6 m6 l6">
                                     <label for="methodDataColumns">Data Columns</label>
-                                    <select class="form-control browser-default" title="You can select output mapping in here"
+                                    <select class="form-control browser-default" title="Select method data columns in here"
                                             name ="methodDataColumns" id="methodDataColumns" size="4">
                                     </select>
                                 </div>
                                 <div class="col s6 m6 l6">
                                     <label for="inputForMethods">Input for Methods</label>
-                                    <select class="form-control browser-default" title="You can select input mapping in here"
+                                    <select class="form-control browser-default" title="Select method inputs in here"
                                             name ="inputForMethods" id="inputForMethods" size="4"></select>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col s12 m6 l6 right-align">
-                                <button class="btn waves-effect waves-light light-blue" type="button" title="Click to add mapping."
+                                <button class="btn waves-effect waves-light light-blue" type="button" title="Click to add method mapping."
                                         id="addMethodMapping" name="addMethodMapping" value="Add Mapping" onclick="addMethodMappingToTable();">Add
                                 </button>
                             </div>
@@ -285,7 +285,7 @@
                                 <div class="row">
                                     <br/>
                                     <div class="col s12 m12 l12">
-                                        <label>Mappings </label>
+                                        <label title="Mappings between Method Outputs and Visualizer Inputs">Mappings </label>
                                         <div class="divider"></div>
                                     </div>
                                     <br/>
@@ -293,17 +293,17 @@
                                 <div class="row">
                                     <div class="col s6 m6 l6">
                                         <label for="outputForMethods">Output for Methods</label>
-                                        <select class="form-control browser-default" title="You can select output mapping in here"
+                                        <select class="form-control browser-default" title="You can select Method Outputs in here"
                                                 name ="outputForMethods" id="outputForMethods" size="4">
                                         </select>
                                     </div>
                                     <div class="col s6 m6 l6">
                                         <label for="inputForVisualizer">Input for Visualizer</label>
-                                        <select class="form-control browser-default" title="You can select input mapping in here"
+                                        <select class="form-control browser-default" title="You can select Visualizer Inputs in here"
                                                 name ="inputForVisualizer" id="inputForVisualizer" size="4"></select>
                                         <br/>
                                         <div class="right-align">
-                                            <button class="btn waves-effect waves-light light-blue" type="button" title="Click to add mapping."
+                                            <button class="btn waves-effect waves-light light-blue" type="button" title="Click to add visulaization mapping."
                                                     id="addVisualizationMapping" name="addVisualizationMapping" value="Add Mapping" onclick="addVisualizationMappingToTable();">Add
                                             </button>
                                         </div>
@@ -357,10 +357,10 @@
                 </li>
             </ul>
             <div class="col s12 m6 l10 right-align">
-                <button class="btn waves-effect waves-light light-blue" type="button" title="Click to save the current Indicator."
+                <button class="btn waves-effect waves-light light-blue" type="button" title="Save the Indicator."
                         id="saveIndicator" name="savelIndicator" value="Finalize Settings">Save
                 </button>
-                <button class="btn waves-effect waves-light light-blue" type="button" title="Click to cancel the current Indicator."
+                <button class="btn waves-effect waves-light light-blue" type="button" title="Cancel the Indicator."
                         name="cancelIndicator" id="cancelIndicator" value="Cancel Indicator">Cancel
                 </button>
             </div>
