@@ -15,6 +15,7 @@ $(function() {
     localStorage.removeItem("visualizationMappings");
 
     $('.modal-trigger').leanModal();
+    $('.tooltipped').tooltip({delay: 50});
 
     $('#selectedMinorSpinner').hide();
     $('#graphLoaderSpinner').hide();
@@ -22,7 +23,7 @@ $(function() {
     $("#CompositeClosedButton").hide();
     $("#graphImage").hide();
     $("#saveQuestion").attr('disabled', 'disabled');
-    $("#loadIndicatorTemplateModelTable").hide();
+    // $("#loadIndicatorTemplateModelTable").hide();
 
     if( $('#associatedIndicatorsDiv').is(':empty') ) {
         $('#associatedIndicatorsDiv').append("No Associated Indicators Found");
@@ -68,12 +69,15 @@ $(function() {
     $("#compositeIndicator").click(function() {
         LoadIndicatorVisualizations();
     });
-    $('#toggleLoadIndicatorTemplateModelTable').click(function() {
-        $('#loadIndicatorTemplateModelTable').toggle();
-    });
     $('#analyticsMethod').change(function() {
         updateAnalyticsMethodDesc();
     });
+    $("#indicatorData").on('click', 'tr', (function() {
+        $(this).parent().children().removeClass("selected");
+        $(this).addClass("selected");
+        viewIndicatorProp();
+    }));
+
 });
 
 function updateAnalyticsMethodDesc() {
@@ -134,6 +138,41 @@ function loadIndicator(indicatorName){
             }
         });
     });
+}
+
+function loadIndicatorTemplate(data){
+
+    $('#PlatformSelection').val(data.platform);
+
+    $('#actionSelection').val(data.action);
+
+    $('#selectedChartType').val(data.selectedChartType);
+
+    $('#EngineSelect').val(data.selectedChartEngine);
+
+    $('#analyticsMethod').val(data.analyticsMethodId);
+
+    var optionsToSelect = data.source;
+    var select = document.getElementById( 'sourceSelection' );
+
+    for ( var i = 0, l = select.options.length, o; i < l; i++ )
+    {
+        o = select.options[i];
+        if ( optionsToSelect.indexOf( o.text ) != -1 )
+        {
+            o.selected = true;
+        }
+    }
+
+    var entityValues = data.entityValues;
+    var userSpecs = data.userSpecifications;
+    var sessionSpecs = data.sessionSpecifications;
+    var timeSpecs = data.timeSpecifications;
+    loadAssociatedEntityFilters(entityValues);
+    loadAssociatedSessionFilters(sessionSpecs);
+    loadAssociatedUserTimeFilters(userSpecs, timeSpecs);
+
+    populateCategories(data.minor);
 }
 
 function populateAnalyticsMethods(){
