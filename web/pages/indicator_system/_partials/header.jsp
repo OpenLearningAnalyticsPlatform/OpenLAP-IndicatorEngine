@@ -51,7 +51,7 @@
     <link href="${pageContext.request.contextPath}/js/jquery-ui/jquery-ui.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/indicator_editor.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/animate.css" rel="stylesheet">
-    <link href="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js" rel="stylesheet">
+    <link href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/js/materialize/css/materialize.min.css" rel="stylesheet">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/dist/jquery.js"></script>
@@ -98,6 +98,12 @@
                     "bProcessing": true,
                     "bServerSide": true,
                     "sort": "position",
+                    "bLengthChange": false,
+                    "language": {
+                        "searchPlaceholder": "Search Indicator",
+                        "sSearch": ""
+                    },
+                    "dom": '<"pull-left"f><"pull-right"l>tip',
                     //bStateSave variable you can use to save state on client cookies: set value "true"
                     "bStateSave": false,
                     //Default: Page display length
@@ -114,7 +120,7 @@
                     "aoColumns": [
                         { "mData": "id" },
                         { "mData": "indicator_name" },
-                        { "mData": "short_name" },
+//                        { "mData": "short_name" },
                     ]
                 } );
 
