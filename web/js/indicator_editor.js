@@ -2175,7 +2175,8 @@ function displayReceivedIndicators(request) {
 }
 
 function viewIndicatorProp() {
-    var indName = document.getElementById("searchResults").value;
+    // var indName = document.getElementById("searchResults").value;
+    var indName = $('tr.selected:first td:nth-child(2)', '#indicatorData').text();
     var request = createRequest();
     var url ="/indicators/loadIndicator?indName="+indName;
     request.open("GET",url,true);
@@ -2194,55 +2195,68 @@ function displayIndicatorProp(request) {
             //     type: 'success'
             // });
             var indicatorData = new Array();
-            indicatorData.push(["S/L", "Property", "Value"]);
-            indicatorData.push([1, "Indicator Name", parsedJSON.indicator_name]);
-            indicatorData.push([2, "Chart Type", parsedJSON.glaIndicatorProps.chartType]);
-            indicatorData.push([3, "Chart Engine", parsedJSON.glaIndicatorProps.chartEngine]);
-            indicatorData.push([4, "Entity Filters", parsedindProp.entityValues.length]);
-            indicatorData.push([5, "Session Filters", parsedindProp.sessionSpecifications.length]);
-            indicatorData.push([6, "User Filters", parsedindProp.userSpecifications.length]);
-            indicatorData.push([7, "Time Filters",parsedindProp.timeSpecifications.length]);
-            indicatorData.push([8, "Sources", parsedindProp.source]);
-            indicatorData.push([9, "Platform", parsedindProp.platform]);
-            indicatorData.push([10, "Action", parsedindProp.action]);
-            indicatorData.push([11, "Minor", parsedindProp.minor]);
-            indicatorData.push([12, "Major", parsedindProp.major]);
-            indicatorData.push([13, "Hibernate Query", parsedJSON.hql]);
+            indicatorData.push(["Property", "Value"]);
+            indicatorData.push(["Indicator Name", parsedJSON.indicator_name]);
+            indicatorData.push(["Chart Type", parsedJSON.glaIndicatorProps.chartType]);
+            indicatorData.push(["Chart Engine", parsedJSON.glaIndicatorProps.chartEngine]);
+            indicatorData.push(["Entity Filters", parsedindProp.entityValues.length]);
+            indicatorData.push(["Session Filters", parsedindProp.sessionSpecifications.length]);
+            indicatorData.push(["User Filters", parsedindProp.userSpecifications.length]);
+            indicatorData.push(["Time Filters",parsedindProp.timeSpecifications.length]);
+            indicatorData.push(["Sources", parsedindProp.source]);
+            indicatorData.push(["Platform", parsedindProp.platform]);
+            indicatorData.push(["Action", parsedindProp.action]);
+            indicatorData.push(["Minor", parsedindProp.minor]);
+            indicatorData.push(["Major", parsedindProp.major]);
+            indicatorData.push(["Hibernate Query", parsedJSON.hql]);
 
             //Create a HTML Table element.
             var table = document.createElement("TABLE");
+            table.id = "indicatorPropsTable";
             table.border = "1";
+            table.className = "table table-bordered";
 
             //Get the count of columns.
             var columnCount = indicatorData[0].length;
 
             //Add the header row.
-            var row = table.insertRow(-1);
+            // var row = table.insertRow(-1);
 
+            var tableHead = document.createElement('THEAD');
+            table.appendChild(tableHead);
             for (var i = 0; i < columnCount; i++) {
                 var headerCell = document.createElement("TH");
                 headerCell.innerHTML = indicatorData[0][i];
-                row.appendChild(headerCell);
+                tableHead.appendChild(headerCell);
             }
 
             //Add the data rows.
+            var tableBody = document.createElement('TBODY');
+            table.appendChild(tableBody);
             for (var i = 1; i < indicatorData.length; i++) {
-                row = table.insertRow(-1);
+                var tr = document.createElement('TR');
+                tableBody.appendChild(tr);
+                // row = table.insertRow(-1);
                 for (var j = 0; j < columnCount; j++) {
-                    var cell = row.insertCell(-1);
-                    cell.innerHTML = indicatorData[i][j];
+                    // var cell = row.insertCell(-1);
+                    // cell.innerHTML = indicatorData[i][j];
+                    var td = document.createElement('TD');
+                    td.appendChild(document.createTextNode(indicatorData[i][j]));
+                    tr.appendChild(td);
                 }
             }
 
             var dvTable = document.getElementById("IndPropsFromDB");
-            dvTable.innerHTML = "";
+
+            dvTable.innerHTML = "<hr><b>Indicator Properties: </b><hr>";
             dvTable.appendChild(table);
         }
     }
 }
 
 function loadFromTemplate() {
-    var indName = document.getElementById("searchResults").value;
+    // var indName = document.getElementById("searchResults").value;
+    var indName = $('tr.selected:first td:nth-child(2)', '#indicatorData').text();
     var dvTable = document.getElementById("IndPropsFromDB");
     dvTable.innerHTML = "";
     var request = createRequest();
@@ -2255,113 +2269,115 @@ function loadFromTemplate() {
 function loadToEditor(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
-
             var parsedJSON = JSON.parse(request.responseText);
             var parsedindProp = JSON.parse(parsedJSON.glaIndicatorProps.json_data);
+            loadIndicatorTemplate(parsedindProp);
 
-            var sel = document.getElementById('PlatformSelection');
-            var opts = sel.options;
-            for (var opt, j = 0; opt = opts[j]; j++) {
-                if (opt.value == parsedindProp.platform) {
-                    sel.selectedIndex = j;
-                    break;
-                }
-            }
-            sel = document.getElementById('actionSelection');
-            var opts = sel.options;
-            for (var opt, j = 0; opt = opts[j]; j++) {
-                if (opt.value == parsedindProp.action) {
-                    sel.selectedIndex = j;
-                    break;
-                }
-            }
-            sel = document.getElementById('selectedChartType');
-            var opts = sel.options;
-            for (var opt, j = 0; opt = opts[j]; j++) {
-                if (opt.value == parsedindProp.chartType) {
-                    sel.selectedIndex = j;
-                    break;
-                }
-            }
-            sel = document.getElementById('EngineSelect');
-            var opts = sel.options;
-            for (var opt, j = 0; opt = opts[j]; j++) {
-                if (opt.value == parsedindProp.chartEngine) {
-                    sel.selectedIndex = j;
-                    break;
-                }
-            }
-            var optionsToSelect = parsedindProp.source;
-            var select = document.getElementById('sourceSelection');
-
-            for (var i = 0, l = select.options.length, o; i < l; i++) {
-                o = select.options[i];
-                if (optionsToSelect.indexOf(o.text) != -1) {
-                    o.selected = true;
-                }
-            }
-            // Refresh the Session Filter Summary but without any on-screen notification.
-            var sessionRequest = createRequest();
-            var sessionUrl ="/indicators/getSessionFilters";
-            sessionRequest.open("GET",sessionUrl,true);
-            sessionRequest.onreadystatechange= function(){displaySessionFilters(0,sessionRequest)};
-            sessionRequest.send(null);
-            // Refresh the Time Filter Summary but without any on-screen notification.
-            var timeRequest = createRequest();
-            var timeUrl ="/indicators/getTimeFilters";
-            timeRequest.open("GET",timeUrl,true);
-            timeRequest.onreadystatechange= function(){displayTimeFilters(0,timeRequest)};
-            timeRequest.send(null);
-            // Refresh the User Filter Summary but without any on-screen notification.
-            var userRequest = createRequest();
-            var userUrl ="/indicators/getUserFilters";
-            userRequest.open("GET",userUrl,true);
-            userRequest.onreadystatechange=  function(){displayUserFilters(0,userRequest)};
-            userRequest.send(null);
-            // Refresh the Attribute Filter Summary but without any on-screen notification.
-            var entityRequest = createRequest();
-            var entityUrl ="/indicators/getEntities";
-            entityRequest.open("GET",entityUrl,true);
-            entityRequest.onreadystatechange = function(){displayEntityFilters(0,entityRequest)};
-            entityRequest.send(null);
-
-            // Populate the Categories but without any on-screen notification.
-            var categoryRequest = createRequest();
-            var selectedSources = "";
-            var selectedArray = new Array();
-            var selObj = document.getElementById('sourceSelection');
-            var i;
-            var count = 0;
-            for (i=0; i<selObj.options.length; i++) {
-                if (selObj.options[i].selected) {
-                    selectedArray[count] = selObj.options[i].value;
-                    count++;
-                }
-            }
-            selectedSources = selectedArray;
-            var selectedAction = document.getElementById('actionSelection').value;
-            var selectedPlatform = document.getElementById('PlatformSelection').value;
-            var categoryUrl ="/indicators/populateCategories?action="+selectedAction+"&platform="+selectedPlatform+"&sources="+selectedSources;
-            categoryRequest.open("GET",categoryUrl,true);
-            categoryRequest.onreadystatechange=function(){processReceivedCategories(categoryRequest)};
-            categoryRequest.send(null);
-
-            // $.noty.defaults.killer = true;
-            // noty({
-            //     text: '<strong>Success</strong> <br/>  Selected Indicator has been loaded as a Template. All its properties have been loaded except the name.',
-            //     type: 'success'
-            // });
-            // noty({
-            //     text: '<strong>Note</strong> <br/>  Please give a name for the Indicator. The name is not loaded as the system does not allow duplicate Indicator names. ',
-            //     type: 'information'
-            // });
-
-            $('#qiEditorTab a[href="#QuestionIndicatorEditor"]').tab('show');
+            // var sel = document.getElementById('PlatformSelection');
+            // var opts = sel.options;
+            // for (var opt, j = 0; opt = opts[j]; j++) {
+            //     if (opt.value == parsedindProp.platform) {
+            //
+            //         sel.selectedIndex = j;
+            //         break;
+            //     }
+            // }
+            // sel = document.getElementById('actionSelection');
+            // var opts = sel.options;
+            // for (var opt, j = 0; opt = opts[j]; j++) {
+            //     if (opt.value == parsedindProp.action) {
+            //         sel.selectedIndex = j;
+            //         break;
+            //     }
+            // }
+            // sel = document.getElementById('selectedChartType');
+            // var opts = sel.options;
+            // for (var opt, j = 0; opt = opts[j]; j++) {
+            //     if (opt.value == parsedindProp.chartType) {
+            //         sel.selectedIndex = j;
+            //         break;
+            //     }
+            // }
+            // sel = document.getElementById('EngineSelect');
+            // var opts = sel.options;
+            // for (var opt, j = 0; opt = opts[j]; j++) {
+            //     if (opt.value == parsedindProp.chartEngine) {
+            //         sel.selectedIndex = j;
+            //         break;
+            //     }
+            // }
+            // var optionsToSelect = parsedindProp.source;
+            // var select = document.getElementById('sourceSelection');
+            //
+            // for (var i = 0, l = select.options.length, o; i < l; i++) {
+            //     o = select.options[i];
+            //     if (optionsToSelect.indexOf(o.text) != -1) {
+            //         o.selected = true;
+            //     }
+            // }
+            // // Refresh the Session Filter Summary but without any on-screen notification.
+            // var sessionRequest = createRequest();
+            // var sessionUrl ="/indicators/getSessionFilters";
+            // sessionRequest.open("GET",sessionUrl,true);
+            // sessionRequest.onreadystatechange= function(){displaySessionFilters(0,sessionRequest)};
+            // sessionRequest.send(null);
+            // // Refresh the Time Filter Summary but without any on-screen notification.
+            // var timeRequest = createRequest();
+            // var timeUrl ="/indicators/getTimeFilters";
+            // timeRequest.open("GET",timeUrl,true);
+            // timeRequest.onreadystatechange= function(){displayTimeFilters(0,timeRequest)};
+            // timeRequest.send(null);
+            // // Refresh the User Filter Summary but without any on-screen notification.
+            // var userRequest = createRequest();
+            // var userUrl ="/indicators/getUserFilters";
+            // userRequest.open("GET",userUrl,true);
+            // userRequest.onreadystatechange=  function(){displayUserFilters(0,userRequest)};
+            // userRequest.send(null);
+            // // Refresh the Attribute Filter Summary but without any on-screen notification.
+            // var entityRequest = createRequest();
+            // var entityUrl ="/indicators/getEntities";
+            // entityRequest.open("GET",entityUrl,true);
+            // entityRequest.onreadystatechange = function(){displayEntityFilters(0,entityRequest)};
+            // entityRequest.send(null);
+            //
+            // // Populate the Categories but without any on-screen notification.
+            // var categoryRequest = createRequest();
+            // var selectedSources = "";
+            // var selectedArray = new Array();
+            // var selObj = document.getElementById('sourceSelection');
+            // var i;
+            // var count = 0;
+            // for (i=0; i<selObj.options.length; i++) {
+            //     if (selObj.options[i].selected) {
+            //         selectedArray[count] = selObj.options[i].value;
+            //         count++;
+            //     }
+            // }
+            // selectedSources = selectedArray;
+            // var selectedAction = document.getElementById('actionSelection').value;
+            // var selectedPlatform = document.getElementById('PlatformSelection').value;
+            // var categoryUrl ="/indicators/populateCategories?action="+selectedAction+"&platform="+selectedPlatform+"&sources="+selectedSources;
+            // categoryRequest.open("GET",categoryUrl,true);
+            // categoryRequest.onreadystatechange=function(){processReceivedCategories(categoryRequest)};
+            // categoryRequest.send(null);
+            //
+            // // $.noty.defaults.killer = true;
+            // // noty({
+            // //     text: '<strong>Success</strong> <br/>  Selected Indicator has been loaded as a Template. All its properties have been loaded except the name.',
+            // //     type: 'success'
+            // // });
+            // // noty({
+            // //     text: '<strong>Note</strong> <br/>  Please give a name for the Indicator. The name is not loaded as the system does not allow duplicate Indicator names. ',
+            // //     type: 'information'
+            // // });
+            //
+            // $('#qiEditorTab a[href="#QuestionIndicatorEditor"]').tab('show');
 
             $("#indicatorDefinition").show();
             $('body').animate({
                 scrollTop: $("#indicatorDefinition").offset().top
             }, 2000);
+            $('#indicatorData tbody').children().removeClass("selected");
         }
     }
 }

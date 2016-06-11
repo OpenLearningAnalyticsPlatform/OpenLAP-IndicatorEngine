@@ -99,6 +99,10 @@ input[type=text]:focus:not([readonly]) {
     min-width: 80% !important;
     top: 0 !important;
 }
+#loadIndicatorTemplateModel {
+    min-height: 85% !important;
+    top: 0 !important;
+}
 #associatedIndicatorsLabelDiv {
     padding-left: 0px;
 }
@@ -163,4 +167,16 @@ i {
     display: inline-block;
     left: 200px;
     top: 200px;
+}
+#indicatorData > tbody > tr {
+    cursor: pointer;
+}
+#indicatorData > tbody > tr.selected {
+    background-color: #e1f5fe;
+}
+#indicatorPropsTable {
+    font-size: 12px;
+}
+#indicatorPropsTable tr td:first-child {
+    width: 20%;
 }

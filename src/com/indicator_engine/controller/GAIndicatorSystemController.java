@@ -980,8 +980,8 @@ public class GAIndicatorSystemController {
                     colName = "id";
                 else if (isortCol == 1)
                     colName = "indicator_name";
-                else if (isortCol == 2)
-                    colName = "short_name";
+//                else if (isortCol == 2)
+//                    colName = "short_name";
                 glaIndicatorList = glaIndicatorBean.displayAllNonComposite(colName, sortDirection, true);
             }
             else
@@ -1010,8 +1010,8 @@ public class GAIndicatorSystemController {
                     colName = "id";
                 else if (isortCol == 1)
                     colName = "indicator_name";
-                else if (isortCol == 2)
-                    colName = "short_name";
+//                else if (isortCol == 2)
+//                    colName = "short_name";
                 glaIndicatorList = glaIndicatorBean.searchIndicatorsName(searchParameter, false, colName, sortDirection, true);
             }
             else
