@@ -3,10 +3,19 @@
         <div class="panel-heading light-blue darken-2">Question</div>
         <div class="panel-body">
             <div class="row">
-                <div class="col-md-6 input-field">
-                    <form:input path="questionsContainer.questionName" type="text" class="form-control" name ="questionNaming"
-                                id="questionNaming" required="required" placeholder="Type your Question Name" title="Type your Question Name"/>
-                    <label for="questionNaming">Question Name </label>
+                <div class="col m6 input-field">
+                    <div class="col m10">
+                        <form:input path="questionsContainer.questionName" type="text" class="form-control" name ="questionNaming"
+                                    id="questionNaming" required="required" placeholder="Type your Question Name" title="Type your Question Name"/>
+                        <label for="questionNaming">Question Name </label>
+                    </div>
+                    <div class="col m2">
+                        <div class="valign-wrapper">
+                            <a class="valign modal-trigger" id="searchQuestions" href="#loadQuestionTemplateModel" title="Search Existing Questions">
+                                <i class="material-icons">search</i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -21,12 +30,13 @@
                             </a>
                             <ul>
                                 <li>
-                                    <a class="btn-floating yellow darken-1 modal-trigger" id="loadIndicatorTemplate" onclick="LoadIndicatorVisualizations()" href="#loadIndicatorTemplateModel" title="Load Existing Indicator">
+                                    <%--<a class="btn-floating yellow darken-1 modal-trigger" id="loadIndicatorTemplate" href="#loadIndicatorTemplateModel" onclick="LoadExistingIndicator()" title="Load Existing Indicator">--%>
+                                    <a class="btn-floating yellow darken-1" id="loadIndicatorTemplate" onclick="LoadExistingIndicator()" title="Load Existing Indicator">
                                         <i class="material-icons">cached</i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="btn-floating red modal-trigger" id="compositeIndicator" href="#compositeIndicatorModel" title="Combine Existing Indicators">
+                                    <a class="btn-floating red modal-trigger" id="compositeIndicator" onclick="LoadIndicatorVisualizations()" href="#compositeIndicatorModel" title="Combine Existing Indicators">
                                         <i class="material-icons">view_quilt</i>
                                     </a>
                                 </li>

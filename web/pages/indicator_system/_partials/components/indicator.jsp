@@ -100,26 +100,24 @@
                                 <div class="row">
                                     <div class="col s12 m6 l6">
                                         <br/>
-                                        <label for="entityKeySelection">Select an Attribute </label>
+                                        <label for="entityKeySelection">Attribute </label>
                                         <form:select class="browser-default" path="selectedKeys" items="${selectNumberParameters.keys}" name ="entityKeySelection" id="entityKeySelection" title="Select Attribute"/>
                                         <br/>
                                         <div class="right-align">
                                             <button class="waves-effect waves-light btn light-blue" type="button" name="_eventId_searchAttributes" value="Search" onfocus="searchAttributes()" title="Search for Attribute" >Search</button>
                                         </div>
                                         <br/>
-                                        <label for="multipleSelect">Search Results </label>
-                                        <form:select class="browser-default" path="evalue"  name="entityValue" id ="entityValue" title="Select from Search Results">
+                                        <label for="multipleSelect">Attribute Values </label>
+                                        <form:select class="browser-default" path="evalue"  name="entityValue" id ="entityValue" title="Select from Attribute values">
                                             <form:options items="${selectNumberParameters.searchResults}" />
                                         </form:select>
-                                        <label for="specificationType">Select Specification Type </label>
-                                        <form:select class="browser-default" path="selectedentityValueTypes" items="${selectNumberParameters.entityValueTypes}" name ="specificationType" id="specificationType" title="Select Specification Type" />
+                                        <%--<form:select multiple="true" class="form-control browser-default" title="Select from Attribute values"--%>
+                                                     <%--path="evalue" items="${selectNumberParameters.searchResults}" name ="entityValue" id="entityValue"/>--%>
+                                        <%--<label for="specificationType">Specification Type </label>--%>
+                                        <%--<form:select class="browser-default" path="selectedentityValueTypes" items="${selectNumberParameters.entityValueTypes}" name ="specificationType" id="specificationType" title="Select Specification Type" />--%>
                                         <br/>
-                                        <div class="alert alert-success alert-dismissible" role="alert">
-                                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                            <strong>Note !</strong> Please use 'ALL' to search all values.
-                                        </div>
-                                        <div id="entity_filter_add_msg">
-                                        </div>
+                                        <%--<div id="entity_filter_add_msg">--%>
+                                        <%--</div>--%>
                                         <div class="right-align">
                                             <button class="waves-effect waves-light btn light-blue" type="button" name="attributebutton" id ="attributebutton"  value="Add" onclick="addEntity()" title="Apply Attribute Filter" >Apply</button>
                                         </div>
@@ -150,12 +148,12 @@
                                             <button class="waves-effect waves-light btn light-blue" type="button" name="_eventId_searchSession" value="Search" onclick="searchSession()" title="Search for Session" >Search</button>
                                         </div>
                                         <br/>
-                                        <label for="multipleSelect">Search Results </label>
+                                        <label for="multipleSelect">Session Values </label>
                                         <form:select class="browser-default"  path="selectedUserString" name="multipleSelect" id="SessionsearchResults" title="Select from Search Results">
                                             <form:options items="${selectNumberParameters.searchResults}" />
                                         </form:select>
-                                        <label for="SessionsearchType">Session Search Type</label>
-                                        <form:select class="browser-default" path="selectedSearchType" items="${selectNumberParameters.searchType}" name ="SessionsearchType" id="SessionsearchType" title="Select Search Type" />
+                                        <%--<label for="SessionsearchType">Session Search Type</label>--%>
+                                        <%--<form:select class="browser-default" path="selectedSearchType" items="${selectNumberParameters.searchType}" name ="SessionsearchType" id="SessionsearchType" title="Select Search Type" />--%>
                                         <br/>
                                         <div class="right-align">
                                             <button class="waves-effect waves-light btn light-blue" type="button" name="_eventId_specifySession" value="Add" onclick="addSessionFilter()" title="Apply Session Filter">Apply</button>
@@ -349,7 +347,7 @@
                                     </div>
                                 </div>
                                 <div id="chart_wrap">
-                                    <div id="preview_chart" id="graphImage"></div>
+                                    <div id="preview_chart"></div>
                                 </div>
                             </div>
                         </div>

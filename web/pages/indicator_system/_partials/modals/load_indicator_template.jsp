@@ -9,7 +9,6 @@
                         <tr>
                             <th>Indicator ID</th>
                             <th>Indicator Name</th>
-                            <%--<th>Short Name</th>--%>
                         </tr>
                         </thead>
                     </table>
