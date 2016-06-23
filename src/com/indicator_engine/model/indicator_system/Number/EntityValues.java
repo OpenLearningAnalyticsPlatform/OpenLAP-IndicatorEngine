@@ -30,11 +30,12 @@ import java.util.List;
 public class EntityValues implements Serializable,Cloneable {
     private String key;
     private String eValues;
-    private String type;
+//    private String type;
     public EntityValues(){}
-    public EntityValues(String key,String eValues, String type){
+//    public EntityValues(String key,String eValues, String type){
+    public EntityValues(String key,String eValues){
         this.eValues = eValues;
-        this.type = type;
+//        this.type = type;
         this.key = key;
     }
     @Override
@@ -70,11 +71,11 @@ public class EntityValues implements Serializable,Cloneable {
         this.eValues = eValues;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
+//    public String getType() {
+//        return type;
+//    }
+//
+//    public void setType(String type) {
+//        this.type = type;
+//    }
 }

@@ -167,15 +167,15 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
         String key, type, eValue;
         key = type = eValue = null;
 
-        int totalLength = entityValues.size();
+        //int totalLength = entityValues.size();
 
         for (EntityValues eV : entityValues)
         {
             key = eV.getKey();
-            type = eV.getType();
+            //type = eV.getType();
             eValue = eV.geteValues();
-            if(type.equals("Text"))
-            {
+            //if(type.equals("Text"))
+            //{
                 if(!eValue.equals("ALL"))
                 {
                     if(entityValueCounter == 0)
@@ -189,7 +189,7 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
                         entityValueCounter++;
                     }
                 }
-            }
+            /*}
             else if(type.equals("REGEX"))
             {
                 if(!eValue.equals("ALL"))
@@ -205,7 +205,7 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
                         entityValueCounter++;
                     }
                 }
-            }
+            }*/
         }
         return hibernateQuery;
     }

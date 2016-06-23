@@ -80,7 +80,7 @@ public class ProcessUserFilters_old implements ProcessUserFiltersDao {
         for (EntityValues eV : entityValues)
         {
             key = eV.getKey();
-            type = eV.getType();
+//            type = eV.getType();
             eValue = eV.geteValues();
             if(type.equals("Text"))
             {

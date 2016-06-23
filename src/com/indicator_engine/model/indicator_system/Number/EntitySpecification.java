@@ -19,6 +19,7 @@
 
 package com.indicator_engine.model.indicator_system.Number;
 
+import DataSet.OLAPPortConfiguration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -61,6 +62,9 @@ public class EntitySpecification implements Serializable {
     private final String filteringType;
     private String retrievableObjects;
 
+    private OLAPPortConfiguration queryToMethodConfig;
+    private OLAPPortConfiguration methodToVisualizationConfig;
+
     private Questions questionsContainer = new Questions();
 
     public EntitySpecification() {
@@ -86,11 +90,15 @@ public class EntitySpecification implements Serializable {
         this.selectedChartEngine = null;
         this.selectedChartType = null;
         this.isComposite = false;
+        this.analyticsMethodId = 0L;
 
         this.entityValues.clear();
         this.userSpecifications.clear();
         this.timeSpecifications.clear();
         this.sessionSpecifications.clear();
+
+        this.queryToMethodConfig = null;
+        this.methodToVisualizationConfig = null;
     }
 
     public void completeReset() {
@@ -259,4 +267,16 @@ public class EntitySpecification implements Serializable {
     public void setAnalyticsMethodId(long analyticsMethodId) {
         this.analyticsMethodId = analyticsMethodId;
     }
+
+    public OLAPPortConfiguration getQueryToMethodConfig() {
+        return queryToMethodConfig;
+    }
+
+    public void setQueryToMethodConfig(OLAPPortConfiguration queryToMethodConfig) { this.queryToMethodConfig = queryToMethodConfig; }
+
+    public OLAPPortConfiguration getMethodToVisualizationConfig() {
+        return methodToVisualizationConfig;
+    }
+
+    public void setMethodToVisualizationConfig(OLAPPortConfiguration methodToVisualizationConfig) { this.methodToVisualizationConfig = methodToVisualizationConfig; }
 }
