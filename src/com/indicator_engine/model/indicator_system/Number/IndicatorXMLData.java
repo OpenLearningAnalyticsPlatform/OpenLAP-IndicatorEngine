@@ -19,6 +19,7 @@
 
 package com.indicator_engine.model.indicator_system.Number;
 
+import DataSet.OLAPPortConfiguration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -50,6 +51,11 @@ public class IndicatorXMLData implements Serializable {
     private String selectedChartType;
     private String selectedChartEngine;
 
+    private long analyticsMethodId;
+    private String retrievableObjects;
+    private OLAPPortConfiguration queryToMethodConfig;
+    private OLAPPortConfiguration methodToVisualizationConfig;
+
     public IndicatorXMLData() {}
 
     public IndicatorXMLData(List<String> source, String platform, String action, String minor,
@@ -57,7 +63,9 @@ public class IndicatorXMLData implements Serializable {
                             List<UserSearchSpecifications> userSpecifications,
                             List<SessionSpecifications> sessionSpecifications,
                             List<TimeSearchSpecifications> timeSpecifications,
-                            String selectedChartType, String selectedChartEngine)
+                            String selectedChartType, String selectedChartEngine,
+                            long analyticsMethodId, String retrievableObjects,
+                            OLAPPortConfiguration queryToMethodConfig, OLAPPortConfiguration methodToVisualizationConfig)
     {
         this.source = (source);
         this.action = action;
@@ -71,6 +79,10 @@ public class IndicatorXMLData implements Serializable {
         this.timeSpecifications = timeSpecifications;
         this.selectedChartEngine = selectedChartEngine;
         this.selectedChartType = selectedChartType;
+        this.retrievableObjects = retrievableObjects;
+        this.analyticsMethodId = analyticsMethodId;
+        this.queryToMethodConfig = queryToMethodConfig;
+        this.methodToVisualizationConfig = methodToVisualizationConfig;
     }
 
 
@@ -170,4 +182,33 @@ public class IndicatorXMLData implements Serializable {
     public void setSelectedChartEngine(String selectedChartEngine) {
         this.selectedChartEngine = selectedChartEngine;
     }
+
+    public long getAnalyticsMethodId() {
+        return analyticsMethodId;
+    }
+
+    public void setAnalyticsMethodId(long analyticsMethodId) {
+        this.analyticsMethodId = analyticsMethodId;
+    }
+
+    public String getRetrievableObjects() {
+        return retrievableObjects;
+    }
+
+    public void setRetrievableObjects(String retrievableObjects) {
+        this.retrievableObjects = retrievableObjects;
+    }
+
+    public OLAPPortConfiguration getQueryToMethodConfig() {
+        return queryToMethodConfig;
+    }
+
+    public void setQueryToMethodConfig(OLAPPortConfiguration queryToMethodConfig) { this.queryToMethodConfig = queryToMethodConfig; }
+
+    public OLAPPortConfiguration getMethodToVisualizationConfig() {
+        return methodToVisualizationConfig;
+    }
+
+    public void setMethodToVisualizationConfig(OLAPPortConfiguration methodToVisualizationConfig) { this.methodToVisualizationConfig = methodToVisualizationConfig; }
+
 }
