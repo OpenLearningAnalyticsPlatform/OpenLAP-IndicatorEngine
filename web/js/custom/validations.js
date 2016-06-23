@@ -83,16 +83,16 @@ $(document).ready(function() {
         rules: {
             "questionsContainer.questionName": {
                 required: true,
-                minlength: 6,
-                validateQuestion: true
+                minlength: 6
+                // validateQuestion: true
             },
             GoalSelection: {
                 required: true
             },
             indicatorName: {
                 required: true,
-                minlength: 6,
-                validateIndicator: true
+                minlength: 6
+                // validateIndicator: true
             },
             selectedSource: {
                 required: true
@@ -120,6 +120,38 @@ $(document).ready(function() {
             },
             inputForVisualizer: {
                 hasNoOptionLeft: true
+            }
+        },
+        messages: {
+        },
+        errorClass: 'invalid',
+        errorPlacement: function (error, element) {
+            element.next("label").attr("data-error", error.contents().text());
+        }
+    });
+
+    $('#analyticsMethodForm').validate({
+        ignore: false,
+        onkeyup: false,
+        rules: {
+            name: {
+                required: true,
+                minlength: 6
+            },
+            desc: {
+                required: true,
+                minlength: 6
+            },
+            class: {
+                required: true,
+                minlength: 6
+            },
+            file: {
+                required: true
+            },
+            fileName: {
+                required: true,
+                extension: "jar"
             }
         },
         messages: {
