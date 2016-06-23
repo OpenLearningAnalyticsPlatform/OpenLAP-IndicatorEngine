@@ -23,14 +23,21 @@ import DataSet.OLAPColumnConfigurationData;
 import DataSet.OLAPPortConfiguration;
 import DataSet.OLAPPortMapping;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.indicator_engine.dao.GLACategoryDao;
 import com.indicator_engine.dao.GLAEntityDao;
 import com.indicator_engine.datamodel.GLACategory;
+import com.indicator_engine.datamodel.GLAIndicator;
+import com.indicator_engine.datamodel.GLAQuestion;
 import com.indicator_engine.indicator_system.Number.OperationNumberProcessorDao;
 import com.indicator_engine.model.indicator_system.Number.EntitySpecification;
+import com.indicator_engine.model.indicator_system.Number.GLAQuestionJsonObject;
 import de.rwthaachen.openlap.analyticsengine.core.dtos.request.IndicatorPreviewRequest;
+import de.rwthaachen.openlap.analyticsengine.core.dtos.request.QuestionSaveRequest;
 import de.rwthaachen.openlap.analyticsengine.core.dtos.response.IndicatorPreviewResponse;
+import de.rwthaachen.openlap.analyticsengine.core.dtos.response.IndicatorResponse;
+import de.rwthaachen.openlap.analyticsengine.core.dtos.response.QuestionResponse;
 import de.rwthaachen.openlap.analyticsmethods.model.AnalyticsMethodMetadata;
 import de.rwthaachen.openlap.analyticsmodules.model.AnalyticsGoal;
 import de.rwthaachen.openlap.visualizer.core.dtos.response.VisualizationFrameworksDetailsResponse;
@@ -44,7 +51,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -161,21 +170,23 @@ public class AnalyticsEngineController {
         Gson gson = new Gson();
 
         Type olapPortMappingType = new TypeToken<List<OLAPPortMapping>>(){}.getType();
-        List<OLAPPortMapping> methodOLAPPortMappingList = gson.fromJson(methodMappings, olapPortMappingType);
-        OLAPPortConfiguration config = new OLAPPortConfiguration();
-        for (OLAPPortMapping methodPortMapping : methodOLAPPortMappingList) {
-            config.getMapping().add(methodPortMapping);
+        if (!methodMappings.isEmpty()) {
+            List<OLAPPortMapping> methodOLAPPortMappingList = gson.fromJson(methodMappings, olapPortMappingType);
+            OLAPPortConfiguration config = new OLAPPortConfiguration();
+            for (OLAPPortMapping methodPortMapping : methodOLAPPortMappingList) {
+                config.getMapping().add(methodPortMapping);
+            }
+            indicatorPreviewRequest.setQueryToMethodConfig(config);
         }
-        indicatorPreviewRequest.setQueryToMethodConfig(config);
 
-
-        List<OLAPPortMapping> visualizationOLAPPortMappingList = gson.fromJson(visualizationMappings, olapPortMappingType);
-        config = new OLAPPortConfiguration();
-        for (OLAPPortMapping visualizationPortMapping : visualizationOLAPPortMappingList) {
-            config.getMapping().add(visualizationPortMapping);
+        if (!visualizationMappings.isEmpty()) {
+            List<OLAPPortMapping> visualizationOLAPPortMappingList = gson.fromJson(visualizationMappings, olapPortMappingType);
+            OLAPPortConfiguration config = new OLAPPortConfiguration();
+            for (OLAPPortMapping visualizationPortMapping : visualizationOLAPPortMappingList) {
+                config.getMapping().add(visualizationPortMapping);
+            }
+            indicatorPreviewRequest.setMethodToVisualizationConfig(config);
         }
-        indicatorPreviewRequest.setMethodToVisualizationConfig(config);
-
 
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://137.226.117.226:8080/AnalyticsEngine/GetIndicatorPreview";
@@ -286,5 +297,44 @@ public class AnalyticsEngineController {
         List<OLAPColumnConfigurationData> olapColumnConfigurationDataList = gson.fromJson(result, olapColumnConfigurationDataListType);
 
         return gson.toJson(olapColumnConfigurationDataList);
+    }
+
+    /**
+     * Get all questions saved in the database
+     * @return String JSON string containing ids, names and indicator count of each question
+     */
+    @RequestMapping(value = "/getQuestions", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    String getQuestions(HttpServletRequest request) {
+
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject (
+                "http://137.226.117.226:8080/GetQuestions",
+                String.class);
+
+        Gson gson = new Gson();
+        Type questionResponseListType = new TypeToken<List<QuestionResponse>>(){}.getType();
+        List<QuestionResponse> questionResponseList = gson.fromJson(result, questionResponseListType);
+        return gson.toJson(questionResponseList);
+    }
+
+    /**
+     * Get all indicators saved with the given question id
+     * @return String JSON string containing IndicatorResponse object
+     */
+    @RequestMapping(value = "/getIndicatorsByQuestionId", method = RequestMethod.GET)
+    public @ResponseBody
+    String getIndicatorsByQuestionId(@RequestParam(value="id", required = true) String id) {
+
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject (
+                "http://137.226.117.226:8080/AnalyticsEngine/GetIndicatorsByQuestionId?questionId=1",
+                String.class);
+
+        Gson gson = new Gson();
+        Type indicatorResponseListType = new TypeToken<List<IndicatorResponse>>(){}.getType();
+        List<IndicatorResponse> indicatorResponseList = gson.fromJson(result, indicatorResponseListType);
+
+        return gson.toJson(indicatorResponseList);
     }
 }
