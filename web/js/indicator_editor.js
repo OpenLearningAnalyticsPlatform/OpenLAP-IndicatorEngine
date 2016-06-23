@@ -796,9 +796,19 @@ function processReceivedEntities(request) {
 function addEntity(){
     var request = createRequest();
     var keySelected = document.getElementById("entityKeySelection").value;
-    var searchType = document.getElementById("specificationType").value;
-    var evalue = document.getElementById("entityValue").value;
-    var url ="/indicators/addEntity?key="+keySelected+"&search="+searchType+"&value="+evalue;
+
+    var selectedMethods = JSON.parse(localStorage.getItem('selectedMethods')) || [];
+    var index = selectedMethods.indexOf(keySelected);
+    if (index < 0) {
+        console.log(keySelected);
+        selectedMethods.push(keySelected);
+        localStorage.setItem('selectedMethods', JSON.stringify(selectedMethods));
+    }
+    // var searchType = document.getElementById("specificationType").value;
+    // var evalue = document.getElementById("entityValue").value;
+    var evalue = $('#entityValue').val();
+    // var url ="/indicators/addEntity?key="+keySelected+"&search="+searchType+"&value="+evalue;
+    var url ="/indicators/addEntity?key="+keySelected+"&value="+evalue;
     request.open("GET",url,true);
     request.onreadystatechange = function(){displayEntityFilters(1,request)};
     request.send(null);
@@ -813,6 +823,13 @@ function refreshEntityFilters() {
 }
 
 function deleteEntity(){
+
+    var selectedMethods = JSON.parse(localStorage.getItem('selectedMethods')) || [];
+    var newSelectedMethods = selectedMethods.filter(function(val){
+        return (JSON.stringify(val) !== JSON.stringify(entityFilterListing.value));
+    });
+    localStorage.setItem('selectedMethods', JSON.stringify(newSelectedMethods));
+
     var request = createRequest();
     var entityFilterListing = document.getElementById("entityFilterListing");
     var url ="/indicators/deleteEntities?filter="+entityFilterListing.value;
@@ -824,7 +841,7 @@ function deleteEntity(){
 function displayEntityFilters(callstatus,request,msg){
     if (request.readyState == 4) {
         if (request.status == 200) {
-            if(callstatus == 1) {
+            // if(callstatus == 1) {
                 // $.noty.defaults.killer = true;
                 // noty({
                 //     text: '<strong>Success</strong> <br/> 1 <strong>Attribute Filter</strong> successfully added. <br/>' +
@@ -838,49 +855,49 @@ function displayEntityFilters(callstatus,request,msg){
                 //     'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> window.',
                 //     type: 'information'
                 // });
-            }
-            else if(callstatus == 2) {
+            // }
+            // else if(callstatus == 2) {
                 // $.noty.defaults.killer = true;
                 // noty({
                 //     text: '<strong>Success</strong> <br/>  <strong>Attribute Filter Summary</strong> successfully refreshed. <br/>',
                 //     type: 'success'
                 // });
-            }
-            else if (callstatus == 3) {
+            // }
+            // else if (callstatus == 3) {
 
                 // $.noty.defaults.killer = true;
                 // noty({
                 //     text: '<strong>Success</strong> <br/>  <strong>'+msg+' Attribute Filter </strong> successfully deleted. <br/>',
                 //     type: 'success'
                 // });
-            }
-
+            // }
             var parsedJSON = JSON.parse(request.responseText);
             loadAssociatedEntityFilters(parsedJSON);
-            var heading = new Array();
-            heading[0] = "S/L";
-            heading[1] = "Key";
-            heading[2] = "Value";
-            heading[3] = "Type";
 
-            var data = new Array();
-
-            for (var i=0;i< parsedJSON.length;i++) {
-                data[i] = new Array(i+1, parsedJSON[i].key, parsedJSON[i].eValues, parsedJSON[i].type);
-            }
+        //     var heading = new Array();
+        //     heading[0] = "S/L";
+        //     heading[1] = "Key";
+        //     heading[2] = "Value";
+        //     heading[3] = "Type";
+        //
+        //     var data = new Array();
+        //
+        //     for (var i=0;i< parsedJSON.length;i++) {
+        //         data[i] = new Array(i+1, parsedJSON[i].key, parsedJSON[i].eValues, parsedJSON[i].type);
+        //     }
+        // }
+        // addTable(heading,data, "entity_filters");
+        // var entityFilterListing = document.getElementById("entityFilterListing");
+        // removeOptions(entityFilterListing);
+        // var newOption = new Option('ALL', 'ALL');
+        // for (var i=0;i< parsedJSON.length;i++) {
+        //     if(i==0)
+        //         entityFilterListing.appendChild(newOption);
+        //     var txt = parsedJSON[i].key+'_'+parsedJSON[i].eValues+'_'+parsedJSON[i].type;
+        //     newOption = new Option(txt, txt);
+        //     entityFilterListing.appendChild(newOption);
         }
-        addTable(heading,data, "entity_filters");
-        var entityFilterListing = document.getElementById("entityFilterListing");
-        removeOptions(entityFilterListing);
-        var newOption = new Option('ALL', 'ALL');
-        for (var i=0;i< parsedJSON.length;i++) {
-            if(i==0)
-                entityFilterListing.appendChild(newOption);
-            var txt = parsedJSON[i].key+'_'+parsedJSON[i].eValues+'_'+parsedJSON[i].type;
-            newOption = new Option(txt, txt);
-            entityFilterListing.appendChild(newOption);
-        }
-        removeOptions(document.getElementById("entityValue"));
+        // removeOptions(document.getElementById("entityValue"));
     }
 }
 
@@ -1370,9 +1387,10 @@ function addDefaultRule(funcID,request) {
 
                 request = createRequest();
                 var keySelected = document.getElementById("entityKeySelection").value;
-                var searchType = document.getElementById("specificationType").value;
+                // var searchType = document.getElementById("specificationType").value;
                 var evalue = 'ALL';
-                var url ="/indicators/addEntity?key="+keySelected+"&search="+searchType+"&value="+evalue;
+                // var url ="/indicators/addEntity?key="+keySelected+"&search="+searchType+"&value="+evalue;
+                var url ="/indicators/addEntity?key="+keySelected+"&value="+evalue;
                 request.open("GET",url,false);
                 if(funcID == 1)
                     request.onreadystatechange = function(){refreshGraph(new Boolean(true))};
@@ -1407,25 +1425,36 @@ function drawGraph(request) {
             //var graphImage = document.getElementById("graphImage");
             //graphImage.src="/graphs/jgraph?bean=true"+"&time="+new Date().getTime();
             //$('#templatemo-tabs a[href="#graphGeneration"]').tab('show');
-            $(function() {
-                $('#graphGeneration > img').attr("src","/graphs/jgraph?bean=true" + "&time=" + new Date().getTime());
-            });
+            // $(function() {
+            //     $('#graphGeneration > img').attr("src","/graphs/jgraph?bean=true" + "&time=" + new Date().getTime());
+            // });
         }
     }
 }
 
 function refreshQuestionSummary() {
-    var request = createRequest();
-    var url ="/indicators/refreshQuestionSummary";
-    request.open("GET",url,true);
-    request.onreadystatechange=function(){postrefreshQuestionSummary(request,1)};
-    request.send(null);
+    // var request = createRequest();
+    // var url ="/indicators/refreshQuestionSummary";
+    // request.open("GET",url,true);
+    // request.onreadystatechange=function(){postrefreshQuestionSummary(request,1)};
+    // request.send(null);
+
+    $.ajax({
+        type: "GET",
+        url: "/indicators/refreshQuestionSummary",
+        dataType: "json",
+        success: function (response) {
+            postrefreshQuestionSummary(response);
+        }
+    });
 }
 
-function postrefreshQuestionSummary(request,callstatus) {
-    if (request.readyState == 4) {
-        if (request.status == 200) {
-            var parsedJSON = JSON.parse(request.responseText);
+// function postrefreshQuestionSummary(request,callstatus) {
+function postrefreshQuestionSummary(parsedJSON) {
+    console.log(parsedJSON);
+    // if (request.readyState == 4) {
+    //     if (request.status == 200) {
+    //         var parsedJSON = JSON.parse(response);
             var qNamefromBean = document.getElementById("questionNaming");
 
             $(function () {
@@ -1458,25 +1487,27 @@ function postrefreshQuestionSummary(request,callstatus) {
                             $('#associatedIndicatorsDiv').append("<div class='chip composite-chip' name='chip-" + i + "' id='" + parsedJSON.genQueries[i].indicatorName
                                 + "' title='" + parsedJSON.genQueries[i].indicatorName
                                 +"'><span>" + parsedJSON.genQueries[i].indicatorName
-                                + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
+                                // + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
+                                + "</span><i class='material-icons' onclick='showDeleteIndicatorModal(this, event);'>close</i></div>");
                         }
                         else {
                             $('#associatedIndicatorsDiv').append("<div class='chip' name='chip-" + i + "' id='" + parsedJSON.genQueries[i].indicatorName
                                 + "' title='" + parsedJSON.genQueries[i].indicatorName
                                 + "' onclick='loadIndicator(this);'><span >" + parsedJSON.genQueries[i].indicatorName
-                                + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
+                                // + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
+                                + "</span><i class='material-icons' onclick='showDeleteIndicatorModal(this, event);'>close</i></div>");
                         }
                     });
                 }
             }
-            if(callstatus == 1) {
+            // if(callstatus == 1) {
                 // $.noty.defaults.killer = true;
                 // noty({
                 //     text: '<strong>Success</strong> <br/> <strong>Question Summary</strong> successfully refreshed. <br/>',
                 //     type: 'success'
                 // });
-            }
-            else if(callstatus == 2) {
+            // }
+            // else if(callstatus == 2) {
                 // $.noty.defaults.killer = true;
                 // noty({
                 //     text: '<strong>Success</strong> <br/> <strong>Current Indicator</strong> successfully saved. <br/>',
@@ -1486,9 +1517,9 @@ function postrefreshQuestionSummary(request,callstatus) {
                 //     text: '<strong>Success</strong> <br/> <strong>Question Summary</strong> successfully refreshed. <br/>',
                 //     type: 'success'
                 // });
-            }
-        }
-    }
+            // }
+    //     }
+    // }
 
 }
 
@@ -1502,22 +1533,37 @@ function finalizeIndicator(filterPresent) {
         var graphEngine = document.getElementById("EngineSelect").value;
         var indicatorIndex = localStorage.getItem("selectedIndicatorIndex");
         var analyticsMethod = document.getElementById("analyticsMethod").value;
+        var methodMappings = localStorage.getItem('methodMappings') || "";
+        var visualizationMappings = localStorage.getItem('visualizationMappings') || "";
+        var selectedMethods = localStorage.getItem('selectedMethods') || "";
+        selectedMethods = JSON.parse(selectedMethods).join(',');
         localStorage.removeItem("selectedIndicatorIndex");
-        var url ="/indicators/finalize?questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
-            +"&graphEngine="+graphEngine+"&indicatorIndex="+indicatorIndex+"&analyticsMethod="+analyticsMethod;
-        request.open("GET",url,true);
-        request.onreadystatechange=function(){postrefreshQuestionSummary(request,2)};
-        request.send(null);
+        // var url ="/indicators/finalize?questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
+        //     +"&graphEngine="+graphEngine+"&indicatorIndex="+indicatorIndex+"&analyticsMethod="+analyticsMethod;
+        // request.open("GET",url,true);
+        // request.onreadystatechange=function(){postrefreshQuestionSummary(request,2)};
+        // request.send(null);
+
+        $.ajax({
+            type: "GET",
+            url: "/indicators/finalize?questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
+                    +"&graphEngine="+graphEngine+"&indicatorIndex="+indicatorIndex+"&analyticsMethod="+analyticsMethod + "&methodMappings=" + methodMappings
+                    + "&visualizationMappings=" + visualizationMappings + "&selectedMethods=" + selectedMethods,
+            dataType: "json",
+            success: function (response) {
+                postrefreshQuestionSummary(response);
+
+                $(function() {
+                    $("#indicatorDefinition").hide();
+                    $('body').animate({
+                        scrollTop: $("body").offset().top
+                    }, 2000);
+                });
+            }
+        });
     }
     else
         checkForDefaultRule(2);
-
-    $(function() {
-        $("#indicatorDefinition").hide();
-        $('body').animate({
-            scrollTop: $("body").offset().top
-        }, 2000);
-    });
 
 }
 
@@ -1533,10 +1579,10 @@ function processScreenForNextIndicator(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
-            $("#graphImage").hide();
             document.getElementById("indicatorNaming").value = "";
             var selectedMinor = document.getElementById("selectedMinor");
             removeOptions(selectedMinor);
+            $("#preview_chart").hide();
             refreshQuestionSummary();
         }
     }
@@ -2270,108 +2316,8 @@ function loadToEditor(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
-            var parsedindProp = JSON.parse(parsedJSON.glaIndicatorProps.json_data);
-            loadIndicatorTemplate(parsedindProp);
-
-            // var sel = document.getElementById('PlatformSelection');
-            // var opts = sel.options;
-            // for (var opt, j = 0; opt = opts[j]; j++) {
-            //     if (opt.value == parsedindProp.platform) {
-            //
-            //         sel.selectedIndex = j;
-            //         break;
-            //     }
-            // }
-            // sel = document.getElementById('actionSelection');
-            // var opts = sel.options;
-            // for (var opt, j = 0; opt = opts[j]; j++) {
-            //     if (opt.value == parsedindProp.action) {
-            //         sel.selectedIndex = j;
-            //         break;
-            //     }
-            // }
-            // sel = document.getElementById('selectedChartType');
-            // var opts = sel.options;
-            // for (var opt, j = 0; opt = opts[j]; j++) {
-            //     if (opt.value == parsedindProp.chartType) {
-            //         sel.selectedIndex = j;
-            //         break;
-            //     }
-            // }
-            // sel = document.getElementById('EngineSelect');
-            // var opts = sel.options;
-            // for (var opt, j = 0; opt = opts[j]; j++) {
-            //     if (opt.value == parsedindProp.chartEngine) {
-            //         sel.selectedIndex = j;
-            //         break;
-            //     }
-            // }
-            // var optionsToSelect = parsedindProp.source;
-            // var select = document.getElementById('sourceSelection');
-            //
-            // for (var i = 0, l = select.options.length, o; i < l; i++) {
-            //     o = select.options[i];
-            //     if (optionsToSelect.indexOf(o.text) != -1) {
-            //         o.selected = true;
-            //     }
-            // }
-            // // Refresh the Session Filter Summary but without any on-screen notification.
-            // var sessionRequest = createRequest();
-            // var sessionUrl ="/indicators/getSessionFilters";
-            // sessionRequest.open("GET",sessionUrl,true);
-            // sessionRequest.onreadystatechange= function(){displaySessionFilters(0,sessionRequest)};
-            // sessionRequest.send(null);
-            // // Refresh the Time Filter Summary but without any on-screen notification.
-            // var timeRequest = createRequest();
-            // var timeUrl ="/indicators/getTimeFilters";
-            // timeRequest.open("GET",timeUrl,true);
-            // timeRequest.onreadystatechange= function(){displayTimeFilters(0,timeRequest)};
-            // timeRequest.send(null);
-            // // Refresh the User Filter Summary but without any on-screen notification.
-            // var userRequest = createRequest();
-            // var userUrl ="/indicators/getUserFilters";
-            // userRequest.open("GET",userUrl,true);
-            // userRequest.onreadystatechange=  function(){displayUserFilters(0,userRequest)};
-            // userRequest.send(null);
-            // // Refresh the Attribute Filter Summary but without any on-screen notification.
-            // var entityRequest = createRequest();
-            // var entityUrl ="/indicators/getEntities";
-            // entityRequest.open("GET",entityUrl,true);
-            // entityRequest.onreadystatechange = function(){displayEntityFilters(0,entityRequest)};
-            // entityRequest.send(null);
-            //
-            // // Populate the Categories but without any on-screen notification.
-            // var categoryRequest = createRequest();
-            // var selectedSources = "";
-            // var selectedArray = new Array();
-            // var selObj = document.getElementById('sourceSelection');
-            // var i;
-            // var count = 0;
-            // for (i=0; i<selObj.options.length; i++) {
-            //     if (selObj.options[i].selected) {
-            //         selectedArray[count] = selObj.options[i].value;
-            //         count++;
-            //     }
-            // }
-            // selectedSources = selectedArray;
-            // var selectedAction = document.getElementById('actionSelection').value;
-            // var selectedPlatform = document.getElementById('PlatformSelection').value;
-            // var categoryUrl ="/indicators/populateCategories?action="+selectedAction+"&platform="+selectedPlatform+"&sources="+selectedSources;
-            // categoryRequest.open("GET",categoryUrl,true);
-            // categoryRequest.onreadystatechange=function(){processReceivedCategories(categoryRequest)};
-            // categoryRequest.send(null);
-            //
-            // // $.noty.defaults.killer = true;
-            // // noty({
-            // //     text: '<strong>Success</strong> <br/>  Selected Indicator has been loaded as a Template. All its properties have been loaded except the name.',
-            // //     type: 'success'
-            // // });
-            // // noty({
-            // //     text: '<strong>Note</strong> <br/>  Please give a name for the Indicator. The name is not loaded as the system does not allow duplicate Indicator names. ',
-            // //     type: 'information'
-            // // });
-            //
-            // $('#qiEditorTab a[href="#QuestionIndicatorEditor"]').tab('show');
+            // var parsedindProp = JSON.parse(parsedJSON.glaIndicatorProps.json_data);
+            loadIndicatorTemplate(parsedJSON);
 
             $("#indicatorDefinition").show();
             $('body').animate({

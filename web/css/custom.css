@@ -174,9 +174,83 @@ i {
 #indicatorData > tbody > tr.selected {
     background-color: #e1f5fe;
 }
+#questionData > tbody > tr {
+    cursor: pointer;
+}
+#questionData > tbody > tr.selected {
+    background-color: #e1f5fe;
+}
 #indicatorPropsTable {
     font-size: 12px;
 }
 #indicatorPropsTable tr td:first-child {
     width: 20%;
+}
+#confirmEntityDeleteModal {
+    height: 40%; !important;
+}
+.side-nav a {
+    text-decoration: none !important;
+    font-size: 14px !important;
+}
+nav a {
+    text-decoration: none !important;
+    font-size: 26px !important;
+}
+nav a:link, nav a:hover, nav a:active {
+    color: inherit;
+}
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+main {
+    flex: 1 0 auto;
+}
+header, main, footer {
+    padding-left: 240px;
+}
+@media only screen and (max-width : 992px) {
+    header, main, footer {
+        padding-left: 0;
+    }
+}
+@media only screen and (min-width: 993px) {
+    .container {
+        width: 98% !important;
+    }
+}
+.side-nav hr {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+.side-nav li:hover {
+    background-color: white !important;
+}
+.side-nav a:hover {
+    color: black !important;
+}
+.brand-logo {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    cursor: default;
+}
+.brand-logo img{
+    width: 30%;
+}
+.side-nav li:first-of-type:hover {
+    background-color: black !important;
+}
+textarea {
+    height: auto !important;
+}
+textarea[type=text].invalid {
+    border-bottom: 1px solid #F44336;
+    box-shadow: 0 0 0 1px #F44336;
+}
+textarea[type=text].valid {
+    border-bottom: 1px solid #4CAF50;
+    box-shadow: 0 0 0 1px #4CAF50;
 }

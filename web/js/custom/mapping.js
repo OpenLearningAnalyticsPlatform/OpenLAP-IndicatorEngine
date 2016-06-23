@@ -80,6 +80,7 @@ function getAnalyticsMethodOutputs() {
             url: "/engine/getAnalyticsMethodOutputs?id=" + analyticsMethodId,
             dataType: "json",
             success: function (response) {
+                console.log(response);
                 var visualizationOutputSelect = $('#outputForMethods');
                 visualizationOutputSelect.empty();
                 for (var i=0;i< response.length;i++) {
@@ -121,7 +122,7 @@ function addMethodMappingToTable() {
         localStorage.setItem('selectedMethods', JSON.stringify(selectedMethods));
         
         
-        $("#methodDataColumns option:selected").remove();
+        // $("#methodDataColumns option:selected").remove();
         $("#inputForMethods option:selected").remove();
         var methodDataColumnsOptionSize = $('#methodDataColumns option').size();
         var inputForMethodsOptionSize = $('#inputForMethods option').size();
@@ -153,12 +154,12 @@ function deleteMethodMappingTableRow(column, event) {
     });
     localStorage.setItem('selectedMethods', JSON.stringify(newSelectedMethods));
 
-    $('#methodDataColumns')
-        .prepend($("<option></option>")
-            .attr("value", methodDataColumnsData.id)
-            .attr("title", methodDataColumnsData.description)
-            .attr("data-value", JSON.stringify(methodDataColumnsData))
-            .text(methodDataColumnsData.title));
+    // $('#methodDataColumns')
+    //     .prepend($("<option></option>")
+    //         .attr("value", methodDataColumnsData.id)
+    //         .attr("title", methodDataColumnsData.description)
+    //         .attr("data-value", JSON.stringify(methodDataColumnsData))
+    //         .text(methodDataColumnsData.title));
 
     $('#inputForMethods')
         .prepend($("<option></option>")
@@ -207,7 +208,7 @@ function addVisualizationMappingToTable() {
         visualizationMappings.push({outputPort: outputForMethodsData, inputPort: inputForVisualizerData});
         localStorage.setItem('visualizationMappings', JSON.stringify(visualizationMappings));
 
-        $("#outputForMethods option:selected").remove();
+        // $("#outputForMethods option:selected").remove();
         $("#inputForVisualizer option:selected").remove();
         var outputForMethodsOptionSize = $('#outputForMethods option').size();
         var inputForVisualizerOptionSize = $('#inputForVisualizer option').size();
@@ -243,12 +244,12 @@ function deleteVisualizerMappingTableRow(column, event) {
     });
     localStorage.setItem('visualizationMappings', JSON.stringify(newVisualizationMappings));
 
-    $('#outputForMethods')
-        .prepend($("<option></option>")
-            .attr("value", outputForMethodsData.id)
-            .attr("title", outputForMethodsData.description)
-            .attr("data-value", JSON.stringify(outputForMethodsData))
-            .text(outputForMethodsData.title));
+    // $('#outputForMethods')
+    //     .prepend($("<option></option>")
+    //         .attr("value", outputForMethodsData.id)
+    //         .attr("title", outputForMethodsData.description)
+    //         .attr("data-value", JSON.stringify(outputForMethodsData))
+    //         .text(outputForMethodsData.title));
 
     $('#inputForVisualizer')
         .prepend($("<option></option>")

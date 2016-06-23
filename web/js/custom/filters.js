@@ -1,12 +1,16 @@
 
-
 function loadAssociatedEntityFilters(entityValues) {
 
-    if (entityValues.length > 0) {
-        $('#appliedAttributeFiltersDiv').empty();
+    $('#appliedAttributeFiltersDiv').empty();
+    if (entityValues.length == 0) {
+        $('#appliedAttributeFiltersDiv').hide();
+        $('#appliedAttributeFiltersLabel').hide();
+        return;
+    }
+    // if (entityValues.length > 0) {
         $('#appliedAttributeFiltersDiv').show();
         $('#appliedAttributeFiltersLabel').show();
-    }
+    // }
 
     for (var entityValuesIndex = 0;
          entityValuesIndex < entityValues.length;
@@ -14,20 +18,25 @@ function loadAssociatedEntityFilters(entityValues) {
 
         var entityValue = entityValues[entityValuesIndex];
         $('#appliedAttributeFiltersDiv').append("<div class='chip filter-chip'"
-            + "' id='" + entityValue.key + "_" + entityValue.eValues + "_" + entityValue.type + "' " +
-            "title='" + entityValue.key + "_" + entityValue.eValues + "_" + entityValue.type +"'>" +
-            "<span>" + entityValue.key + ": " + entityValue.eValues
-            + "</span><i class='material-icons' onclick='deleteEntityFilter(this, event);'>close</i></div>");
+            + "' id='" + entityValue.key + "_" + entityValue.eValues + "' " +
+            "title='" + entityValue.key + "_" + entityValue.eValues +"'>" +
+            "<span>" + entityValue.key + ": " + entityValue.eValues +
+            "</span><i class='material-icons' onclick='showDeleteEntityFilterModal(this, event);'>close</i></div>");
     }
 }
 
 function loadAssociatedSessionFilters(sessionSpecs) {
 
-    if (sessionSpecs.length > 0) {
-        $('#appliedSessionFiltersDiv').empty();
+    $('#appliedSessionFiltersDiv').empty();
+    if (sessionSpecs.length == 0) {
+        $('#appliedSessionFiltersDiv').hide();
+        $('#appliedSessionFiltersLabel').hide();
+        return;
+    }
+    // if (sessionSpecs.length > 0) {
         $('#appliedSessionFiltersDiv').show();
         $('#appliedSessionFiltersLabel').show();
-    }
+    // }
 
     for (var sessionSpecsIndex = 0;
          sessionSpecsIndex < sessionSpecsIndex.length;
@@ -42,11 +51,16 @@ function loadAssociatedSessionFilters(sessionSpecs) {
 
 function loadAssociatedUserTimeFilters(userSpecs, timeSpecs) {
 
-    if (userSpecs.length > 0 || timeSpecs.length > 0) {
-        $('#appliedUserTimeFiltersDiv').empty();
+    $('#appliedUserTimeFiltersDiv').empty();
+    if (userSpecs.length == 0 && timeSpecs.length == 0) {
+        $('#appliedUserTimeFiltersDiv').hide();
+        $('#appliedUserTimeFiltersLabel').hide();
+        return;
+    }
+    // if (userSpecs.length > 0 || timeSpecs.length > 0) {
         $('#appliedUserTimeFiltersDiv').show();
         $('#appliedUserTimeFiltersLabel').show();
-    }
+    // }
 
     for (var userSpecsIndex = 0;
          userSpecsIndex < userSpecs.length;
@@ -56,7 +70,7 @@ function loadAssociatedUserTimeFilters(userSpecs, timeSpecs) {
             + "' id='" + userSpec.key + "_" + userSpec.value +
             "' title='" + userSpec.key + "-" + userSpec.value +"'>" +
             "<span>" + userSpec.key + ": " + userSpec.value
-            + "</span><i class='material-icons' onclick='deleteUserFilter(this, event);'>close</i></div>");
+            + "</span><i class='material-icons' onclick='showDeleteUserFilterModal(this, event);'>close</i></div>");
     }
 
     for (var timeSpecsIndex = 0;
@@ -69,20 +83,21 @@ function loadAssociatedUserTimeFilters(userSpecs, timeSpecs) {
             + "' id='" + timeSpec.type + "_" + timeSpec.timestamp[0] +
             "' title='" + timeSpec.type + "_" + formattedDate + "'>" +
             "<span>" + timeSpec.type + ": " + formattedDate
-            + "</span><i class='material-icons' onclick='deleteTimeFilter(this, event);'>close</i></div>");
+            + "</span><i class='material-icons' onclick='showDeleteTimeFilterModal(this, event);'>close</i></div>");
     }
 }
 
-function deleteEntityFilter(filter, event) {
-    var e = event;
+function deleteEntityFilter() {
+    // var e = event;
     $(function() {
         $.ajax({
             type: "GET",
             url: "/indicators/deleteEntities",
-            data: {filter: $(filter).closest('div').attr("id")},
+            // data: {filter: $(filter).closest('div').attr("id")},
+            data: {filter: $("#deleteEntityFilterValue").val()},
             dataType: "json",
             success: function (response) {
-                e.stopPropagation();
+                loadAssociatedEntityFilters(response);
             }
         });
     });
@@ -115,32 +130,70 @@ function addTimeFilter() {
     });
 }
 
-function deleteTimeFilter(filter, event) {
-    var e = event;
+function deleteTimeFilter() {
+    // var e = event;
     $(function() {
         $.ajax({
             type: "GET",
             url: "/indicators/deleteTimeFilters",
-            data: {filter: $(filter).closest('div').attr("id")},
+            // data: {filter: $(filter).closest('div').attr("id")},
+            data: {filter: $("#deleteTimeFilterValue").val()},
             dataType: "json",
-            success: function (response) {
-                e.stopPropagation();
+            success: function (timeFilterResponse) {
+                // if (timeFilterResponse.length > 0) {
+                    $.ajax({
+                        type: "GET",
+                        url: "/indicators/getUserFilters",
+                        dataType: "json",
+                        success: function (userFilterResponse) {
+                            loadAssociatedUserTimeFilters(userFilterResponse, timeFilterResponse);
+                        }
+                    });
+                // }
             }
         });
     });
 }
 
-function deleteUserFilter(filter, event) {
-    var e = event;
+function deleteUserFilter() {
+    // var e = event;
     $(function() {
         $.ajax({
             type: "GET",
             url: "/indicators/deleteUserFilters",
-            data: {filter: $(filter).closest('div').attr("id")},
+            // data: {filter: $(filter).closest('div').attr("id")},
+            data: {filter: $("#deleteUserFilterValue").val()},
             dataType: "json",
-            success: function (response) {
-                e.stopPropagation();
+            success: function (userFilterResponse) {
+                // if (userFilterResponse.length > 0) {
+                    $.ajax({
+                        type: "GET",
+                        url: "/indicators/getTimeFilters",
+                        dataType: "json",
+                        success: function (timeFilterResponse) {
+                            loadAssociatedUserTimeFilters(userFilterResponse, timeFilterResponse);
+                        }
+                    });
+                // }
             }
         });
     });
+}
+
+function showDeleteEntityFilterModal(filter, event) {
+    $("#deleteEntityFilterValue").val($(filter).closest('div').attr("id"));
+    $('#confirmEntityDeleteModal').openModal();
+    event.stopPropagation();
+}
+
+function showDeleteUserFilterModal(filter, event) {
+    $("#deleteUserFilterValue").val($(filter).closest('div').attr("id"));
+    $('#confirmUserDeleteModal').openModal();
+    event.stopPropagation();
+}
+
+function showDeleteTimeFilterModal(filter, event) {
+    $("#deleteTimeFilterValue").val($(filter).closest('div').attr("id"));
+    $('#confirmTimeDeleteModal').openModal();
+    event.stopPropagation();
 }

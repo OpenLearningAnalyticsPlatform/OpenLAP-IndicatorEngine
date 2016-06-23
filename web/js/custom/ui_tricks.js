@@ -15,13 +15,13 @@ $(function() {
     localStorage.removeItem("visualizationMappings");
 
     $('.modal-trigger').leanModal();
-    $('.tooltipped').tooltip({delay: 50});
 
     $('#selectedMinorSpinner').hide();
     $('#graphLoaderSpinner').hide();
     $("#indicatorDefinition").hide();
     $("#CompositeClosedButton").hide();
-    $("#graphImage").hide();
+    // $("#graphImage").hide();
+    $("#preview_chart").hide();
     $("#saveQuestion").attr('disabled', 'disabled');
     // $("#loadIndicatorTemplateModelTable").hide();
 
@@ -47,10 +47,6 @@ $(function() {
             finalizeIndicator();
         }
     });
-
-    // $("#generateGraph").click(function() {
-    //     $("#graphImage").show();
-    // });
 
     $("#addIndicator").click(function() {
         addNewIndicator();
@@ -78,26 +74,32 @@ $(function() {
         viewIndicatorProp();
     }));
 
+    $("#questionData").on('click', 'tr', (function() {
+        $(this).parent().children().removeClass("selected");
+        $(this).addClass("selected");
+    }));
+
 });
 
 function updateAnalyticsMethodDesc() {
     $('#analyticsMethodDesc').html('<i class="material-icons">info</i>' + "&nbsp;" + $('#analyticsMethod').find('option:selected').attr('description'));
 };
 
-function deleteIndicator(indicatorName, event) {
-    var e = event;
+function deleteIndicator() {
+    // var e = event;
     $(function() {
         $.ajax({
             type: "GET",
             url: "/indicators/deleteIndFromQn",
-            data: {indName: $(indicatorName).closest('div').attr("id")},
+            // data: {indName: $(indicatorName).closest('div').attr("id")},
+            data: {indName: $("#deleteIndicatorValue").val()},
             dataType: "html",
             success: function (response) {
-                $("#indDeleteDialog").text(response);
-                $('.indDeleteDialog').dialog('option', 'title', 'Indicator Deletion Message');
+                // $("#indDeleteDialog").text(response);
+                // $('.indDeleteDialog').dialog('option', 'title', 'Indicator Deletion Message');
                 refreshQuestionSummary();
-                $("#indDeleteDialog").dialog("open");
-                e.stopPropagation();
+                // $("#indDeleteDialog").dialog("open");
+                // e.stopPropagation();
             }
         });
     });
@@ -120,39 +122,44 @@ function loadIndicator(indicatorName){
             dataType: "json",
             success: function (response) {
                 if (response == null) {
-                    $("#indDeleteDialog").html("The selected Indicator cannot be loaded into the editor as it a composite Indicator or a NULL value.");
+                    // $("#indDeleteDialog").html("The selected Indicator cannot be loaded into the editor as it a composite Indicator or a NULL value.");
                     refreshQuestionSummary();
-                    $('.indDeleteDialog').dialog('option', 'title', 'Indicator Load Message');
-                    $("#indDeleteDialog").dialog("open");
+                    // $('.indDeleteDialog').dialog('option', 'title', 'Indicator Load Message');
+                    // $("#indDeleteDialog").dialog("open");
                 }
                 else {
-                    $("#indDeleteDialog").html("The selected Indicator has been successfully loaded into the Editor.<br/> Please note that it has been <strong>deleted </strong>" +
-                        "from the Question. So after making changes, please save it again if you want it to be associated with the Question. <br/>" +
-                        "Also note that you have to select again Platform and Action to populate the List of Categories.");
-                    $('.indDeleteDialog').dialog('option', 'title', 'Indicator Load Message');
+                    // $("#indDeleteDialog").html("The selected Indicator has been successfully loaded into the Editor.<br/> Please note that it has been <strong>deleted </strong>" +
+                    //     "from the Question. So after making changes, please save it again if you want it to be associated with the Question. <br/>" +
+                    //     "Also note that you have to select again Platform and Action to populate the List of Categories.");
+                    // $('.indDeleteDialog').dialog('option', 'title', 'Indicator Load Message');
                     //refreshQuestionSummary();
                     console.log(response);
                     updateScreenAfterLoadInd(response);
-                    $("#indDeleteDialog").dialog("open");
+                    // $("#indDeleteDialog").dialog("open");
                 }
             }
         });
     });
 }
 
-function loadIndicatorTemplate(data){
+function loadIndicatorTemplate(rawData) {
 
-    $('#PlatformSelection').val(data.platform);
+    var properties = JSON.parse(rawData.glaIndicatorProps.json_data);
+    // addLoadedIndicatorToAssociatedIndicatorList(rawData.indicator_name, properties);
 
-    $('#actionSelection').val(data.action);
+    $('#indicatorNaming').val(rawData.indicator_name);
 
-    $('#selectedChartType').val(data.selectedChartType);
+    $('#PlatformSelection').val(properties.platform);
 
-    $('#EngineSelect').val(data.selectedChartEngine);
+    $('#actionSelection').val(properties.action);
 
-    $('#analyticsMethod').val(data.analyticsMethodId);
+    $('#selectedChartType').val(properties.selectedChartType);
 
-    var optionsToSelect = data.source;
+    $('#EngineSelect').val(properties.selectedChartEngine);
+
+    $('#analyticsMethod').val(properties.analyticsMethodId);
+
+    var optionsToSelect = properties.source;
     var select = document.getElementById( 'sourceSelection' );
 
     for ( var i = 0, l = select.options.length, o; i < l; i++ )
@@ -164,15 +171,37 @@ function loadIndicatorTemplate(data){
         }
     }
 
-    var entityValues = data.entityValues;
-    var userSpecs = data.userSpecifications;
-    var sessionSpecs = data.sessionSpecifications;
-    var timeSpecs = data.timeSpecifications;
+    var entityValues = properties.entityValues;
+    var userSpecs = properties.userSpecifications;
+    var sessionSpecs = properties.sessionSpecifications;
+    var timeSpecs = properties.timeSpecifications;
     loadAssociatedEntityFilters(entityValues);
     loadAssociatedSessionFilters(sessionSpecs);
     loadAssociatedUserTimeFilters(userSpecs, timeSpecs);
+    setTimeout(function(){
+        addLoadedIndicatorToAssociatedIndicatorList(rawData.indicator_name, properties);
+    },5000);
+    populateCategories(properties.minor);
+}
 
-    populateCategories(data.minor);
+function addLoadedIndicatorToAssociatedIndicatorList(indicatorName, properties) {
+    
+    var questionName = document.getElementById("questionNaming").value;
+    var graphType = properties.selectedChartType;
+    var graphEngine = properties.selectedChartEngine;
+    var indicatorIndex = null;
+    // var analyticsMethod = properties.analyticsMethodId;
+    var analyticsMethod = 1;
+
+    $.ajax({
+        type: "GET",
+        url: "/indicators/finalize?questionName=" + questionName + "&indicatorName=" + indicatorName + "&graphType=" + graphType
+        + "&graphEngine=" + graphEngine + "&indicatorIndex=" + indicatorIndex + "&analyticsMethod=" + analyticsMethod,
+        dataType: "json",
+        success: function (response) {
+            postrefreshQuestionSummary(response);
+        }
+    });
 }
 
 function populateAnalyticsMethods(){
@@ -312,6 +341,7 @@ function embedIndicatorPreviewVisualizationCode(request) {
                 // var divTagData = dataDOMObj.getElementsByTagName('div')[0];
                 // $("#preview_chart").html(dataDOMObj.getElementsByTagName('TemporaryDiv')[0].textContent + divTagData.outerHTML);
                 $("#preview_chart").html(decodedGraphData);
+                $('#preview_chart').show();
             }
         }
     }
@@ -352,4 +382,35 @@ function embedQuestionVisualizationCode(request) {
             }
         }
     }
+}
+
+function showDeleteIndicatorModal(filter, event) {
+    $("#deleteIndicatorValue").val($(filter).closest('div').attr("id"));
+    $('#confirmIndicatorDeleteModal').openModal();
+    event.stopPropagation();
+}
+
+function LoadExistingIndicator() {
+    var questionName = document.getElementById("questionNaming").value;
+
+    if (questionName) {
+        $('#loadIndicatorTemplateModel').openModal();
+    } else {
+        $('#warnings').append('<div class="alert alert-danger"> Please enter a question name. </div>');
+        $('body').animate({
+            scrollTop: $("#warnings").offset().top
+        }, 2000);
+    }
+}
+
+function loadQuestionFromTemplate() {
+
+    var questionId = $('tr.selected:first td:nth-child(3)', '#questionData').text();
+    $.ajax({
+        type: "GET",
+        url: "/engine/getIndicatorsByQuestionId?id=" + questionId,
+        success: function (response) {
+            console.log(response);
+        }
+    });
 }
