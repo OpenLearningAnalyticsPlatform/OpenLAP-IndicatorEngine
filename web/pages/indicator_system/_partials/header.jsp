@@ -68,6 +68,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/ui_tricks.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/validations.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/filters.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/admin.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
         google.charts.load("current", {packages:["corechart"]});
@@ -107,7 +108,7 @@
                     //bStateSave variable you can use to save state on client cookies: set value "true"
                     "bStateSave": false,
                     //Default: Page display length
-                    "iDisplayLength": 10,
+                    "iDisplayLength": 8,
                     //We will use below variable to track page number on server side(For more information visit: http://legacy.datatables.net/usage/options#iDisplayStart)
                     "iDisplayStart": 0,
                     "fnDrawCallback": function () {
@@ -121,6 +122,36 @@
                         { "mData": "id" },
                         { "mData": "indicator_name" },
 //                        { "mData": "short_name" },
+                    ]
+                } );
+
+                $("#questionData").dataTable( {
+                    "bProcessing": true,
+                    "bServerSide": true,
+                    "sort": "position",
+                    "bLengthChange": false,
+                    "language": {
+                        "searchPlaceholder": "Search Question",
+                        "sSearch": ""
+                    },
+                    "dom": '<"pull-left"f><"pull-right"l>tip',
+                    //bStateSave variable you can use to save state on client cookies: set value "true"
+                    "bStateSave": false,
+                    //Default: Page display length
+                    "iDisplayLength": 8,
+                    //We will use below variable to track page number on server side(For more information visit: http://legacy.datatables.net/usage/options#iDisplayStart)
+                    "iDisplayStart": 0,
+                    "fnDrawCallback": function () {
+                        //Get page numer on client. Please note: number start from 0 So
+                        //for the first page you will see 0 second page 1 third page 2...
+                        //Un-comment below alert to see page number
+                        //alert("Current page number: "+this.fnPagingInfo().iPage);
+                    },
+                    "sAjaxSource": "/indicators/fetchExistingQuestionsData.web",
+                    "aoColumns": [
+                        { "mData": "id" },
+                        { "mData": "question_name" },
+                        { "mData": "indicators_num" },
                     ]
                 } );
 
