@@ -50,4 +50,14 @@ public class AdminController {
         return new ModelAndView("indicator_system/admin/analytics_method");
     }
 
+    /**
+     * Renders Visualization Jar submission form
+     */
+    @RequestMapping(value = "/visualization/new", method = RequestMethod.GET)
+    public @ResponseBody
+    ModelAndView visualization_new() {
+
+        return new ModelAndView("indicator_system/admin/visualization");
+    }
+
 }

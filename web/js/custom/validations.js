@@ -161,4 +161,48 @@ $(document).ready(function() {
             element.next("label").attr("data-error", error.contents().text());
         }
     });
+
+    $('#visualizationForm').validate({
+        ignore: false,
+        onkeyup: false,
+        rules: {
+            name: {
+                required: true,
+                minlength: 6
+            },
+            desc: {
+                required: true,
+                minlength: 6
+            },
+            methodName: {
+                required: true,
+                minlength: 6
+            },
+            methodClass: {
+                required: true,
+                minlength: 6
+            },
+            dataTransformerName: {
+                required: true,
+                minlength: 6
+            },
+            dataTransformerClass: {
+                required: true,
+                minlength: 6
+            },
+            file: {
+                required: true
+            },
+            fileName: {
+                required: true,
+                extension: "jar"
+            }
+        },
+        messages: {
+        },
+        errorClass: 'invalid',
+        errorPlacement: function (error, element) {
+            element.next("label").attr("data-error", error.contents().text());
+        }
+    });
 });

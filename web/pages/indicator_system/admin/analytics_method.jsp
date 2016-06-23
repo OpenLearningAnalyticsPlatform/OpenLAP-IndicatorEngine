@@ -10,7 +10,6 @@
         <input type="hidden" name="userName" id="userName" value="${sessionScope.userName}" />
         <div id="analytics-method-alert"></div>
         <div class="tab-content">
-            <%--<form action="/admin/analytics_method/save" method="post" enctype="multipart/form-data">--%>
             <form id="analyticsMethodForm" enctype="multipart/form-data">
                 <div class="col s12 m6 card">
                     <div class="panel panel-default">
@@ -51,15 +50,14 @@
                                 </div>
                             </div>
                             <div class="col s12 m6 l10 right-align">
-                                <%--<button class="waves-effect waves-light btn pull-right light-blue" type="button" title="Click submit Analytics Method." onclick="saveAnalyticsMethodJar()">--%>
-                                <button type="button" class="waves-effect waves-light btn pull-right light-blue" title="Click submit Analytics Method." onclick="saveAnalyticsMethodJar(); return false;">
+                                <button type="button" class="waves-effect waves-light btn pull-right light-blue" title="Click to submit Analytics Method." onclick="saveAnalyticsMethodJar(); return false;">
                                     Submit
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-            <%--</form>--%>
+            </form>
         </div>
 
     </div>

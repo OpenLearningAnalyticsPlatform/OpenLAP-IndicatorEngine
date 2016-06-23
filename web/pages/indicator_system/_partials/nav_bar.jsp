@@ -27,7 +27,7 @@
             <hr>
         </li>
         <li class="bold">
-            <a href="/indicators/indicators_definition" class="waves-effect grey-text text-lighten-2"><i class="fa fa-file"></i>&nbsp;Visualization</a>
+            <a href="/admin/visualization/new" class="waves-effect grey-text text-lighten-2"><i class="fa fa-file"></i>&nbsp;Visualization</a>
             <hr>
         </li>
         <li class="bold">
