@@ -49,7 +49,7 @@ then
 							+ "WHERE C.Minor = '"+$minor+"' AND C.Major = '"+$major+"' AND C.Type = '"+$type+"' "
 							+ "AND E.Action = '"+$action+"' AND E.Source IN "+$pFilter.processSource($source,$filter)
 							+ " AND E.Platform = '"+$platform+"' ) ) d pivot ( max(value) "
-							+ "for EntityKey in (" + $robject + ") ) piv");
+							+ "for EntityKey in (" + $robject + ") ) piv WHERE " + $pFilter.processNullValues($robject));
 
 end
 
@@ -81,7 +81,7 @@ then
 							+ "AND E.Action = '"+$action+"' AND E.Source IN "+$pFilter.processSource($source,$filter)
 							+ " AND E.Platform = '"+$platform+"' ) ) d pivot ( max(value) "
 							+ "for EntityKey in (" + $robject + ") ) piv "
-							+ " Where " + $pFilter.processEntities($key,$filter));
+							+ " Where " + $pFilter.processEntities($key,$filter) + " AND " + $pFilter.processNullValues($robject));
 end
 
 rule "When Only User Filtering and Entity Filtering are Present"
@@ -114,7 +114,7 @@ then
 							+ " AND E.Platform = '"+$platform+"' "
 							+ "AND E.U_Id In (Select U_Id FROM Users Where Name = '"+$pFilter.processUsers($user, $filter)
 							+ "') ) ) d pivot ( max(value) for EntityKey in (" + $robject + ") ) piv "
-							+ " Where " + $pFilter.processEntities($key,$filter));
+							+ " Where " + $pFilter.processEntities($key,$filter) + " AND " + $pFilter.processNullValues($robject));
 end
 
 rule "When Session & Entity Filtering are Present"
@@ -146,7 +146,7 @@ then
 							+ " AND E.Platform = '"+$platform+"' " + $pFilter.processSessions($session,$filter)
 							+ " ) ) d pivot ( max(value) "
 							+ "for EntityKey in (" + $robject + ") ) piv "
-							+ " Where " + $pFilter.processEntities($key,$filter));
+							+ " Where " + $pFilter.processEntities($key,$filter) + " AND " + $pFilter.processNullValues($robject));
 end
 
 
@@ -181,7 +181,7 @@ then
 							+ "AND E.U_Id In (Select U_Id FROM Users Where Name = '"+$pFilter.processUsers($user, $filter)
 							+ "') " + $pFilter.processSessions($session,$filter)
 							+ " ) ) d pivot ( max(value) for EntityKey in (" + $robject + ") ) piv "
-							+ " Where " + $pFilter.processEntities($key,$filter));
+							+ " Where " + $pFilter.processEntities($key,$filter) + " AND " + $pFilter.processNullValues($robject));
 end
 
 
@@ -214,7 +214,7 @@ then
 							+ " AND E.Platform = '"+$platform+"' " + $pFilter.processTime($time,$filter) 
 							+ " ) ) d pivot ( max(value) "
 							+ "for EntityKey in (" + $robject + ") ) piv "
-							+ " Where " + $pFilter.processEntities($key,$filter));
+							+ " Where " + $pFilter.processEntities($key,$filter) + " AND " + $pFilter.processNullValues($robject));
 end
 
 rule "When All Filters are Present"
@@ -250,7 +250,7 @@ then
 							+ "') " + $pFilter.processSessions($session,$filter)
 							+ " ) ) d pivot ( max(value) "
 							+ "for EntityKey in (" + $robject + ") ) piv "
-							+ " Where " + $pFilter.processEntities($key,$filter));
+							+ " Where " + $pFilter.processEntities($key,$filter) + " AND " + $pFilter.processNullValues($robject));
 end
 
 rule "When Time, Entity and User Filters are present"
@@ -284,7 +284,7 @@ then
 							+ " AND E.U_Id In (Select U_Id FROM Users Where Name = '"+$pFilter.processUsers($user, $filter)
 							+ "') ) ) d pivot ( max(value) "
 							+ "for EntityKey in (" + $robject + ") ) piv "
-							+ " Where " + $pFilter.processEntities($key,$filter));
+							+ " Where " + $pFilter.processEntities($key,$filter) + " AND " + $pFilter.processNullValues($robject));
 end
 
 rule "When Time, Entity & Session Filters are present"
@@ -318,5 +318,5 @@ then
 							+ " " + $pFilter.processSessions($session,$filter)
 							+ " ) ) d pivot ( max(value) "
 							+ "for EntityKey in (" + $robject + ") ) piv "
-							+ " Where " + $pFilter.processEntities($key,$filter));
+							+ " Where " + $pFilter.processEntities($key,$filter) + " AND " + $pFilter.processNullValues($robject));
 end

@@ -44,17 +44,17 @@ import java.util.TimeZone;
 public class ProcessUserFilters implements ProcessUserFiltersDao {
 
     @Override
-    public String processSource( List<String> sources , String filter){
-        String hibenateQuery ="(";
+    public String processSource(List<String> sources, String filter) {
+        String hibenateQuery = "(";
         int counter = 0;
-        for(String source : sources){
-            if(counter == 0) {
-                hibenateQuery += "'"+ source + "' ";
+        for (String source : sources) {
+            if (counter == 0) {
+                hibenateQuery += "'" + source + "' ";
                 counter++;
                 continue;
             }
-            if(counter >= 1 ) {
-                hibenateQuery += ", '"+ source + "' ";
+            if (counter >= 1) {
+                hibenateQuery += ", '" + source + "' ";
                 counter++;
                 continue;
             }
@@ -159,7 +159,7 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
     }*/
 
     @Override
-    public String processEntities( List<EntityValues> entityValues , String filter){
+    public String processEntities(List<EntityValues> entityValues, String filter) {
         String hibernateQuery = "";
 
         int entityValueCounter = 0;
@@ -169,26 +169,21 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
 
         //int totalLength = entityValues.size();
 
-        for (EntityValues eV : entityValues)
-        {
+        for (EntityValues eV : entityValues) {
             key = eV.getKey();
             //type = eV.getType();
             eValue = eV.geteValues();
             //if(type.equals("Text"))
             //{
-                if(!eValue.equals("ALL"))
-                {
-                    if(entityValueCounter == 0)
-                    {
-                        hibernateQuery += " " + key + " = '" + eValue + "' ";
-                        entityValueCounter++;
-                    }
-                    else
-                    {
-                        hibernateQuery += filter + " " + key + " = '" + eValue + "' ";
-                        entityValueCounter++;
-                    }
+            if (!eValue.equals("ALL")) {
+                if (entityValueCounter == 0) {
+                    hibernateQuery += " " + key + " = '" + eValue + "' ";
+                    entityValueCounter++;
+                } else {
+                    hibernateQuery += filter + " " + key + " = '" + eValue + "' ";
+                    entityValueCounter++;
                 }
+            }
             /*}
             else if(type.equals("REGEX"))
             {
@@ -305,8 +300,8 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
     }*/
 
     @Override
-    public String processUsers( List<UserSearchSpecifications>  userSpecifications, String filter){
-        String hibernateQuery="";
+    public String processUsers(List<UserSearchSpecifications> userSpecifications, String filter) {
+        String hibernateQuery = "";
 
         // Need to implement to get the Name of the current user and return that.
 
@@ -361,47 +356,47 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
         return hibernateQuery;
     }*/
 
-    public String processSessions( List<SessionSpecifications>  sessionSpecifications, String filter){
-        String hibernateQuery="AND (";
-        String hibernateExactSession =" E.Session IN (";
-        String hibernateLikeSession ="";
-        String session , type;
+    public String processSessions(List<SessionSpecifications> sessionSpecifications, String filter) {
+        String hibernateQuery = "AND (";
+        String hibernateExactSession = " E.Session IN (";
+        String hibernateLikeSession = "";
+        String session, type;
         session = type = null;
         int counterSession = 0;
         int counterLikeSesion = 0;
-        for(SessionSpecifications sessionSpec : sessionSpecifications){
+        for (SessionSpecifications sessionSpec : sessionSpecifications) {
             session = sessionSpec.getSession();
             type = sessionSpec.getType();
-            if(type.equals("EXACT")) {
-                if(counterSession <= 0)
-                    hibernateExactSession += "'"+ session + "'";
+            if (type.equals("EXACT")) {
+                if (counterSession <= 0)
+                    hibernateExactSession += "'" + session + "'";
                 else
-                    hibernateExactSession += ", '"+ session + "'";
+                    hibernateExactSession += ", '" + session + "'";
                 counterSession++;
             }
-            if(type.equals("REGEX")) {
-                if(counterLikeSesion == 0)
-                    hibernateLikeSession += " E.Session LIKE '%"+ session + "%'";
+            if (type.equals("REGEX")) {
+                if (counterLikeSesion == 0)
+                    hibernateLikeSession += " E.Session LIKE '%" + session + "%'";
                 else
-                    hibernateLikeSession += filter + " E.Session LIKE '%"+ session + "%'";
+                    hibernateLikeSession += filter + " E.Session LIKE '%" + session + "%'";
                 counterLikeSesion++;
             }
         }
 
         hibernateExactSession += ")";
 
-        if(counterSession > 0)
+        if (counterSession > 0)
             hibernateQuery += hibernateExactSession;
 
-        if(counterSession > 0 && counterLikeSesion > 0)
+        if (counterSession > 0 && counterLikeSesion > 0)
             hibernateQuery += filter + hibernateLikeSession;
-        else if(counterSession <= 0 && counterLikeSesion > 0)
+        else if (counterSession <= 0 && counterLikeSesion > 0)
             hibernateQuery += hibernateLikeSession;
 
         hibernateQuery += ")";
 
         //When there are not filters than clearing the hibernate query
-        if(counterSession <= 0 && counterLikeSesion <= 0)
+        if (counterSession <= 0 && counterLikeSesion <= 0)
             hibernateQuery = "";
 
         return hibernateQuery;
@@ -472,7 +467,7 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
         return hibernateQuery;
     }*/
 
-    public String processTime( List<TimeSearchSpecifications>  timeSearchSpecifications, String filter){
+    public String processTime(List<TimeSearchSpecifications> timeSearchSpecifications, String filter) {
         String hibernateStartTime = "";
         String hibernateEndTime = "";
         String type = null;
@@ -480,20 +475,38 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
         int counterTime = 0;
         int counterRangeTime = 0;
 
-        for(TimeSearchSpecifications timeSpec : timeSearchSpecifications){
+        for (TimeSearchSpecifications timeSpec : timeSearchSpecifications) {
             time = timeSpec.getTimestamp();
             type = timeSpec.getType();
 
             Date date = new Date(Long.parseLong(time.get(0))); // *1000 is to convert seconds to milliseconds
             long uDate = date.getTime() / 1000L;
 
-            if(type.equals("startdate") && uDate > 0)
+            if (type.equals("startdate") && uDate > 0)
                 hibernateStartTime = " AND E.Timestamp >= " + uDate;
-            else if(type.equals("enddate") && uDate > 0)
+            else if (type.equals("enddate") && uDate > 0)
                 hibernateEndTime = " AND E.Timestamp <= " + uDate;
 
         }
         return hibernateStartTime + hibernateEndTime;
+    }
+
+    public String processNullValues(String columnNames){
+
+        StringBuilder updatedColStringBuilder = new StringBuilder();
+
+        String emptyQueryCheck = " IS NOT NULL";
+        String[] explodedColumns = columnNames.split(",");
+
+        String appendedCol;
+        for (String column : explodedColumns) {
+            if (updatedColStringBuilder.length() > 0) {
+                updatedColStringBuilder.append(" AND ");
+            }
+            appendedCol = column + emptyQueryCheck;
+            updatedColStringBuilder.append(appendedCol);
+        }
+        return updatedColStringBuilder.toString();
     }
 
 }
