@@ -31,12 +31,18 @@ function saveAnalyticsMethodJar() {
                 processData: false,
                 contentType: false,
                 success: function (response) {
-                    $('#analyticsMethodForm').reset();
-                    $('#analytics-method-alert').append('<div class="alert alert-success"> Analytics Method Uploaded Successfully. </div>');
+                    $('#analyticsMethodForm')[0].reset();
+
+                    var alertDiv = $('#analytics-method-alert');
+                    alertDiv.empty();
+                    alertDiv.append('<div class="alert alert-success"> Analytics Method Uploaded Successfully. </div>');
                 }
             }).error(function (xhr, status, error) {
                 var errorObject = JSON.parse(xhr.responseText);
-                $('#analytics-method-alert').append('<div class="alert alert-danger"> Error: ' + errorObject.content.errorMessage + ' </div>');
+
+                var alertDiv = $('#analytics-method-alert');
+                alertDiv.empty();
+                alertDiv.append('<div class="alert alert-danger"> Error: ' + errorObject.content.errorMessage + ' </div>');
             });
 
         }
@@ -98,12 +104,18 @@ function saveVisualizationJar() {
                 processData: false,
                 contentType: false,
                 success: function (response) {
-                    $('#visualizationForm').reset();
-                    $('#visualization-alert').append('<div class="alert alert-success"> Visualization Uploaded Successfully. </div>');
+                    $('#visualizationForm')[0].reset();
+
+                    var alertDiv = $('#visualization-alert');
+                    alertDiv.empty();
+                    alertDiv.append('<div class="alert alert-success"> Visualization Uploaded Successfully. </div>');
                 }
             }).error(function (xhr, status, error) {
                 var errorObject = JSON.parse(xhr.responseText);
-                $('#visualization-alert').append('<div class="alert alert-danger"> Error: ' + errorObject.errorMessage + ' </div>');
+
+                var alertDiv = $('#visualization-alert');
+                alertDiv.empty();
+                alertDiv.append('<div class="alert alert-danger"> Error: ' + errorObject.errorMessage + ' </div>');
             });
 
         }
