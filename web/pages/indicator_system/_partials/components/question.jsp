@@ -4,18 +4,18 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col m6 input-field">
-                    <div class="col m10">
+                    <%--<div class="col m10">--%>
                         <form:input path="questionsContainer.questionName" type="text" class="form-control" name ="questionNaming"
                                     id="questionNaming" required="required" placeholder="Type your Question Name" title="Type your Question Name"/>
-                        <label for="questionNaming">Question Name </label>
-                    </div>
-                    <div class="col m2">
-                        <div class="valign-wrapper">
-                            <a class="valign modal-trigger" id="searchQuestions" href="#loadQuestionTemplateModel" title="Search Existing Questions">
-                                <i class="material-icons">search</i>
-                            </a>
-                        </div>
-                    </div>
+                        <label for="questionNaming" title="Question name">Question Name </label>
+                    <%--</div>--%>
+                    <%--<div class="col m2 searchIcon">--%>
+                        <%--<div class="valign-wrapper">--%>
+                            <%--<a class="valign modal-trigger" id="searchQuestions" href="#loadQuestionTemplateModel" title="Search Existing Questions">--%>
+                                <%--<i class="material-icons">search</i>--%>
+                            <%--</a>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                 </div>
             </div>
             <div class="row">
@@ -52,7 +52,7 @@
                 <button class="waves-effect waves-light btn modal-trigger light-blue" type="button" href="#visualizeQuestionModel" title="Click to visualize Question."
                         name="visualizeQuestion" id="visualizeQuestion" onclick="QuestionVisualize()">Visualize
                 </button>
-                <button class="waves-effect waves-light btn modal-trigger light-blue" type="button" name="QuestionSave" id="saveQuestion" href="#visualizeQuestionModel" title="Click to save Question & all its indicators."
+                <button class="waves-effect waves-light btn modal-trigger light-blue" type="button" name="QuestionSave" id="saveQuestion" href="#saveQuestionModel" title="Click to save Question & all its indicators."
                         value="Save Question" onclick="SaveQuestionDB()">Save
                 </button>
             </div>
