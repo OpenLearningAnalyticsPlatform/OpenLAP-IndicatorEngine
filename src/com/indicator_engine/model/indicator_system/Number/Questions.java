@@ -17,6 +17,7 @@ import java.util.List;
 public class Questions implements Serializable{
 
 
+    private long goalId;
     private String questionName;
     private long questionId ;
     private Timestamp last_executionTime;
@@ -47,6 +48,7 @@ public class Questions implements Serializable{
 
     public void reset(){
         // Reset everything to your default values
+        this.goalId = 0;
         this.questionName = null;
         this.genQueries.clear();
         this.userName = null;
@@ -70,6 +72,14 @@ public class Questions implements Serializable{
 
     public List<GenQuery> getGenQueries() {
         return genQueries;
+    }
+
+    public long getGoalId() {
+        return goalId;
+    }
+
+    public void setGoalId(long goalId) {
+        this.goalId = goalId;
     }
 
     public String getQuestionName() {
