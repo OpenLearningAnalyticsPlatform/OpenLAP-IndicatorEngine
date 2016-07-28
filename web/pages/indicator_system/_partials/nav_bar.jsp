@@ -23,10 +23,14 @@
             <hr>
         </li>
         <li class="bold">
-            <a href="/admin/analytics_method/new" class="waves-effect grey-text text-lighten-2"><i class="fa fa-file"></i>&nbsp;Analytics Method</a>
+            <a id="leftMenuAdmin" href="#" class="waves-effect grey-text text-lighten-2"><i class="fa fa-user"></i>&nbsp;Admin&nbsp;&nbsp;<i class="fa fa-caret-down"></i></a>
             <hr>
         </li>
-        <li class="bold">
+        <li class="bold left-menu-admin hide">
+            <a href="/admin/analytics_method/new" class="waves-effect grey-text text-lighten-2"><i class="fa fa-file"></i>&nbsp;Analytics Method</a>
+            <%--<hr>--%>
+        </li>
+        <li class="bold left-menu-admin hide">
             <a href="/admin/visualization/new" class="waves-effect grey-text text-lighten-2"><i class="fa fa-file"></i>&nbsp;Visualization</a>
             <hr>
         </li>

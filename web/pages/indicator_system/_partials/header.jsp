@@ -70,6 +70,8 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/filters.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/admin.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3.chart/0.2.1/d3.chart.js"></script>
     <script>
         google.charts.load("current", {packages:["corechart"]});
     </script>
