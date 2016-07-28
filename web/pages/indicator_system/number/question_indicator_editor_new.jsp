@@ -36,6 +36,8 @@
 
 <%@ include file="../_partials/modals/visualize_question.jsp" %>
 
+<%@ include file="../_partials/modals/save_question.jsp" %>
+
 <%@ include file="../_partials/modals/confirm_entity_delete.jsp" %>
 
 <%@ include file="../_partials/modals/confirm_user_delete.jsp" %>
