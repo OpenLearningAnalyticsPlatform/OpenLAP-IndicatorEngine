@@ -118,7 +118,8 @@ public class LoginController {
         log.info("Debug Login : Role : \t" + user_role);
         if (authid && activation_status) {
             String sid = session.getId();
-            model = new ModelAndView("app/home");
+//            model = new ModelAndView("app/home");
+            model = new ModelAndView("redirect:/indicators/indicators_definition");
             model.addObject("sid", sid);
             model.addObject("loggedIn", "true");
             model.addObject("userName", sessionUserName);
