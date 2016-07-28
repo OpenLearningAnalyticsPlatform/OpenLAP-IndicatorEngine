@@ -34,6 +34,7 @@ import java.util.List;
 
 public class EntitySpecification implements Serializable {
 
+    private long goalId;
     private String questionName;
     private String indicatorName;
     private String hql;
@@ -76,6 +77,9 @@ public class EntitySpecification implements Serializable {
 
     public void reset() {
 
+        this.questionName = null;
+        this.goalId = 0L;
+
         this.indicatorName = null;
         this.hql = null;
 
@@ -103,7 +107,6 @@ public class EntitySpecification implements Serializable {
 
     public void completeReset() {
 
-        this.questionName = null;
         reset();
         this.questionsContainer = null;
     }
@@ -204,6 +207,16 @@ public class EntitySpecification implements Serializable {
     public void setSelectedChartEngine(String selectedChartEngine) {
         this.selectedChartEngine = selectedChartEngine;
     }
+
+
+    public long getGoalId() {
+        return goalId;
+    }
+
+    public void setGoalId(long goalId) {
+        this.goalId = goalId;
+    }
+
 
     public String getQuestionName() {
         return questionName;
