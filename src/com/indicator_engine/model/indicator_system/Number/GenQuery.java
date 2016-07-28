@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class GenQuery implements Serializable {
     private static final AtomicInteger count = new AtomicInteger(0);
+    private final int identifier;
     private final long queryID;
     private final String query;
     private final String indicatorName;
@@ -20,11 +21,13 @@ public class GenQuery implements Serializable {
     private IndicatorXMLData indicatorXMLData = new IndicatorXMLData() ;
 
     public GenQuery(String query, String indicatorName,long qid ) {
+        this.identifier = count.getAndIncrement();
         this.query = query;
         this.indicatorName = indicatorName;
         queryID = qid;
     }
     public GenQuery(String query, String indicatorName,long qid, IndicatorXMLData indicatorXMLData, GenIndicatorProps genIndicatorProps) {
+        this.identifier = count.getAndIncrement();
         this.query = query;
         this.indicatorName = indicatorName;
         queryID = qid;
@@ -33,6 +36,7 @@ public class GenQuery implements Serializable {
     }
     public GenQuery(String query, String indicatorName,long qid,
                     long props_id, Timestamp last_executionTime, int totalExecutions) {
+        this.identifier = count.getAndIncrement();
         this.query = query;
         this.indicatorName = indicatorName;
         queryID = qid;
@@ -40,6 +44,10 @@ public class GenQuery implements Serializable {
         this.genIndicatorProps.setTotalExecutions(totalExecutions);
         this.genIndicatorProps.setLast_executionTime(last_executionTime);
     }
+    public int getIdentifier() {
+        return identifier;
+    }
+
     public static AtomicInteger getCount() {
         return count;
     }
