@@ -13,34 +13,34 @@
                                     <div class="col-md-6 input-field">
                                         <form:input path="indicatorName" type="text" class="form-control" name ="indicatorNaming"
                                                     id="indicatorNaming"  required="required" placeholder="Type your Indicator Name"/>
-                                        <label for="indicatorNaming">Indicator Name </label>
+                                        <label for="indicatorNaming"title="Indicator Name">Indicator Name </label>
                                     </div>
                                 </div>
                             </tr>
                             <tr>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label for="sourceSelection">Source</label>
+                                        <label for="sourceSelection" title="Data Source for Indicator Definition">Source</label>
                                         <form:select multiple="true" class="form-control browser-default" title="Multiple sources can be selected i.e from where the data comes."
-                                                     path="selectedSource" items="${selectNumberParameters.source}" name ="sourceSelection" id="sourceSelection" onchange="sourceChanged();" />
+                                                     path="selectedSource" items="${selectNumberParameters.source}" name ="sourceSelection" id="sourceSelection" />
                                     </div>
                                 </div>
                             </tr>
                             <tr>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label for="PlatformSelection">Platform</label>
+                                        <label for="PlatformSelection" title="Platform (web, mobile, etc) for the data">Platform</label>
                                         <form:select class="browser-default" title="Select a platform."
-                                                     path="selectedPlatform" items="${selectNumberParameters.platform}" name ="PlatformSelection" id="PlatformSelection" onchange="platformChanged();"/>
+                                                     path="selectedPlatform" items="${selectNumberParameters.platform}" name ="PlatformSelection" id="PlatformSelection"/>
                                     </div>
                                 </div>
                             </tr>
                             <tr>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label for="actionSelection">Action </label>
+                                        <label for="actionSelection" title="Action related data to be populated">Action </label>
                                         <form:select class="browser-default" title="Please select an action to populate related Category/Minors."
-                                                     path="selectedAction" items="${selectNumberParameters.action}" name ="actionSelection" id="actionSelection"  onchange="populateCategories();"/>
+                                                     path="selectedAction" items="${selectNumberParameters.action}" name ="actionSelection" id="actionSelection" onchange="populateCategories();"/>
                                     </div>
                                 </div>
                             </tr>
@@ -48,7 +48,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="pull-left">
-                                            <label for="selectedMinor">Category &nbsp;</label>
+                                            <label for="selectedMinor" title="Minor of the selected action">Category &nbsp;</label>
                                         </div>
                                         <div style="padding-top: 10px">
                                             <div id="selectedMinorSpinner" class="preloader-wrapper small active">
@@ -100,14 +100,14 @@
                                 <div class="row">
                                     <div class="col s12 m6 l6">
                                         <br/>
-                                        <label for="entityKeySelection">Attribute </label>
+                                        <label for="entityKeySelection" title="Attribute (Entity)">Attribute </label>
                                         <form:select class="browser-default" path="selectedKeys" items="${selectNumberParameters.keys}" name ="entityKeySelection" id="entityKeySelection" title="Select Attribute"/>
                                         <br/>
                                         <div class="right-align">
                                             <button class="waves-effect waves-light btn light-blue" type="button" name="_eventId_searchAttributes" value="Search" onfocus="searchAttributes()" title="Search for Attribute" >Search</button>
                                         </div>
                                         <br/>
-                                        <label for="multipleSelect">Attribute Values </label>
+                                        <label for="multipleSelect" title="Attribute Values">Attribute Values </label>
                                         <form:select class="browser-default" path="evalue"  name="entityValue" id ="entityValue" title="Select from Attribute values">
                                             <form:options items="${selectNumberParameters.searchResults}" />
                                         </form:select>
@@ -139,16 +139,16 @@
                                 <div class="row">
                                     <div class="col s12 m6 l6">
                                         <br/>
-                                        <label for="sessionSearchType">Session Search Type </label>
+                                        <label for="sessionSearchType" title="Session search type">Session Search Type </label>
                                         <form:select class="browser-default" path="selectedsessionSearchType" items="${selectNumberParameters.sessionSearchType}" name ="sessionSearchType" id="sessionSearchType" title="Select Session Type" />
-                                        <label for="sessionSearchString" class="control-label">Search Keyword</label>
-                                        <input class="form-control" path="sessionSearch"  name="sessionSearchString" id ="sessionSearchString"/>
+                                        <label for="sessionSearchString" class="control-label" title="Search Keyword">Search Keyword</label>
+                                        <input class="form-control" path="sessionSearch"  name="sessionSearchString" id ="sessionSearchString" placeholder="Keywords"/>
                                         <br/>
                                         <div class="right-align">
                                             <button class="waves-effect waves-light btn light-blue" type="button" name="_eventId_searchSession" value="Search" onclick="searchSession()" title="Search for Session" >Search</button>
                                         </div>
                                         <br/>
-                                        <label for="multipleSelect">Session Values </label>
+                                        <label for="multipleSelect" title="Session Attribute Values">Session Values </label>
                                         <form:select class="browser-default"  path="selectedUserString" name="multipleSelect" id="SessionsearchResults" title="Select from Search Results">
                                             <form:options items="${selectNumberParameters.searchResults}" />
                                         </form:select>
@@ -210,7 +210,7 @@
                     <div class="collapsible-body panel-body">
                         <div class="row">
                             <div class="col s12 m6 l6">
-                                <label for="analyticsMethod">Method</label>
+                                <label for="analyticsMethod" title="Analytics Method">Method</label>
                                 <select class="browser-default" title="Please select a method." name ="analyticsMethod" id="analyticsMethod"
                                         onchange="getAnalyticsMethodInputs();"></select>
                             </div>
@@ -231,13 +231,13 @@
                         <div class="row">
                             <div class="col s12 m6 l6">
                                 <div class="col s6 m6 l6">
-                                    <label for="methodDataColumns">Data Columns</label>
+                                    <label for="methodDataColumns" title="Data Column Values">Data Columns</label>
                                     <select class="form-control browser-default" title="Select method data columns in here"
                                             name ="methodDataColumns" id="methodDataColumns" size="4">
                                     </select>
                                 </div>
                                 <div class="col s6 m6 l6">
-                                    <label for="inputForMethods">Input for Methods</label>
+                                    <label for="inputForMethods" title="Input values fro Methods">Input for Methods</label>
                                     <select class="form-control browser-default" title="Select method inputs in here"
                                             name ="inputForMethods" id="inputForMethods" size="4"></select>
                                 </div>
@@ -272,12 +272,12 @@
                         <div class="row">
                             <div class="col s6 m6 l6">
                                 <div class="row">
-                                    <label for="EngineSelect">Select Graph Library </label>
+                                    <label for="EngineSelect" title="Graph library">Graph Library </label>
                                     <select class="browser-default" name ="EngineSelect" id="EngineSelect" title="Select Graph Library for Visualization">
                                     </select>
                                 </div>
                                 <div class="row">
-                                    <label for="selectedChartType">Select Graph Type </label>
+                                    <label for="selectedChartType" title="Graph Type">Graph Type </label>
                                     <select class="browser-default" name ="selectedChartType" id="selectedChartType" title="Select Graph type for Visualization" onchange="getVisualizationMethodInputs();"></select>
                                 </div>
                                 <div class="row">
@@ -290,13 +290,13 @@
                                 </div>
                                 <div class="row">
                                     <div class="col s6 m6 l6">
-                                        <label for="outputForMethods">Output for Methods</label>
+                                        <label for="outputForMethods" title="Output for Method columns">Output for Methods</label>
                                         <select class="form-control browser-default" title="You can select Method Outputs in here"
                                                 name ="outputForMethods" id="outputForMethods" size="4">
                                         </select>
                                     </div>
                                     <div class="col s6 m6 l6">
-                                        <label for="inputForVisualizer">Input for Visualizer</label>
+                                        <label for="inputForVisualizer" title="Input for Visualizer">Input for Visualizer</label>
                                         <select class="form-control browser-default" title="You can select Visualizer Inputs in here"
                                                 name ="inputForVisualizer" id="inputForVisualizer" size="4"></select>
                                         <br/>
@@ -328,8 +328,8 @@
                                 </div>
                                 <div class="row">
                                     <div class="right-align">
-                                            <button class="btn waves-effect waves-light light-blue" type="button" title="Apply to generate Graph."
-                                                    name="generateGraph" id="generateGraph" value="Generate Graph" onclick="getIndicatorPreviewVisualizationCode()">Apply
+                                            <button class="btn waves-effect waves-light light-blue" type="button" title="Click to generate Graph."
+                                                    name="generateGraph" id="generateGraph" value="Generate Graph" onclick="getIndicatorPreviewVisualizationCode()">Preview
                                             </button>
                                     </div>
                                 </div>
@@ -346,7 +346,7 @@
                                     </div>
                                     </div>
                                 </div>
-                                <div id="chart_wrap">
+                                <div id="chart_wrap" title="Graph Preview">
                                     <div id="preview_chart"></div>
                                 </div>
                             </div>
@@ -356,7 +356,7 @@
             </ul>
             <div class="col s12 m6 l10 right-align">
                 <button class="btn waves-effect waves-light light-blue" type="button" title="Save the Indicator."
-                        id="saveIndicator" name="savelIndicator" value="Finalize Settings">Save
+                        id="saveIndicator" name="saveIndicator" value="Finalize Settings">Save
                 </button>
                 <button class="btn waves-effect waves-light light-blue" type="button" title="Cancel the Indicator."
                         name="cancelIndicator" id="cancelIndicator" value="Cancel Indicator">Cancel
