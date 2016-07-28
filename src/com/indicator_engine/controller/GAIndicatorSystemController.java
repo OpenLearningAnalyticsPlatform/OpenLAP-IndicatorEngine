@@ -485,13 +485,55 @@ public class GAIndicatorSystemController {
         log.info("Dumping Result \n" + result);
         return gson.toJson("true");
     }
+
+    @RequestMapping(value = "/loadQuestion", method = RequestMethod.GET)
+    public @ResponseBody
+    String loadQuestion(@RequestParam(value="name", required = true) String name) {
+        Questions question = retrieveQuestion(name);
+//        String questionName = question.getQuestionName();
+//        Gson gson = new Gson();
+
+//        for( GenQuery query : question.getGenQueries()){
+//            IndicatorXMLData data = query.getIndicatorXMLData();
+//            finalizeIndicator(questionName, query.getIndicatorName(), query.getGenIndicatorProps().getChartType(), query.getGenIndicatorProps().getChartEngine(),
+//                    null, data.getAnalyticsMethodId(), data.getQueryToMethodConfig(), data.getMethodToVisualizationConfig(), data.getRetrievableObjects());
+//        }
+
+//        GLAQuestionDao glaQuestionsBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
+//        long question_id = glaQuestionsBean.findQuestionID(name);
+//        GLAQuestion glaQuestion = glaQuestionsBean.loadByQuestionID(question_id);
+//        Questions questions = new Questions();
+//        questions.setQuestionId(glaQuestion.getId());
+//        questions.setQuestionName(glaQuestion.getQuestion_name());
+//        questions.setTotalExecutions(glaQuestion.getGlaQuestionProps().getTotalExecutions());
+//        questions.setLast_executionTime(glaQuestion.getGlaQuestionProps().getLast_executionTime());
+//        questions.setLast_executionTime(glaQuestion.getGlaQuestionProps().getLast_executionTime());
+//        questions.setUserName(glaQuestion.getGlaQuestionProps().getUserName());
+//        questions.setNumIndicators(glaQuestion.getIndicators_num());
+//        for( GLAIndicator glaIndicators : glaQuestion.getGlaIndicators()){
+//            GenQuery genQuery = new GenQuery(glaIndicators.getHql(),glaIndicators.getIndicator_name(),
+//                    glaIndicators.getId());
+//            genQuery.setGenIndicatorProps(glaIndicators.getGlaIndicatorProps().getId(),glaIndicators.getGlaIndicatorProps().getLast_executionTime(),
+//                    glaIndicators.getGlaIndicatorProps().getTotalExecutions(),glaIndicators.getGlaIndicatorProps().getChartType(),
+//                    glaIndicators.getGlaIndicatorProps().getChartEngine(), glaIndicators.getGlaIndicatorProps().getUserName(), glaIndicators.getGlaIndicatorProps().getJson_data());
+//            questions.getGenQueries().add(genQuery);
+//        }
+//        return questions;
+
+
+
+        Gson gson = new Gson();
+        return gson.toJson(question);
+    }
+
     @RequestMapping(value = "/finalize", method = RequestMethod.GET)
     public @ResponseBody
-    String  finalizeIndicator(@RequestParam(value="questionName", required = true) String questionName,
+    String  finalizeIndicator(@RequestParam(value="goalId", required = true) String goalId,
+                              @RequestParam(value="questionName", required = true) String questionName,
                               @RequestParam(value="indicatorName", required = true) String indicatorName,
                               @RequestParam(value="graphType", required = true) String graphType,
                               @RequestParam(value="graphEngine", required = true) String graphEngine,
-                              @RequestParam(value="indicatorIndex", required = true) String indicatorIndex,
+                              @RequestParam(value="indicatorIdentifier", required = true) String indicatorIdentifier,
                               @RequestParam(value="analyticsMethod", required = true) String analyticsMethod,
                               @RequestParam(value="methodMappings", required = true) String methodMappings,
                               @RequestParam(value="visualizationMappings", required = true) String visualizationMappings,
@@ -528,6 +570,7 @@ public class GAIndicatorSystemController {
 
         //If user Directly finalizes the Indicator, then we have to implicitly generate the HQL
         if(entitySpecificationBean.getHql() == null ) {
+            entitySpecificationBean.setGoalId(Long.parseLong(goalId));
             entitySpecificationBean.setQuestionName(questionName);
             GLACategory glaCategory = glaCategoryBean.loadCategoryByName(entitySpecificationBean.getSelectedMinor());
             entitySpecificationBean.setSelectedMajor(glaCategory.getMajor());
@@ -568,6 +611,7 @@ public class GAIndicatorSystemController {
                     entitySpecificationBean.getFilteringType(),xMLentityValues, xMlUserSpecifications, xMLSessionSpecifications, xMLTimeSpecifications, entitySpecificationBean.getSelectedChartType(),
                     entitySpecificationBean.getSelectedChartEngine(), entitySpecificationBean.getAnalyticsMethodId(), entitySpecificationBean.getRetrievableObjects(),
                     entitySpecificationBean.getQueryToMethodConfig(), entitySpecificationBean.getMethodToVisualizationConfig());
+            questions.setGoalId(Long.parseLong(goalId));
             questions.setQuestionName(entitySpecificationBean.getQuestionName());
             questions.getGenQueries().add(new GenQuery(entitySpecificationBean.getHql(),entitySpecificationBean.getIndicatorName(),1, indicatorXMLData, genIndicatorProps));
             entitySpecificationBean.setQuestionsContainer(questions);
@@ -584,10 +628,18 @@ public class GAIndicatorSystemController {
             genIndicatorProps.setComposite(entitySpecificationBean.isComposite());
 //            genIndicatorProps.setAnalyticsMethodId(entitySpecificationBean.getAnalyticsMethodId());
 
-            if(indicatorIndex.equals("null")) {
+            if(indicatorIdentifier.equals("null")) {
                 entitySpecificationBean.getQuestionsContainer().getGenQueries().add(new GenQuery(entitySpecificationBean.getHql(), entitySpecificationBean.getIndicatorName(), 1, indicatorXMLData, genIndicatorProps));
             } else {
-                entitySpecificationBean.getQuestionsContainer().getGenQueries().set(Integer.parseInt(indicatorIndex), new GenQuery(entitySpecificationBean.getHql(),entitySpecificationBean.getIndicatorName(),1, indicatorXMLData, genIndicatorProps));
+//                entitySpecificationBean.getQuestionsContainer().getGenQueries().set(Integer.parseInt(indicatorIndex), new GenQuery(entitySpecificationBean.getHql(),entitySpecificationBean.getIndicatorName(),1, indicatorXMLData, genIndicatorProps));
+
+                ListIterator<GenQuery> genQueryIterator = entitySpecificationBean.getQuestionsContainer().getGenQueries().listIterator();
+                while(genQueryIterator.hasNext()){
+                    GenQuery element = genQueryIterator.next();
+                    if(element.getIdentifier() == Integer.parseInt(indicatorIdentifier)) {
+                        genQueryIterator.set(new GenQuery(entitySpecificationBean.getHql(),entitySpecificationBean.getIndicatorName(),1, indicatorXMLData, genIndicatorProps));
+                    }
+                }
             }
         }
         return gson.toJson(entitySpecificationBean.getQuestionsContainer());
@@ -663,16 +715,18 @@ public class GAIndicatorSystemController {
 
     @RequestMapping(value = "/deleteIndFromQn", method = RequestMethod.GET)
     public @ResponseBody
-    String  deleteIndicatorFromQn(@RequestParam(value="indName" ,required = false)String indicatorName, Model model) {
+//    String  deleteIndicatorFromQn(@RequestParam(value="indName" ,required = false)String indicatorName, Model model) {
+    String  deleteIndicatorFromQn(@RequestParam(value="indIdentifier" ,required = false)String indicatorIdentifier, Model model) {
         Gson gson = new Gson();
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         String msg = null;
-        if (indicatorName == null) {
+        if (indicatorIdentifier == null) {
            msg = "Error Deletion Indicator. No Indicator Specified";
         } else {
             for (Iterator<GenQuery> genQuery = entitySpecificationBean.getQuestionsContainer().getGenQueries().iterator(); genQuery.hasNext(); ) {
                 GenQuery agenQuery = genQuery.next();
-                if (agenQuery.getIndicatorName().equals(indicatorName)) {
+//                if (agenQuery.getIndicatorName().equals(indicatorName)) {
+                if (agenQuery.getIdentifier() == Integer.parseInt(indicatorIdentifier)) {
                     msg=agenQuery.getIndicatorName()+" Successfully Deleted from Current Question Set. Please press the Refesh Button";
                     genQuery.remove();
                 }
@@ -683,15 +737,17 @@ public class GAIndicatorSystemController {
 
     @RequestMapping(value = "/loadIndFromQnSetToEditor", method = RequestMethod.GET)
     public @ResponseBody
-    String  loadIndicatorFromQn(@RequestParam(value="indName" ,required = false)String indicatorName, Model model) {
+//    String  loadIndicatorFromQn(@RequestParam(value="indName" ,required = false)String indicatorName, Model model) {
+    String loadIndicatorFromQn(@RequestParam(value="indIdentifier" ,required = false)String indicatorIdentifier, Model model) {
         Gson gson = new Gson();
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         String msg = null;
-        if (indicatorName != null) {
+        if (indicatorIdentifier != null) {
             Questions temp = entitySpecificationBean.getQuestionsContainer();
             for (Iterator<GenQuery> genQuery = entitySpecificationBean.getQuestionsContainer().getGenQueries().iterator(); genQuery.hasNext(); ) {
                 GenQuery agenQuery = genQuery.next();
-                if (agenQuery.getIndicatorName().equals(indicatorName) && !agenQuery.getGenIndicatorProps().isComposite()) {
+//                if (agenQuery.getIndicatorName().equals(indicatorName) && !agenQuery.getGenIndicatorProps().isComposite()) {
+                if (agenQuery.getIdentifier() == Integer.parseInt(indicatorIdentifier) && !agenQuery.getGenIndicatorProps().isComposite()) {
                     entitySpecificationBean.setEntityValues(new ArrayList<EntityValues>(agenQuery.getIndicatorXMLData().getEntityValues().size()));
                     Iterator<EntityValues> entityIterator = agenQuery.getIndicatorXMLData().getEntityValues().iterator();
                     while(entityIterator.hasNext()) {
@@ -766,14 +822,15 @@ public class GAIndicatorSystemController {
         }
 
         long qid = glaQuestionBean.add(glaQuestion, glaIndicatorHashSet);
-        entitySpecificationBean.completeReset();
-
+//        entitySpecificationBean.completeReset();
+//        entitySpecificationBean.setQuestionsContainer(new Questions());
 
 
         // new Question saving via API
         QuestionSaveRequest questionSaveRequest = new QuestionSaveRequest();
-//        questionSaveRequest.setGoalID();
+        questionSaveRequest.setGoalID(entitySpecificationBean.getQuestionsContainer().getGoalId());
         questionSaveRequest.setQuestion(entitySpecificationBean.getQuestionsContainer().getQuestionName());
+        questionSaveRequest.setGoalID(entitySpecificationBean.getQuestionsContainer().getGoalId());
 
         List<IndicatorSaveRequest> indicatorSaveRequestList = new ArrayList<>();
         IndicatorSaveRequest indicatorSaveRequest;
@@ -783,19 +840,20 @@ public class GAIndicatorSystemController {
             indicatorSaveRequest.setCreatedBy(userName);
             indicatorSaveRequest.setQuery(genQuery.getQuery());
             indicatorSaveRequest.setComposite(genQuery.getGenIndicatorProps().isComposite());
-//            indicatorSaveRequest.setMethodToVisualizationConfig(genQuery.isComposite());
-//            indicatorSaveRequest.setQueryToMethodConfig(genQuery.isComposite());
-//            indicatorSaveRequest.setIndicatorClientID(genQuery.isComposite());
+            indicatorSaveRequest.setQueryToMethodConfig(genQuery.getIndicatorXMLData().getQueryToMethodConfig());
+            indicatorSaveRequest.setMethodToVisualizationConfig(genQuery.getIndicatorXMLData().getMethodToVisualizationConfig());
+            indicatorSaveRequest.setIndicatorClientID(genQuery.getIdentifier());
 //            indicatorSaveRequest.setServerID(genQuery.isComposite());
             indicatorSaveRequest.setAnalyticsMethodId(entitySpecificationBean.getAnalyticsMethodId());
-//            indicatorSaveRequest.setVisualizationFrameworkId();
-//            indicatorSaveRequest.setParameters();
+            indicatorSaveRequest.setVisualizationFrameworkId(Long.parseLong(genQuery.getIndicatorXMLData().getSelectedChartEngine()));
+            indicatorSaveRequest.setVisualizationMethodId(Long.parseLong(genQuery.getIndicatorXMLData().getSelectedChartType()));
+            indicatorSaveRequest.setParameters(gson.toJson(genQuery.getIndicatorXMLData()));
             indicatorSaveRequestList.add(indicatorSaveRequest);
         }
         questionSaveRequest.setIndicators(indicatorSaveRequestList);
 
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://137.226.117.226:8080/AnalyticsEngine/GetIndicatorPreview";
+        String url = "http://137.226.117.226:8080/AnalyticsEngine/SaveQuestionAndIndicators";
         String requestJson = gson.toJson(questionSaveRequest);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -805,7 +863,10 @@ public class GAIndicatorSystemController {
 //        return gson.toJson(result.getQuestionRequestCode());
 
 
-        return gson.toJson(qid);
+        entitySpecificationBean.setQuestionsContainer(new Questions());
+
+//        return gson.toJson(qid);
+        return gson.toJson(result);
 
     }
 
@@ -814,7 +875,8 @@ public class GAIndicatorSystemController {
     void deleteDataFromSession() {
 
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        entitySpecificationBean.completeReset();
+//        entitySpecificationBean.completeReset();
+        entitySpecificationBean.setQuestionsContainer(new Questions());
     }
 
     @RequestMapping(value = "/searchIndicator", method = RequestMethod.GET)
@@ -881,7 +943,6 @@ public class GAIndicatorSystemController {
             while(timeSpecIterator.hasNext()){
                 entitySpecificationBean.getTimeSpecifications().add(timeSpecIterator.next().clone());
             }
-
         }
         return gson.toJson(glaIndicator);
     }
@@ -1124,6 +1185,9 @@ public class GAIndicatorSystemController {
         for( GLAIndicator glaIndicators : glaQuestion.getGlaIndicators()){
             GenQuery genQuery = new GenQuery(glaIndicators.getHql(),glaIndicators.getIndicator_name(),
                     glaIndicators.getId());
+            System.out.println(glaIndicators.getGlaIndicatorProps().getJson_data());
+            System.out.println(genQuery.getIndicatorXMLData());
+            genQuery.setIndicatorXMLData(genQuery.getIndicatorXMLData());
             genQuery.setGenIndicatorProps(glaIndicators.getGlaIndicatorProps().getId(),glaIndicators.getGlaIndicatorProps().getLast_executionTime(),
                     glaIndicators.getGlaIndicatorProps().getTotalExecutions(),glaIndicators.getGlaIndicatorProps().getChartType(),
                     glaIndicators.getGlaIndicatorProps().getChartEngine(), glaIndicators.getGlaIndicatorProps().getUserName());
