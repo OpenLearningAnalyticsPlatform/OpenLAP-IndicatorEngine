@@ -264,52 +264,8 @@ $(function() {
             }
         });
     });
-
-    // $.noty.defaults = {
-    //     layout: 'bottomRight',
-    //     theme: 'relax', // or 'relax'
-    //     type: 'information',
-    //     text: '', // can be html or string
-    //     dismissQueue: true, // If you want to use queue feature set this true
-    //     template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
-    //     animation: {
-    //         open: 'animated bounceInLeft', // Animate.css class names
-    //         close: 'animated bounceOutLeft', // Animate.css class names
-    //         easing: 'swing', // unavailable - no need
-    //         speed: 500 // unavailable - no need
-    //     },
-    //     timeout: 30000, // delay for closing event. Set false for sticky notifications
-    //     force: false, // adds notification to the beginning of queue when set to true
-    //     modal: false,
-    //     maxVisible: 7, // you can set max visible notification for dismissQueue true option,
-    //     killer: false, // for close all notifications before show
-    //     closeWith: ['click'], // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
-    //     callback: {
-    //         onShow: function() {},
-    //         afterShow: function() {},
-    //         onClose: function() {},
-    //         afterClose: function() {},
-    //         onCloseClick: function() {}
-    //     },
-    //     buttons: false // an array of buttons
-    // };
-
-
 });
-// $(window).load(function(){
-//     $.noty.defaults.killer = true;
-//     noty({
-//         text: '<strong>Warning</strong> <br/> Please do not click any icons. <br/>' +
-//         'The <strong> Question : Indicator </strong> Definition process has started. Please follow the instructions in the Information Notification Area to continue.<br/>' +
-//         'You would receive further instructions as you proceed.',
-//         type: 'warning'
-//     });
-//     $.noty.defaults.killer = true;
-//     noty({
-//         text: '<strong>Information</strong> <br/>Please Type the Question Name to continue...',
-//         type: 'information'
-//     });
-// })
+
 function  GenerateTable(data) {
 
     var indicatorData = new Array();
@@ -359,53 +315,12 @@ function  GenerateTable(data) {
 }
 
 function updateScreenAfterLoadInd(data) {
+
     $('#indicatorNaming').val(data.indicatorName);
-    // document.getElementById('indicatorNaming').value = data.indicatorName;
     $('#PlatformSelection').val(data.indicatorXMLData.platform);
-    // var sel = document.getElementById('PlatformSelection');
-    // var opts = sel.options;
-    // for(var opt, j = 0; opt = opts[j]; j++) {
-    //     if(opt.value == data.indicatorXMLData.platform) {
-    //         sel.selectedIndex = j;
-    //         break;
-    //     }
-    // }
     $('#actionSelection').val(data.indicatorXMLData.action);
-    // sel = document.getElementById('actionSelection');
-    // var opts = sel.options;
-    // for(var opt, j = 0; opt = opts[j]; j++) {
-    //     if(opt.value == data.indicatorXMLData.action) {
-    //         sel.selectedIndex = j;
-    //         break;
-    //     }
-    // }
     $('#selectedChartType').val(data.genIndicatorProps.chartType);
-    // sel = document.getElementById('selectedChartType');
-    // var opts = sel.options;
-    // for(var opt, j = 0; opt = opts[j]; j++) {
-    //     if(opt.value == data.genIndicatorProps.chartType) {
-    //         sel.selectedIndex = j;
-    //         break;
-    //     }
-    // }
     $('#EngineSelect').val(data.genIndicatorProps.chartEngine);
-    // sel = document.getElementById('EngineSelect');
-    // var opts = sel.options;
-    // for(var opt, j = 0; opt = opts[j]; j++) {
-    //     if(opt.value == data.genIndicatorProps.chartEngine) {
-    //         sel.selectedIndex = j;
-    //         break;
-    //     }
-    // }
-    $('#analyticsMethod').val(data.genIndicatorProps.analyticsMethodId);
-    // sel = document.getElementById('analyticsMethod');
-    // var opts = sel.options;
-    // for(var opt, j = 0; opt = opts[j]; j++) {
-    //     if(opt.value == data.genIndicatorProps.analyticsMethodId) {
-    //         sel.selectedIndex = j;
-    //         break;
-    //     }
-    // }
 
     var optionsToSelect = data.indicatorXMLData.source;
     var select = document.getElementById( 'sourceSelection' );
@@ -426,6 +341,8 @@ function updateScreenAfterLoadInd(data) {
     loadAssociatedEntityFilters(entityValues);
     loadAssociatedSessionFilters(sessionSpecs);
     loadAssociatedUserTimeFilters(userSpecs, timeSpecs);
+
+    populateAnalyticsMethods(JSON.stringify(data.indicatorXMLData));
 
     populateCategories(data.indicatorXMLData.minor);
 }
@@ -530,46 +447,15 @@ function alert_questionName(request) {
         if (request.status == 200) {
 
             if (request.responseText == "exists") {
-
-                // noty({
-                //     text: '<strong>Error</strong> <br/> Question name already Existing. Duplicate names not allowed',
-                //     type: 'error'
-                // });
-                // document.getElementById("questionNaming").value=null;
                 return "Question name already Existing. Duplicate names not allowed";
             }
             else if (request.responseText == "short") {
-
-                // noty({
-                //     text: '<strong>Error</strong> <br/> Question Name is too Short!',
-                //     type: 'error'
-                // });
-                // noty({
-                //     text: '<strong>Information</strong> <br/> Question Name must have at least 6 characters',
-                //     type: 'information'
-                // });
-                // document.getElementById("questionNaming").value=null;
                 return "Question Name must have at least 6 characters";
             }
             else if (request.responseText == "null") {
-
-                // noty({
-                //     text: '<strong>Error</strong> <br/> Question Name cannot be Empty !',
-                //     type: 'error'
-                // });
-                // document.getElementById("questionNaming").value=null;
                 return "Question Name cannot be Empty";
             }
             else {
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/> Question Name satisfies all constraints',
-                //     type: 'success'
-                // });
-                // noty({
-                //     text: '<strong>Next Step</strong> <br/> Type the Indicator Name',
-                //     type: 'information'
-                // });
                 return true;
             }
         }
@@ -590,92 +476,24 @@ function alert_indicatorName(request) {
         if (request.status == 200) {
 
             if (request.responseText == "exists") {
-
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Error</strong> <br/> Indicator name already Existing. Duplicate names not allowed',
-                //     type: 'error'
-                // });
                 document.getElementById("indicatorNaming").value=null;
             }
             else if (request.responseText == "short") {
-
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Error</strong> <br/> Indicator Name is too Short',
-                //     type: 'error'
-                // });
-                // noty({
-                //     text: '<strong>Information</strong> <br/> Indicator Name must have at least 6 characters',
-                //     type: 'information'
-                // });
                 document.getElementById("indicatorNaming").value=null;
             }
             else if (request.responseText == "null") {
-
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Error</strong> <br/> Indicator Name cannot be Empty',
-                //     type: 'error'
-                // });
                 document.getElementById("indicatorNaming").value=null;
             }
             else {
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/> Indicator Name satisfies all constraints',
-                //     type: 'success'
-                // });
-                //
-                // noty({
-                //     text: '<strong>Next Step</strong> <br/> Select 1 or more sources in the <strong>Indicator Information</strong> window.',
-                //     type: 'information'
-                // });
             }
         }
     }
-}
-
-function sourceChanged() {
-    // $.noty.defaults.killer = true;
-    // noty({
-    //     text: '<strong>Success</strong> <br/>Source Selected',
-    //     type: 'success'
-    // });
-    //
-    // noty({
-    //     text: '<strong>Next Step</strong> <br/>Select a Platform !',
-    //     type: 'information'
-    // });
-}
-
-function platformChanged(){
-    // $.noty.defaults.killer = true;
-    // noty({
-    //     text: '<strong>Success</strong> <br/>Platform Selected',
-    //     type: 'success'
-    // });
-    //
-    // noty({
-    //     text: '<strong>Next Step</strong> <br/>Select an Action !',
-    //     type: 'information'
-    // });
 }
 
     function populateCategories(selectedValue){
     var selectedValue = selectedValue || null;
     var spinner = $('#selectedMinorSpinner');
     spinner.show();
-    // var request = createRequest();
-    // $.noty.defaults.killer = true;
-    // noty({
-    //     text: '<strong>Success</strong> <br/> Action Selected <br/> Retreiving Minors...',
-    //     type: 'success'
-    // });
-    // noty({
-    //     text: '<strong>Next Step</strong> <br/> Select a Category!',
-    //     type: 'information'
-    // });
 
     var selectedSources = "";
     var selectedArray = new Array();
@@ -690,14 +508,9 @@ function platformChanged(){
     }
 
     selectedSources = selectedArray;
-    // var selectedAction = document.getElementById('actionSelection').value;
-    // var selectedPlatform = document.getElementById('PlatformSelection').value;
     var selectedAction = $('#actionSelection').val();
     var selectedPlatform = $('#PlatformSelection').val();
-    // var url ="/indicators/populateCategories?action="+selectedAction+"&platform="+selectedPlatform+"&sources="+selectedSources;
-    // request.open("GET",url,true);
-    // request.onreadystatechange=function(){processReceivedCategories(request)};
-    // request.send(null);
+
     $.ajax({
         context: true,
         type: "GET",
@@ -736,29 +549,6 @@ function processReceivedCategories(request) {
 }
 
 function populateEntities(data) {
-    // var request = createRequest();
-    // $.noty.defaults.killer = true;
-    // noty({
-    //     text: '<strong>Success</strong> <br/> Category Selected <br/> Retreiving Entities...',
-    //     type: 'success'
-    // });
-    //
-    // noty({
-    //     text: '<strong>Next Step</strong> <br/> You may add <strong> Filters </strong> to your Indicator in the <strong> Indicator Properties & Summary </strong> window.<br/> ' +
-    //     'You can click on the Graph icon to generate a graph which can be viewed in <strong> Graph Preview </strong> Tab.',
-    //     type: 'information'
-    // });
-    // noty({
-    //     text: '<strong>Warning</strong> <br/> We will add a default filter to select all values from the data sources selected above if you do not add any Filter !',
-    //     type: 'warning'
-    // });
-
-    // var minorSelected = $('#selectedMinor').val();
-    // // var minorSelected = document.getElementById('selectedMinor').value;
-    // var url ="/indicators/populateEntities?minor="+minorSelected;
-    // request.open("GET",url,true);
-    // request.onreadystatechange=function(){processReceivedEntities(request)};
-    // request.send(null);
 
     $.ajax({
         type: "GET",
@@ -804,10 +594,7 @@ function addEntity(){
         selectedMethods.push(keySelected);
         localStorage.setItem('selectedMethods', JSON.stringify(selectedMethods));
     }
-    // var searchType = document.getElementById("specificationType").value;
-    // var evalue = document.getElementById("entityValue").value;
     var evalue = $('#entityValue').val();
-    // var url ="/indicators/addEntity?key="+keySelected+"&search="+searchType+"&value="+evalue;
     var url ="/indicators/addEntity?key="+keySelected+"&value="+evalue;
     request.open("GET",url,true);
     request.onreadystatechange = function(){displayEntityFilters(1,request)};
@@ -841,63 +628,9 @@ function deleteEntity(){
 function displayEntityFilters(callstatus,request,msg){
     if (request.readyState == 4) {
         if (request.status == 200) {
-            // if(callstatus == 1) {
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/> 1 <strong>Attribute Filter</strong> successfully added. <br/>' +
-                //     'You can view the newly added filter in <strong> Attribute Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
-                //     'Deletion of Filters is also possible from there.',
-                //     type: 'success'
-                // });
-                // noty({
-                //     text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
-                //     '<strong>Session Filters</strong>, <strong>Time Filters</strong>, which are available in this filter sub-tab. <br/>' +
-                //     'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> window.',
-                //     type: 'information'
-                // });
-            // }
-            // else if(callstatus == 2) {
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/>  <strong>Attribute Filter Summary</strong> successfully refreshed. <br/>',
-                //     type: 'success'
-                // });
-            // }
-            // else if (callstatus == 3) {
-
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/>  <strong>'+msg+' Attribute Filter </strong> successfully deleted. <br/>',
-                //     type: 'success'
-                // });
-            // }
             var parsedJSON = JSON.parse(request.responseText);
             loadAssociatedEntityFilters(parsedJSON);
-
-        //     var heading = new Array();
-        //     heading[0] = "S/L";
-        //     heading[1] = "Key";
-        //     heading[2] = "Value";
-        //     heading[3] = "Type";
-        //
-        //     var data = new Array();
-        //
-        //     for (var i=0;i< parsedJSON.length;i++) {
-        //         data[i] = new Array(i+1, parsedJSON[i].key, parsedJSON[i].eValues, parsedJSON[i].type);
-        //     }
-        // }
-        // addTable(heading,data, "entity_filters");
-        // var entityFilterListing = document.getElementById("entityFilterListing");
-        // removeOptions(entityFilterListing);
-        // var newOption = new Option('ALL', 'ALL');
-        // for (var i=0;i< parsedJSON.length;i++) {
-        //     if(i==0)
-        //         entityFilterListing.appendChild(newOption);
-        //     var txt = parsedJSON[i].key+'_'+parsedJSON[i].eValues+'_'+parsedJSON[i].type;
-        //     newOption = new Option(txt, txt);
-        //     entityFilterListing.appendChild(newOption);
         }
-        // removeOptions(document.getElementById("entityValue"));
     }
 }
 
@@ -921,11 +654,6 @@ function displaySearchUserResults(request) {
                 var newOption = new Option(parsedJSON[i], parsedJSON[i]);
                 userSearchResults.appendChild(newOption);
             }
-            // $.noty.defaults.killer = true;
-            // noty({
-            //     text: '<strong>Success</strong> <br/>  User values has been retreived from DB.',
-            //     type: 'success'
-            // });
         }
     }
 }
@@ -962,34 +690,10 @@ function displayUserFilters(callstatus,request,msg) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             if(callstatus == 1) {
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/> 1 <strong>User Filter</strong> successfully added. <br/>' +
-                //     'You can view the newly added filter in <strong> User Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
-                //     'Deletion of Filters is also possible from there.',
-                //     type: 'success'
-                // });
-                // noty({
-                //     text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>Attribute Filters</strong>,' +
-                //     '<strong>Session Filters</strong>, <strong>Time Filters</strong>, which are available in this sub-tab. <br/>' +
-                //     'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
-                //     type: 'information'
-                // });
             }
             else if(callstatus == 2) {
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/>  <strong>User Filter Summary</strong> successfully refreshed. <br/>',
-                //     type: 'success'
-                // });
             }
             else if (callstatus == 3) {
-
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/>  <strong>'+msg+' User Filter </strong> successfully deleted. <br/>',
-                //     type: 'success'
-                // });
             }
 
             var parsedJSON = JSON.parse(request.responseText);
@@ -1041,40 +745,10 @@ function displaySearchTimeResults(request) {
                 var newOption = new Option(parsedJSON[i], parsedJSON[i]);
                 timeSearchResults.appendChild(newOption);
             }
-            // $.noty.defaults.killer = true;
-            // noty({
-            //     text: '<strong>Success</strong> <br/>  Time values has been retreived from DB.',
-            //     type: 'success'
-            // });
         }
     }
 
 }
-
-// function addTimeFilter() {
-//     var request = createRequest();
-//     var timeSearchType = document.getElementById("timeSelectionType").value;
-//     if(timeSearchType === "EXACT"){
-//         var timeString = document.getElementById("timeSearchResults").value;
-//         var UTCDate = +(new Date(timeString));
-//         var url ="/indicators/addTimeFilter?time="+UTCDate+"&timeType="+timeSearchType;
-//         request.open("GET",url,true);
-//         request.onreadystatechange= function(){displayTimeFilters(1,request)};
-//         request.send(null);
-//     }
-//     else {
-//         var startRange = document.getElementById("fromDate").value;
-//         var endRange = document.getElementById("toDate").value;
-//         var time = new Array();
-//         time[0] = +(new Date(startRange));
-//         time[1] = +(new Date(endRange));
-//         url ="/indicators/addTimeFilter?time="+time+"&timeType="+timeSearchType;
-//         request.open("GET",url,true);
-//         request.onreadystatechange= function(){displayTimeFilters(1,request)};
-//         request.send(null);
-//     }
-//
-// }
 
 function refreshTimeFilters() {
     var request = createRequest();
@@ -1084,47 +758,15 @@ function refreshTimeFilters() {
     request.send(null);
 }
 
-// function deleteTimeFilters() {
-//     var request = createRequest();
-//     var timeFilterListing = document.getElementById("timeFilterListing");
-//     var url ="/indicators/deleteTimeFilters?filter="+timeFilterListing.value;
-//     request.open("GET",url,true);
-//     request.onreadystatechange= function(){displayTimeFilters(3,request,timeFilterListing.value)};
-//     request.send(null);
-// }
 
 function displayTimeFilters(callstatus,request,msg) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             if(callstatus == 1) {
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/> 1 <strong>Time Filter</strong> successfully added. <br/>' +
-                //     'You can view the newly added filter in <strong> Time Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
-                //     'Deletion of Filters is also possible from there.',
-                //     type: 'success'
-                // });
-                // noty({
-                //     text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
-                //     '<strong>Session Filters</strong>, <strong>Attribute Filters</strong>, which are available below in this sub-tab. <br/>' +
-                //     'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
-                //     type: 'information'
-                // });
             }
             else if(callstatus == 2) {
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/>  <strong>Time Filter Summary</strong> successfully refreshed. <br/>',
-                //     type: 'success'
-                // });
             }
             else if (callstatus == 3) {
-
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/>  <strong>'+msg+' Time Filter </strong> successfully deleted. <br/>',
-                //     type: 'success'
-                // });
             }
             var parsedJSON = JSON.parse(request.responseText);
             var heading = new Array();
@@ -1176,11 +818,6 @@ function displaySearchSessionResults(request) {
                 var newOption = new Option(parsedJSON[i], parsedJSON[i]);
                 SessionSearchResults.appendChild(newOption);
             }
-            // $.noty.defaults.killer = true;
-            // noty({
-            //     text: '<strong>Success</strong> <br/>  Session values has been retreived from DB.',
-            //     type: 'success'
-            // });
         }
     }
 }
@@ -1217,34 +854,10 @@ function displaySessionFilters(callstatus, request,msg) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             if(callstatus == 1) {
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/> 1 <strong>Session Filter</strong> successfully added. <br/>' +
-                //     'You can view the newly added filter in <strong> Session Filters Summary </strong> sub-tab available under <strong>Filter Summary</strong> Tab.<br/>' +
-                //     'Deletion of Filters is also possible from there.',
-                //     type: 'success'
-                // });
-                // noty({
-                //     text: '<strong>Next Step</strong> <br/> You can add more filters of the same type or from other categories like <strong>User Filters</strong>,' +
-                //     '<strong>Attribute Filters</strong>, <strong>Time Filters</strong>, which are available in this sub-tab. <br/>' +
-                //     'You can also directly generate the graph by clicking the Graph icon in <strong> Indicator Information</strong> Tab.',
-                //     type: 'information'
-                // });
             }
             else if(callstatus == 2) {
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/>  <strong>Session Filter Summary</strong> successfully refreshed. <br/>',
-                //     type: 'success'
-                // });
             }
             else if (callstatus == 3) {
-
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/>  <strong>'+msg+' Session Filter </strong> successfully deleted. <br/>',
-                //     type: 'success'
-                // });
             }
 
             var parsedJSON = JSON.parse(request.responseText);
@@ -1286,11 +899,7 @@ function refreshCurrentIndicator(){
 function displayCurrentIndProps(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
-            // $.noty.defaults.killer = true;
-            // noty({
-            //     text: '<strong>Success</strong> <br/>  <strong>Current Indicator Summary</strong> successfully refreshed. <br/>',
-            //     type: 'success'
-            // });
+
             var parsedJSON = JSON.parse(request.responseText);
 
             var placementDiv = document.getElementById("current_ind_basic_info");
@@ -1412,32 +1021,11 @@ function addDefaultRule(funcID,request) {
 function drawGraph(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
-            // $.noty.defaults.killer = true;
-            // noty({
-            //     text: '<strong>Success</strong> <br/>  <strong>Congratulations ! </strong> Your graph for the current Indicator has been generated',
-            //     type: 'success'
-            // });
-            // noty({
-            //     text: '<strong>Information</strong> <br/>  You can view the graph by clicking on the <strong> Graph Preview</strong>  tab in the ' +
-            //     '<strong> Indicator Properties & Summary </strong> Window',
-            //     type: 'information'
-            // });
-            //var graphImage = document.getElementById("graphImage");
-            //graphImage.src="/graphs/jgraph?bean=true"+"&time="+new Date().getTime();
-            //$('#templatemo-tabs a[href="#graphGeneration"]').tab('show');
-            // $(function() {
-            //     $('#graphGeneration > img').attr("src","/graphs/jgraph?bean=true" + "&time=" + new Date().getTime());
-            // });
         }
     }
 }
 
 function refreshQuestionSummary() {
-    // var request = createRequest();
-    // var url ="/indicators/refreshQuestionSummary";
-    // request.open("GET",url,true);
-    // request.onreadystatechange=function(){postrefreshQuestionSummary(request,1)};
-    // request.send(null);
 
     $.ajax({
         type: "GET",
@@ -1449,77 +1037,57 @@ function refreshQuestionSummary() {
     });
 }
 
-// function postrefreshQuestionSummary(request,callstatus) {
-function postrefreshQuestionSummary(parsedJSON) {
-    console.log(parsedJSON);
-    // if (request.readyState == 4) {
-    //     if (request.status == 200) {
-    //         var parsedJSON = JSON.parse(response);
-            var qNamefromBean = document.getElementById("questionNaming");
+function postrefreshQuestionSummary(parsedJSON, isLoadTemplate) {
 
-            $(function () {
-                $('#associatedIndicatorsDiv').empty();
+    isLoadTemplate = isLoadTemplate || false;
+    var qNamefromBean = document.getElementById("questionNaming");
 
-                $('#appliedAttributeFiltersDiv').empty();
-                $('#appliedAttributeFiltersDiv').hide();
-                $('#appliedFiltersLabel').hide();
+    // $(function () {
+        $('#associatedIndicatorsDiv').empty();
 
-                $('#appliedSessionFiltersDiv').empty();
-                $('#appliedSessionFiltersDiv').hide();
-                $('#appliedSessionFiltersLabel').hide();
+        if (!isLoadTemplate) {
+            $('#appliedAttributeFiltersDiv').empty();
+            $('#appliedAttributeFiltersDiv').hide();
+            $('#appliedFiltersLabel').hide();
 
-                $('#appliedSessionFiltersDiv').empty();
-                $('#appliedSessionFiltersDiv').hide();
-                $('#appliedSessionFiltersLabel').hide();
+            $('#appliedSessionFiltersDiv').empty();
+            $('#appliedSessionFiltersDiv').hide();
+            $('#appliedSessionFiltersLabel').hide();
 
-                if(parsedJSON == null || parsedJSON.genQueries.length == 0) {
-                    $('#associatedIndicatorsDiv').append("No Associated Indicators Found");
+            $('#appliedSessionFiltersDiv').empty();
+            $('#appliedSessionFiltersDiv').hide();
+            $('#appliedSessionFiltersLabel').hide();
+        }
+        if(parsedJSON == null || parsedJSON.genQueries.length == 0) {
+            $('#associatedIndicatorsDiv').append("No Associated Indicators Found");
+        }
+    // });
+    if(parsedJSON != null) {
+        if (parsedJSON.genQueries.length > 0) {
+            qNamefromBean.value = parsedJSON.questionName;
+        }
+
+        for (var i = 0; i < parsedJSON.genQueries.length; i++) {
+            // $(function () {
+                if(parsedJSON.genQueries[i].genIndicatorProps['isComposite']) {
+                    $('#associatedIndicatorsDiv').append("<div class='chip composite-chip' name='chip-" + parsedJSON.genQueries[i].identifier + "' id='" + parsedJSON.genQueries[i].identifier
+                        + "' title='" + parsedJSON.genQueries[i].indicatorName
+                        +"'><span>" + parsedJSON.genQueries[i].indicatorName
+                        + "</span><i class='material-icons' onclick='showDeleteIndicatorModal(this, event);'>close</i></div>");
                 }
-            });
-            if(parsedJSON != null) {
-                if (parsedJSON.genQueries.length > 0) {
-                    qNamefromBean.value = parsedJSON.questionName;
+                else {
+                    $('#associatedIndicatorsDiv').append("<div class='chip' name='chip-" + parsedJSON.genQueries[i].identifier + "' id='" + parsedJSON.genQueries[i].identifier
+                        + "' title='" + parsedJSON.genQueries[i].indicatorName
+                        + "' onclick='loadIndicator(this);'><span >" + parsedJSON.genQueries[i].indicatorName
+                        + "</span><i class='material-icons' onclick='showDeleteIndicatorModal(this, event);'>close</i></div>");
                 }
-
-                for (var i = 0; i < parsedJSON.genQueries.length; i++) {
-                    $(function () {
-                        if(parsedJSON.genQueries[i].genIndicatorProps['isComposite']) {
-                            $('#associatedIndicatorsDiv').append("<div class='chip composite-chip' name='chip-" + i + "' id='" + parsedJSON.genQueries[i].indicatorName
-                                + "' title='" + parsedJSON.genQueries[i].indicatorName
-                                +"'><span>" + parsedJSON.genQueries[i].indicatorName
-                                // + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
-                                + "</span><i class='material-icons' onclick='showDeleteIndicatorModal(this, event);'>close</i></div>");
-                        }
-                        else {
-                            $('#associatedIndicatorsDiv').append("<div class='chip' name='chip-" + i + "' id='" + parsedJSON.genQueries[i].indicatorName
-                                + "' title='" + parsedJSON.genQueries[i].indicatorName
-                                + "' onclick='loadIndicator(this);'><span >" + parsedJSON.genQueries[i].indicatorName
-                                // + "</span><i class='material-icons' onclick='deleteIndicator(this, event);'>close</i></div>");
-                                + "</span><i class='material-icons' onclick='showDeleteIndicatorModal(this, event);'>close</i></div>");
-                        }
-                    });
-                }
+            // });
+            if (isLoadTemplate) {
+                $(".chip[name=chip-" + parsedJSON.genQueries[parsedJSON.genQueries.length-1].identifier + "]").addClass("chip-bg").siblings().removeClass('chip-bg');
+                localStorage.setItem("selectedIndicatorIndex", parsedJSON.genQueries[parsedJSON.genQueries.length-1].identifier);
             }
-            // if(callstatus == 1) {
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/> <strong>Question Summary</strong> successfully refreshed. <br/>',
-                //     type: 'success'
-                // });
-            // }
-            // else if(callstatus == 2) {
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/> <strong>Current Indicator</strong> successfully saved. <br/>',
-                //     type: 'success'
-                // });
-                // noty({
-                //     text: '<strong>Success</strong> <br/> <strong>Question Summary</strong> successfully refreshed. <br/>',
-                //     type: 'success'
-                // });
-            // }
-    //     }
-    // }
+        }
+    }
 
 }
 
@@ -1527,30 +1095,27 @@ function finalizeIndicator(filterPresent) {
     $(".chip").removeClass('chip-bg');
     if(filterPresent) {
         var request = createRequest();
+        var goalId = document.getElementById("GoalSelection").value;
         var questionName = document.getElementById("questionNaming").value;
         var indicatorName = document.getElementById("indicatorNaming").value;
         var graphType = document.getElementById("selectedChartType").value;
         var graphEngine = document.getElementById("EngineSelect").value;
-        var indicatorIndex = localStorage.getItem("selectedIndicatorIndex");
         var analyticsMethod = document.getElementById("analyticsMethod").value;
+
+        var indicatorIndex = localStorage.getItem("selectedIndicatorIndex");
         var methodMappings = localStorage.getItem('methodMappings') || "";
         var visualizationMappings = localStorage.getItem('visualizationMappings') || "";
         var selectedMethods = localStorage.getItem('selectedMethods') || "";
         selectedMethods = JSON.parse(selectedMethods).join(',');
-        localStorage.removeItem("selectedIndicatorIndex");
-        // var url ="/indicators/finalize?questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
-        //     +"&graphEngine="+graphEngine+"&indicatorIndex="+indicatorIndex+"&analyticsMethod="+analyticsMethod;
-        // request.open("GET",url,true);
-        // request.onreadystatechange=function(){postrefreshQuestionSummary(request,2)};
-        // request.send(null);
 
         $.ajax({
             type: "GET",
-            url: "/indicators/finalize?questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
-                    +"&graphEngine="+graphEngine+"&indicatorIndex="+indicatorIndex+"&analyticsMethod="+analyticsMethod + "&methodMappings=" + methodMappings
+            url: "/indicators/finalize?goalId="+goalId+"&questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
+                    +"&graphEngine="+graphEngine+"&indicatorIdentifier="+indicatorIndex+"&analyticsMethod="+analyticsMethod + "&methodMappings=" + methodMappings
                     + "&visualizationMappings=" + visualizationMappings + "&selectedMethods=" + selectedMethods,
             dataType: "json",
             success: function (response) {
+                console.log(response);
                 postrefreshQuestionSummary(response);
 
                 $(function() {
@@ -1581,7 +1146,22 @@ function processScreenForNextIndicator(request) {
             var parsedJSON = JSON.parse(request.responseText);
             document.getElementById("indicatorNaming").value = "";
             var selectedMinor = document.getElementById("selectedMinor");
+
+            clearLocalStorage();
             removeOptions(selectedMinor);
+            populateAnalyticsMethods();
+
+            $('#methodDataColumns').empty();
+            $('#outputForMethods').empty();
+            $('#addMethodMapping').prop('disabled', false);
+            $('#addVisualizationMapping').prop('disabled', false);
+
+            $("#methodMappingTable > tbody:last").children().remove();
+            toggleVisibilityMethodMappingTable();
+
+            $("#visualizerMappingTable > tbody:last").children().remove();
+            toggleVisibilityVisualizerMappingTable();
+
             $("#preview_chart").hide();
             refreshQuestionSummary();
         }
@@ -1622,16 +1202,12 @@ function processScreenForNextQuestion(request, isResetSession) {
             });
 
             if(!isResetSession) {
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/>  <strong>Congratulations ! </strong> Your Question and all its indicators have been saved.',
-                //     type: 'success'
-                // });
-                // noty({
-                //     text: '<strong>Information</strong> <br/>  You can define a new Question or you can view all existing Questions by clicking the ' +
-                //     '<strong> View Existing <strong> link of the left side of the page.',
-                //     type: 'information'
-                // });
+                if (!parsedJSON.isQuestionSaved) {
+                    alert(parsedJSON.errorMessage);
+                } else {
+                    console.log(parsedJSON);
+                    $("#questionRequestCode").text(parsedJSON.questionRequestCode);
+                }
             }
         }
     }
@@ -1659,20 +1235,8 @@ function updateVisualizationModal(request) {
                 var alertDescription1 = document.createTextNode("Please add Indicators for visualization.");
                 div1.appendChild(alertDescription1);
                 visualizeQModelHtml.appendChild(div1);
-
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Error</strong> <br/>  No Indicators have been defined for Visualization',
-                //     type: 'error'
-                // });
             }
             else {
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/>  Current Question has been visualized successfully.',
-                //     type: 'success'
-                // });
-
 
                 var visualizeQModelHtml = document.getElementById("visualizeQuestionContent");
                 visualizeQModelHtml.innerHTML = "";
@@ -1697,75 +1261,75 @@ function updateVisualizationModal(request) {
                     cardContentSpan.className = "card-title activator grey-text text-darken-4";
                     var cardTitle = document.createTextNode(parsedJSON.genQueries[i].indicatorName);
                     cardContentSpan.appendChild(cardTitle);
-                    var cardMoreIcon = document.createElement("i");
-                    cardMoreIcon.className = "material-icons right";
-                    var cardMoreIconText = document.createTextNode("more_vert");
-                    cardMoreIcon.appendChild(cardMoreIconText);
-                    cardContentSpan.appendChild(cardMoreIcon);
+                    // var cardMoreIcon = document.createElement("i");
+                    // cardMoreIcon.className = "material-icons right";
+                    // var cardMoreIconText = document.createTextNode("more_vert");
+                    // cardMoreIcon.appendChild(cardMoreIconText);
+                    // cardContentSpan.appendChild(cardMoreIcon);
 
                     cardContentDiv.appendChild(cardContentSpan);
 
                     cardDiv.appendChild(cardContentDiv);
 
 
-                    var cardRevealDiv = document.createElement("div");
-                    cardRevealDiv.className = "card-reveal";
+                    // var cardRevealDiv = document.createElement("div");
+                    // cardRevealDiv.className = "card-reveal";
+                    //
+                    // var cardRevealSpan = document.createElement("span");
+                    // cardRevealSpan.className = "card-title grey-text text-darken-4";
+                    // var cardRevealTitle = document.createTextNode(parsedJSON.genQueries[i].indicatorName);
+                    // cardRevealSpan.appendChild(cardRevealTitle);
+                    // var cardCloseIcon = document.createElement("i");
+                    // cardCloseIcon.className = "material-icons right";
+                    // var cardCloseIconText = document.createTextNode("close");
+                    // cardCloseIcon.appendChild(cardCloseIconText);
+                    // cardRevealSpan.appendChild(cardCloseIcon);
+                    //
+                    // cardRevealDiv.appendChild(cardRevealSpan);
 
-                    var cardRevealSpan = document.createElement("span");
-                    cardRevealSpan.className = "card-title grey-text text-darken-4";
-                    var cardRevealTitle = document.createTextNode(parsedJSON.genQueries[i].indicatorName);
-                    cardRevealSpan.appendChild(cardRevealTitle);
-                    var cardCloseIcon = document.createElement("i");
-                    cardCloseIcon.className = "material-icons right";
-                    var cardCloseIconText = document.createTextNode("close");
-                    cardCloseIcon.appendChild(cardCloseIconText);
-                    cardRevealSpan.appendChild(cardCloseIcon);
+                    // var cardRevealTextPara = document.createElement("p");
+                    // var cardRevealText = document.createTextNode(
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on." +
+                    //     "Here is some more information about this product that is only revealed once clicked on.");
 
-                    cardRevealDiv.appendChild(cardRevealSpan);
+                    // cardRevealTextPara.appendChild(cardRevealText);
+                    // cardRevealDiv.appendChild(cardRevealTextPara);
 
-                    var cardRevealTextPara = document.createElement("p");
-                    var cardRevealText = document.createTextNode(
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on." +
-                        "Here is some more information about this product that is only revealed once clicked on.");
-
-                    cardRevealTextPara.appendChild(cardRevealText);
-                    cardRevealDiv.appendChild(cardRevealTextPara);
-
-                    cardDiv.appendChild(cardRevealDiv);
+                    // cardDiv.appendChild(cardRevealDiv);
 
                     visualizeQModelHtml.appendChild(cardDiv);
 
@@ -1780,20 +1344,6 @@ function updateVisualizationModal(request) {
 
                                 var parsedJSON = JSON.parse(response);
                                 var decodedGraphData = decodeURIComponent(parsedJSON);
-                                // decodedGraphData = "<TemporaryDiv>" + decodedGraphData + "</TemporaryDiv>";
-
-                                // var parser = new DOMParser();
-                                // var dataDOMObj = parser.parseFromString(decodedGraphData, "text/xml");
-                                //
-                                // var scriptTagData = dataDOMObj.getElementsByTagName('script')[0];
-                                // var randomNo = Math.floor((Math.random() * 100000) + 1000);
-                                // scriptTagData.insertAdjacentHTML('afterbegin', '<script type="text/javascript"> google.charts.setOnLoadCallback(drawChart_' + randomNo + '); function drawChart_' + randomNo + '() {');
-                                // scriptTagData.insertAdjacentHTML('beforeend', '} </script>');
-                                //
-                                // var divTagData = dataDOMObj.getElementsByTagName('div')[0];
-                                // console.log(dataDOMObj.getElementsByTagName('TemporaryDiv')[0].textContent + divTagData.outerHTML);
-
-                                // $('#'+divId).html(dataDOMObj.getElementsByTagName('TemporaryDiv')[0].textContent + divTagData.outerHTML);
                                 $('#'+divId).html(decodedGraphData);
                             }
                         });
@@ -1838,19 +1388,8 @@ function updateCompositeModal(request) {
                     $('#CompositeIndButton').hide();
                     $('#CompositeClosedButton').show();
                 });
-
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Error</strong> <br/>  No Indicators have been defined for Visualization',
-                //     type: 'error'
-                // });
             }
             else {
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/>  Current Question has been visualized successfully.',
-                //     type: 'success'
-                // });
                 $(function() {
                     $('#CompositeIndButton').show();
                     $('#CompositeClosedButton').hide();
@@ -1899,19 +1438,6 @@ function updateCompositeModal(request) {
 
                                 var parsedJSON = JSON.parse(response);
                                 var decodedGraphData = decodeURIComponent(parsedJSON);
-                                // decodedGraphData = "<TemporaryDiv>" + decodedGraphData + "</TemporaryDiv>";
-                                //
-                                // var parser = new DOMParser();
-                                // var dataDOMObj = parser.parseFromString(decodedGraphData, "text/xml");
-                                //
-                                // var scriptTagData = dataDOMObj.getElementsByTagName('script')[0];
-                                // var randomNo = Math.floor((Math.random() * 100000) + 1000);
-                                // scriptTagData.insertAdjacentHTML('afterbegin', '<script type="text/javascript"> google.charts.setOnLoadCallback(drawChart_' + randomNo + '); function drawChart_' + randomNo + '() {');
-                                // scriptTagData.insertAdjacentHTML('beforeend', '} </script>');
-                                //
-                                // var divTagData = dataDOMObj.getElementsByTagName('div')[0];
-                                //
-                                // $('#'+compositeGraphId).html(dataDOMObj.getElementsByTagName('TemporaryDiv')[0].textContent + divTagData.outerHTML);
                                 $('#'+compositeGraphId).html(decodedGraphData);
                             }
                         });
@@ -1951,19 +1477,8 @@ function updateVisualisationTab(request) {
                     $('#CompositeIndButton').hide();
                     $('#CompositeClosedButton').show();
                 });
-
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Error</strong> <br/>  No Indicators have been defined for Visualization',
-                //     type: 'error'
-                // });
             }
             else {
-                // $.noty.defaults.killer = true;
-                // noty({
-                //     text: '<strong>Success</strong> <br/>  Current Question has been visualized successfully.',
-                //     type: 'success'
-                // });
                 $(function() {
                     $('#CompositeIndButton').show();
                     $('#CompositeClosedButton').hide();
@@ -1972,23 +1487,7 @@ function updateVisualisationTab(request) {
                 var src1 = document.getElementById("visualizeQuestionContent");
                 src.innerHTML = "";
                 src1.innerHTML = "";
-                for(i=0; i<parsedJSON.genQueries.length; i++) {
-
-                    //var label= document.createElement("label");
-                    //var description = document.createTextNode(parsedJSON.genQueries[i].indicatorName);
-                    //var checkbox = document.createElement("input");
-                    //checkbox.type = "checkbox";    // make the element a checkbox
-                    //checkbox.name = parsedJSON.genQueries[i].indicatorName;      // give it a name we can check on the server side
-                    //checkbox.value = parsedJSON.genQueries[i].indicatorName;         // make its value "pair"
-                    //checkbox.className = "messageCheckbox";
-                    //
-                    //label.appendChild(checkbox);   // add the box to the element
-                    //label.appendChild(description);// add the description to the element
-                    //// add the label element to your div
-                    //src.appendChild(label);
-                    //var img = document.createElement("img");
-                    //img.src = "/graphs/jgraph?runFromMemory=true&indicator="+parsedJSON.genQueries[i].indicatorName;
-                    //src.appendChild(img);
+                for(var i=0; i<parsedJSON.genQueries.length; i++) {
 
                     var pTag= document.createElement("p");
                     var label= document.createElement("label");
@@ -2015,14 +1514,6 @@ function updateVisualisationTab(request) {
                     img.className = "responsive-img center-align";
                     imgDiv.appendChild(img);
                     src.appendChild(imgDiv);
-
-                    //var imgDiv1 = document.createElement("div");
-                    //imgDiv1.className = "card col-md-12";
-                    //var img1 = document.createElement("img");
-                    //img1.src = "/graphs/jgraph?runFromMemory=true&indicator="+parsedJSON.genQueries[i].indicatorName;
-                    //img1.className = "responsive-img center-align";
-                    //imgDiv1.appendChild(img1);
-                    //src1.appendChild(imgDiv1);
 
 
                     var cardDiv = document.createElement("div");
@@ -2122,20 +1613,6 @@ function updateVisualisationTab(request) {
 
                     src1.appendChild(cardDiv);
 
-                //<div class="card small">
-                //        <div class="card-image waves-effect waves-block waves-light">
-                //        <img class="activator" src="images/office.jpg">
-                //        </div>
-                //        <div class="card-content">
-                //        <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
-                //    </div>
-                //    <div class="card-reveal">
-                //        <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                //    <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                //    </div>
-                //    </div>
-
-
                 }
                 $(function() {
                     $("#saveQuestion").removeAttr('disabled');
@@ -2174,11 +1651,6 @@ function postAddCompositeIndicator(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
-            // $.noty.defaults.killer = true;
-            // noty({
-            //     text: '<strong>Success</strong> <br/>  A New composite Indicator has been added',
-            //     type: 'success'
-            // });
             refreshQuestionSummary();
             $('#qiEditorTab a[href="#QuestionIndicatorEditor"]').tab('show');
 
@@ -2205,11 +1677,6 @@ function displayReceivedIndicators(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
-            // $.noty.defaults.killer = true;
-            // noty({
-            //     text: '<strong>Success</strong> <br/>  Matching Indicators have been fetched from DB',
-            //     type: 'success'
-            // });
             var searchResults = document.getElementById("searchResults");
             removeOptions(searchResults);
             for (var i=0;i< parsedJSON.length;i++) {
@@ -2221,7 +1688,6 @@ function displayReceivedIndicators(request) {
 }
 
 function viewIndicatorProp() {
-    // var indName = document.getElementById("searchResults").value;
     var indName = $('tr.selected:first td:nth-child(2)', '#indicatorData').text();
     var request = createRequest();
     var url ="/indicators/loadIndicator?indName="+indName;
@@ -2235,11 +1701,7 @@ function displayIndicatorProp(request) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
             var parsedindProp = JSON.parse(parsedJSON.glaIndicatorProps.json_data);
-            // $.noty.defaults.killer = true;
-            // noty({
-            //     text: '<strong>Success</strong> <br/>  Selected Indicator Property loaded',
-            //     type: 'success'
-            // });
+
             var indicatorData = new Array();
             indicatorData.push(["Property", "Value"]);
             indicatorData.push(["Indicator Name", parsedJSON.indicator_name]);
@@ -2316,6 +1778,7 @@ function loadToEditor(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
+            console.log(parsedJSON);
             // var parsedindProp = JSON.parse(parsedJSON.glaIndicatorProps.json_data);
             loadIndicatorTemplate(parsedJSON);
 
@@ -2329,53 +1792,18 @@ function loadToEditor(request) {
 }
 
 function displayQnInfoIcons() {
-
-    // $.noty.defaults.killer = true;
-    // noty({
-    //     text: '<strong>Icons in Question Information Area</strong> <br/>  ' +
-    //     '<img src="../images/template.png" alt="button" width="48" height="48"/> : Load an existing Indicator from DB and use it as a template.' +
-    //     '<br/> <img src="../images/new.png" alt="button" width="48" height="48"/> : Define a new Indicator for the current Question.' +
-    //     '<br/> <img  src="../images/run.png" alt="button" width="48" height="48"/> : Run the Entire Question and all its idicators.'+
-    //     '<br/> <img  src="../images/save.png" alt="button" width="48" height="48"/> : Save the Question with its indicators. ',
-    //     type: 'alert'
-    // });
 }
 
 function displayQnSummaryIcons() {
-    // $.noty.defaults.killer = true;
-    // noty({
-    //     text: '<strong>Icons in Question Summary Area</strong> <br/>  ' +
-    //     '<img  src="../images/refresh.png" alt="button" width="48" height="48"/> : Refresh the Question Summary.' +
-    //     '<br/> <img  src="../images/view.png" alt="button" width="48" height="48"/> : View the selected Indicator Summary.' +
-    //     '<br/> <img  src="../images/load.png" alt="button" width="48" height="48"/> : Load the selected Indicator for editing.'+
-    //     '<br/> <img  src="../images/delete.png" alt="button" width="48" height="48"/> : Delete the selected Indicator from this Question. ',
-    //     type: 'alert'
-    // });
 }
 
 function displayIndInfoIcons() {
-    // $.noty.defaults.killer = true;
-    // noty({
-    //     text: '<strong>Indicator Information Area Help</strong> <br/>  ' +
-    //     'Please select all filters and click <img src="../images/refresh_graph.png" alt="button" width="48" height="48"/>' +
-    //     'to view the graph. <br/> If you are satisfied then please click <img src="../images/finalize.png" alt="button" width="48" height="48">'+
-    //     ', as this is the last step of the Indicator Definition process. ',
-    //     type: 'alert'
-    // });
 }
 
 function searchAttributes() {
-    // var request = createRequest();
-    // var key = document.getElementById("entityKeySelection").value;
-    // var minor = document.getElementById('selectedMinor').value;
 
     var key = $('#entityKeySelection').val();
     var minor = $('#selectedMinor').val();
-
-    // var url ="/indicators/searchAttributeValues?minor="+minor+"&key="+key;
-    // request.open("GET",url,true);
-    // request.onreadystatechange=function(){processReceivedAttributeValues(request)};
-    // request.send(null);
 
     $.ajax({
         context: true,
@@ -2403,11 +1831,6 @@ function processReceivedAttributeValues(request) {
                 var newOption = new Option(parsedJSON[i], parsedJSON[i]);
                 entityValue.appendChild(newOption);
             }
-            // $.noty.defaults.killer = true;
-            // noty({
-            //     text: '<strong>Success</strong> <br/>  Attribute values has been retreived.',
-            //     type: 'success'
-            // });
         }
     }
 

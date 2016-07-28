@@ -62,6 +62,9 @@ label {
 #saveQuestion, #saveIndicator {
     min-width: 125px;
 }
+#copyCode {
+    min-width: 110px;
+}
 .tabs .tab a {
     color: #0288d1 !important;
 }
@@ -186,8 +189,10 @@ i {
 #indicatorPropsTable tr td:first-child {
     width: 20%;
 }
-#confirmEntityDeleteModal {
-    height: 40%; !important;
+#confirmIndicatorDeleteModal, #confirmEntityDeleteModal,
+#confirmTimeDeleteModal, #confirmUserDeleteModal{
+    height: 30%; !important;
+    top: 0 !important;
 }
 .side-nav a {
     text-decoration: none !important;
@@ -225,10 +230,16 @@ header, main, footer {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
 }
-.side-nav li:hover {
+.side-nav li:hover, .collapsible-header:hover{
     background-color: white !important;
 }
 .side-nav a:hover {
+    color: black !important;
+}
+.side-nav li.active {
+    background-color: white !important;
+}
+.side-nav li.active a {
     color: black !important;
 }
 .brand-logo {
@@ -253,4 +264,26 @@ textarea[type=text].invalid {
 textarea[type=text].valid {
     border-bottom: 1px solid #4CAF50;
     box-shadow: 0 0 0 1px #4CAF50;
+}
+.searchIcon{
+    padding-top: 15px !important;
+}
+.selected-left-menu-admin {
+    border-color: lightgrey !important;
+}
+.left-menu-admin a {
+    font-size: 12px !important;
+    padding-left: 55px !important;
+}
+.axis path, .axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+#questionRequestCode {
+    background-color: lightgray;
 }
