@@ -316,6 +316,7 @@ function  GenerateTable(data) {
 
 function updateScreenAfterLoadInd(data) {
 
+    $('#preview_chart').hide();
     $('#indicatorNaming').val(data.indicatorName);
     $('#PlatformSelection').val(data.indicatorXMLData.platform);
     $('#actionSelection').val(data.indicatorXMLData.action);
@@ -1046,9 +1047,16 @@ function postrefreshQuestionSummary(parsedJSON, isLoadTemplate) {
         $('#associatedIndicatorsDiv').empty();
 
         if (!isLoadTemplate) {
+            $('#analyticsMethodDesc').empty();
+            $('#sourceSelection option:selected').prop('selected', false);
+            $('#actionSelection option:selected').prop('selected', false);
+            $('#selectedMinor').empty();
+            $('#entityKeySelection').empty();
+            $('#entityValue').empty();
+
             $('#appliedAttributeFiltersDiv').empty();
             $('#appliedAttributeFiltersDiv').hide();
-            $('#appliedFiltersLabel').hide();
+            $('#appliedAttributeFiltersLabel').empty();
 
             $('#appliedSessionFiltersDiv').empty();
             $('#appliedSessionFiltersDiv').hide();
@@ -1197,16 +1205,52 @@ function processScreenForNextQuestion(request, isResetSession) {
             var selectedMinor = document.getElementById("selectedMinor");
             removeOptions(selectedMinor);
             refreshQuestionSummary();
-            $(function () {
-                $("#saveQuestion").attr('disabled', 'disabled');
-            });
+            $("#saveQuestion").attr('disabled', 'disabled');
 
             if(!isResetSession) {
                 if (!parsedJSON.isQuestionSaved) {
                     alert(parsedJSON.errorMessage);
                 } else {
-                    console.log(parsedJSON);
-                    $("#questionRequestCode").text(parsedJSON.questionRequestCode);
+
+                    var visualizationModal =  $("#visualizeQuestionModel");
+                    for(var i=0; i<parsedJSON.indicatorSaveResponses.length; i++) {
+                        if (parsedJSON.indicatorSaveResponses[i].isIndicatorSaved) {
+
+                            var cardContentDivID = "#visualizeCardGraphContent_" + parsedJSON.indicatorSaveResponses[i].indicatorClientID;
+                            var cardContentDiv = visualizationModal.find(cardContentDivID + " span");
+                            var indicatorName = visualizationModal.find(cardContentDivID).text();
+                            var cardMoreIcon = document.createElement("i");
+                            cardMoreIcon.className = "material-icons right";
+                            var cardMoreIconText = document.createTextNode("more_vert");
+                            cardMoreIcon.appendChild(cardMoreIconText);
+                            cardContentDiv.append(cardMoreIcon);
+
+
+                            var cardRevealDiv = document.createElement("div");
+                            cardRevealDiv.className = "card-reveal";
+
+                            var cardRevealSpan = document.createElement("span");
+                            cardRevealSpan.className = "card-title grey-text text-darken-4";
+                            var cardRevealTitle = document.createElement('b');
+                            cardRevealTitle.innerHTML = indicatorName;
+                            cardRevealSpan.appendChild(cardRevealTitle);
+                            var cardCloseIcon = document.createElement("i");
+                            cardCloseIcon.className = "material-icons right";
+                            var cardCloseIconText = document.createTextNode("close");
+                            cardCloseIcon.appendChild(cardCloseIconText);
+                            cardRevealSpan.appendChild(cardCloseIcon);
+
+                            cardRevealDiv.appendChild(cardRevealSpan);
+
+                            var cardRevealTextPara = document.createElement("p");
+                            var cardRevealText = document.createTextNode(parsedJSON.indicatorSaveResponses[i].indicatorRequestCode);
+
+                            cardRevealTextPara.appendChild(cardRevealText);
+                            cardRevealDiv.appendChild(cardRevealTextPara);
+
+                            $("#visualizeCardGraph_" + parsedJSON.indicatorSaveResponses[i].indicatorClientID).append(cardRevealDiv);
+                        }
+                    }
                 }
             }
         }
@@ -1240,11 +1284,13 @@ function updateVisualizationModal(request) {
 
                 var visualizeQModelHtml = document.getElementById("visualizeQuestionContent");
                 visualizeQModelHtml.innerHTML = "";
-                for(i=0; i<parsedJSON.genQueries.length; i++) {
+                for(var i=0; i<parsedJSON.genQueries.length; i++) {
 
                     //visualization card
                     var cardDiv = document.createElement("div");
-                    cardDiv.className = "card small col-md-6";
+                    cardDiv.className = "card col-md-6";
+                    var cardDivId = "visualizeCardGraph_" + parsedJSON.genQueries[i].identifier;
+                    cardDiv.id = cardDivId;
 
                     var cardImageDiv = document.createElement("div");
                     cardImageDiv.className = "card-image waves-effect waves-block waves-light";
@@ -1256,102 +1302,22 @@ function updateVisualizationModal(request) {
 
                     var cardContentDiv = document.createElement("div");
                     cardContentDiv.className = "card-content";
+                    var contentDivId = "visualizeCardGraphContent_" + parsedJSON.genQueries[i].identifier;
+                    cardContentDiv.id = contentDivId;
 
                     var cardContentSpan = document.createElement("span");
                     cardContentSpan.className = "card-title activator grey-text text-darken-4";
                     var cardTitle = document.createTextNode(parsedJSON.genQueries[i].indicatorName);
                     cardContentSpan.appendChild(cardTitle);
-                    // var cardMoreIcon = document.createElement("i");
-                    // cardMoreIcon.className = "material-icons right";
-                    // var cardMoreIconText = document.createTextNode("more_vert");
-                    // cardMoreIcon.appendChild(cardMoreIconText);
-                    // cardContentSpan.appendChild(cardMoreIcon);
 
                     cardContentDiv.appendChild(cardContentSpan);
 
                     cardDiv.appendChild(cardContentDiv);
 
-
-                    // var cardRevealDiv = document.createElement("div");
-                    // cardRevealDiv.className = "card-reveal";
-                    //
-                    // var cardRevealSpan = document.createElement("span");
-                    // cardRevealSpan.className = "card-title grey-text text-darken-4";
-                    // var cardRevealTitle = document.createTextNode(parsedJSON.genQueries[i].indicatorName);
-                    // cardRevealSpan.appendChild(cardRevealTitle);
-                    // var cardCloseIcon = document.createElement("i");
-                    // cardCloseIcon.className = "material-icons right";
-                    // var cardCloseIconText = document.createTextNode("close");
-                    // cardCloseIcon.appendChild(cardCloseIconText);
-                    // cardRevealSpan.appendChild(cardCloseIcon);
-                    //
-                    // cardRevealDiv.appendChild(cardRevealSpan);
-
-                    // var cardRevealTextPara = document.createElement("p");
-                    // var cardRevealText = document.createTextNode(
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on." +
-                    //     "Here is some more information about this product that is only revealed once clicked on.");
-
-                    // cardRevealTextPara.appendChild(cardRevealText);
-                    // cardRevealDiv.appendChild(cardRevealTextPara);
-
-                    // cardDiv.appendChild(cardRevealDiv);
-
                     visualizeQModelHtml.appendChild(cardDiv);
-
-                    $.ajax(
-                        {
-                            context: this,
-                            async: false,
-                            type: "GET",
-                            url: "/engine/getQuestionVisualizationCode?width=400&height=205",
-                            // url: "/engine/getQuestionVisualizationCode?width=" + $('#'+divId).parent().width() + "&height=" + $('#'+divId).parent().height(),
-                            success: function(response) {
-
-                                var parsedJSON = JSON.parse(response);
-                                var decodedGraphData = decodeURIComponent(parsedJSON);
-                                $('#'+divId).html(decodedGraphData);
-                            }
-                        });
-
+                    $('#'+divId).html(decodeURIComponent(JSON.parse(parsedJSON.genQueries[i].visualization)));
                 }
-                $(function() {
-                    $("#saveQuestion").removeAttr('disabled');
-                });
+                $("#saveQuestion").removeAttr('disabled');
 
             }
 
@@ -1397,7 +1363,7 @@ function updateCompositeModal(request) {
                 var compositeModelHtml = document.getElementById("runIndMem");
                 compositeModelHtml.innerHTML = "";
 
-                for(i=0; i<parsedJSON.genQueries.length; i++) {
+                for(var i=0; i<parsedJSON.genQueries.length; i++) {
 
                     //composite Indicator
                     var pTag= document.createElement("p");
