@@ -16,6 +16,7 @@ public class GenQuery implements Serializable {
     private final long queryID;
     private final String query;
     private final String indicatorName;
+    private final String visualization;
     private GenIndicatorProps genIndicatorProps = new GenIndicatorProps();
 
     private IndicatorXMLData indicatorXMLData = new IndicatorXMLData() ;
@@ -25,14 +26,16 @@ public class GenQuery implements Serializable {
         this.query = query;
         this.indicatorName = indicatorName;
         queryID = qid;
+        this.visualization = "";
     }
-    public GenQuery(String query, String indicatorName,long qid, IndicatorXMLData indicatorXMLData, GenIndicatorProps genIndicatorProps) {
+    public GenQuery(String query, String indicatorName,long qid, IndicatorXMLData indicatorXMLData, GenIndicatorProps genIndicatorProps, String visualization) {
         this.identifier = count.getAndIncrement();
         this.query = query;
         this.indicatorName = indicatorName;
         queryID = qid;
         this.indicatorXMLData = indicatorXMLData;
         this.genIndicatorProps = genIndicatorProps;
+        this.visualization = visualization;
     }
     public GenQuery(String query, String indicatorName,long qid,
                     long props_id, Timestamp last_executionTime, int totalExecutions) {
@@ -43,9 +46,14 @@ public class GenQuery implements Serializable {
         this.genIndicatorProps.setProps_id(props_id);
         this.genIndicatorProps.setTotalExecutions(totalExecutions);
         this.genIndicatorProps.setLast_executionTime(last_executionTime);
+        this.visualization = "";
     }
     public int getIdentifier() {
         return identifier;
+    }
+
+    public String getVisualization() {
+        return visualization;
     }
 
     public static AtomicInteger getCount() {
