@@ -11,6 +11,7 @@ function loadAssociatedEntityFilters(entityValues) {
         $('#appliedAttributeFiltersDiv').show();
         $('#appliedAttributeFiltersLabel').show();
     // }
+    var selectedMethods = JSON.parse(localStorage.getItem('selectedMethods')) || [];
 
     for (var entityValuesIndex = 0;
          entityValuesIndex < entityValues.length;
@@ -22,6 +23,12 @@ function loadAssociatedEntityFilters(entityValues) {
             "title='" + entityValue.key + "_" + entityValue.eValues +"'>" +
             "<span>" + entityValue.key + ": " + entityValue.eValues +
             "</span><i class='material-icons' onclick='showDeleteEntityFilterModal(this, event);'>close</i></div>");
+
+        var index = selectedMethods.indexOf(entityValue.key);
+        if (index < 0) {
+            selectedMethods.push(entityValue.key);
+            localStorage.setItem('selectedMethods', JSON.stringify(selectedMethods));
+        }
     }
 }
 
