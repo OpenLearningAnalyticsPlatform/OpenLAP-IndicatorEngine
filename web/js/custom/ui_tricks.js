@@ -199,6 +199,7 @@ function loadIndicatorTemplate(rawData) {
 
 function addLoadedIndicatorToAssociatedIndicatorList(indicatorName, properties) {
 
+    var goalId = document.getElementById("GoalSelection").value;
     var questionName = document.getElementById("questionNaming").value;
     var graphType = properties.selectedChartType;
     var graphEngine = properties.selectedChartEngine;
@@ -212,7 +213,7 @@ function addLoadedIndicatorToAssociatedIndicatorList(indicatorName, properties) 
 
     $.ajax({
         type: "GET",
-        url: "/indicators/finalize?questionName=" + questionName + "&indicatorName=" + indicatorName + "&graphType=" + graphType
+        url: "/indicators/finalize?goalId="+goalId+"&questionName=" + questionName + "&indicatorName=" + indicatorName + "&graphType=" + graphType
         + "&graphEngine=" + graphEngine + "&indicatorIdentifier=" + indicatorIndex + "&analyticsMethod=" + analyticsMethod + "&methodMappings=" + methodMappings
         + "&visualizationMappings=" + visualizationMappings + "&selectedMethods=" + selectedMethods,
         dataType: "json",
