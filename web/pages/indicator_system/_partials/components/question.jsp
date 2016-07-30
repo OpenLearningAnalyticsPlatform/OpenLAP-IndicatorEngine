@@ -52,7 +52,7 @@
                 <button class="waves-effect waves-light btn modal-trigger light-blue" type="button" href="#visualizeQuestionModel" title="Click to visualize Question."
                         name="visualizeQuestion" id="visualizeQuestion" onclick="QuestionVisualize()">Visualize
                 </button>
-                <button class="waves-effect waves-light btn modal-trigger light-blue" type="button" name="QuestionSave" id="saveQuestion" href="#saveQuestionModel" title="Click to save Question & all its indicators."
+                <button class="waves-effect waves-light btn modal-trigger light-blue" type="button" name="QuestionSave" id="saveQuestion" href="#visualizeQuestionModel" title="Click to save Question & all its indicators."
                         value="Save Question" onclick="SaveQuestionDB()">Save
                 </button>
             </div>
