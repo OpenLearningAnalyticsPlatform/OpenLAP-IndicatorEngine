@@ -54,7 +54,9 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Provides Methods to get data from Analytics Engine via API
@@ -166,6 +168,11 @@ public class AnalyticsEngineController {
         indicatorPreviewRequest.setVisualizationMethodId(Long.parseLong(selectedChartType));
         indicatorPreviewRequest.setVisualizationFrameworkId(Long.parseLong(engineSelectId));
         indicatorPreviewRequest.setQuery(entitySpecificationBean.getHql());
+
+        Map<String, Object> chartSizeParams = new HashMap<>();
+        chartSizeParams.put("width", new Double(height).intValue());
+        chartSizeParams.put("height", new Double(width).intValue());
+        indicatorPreviewRequest.setAdditionalParams(chartSizeParams);
 
         Gson gson = new Gson();
 
