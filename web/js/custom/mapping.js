@@ -55,11 +55,11 @@ function getAnalyticsMethodInputs(data) {
 
 function getVisualizationMethodInputs() {
     // $(function() {
-        var analyticsMethodId = $("#analyticsMethod").val();
+        var chartTypeId = $("#selectedChartType").val();
         var engineSelect = $("#EngineSelect").val();
         $.ajax({
             type: "GET",
-            url: "/engine/getVisualizationMethodInputs?frameworkId=" + engineSelect + "&methodId=" + analyticsMethodId,
+            url: "/engine/getVisualizationMethodInputs?frameworkId=" + engineSelect + "&methodId=" + chartTypeId,
             dataType: "json",
             success: function (response) {
                 var visualizationInputSelect = $('#inputForVisualizer');
@@ -288,11 +288,9 @@ function loadMethodMappingToTable(data) {
 
         var dataObj = JSON.parse(data);
         var queryToMethodConfig = dataObj.queryToMethodConfig;
-
-        // var methodMappings = JSON.parse(localStorage.getItem('methodMappings')) || [];
-        // var selectedMethods = JSON.parse(localStorage.getItem('selectedMethods')) || [];
+        
+        var selectedMethods = JSON.parse(localStorage.getItem('selectedMethods')) || [];
         var methodMappings = [];
-        var selectedMethods = [];
 
         for (var i = 0; i < queryToMethodConfig.mapping.length; i++) {
 
