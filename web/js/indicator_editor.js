@@ -1115,7 +1115,7 @@ function finalizeIndicator(filterPresent) {
         var visualizationMappings = localStorage.getItem('visualizationMappings') || "";
         var selectedMethods = localStorage.getItem('selectedMethods') || "";
         selectedMethods = JSON.parse(selectedMethods).join(',');
-
+        $('#saveIndicator').prop('disabled', true);
         $.ajax({
             type: "GET",
             url: "/indicators/finalize?goalId="+goalId+"&questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
@@ -1125,7 +1125,7 @@ function finalizeIndicator(filterPresent) {
             success: function (response) {
                 console.log(response);
                 postrefreshQuestionSummary(response);
-
+                $('#saveIndicator').prop('disabled', false);
                 $(function() {
                     $("#indicatorDefinition").hide();
                     $('body').animate({

@@ -57,6 +57,7 @@ function getVisualizationMethodInputs() {
     // $(function() {
         var chartTypeId = $("#selectedChartType").val();
         var engineSelect = $("#EngineSelect").val();
+
         $.ajax({
             type: "GET",
             url: "/engine/getVisualizationMethodInputs?frameworkId=" + engineSelect + "&methodId=" + chartTypeId,
@@ -64,6 +65,10 @@ function getVisualizationMethodInputs() {
             success: function (response) {
                 var visualizationInputSelect = $('#inputForVisualizer');
                 visualizationInputSelect.empty();
+                $('#visualizerMappingTable >tbody').empty();
+                localStorage.removeItem("visualizationMappings");
+                toggleVisibilityVisualizerMappingTable();
+
                 for (var i=0;i< response.length;i++) {
                     visualizationInputSelect
                         .append($("<option></option>")
@@ -73,6 +78,11 @@ function getVisualizationMethodInputs() {
                             .text(response[i].title));
                 }
                 $("select#inputForVisualizer")[0].selectedIndex = 0;
+
+                var inputForVisualizerOptionSize = $('#inputForVisualizer option').size();
+                if (inputForVisualizerOptionSize > 0) {
+                    $('#addVisualizationMapping').prop('disabled', false);
+                }
             }
         });
     // });
@@ -288,7 +298,7 @@ function loadMethodMappingToTable(data) {
 
         var dataObj = JSON.parse(data);
         var queryToMethodConfig = dataObj.queryToMethodConfig;
-        
+
         var selectedMethods = JSON.parse(localStorage.getItem('selectedMethods')) || [];
         var methodMappings = [];
 
