@@ -346,6 +346,7 @@ function updateScreenAfterLoadInd(data) {
     populateAnalyticsMethods(JSON.stringify(data.indicatorXMLData));
 
     populateCategories(data.indicatorXMLData.minor);
+    $('#loading-screen').addClass('loader-hide');
 }
 /*
  * hoverIntent | Copyright 2011 Brian Cherne
@@ -1102,6 +1103,7 @@ function postrefreshQuestionSummary(parsedJSON, isLoadTemplate) {
 function finalizeIndicator(filterPresent) {
     $(".chip").removeClass('chip-bg');
     if(filterPresent) {
+        $('#loading-screen').removeClass('loader-hide');
         var request = createRequest();
         var goalId = document.getElementById("GoalSelection").value;
         var questionName = document.getElementById("questionNaming").value;
@@ -1124,6 +1126,7 @@ function finalizeIndicator(filterPresent) {
             dataType: "json",
             success: function (response) {
                 console.log(response);
+                $('#loading-screen').addClass('loader-hide');
                 postrefreshQuestionSummary(response);
                 $('#saveIndicator').prop('disabled', false);
                 $(function() {

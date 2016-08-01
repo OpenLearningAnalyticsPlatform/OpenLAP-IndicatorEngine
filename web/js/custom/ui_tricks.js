@@ -125,6 +125,7 @@ function deleteIndicator() {
 
 function loadIndicator(indicatorName){
     // $(function() {
+        $('#loading-screen').removeClass('loader-hide');
         $("#preview_chart").hide();
         $(indicatorName).addClass("chip-bg").siblings().removeClass('chip-bg');
         localStorage.setItem("selectedIndicatorIndex", $(indicatorName).attr("id"));
@@ -154,6 +155,10 @@ function loadIndicator(indicatorName){
 }
 
 function loadIndicatorTemplate(rawData) {
+
+    $('#loading-screen').removeClass('loader-hide');
+
+    $("#preview_chart").hide();
 
     var properties = JSON.parse(rawData.glaIndicatorProps.json_data);
 
@@ -218,6 +223,7 @@ function addLoadedIndicatorToAssociatedIndicatorList(indicatorName, properties) 
         + "&visualizationMappings=" + visualizationMappings + "&selectedMethods=" + selectedMethods,
         dataType: "json",
         success: function (response) {
+            $('#loading-screen').addClass('loader-hide');
             postrefreshQuestionSummary(response, true);
         }
     });
@@ -368,6 +374,9 @@ function embedIndicatorPreviewVisualizationCode(request) {
                 var parsedJSON = JSON.parse(request.responseText);
                 var decodedGraphData = decodeURIComponent(parsedJSON);
 
+                if (decodedGraphData === "null" ) {
+                    decodedGraphData = '<div class="alert alert-warning"> Error generating Preview. Please check visualization mappings. </div>';
+                }
                 $("#preview_chart").html(decodedGraphData);
                 $('#preview_chart').show();
                 $("#generateGraph").removeAttr('disabled');
