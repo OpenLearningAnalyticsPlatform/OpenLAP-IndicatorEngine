@@ -287,3 +287,21 @@ textarea[type=text].valid {
 #questionRequestCode {
     background-color: lightgray;
 }
+.loading-overlay{
+    background-color: lightgray;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 999;
+    text-align:center;
+    opacity: 0.7;
+}
+.request-loader{
+    left: 50%;
+    top : 50%;
+    position : absolute;
+    z-index: 103;
+}
+.loader-hide {
+    display: none;
+}
