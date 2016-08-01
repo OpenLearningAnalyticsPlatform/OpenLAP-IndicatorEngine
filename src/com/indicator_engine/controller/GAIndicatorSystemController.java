@@ -569,10 +569,6 @@ public class GAIndicatorSystemController {
         entitySpecificationBean.setQueryToMethodConfig(queryToMethodConfig);
         entitySpecificationBean.setMethodToVisualizationConfig(methodToVisualizationConfig);
 
-        AnalyticsEngineController analyticsEngineController = appContext.getBean(AnalyticsEngineController.class);
-        String visualizationCode = analyticsEngineController.getIndicatorPreviewVisualizationCode("400", "205", analyticsMethod, graphEngine, graphType, indicatorName,
-                methodMappings, visualizationMappings, selectedMethods);
-
         //If user Directly finalizes the Indicator, then we have to implicitly generate the HQL
         if(entitySpecificationBean.getHql() == null ) {
 //            entitySpecificationBean.setGoalId(Long.parseLong(goalId));
@@ -603,6 +599,10 @@ public class GAIndicatorSystemController {
         while(timeSpecIterator.hasNext()){
             xMLTimeSpecifications.add(timeSpecIterator.next().clone());
         }
+
+        AnalyticsEngineController analyticsEngineController = appContext.getBean(AnalyticsEngineController.class);
+        String visualizationCode = analyticsEngineController.getIndicatorPreviewVisualizationCode("400", "205", analyticsMethod, graphEngine, graphType, indicatorName,
+                methodMappings, visualizationMappings, selectedMethods);
 
         if(entitySpecificationBean.getQuestionsContainer().getGenQueries().size() == 0 ) {
             Questions questions = new Questions();
