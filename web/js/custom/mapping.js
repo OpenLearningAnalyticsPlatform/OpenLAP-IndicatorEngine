@@ -218,8 +218,8 @@ function addVisualizationMappingToTable() {
         var inputForVisualizerData = inputForVisualizerSelect.find(':selected').data('value');
 
         var row = "<tr data-methodcols='" + JSON.stringify(outputForMethodsData) + "' data-visualdata='" + JSON.stringify(inputForVisualizerData) + "'>" +
-            "<td>" + outputForMethodsData.id + "</td>" +
-            "<td>" + inputForVisualizerData.id + "</td>" +
+            "<td>" + outputForMethodsData.title + "</td>" +
+            "<td>" + inputForVisualizerData.title + "</td>" +
             "<td><i class='material-icons' onclick='deleteVisualizerMappingTableRow(this, event);'>close</i></td>" +
             "</tr>";
 
@@ -356,8 +356,8 @@ function loadVisualizationMappingToTable(data) {
             var inputForVisualizerData = methodToVisualizationConfig.mapping[i].inputPort;
 
             var row = "<tr data-methodcols='" + JSON.stringify(outputForMethodsData) + "' data-visualdata='" + JSON.stringify(inputForVisualizerData) + "'>" +
-                "<td>" + outputForMethodsData.id + "</td>" +
-                "<td>" + inputForVisualizerData.id + "</td>" +
+                "<td>" + outputForMethodsData.title + "</td>" +
+                "<td>" + inputForVisualizerData.title + "</td>" +
                 "<td><i class='material-icons' onclick='deleteVisualizerMappingTableRow(this, event);'>close</i></td>" +
                 "</tr>";
 

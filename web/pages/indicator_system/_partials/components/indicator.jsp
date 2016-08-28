@@ -273,7 +273,7 @@
                             <div class="col s6 m6 l6">
                                 <div class="row">
                                     <label for="EngineSelect" title="Graph library">Graph Library </label>
-                                    <select class="browser-default" name ="EngineSelect" id="EngineSelect" title="Select Graph Library for Visualization">
+                                    <select class="browser-default" name ="EngineSelect" id="EngineSelect" title="Select Graph Library for Visualization" onchange="populateVisualizationMethods();">
                                     </select>
                                 </div>
                                 <div class="row">
@@ -355,11 +355,11 @@
                 </li>
             </ul>
             <div class="col s12 m6 l10 right-align">
-                <button class="btn waves-effect waves-light light-blue" type="button" title="Save the Indicator."
-                        id="saveIndicator" name="saveIndicator" value="Finalize Settings">Save
-                </button>
                 <button class="btn waves-effect waves-light light-blue" type="button" title="Cancel the Indicator."
                         name="cancelIndicator" id="cancelIndicator" value="Cancel Indicator">Cancel
+                </button>
+                <button class="btn waves-effect waves-light light-blue" type="button" title="Save the Indicator."
+                        id="saveIndicator" name="saveIndicator" value="Finalize Settings">Save
                 </button>
             </div>
         </div>

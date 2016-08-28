@@ -97,6 +97,7 @@ function saveVisualizationJar() {
             fd.append("frameworkJarBundle", file);
             fd.append("frameworkConfig", JSON.stringify(visualizationFrameworksWrapper));
 
+            console.log(JSON.stringify(visualizationFrameworksWrapper));
             $.ajax({
                 url: url,
                 type: 'POST',

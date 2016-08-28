@@ -7,6 +7,7 @@ $(function() {
 
     populateAnalyticsGoal();
     populateAnalyticsMethods();
+    populateVisualizationFrameworks();
     toggleVisibilityMethodMappingTable();
     toggleVisibilityVisualizerMappingTable();
 
@@ -306,24 +307,70 @@ function processReceivedVisualizationFrameworks(request, data) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
             var visualizationFrameworksSelection = document.getElementById("EngineSelect");
-            var chartTypeSelection = document.getElementById("selectedChartType");
+            // var chartTypeSelection = document.getElementById("selectedChartType");
             removeOptions(visualizationFrameworksSelection);
-            removeOptions(chartTypeSelection);
+            // removeOptions(chartTypeSelection);
             for (var i=0;i< parsedJSON.length;i++) {
                 var newOption = new Option(parsedJSON[i].name, parsedJSON[i].id);
                 visualizationFrameworksSelection.appendChild(newOption);
 
-                for (var j=0; j<parsedJSON[i].visualizationMethods.length; j++) {
-                    var newChartTypeOption = new Option(parsedJSON[i].visualizationMethods[j].name, parsedJSON[i].visualizationMethods[j].id);
-                    chartTypeSelection.appendChild(newChartTypeOption);
-                }
+                // for (var j=0; j<parsedJSON[i].visualizationMethods.length; j++) {
+                //     var newChartTypeOption = new Option(parsedJSON[i].visualizationMethods[j].name, parsedJSON[i].visualizationMethods[j].id);
+                //     chartTypeSelection.appendChild(newChartTypeOption);
+                // }
             }
             visualizationFrameworksSelection.selectedIndex = -1;
-            chartTypeSelection.selectedIndex = -1;
+            // chartTypeSelection.selectedIndex = -1;
 
             if (data) {
                 var dataObj = JSON.parse(data);
                 $('#EngineSelect').val(dataObj.selectedChartEngine);
+                // $('#selectedChartType').val(dataObj.selectedChartType);
+                populateVisualizationMethods(data);
+                // loadVisualizationMappingToTable(data);
+            }
+        }
+    }
+}
+
+
+function populateVisualizationMethods(data) {
+
+    data = data || false;
+
+    var engineSelect = $("#EngineSelect").val();
+    var request = createRequest();
+    var url = "/engine/getVisualizationMethods?frameworkId=" + engineSelect;
+    request.open("GET",url,true);
+    request.onreadystatechange=function(){processReceivedVisualizationMethods(request, data)};
+    request.send(null);
+
+}
+
+function processReceivedVisualizationMethods(request, data) {
+    if (request.readyState == 4) {
+        if (request.status == 200) {
+            var parsedJSON = JSON.parse(request.responseText);
+
+            // var visualizationFrameworksSelection = document.getElementById("EngineSelect");
+            var chartTypeSelection = document.getElementById("selectedChartType");
+            // removeOptions(visualizationFrameworksSelection);
+            removeOptions(chartTypeSelection);
+            // for (var i=0;i< parsedJSON.length;i++) {
+            //     var newOption = new Option(parsedJSON[i].name, parsedJSON[i].id);
+            //     visualizationFrameworksSelection.appendChild(newOption);
+
+                for (var j=0; j<parsedJSON.visualizationMethods.length; j++) {
+                    var newChartTypeOption = new Option(parsedJSON.visualizationMethods[j].name, parsedJSON.visualizationMethods[j].id);
+                    chartTypeSelection.appendChild(newChartTypeOption);
+                }
+            // }
+            // visualizationFrameworksSelection.selectedIndex = -1;
+            chartTypeSelection.selectedIndex = -1;
+
+            if (data) {
+                var dataObj = JSON.parse(data);
+                // $('#EngineSelect').val(dataObj.selectedChartEngine);
                 $('#selectedChartType').val(dataObj.selectedChartType);
 
                 loadVisualizationMappingToTable(data);

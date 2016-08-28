@@ -40,6 +40,7 @@ import de.rwthaachen.openlap.analyticsengine.core.dtos.response.IndicatorRespons
 import de.rwthaachen.openlap.analyticsengine.core.dtos.response.QuestionResponse;
 import de.rwthaachen.openlap.analyticsmethods.model.AnalyticsMethodMetadata;
 import de.rwthaachen.openlap.analyticsmodules.model.AnalyticsGoal;
+import de.rwthaachen.openlap.visualizer.core.dtos.response.VisualizationFrameworkDetailsResponse;
 import de.rwthaachen.openlap.visualizer.core.dtos.response.VisualizationFrameworksDetailsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -131,6 +132,26 @@ public class AnalyticsEngineController {
         VisualizationFrameworksDetailsResponse frameworkResponse = gson.fromJson(result, frameworkResponseType);
 
         return gson.toJson(frameworkResponse.getVisualizationFrameworks());
+    }
+
+    /**
+     * Get List of all Visualization methods related to framework Id
+     * @return String JSON string containing ids and names of Visualization Frameworks
+     */
+    @RequestMapping(value = "/getVisualizationMethods", method = RequestMethod.GET)
+    public @ResponseBody
+    String getVisualizationMethods(@RequestParam(value="frameworkId", required = true) String frameworkId) {
+
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject (
+                "http://137.226.117.226:8080/AnalyticsEngine/GetVisualizationMethods?frameworkId=" + frameworkId,
+                String.class);
+
+        Gson gson = new Gson();
+        Type frameworkResponseType = new TypeToken<VisualizationFrameworkDetailsResponse>(){}.getType();
+        VisualizationFrameworkDetailsResponse frameworkResponse = gson.fromJson(result, frameworkResponseType);
+
+        return gson.toJson(frameworkResponse.getVisualizationFramework());
     }
 
     /**
