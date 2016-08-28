@@ -365,4 +365,84 @@ public class AnalyticsEngineController {
 
         return gson.toJson(indicatorResponseList);
     }
+
+    /**
+     * Get List of all Event Sources
+     * @return String JSON string containing ids and names of Event Sources
+     */
+    @RequestMapping(value = "/listAllEventSources", method = RequestMethod.GET)
+    public @ResponseBody
+    String getAllEventSources() {
+
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject(
+                "http://137.226.117.226:8080/AnalyticsEngine/GetEventSources",
+                String.class);
+
+        return result;
+    }
+
+    /**
+     * Get List of all Event Platforms
+     * @return String JSON string containing ids and names of Event Platforms
+     */
+    @RequestMapping(value = "/listAllEventPlatforms", method = RequestMethod.GET)
+    public @ResponseBody
+    String getAllEventPlatforms() {
+
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject(
+                "http://137.226.117.226:8080/AnalyticsEngine/GetEventPlatforms",
+                String.class);
+
+        return result;
+    }
+
+    /**
+     * Get List of all Event Actions
+     * @return String JSON string containing ids and names of Event Actions
+     */
+    @RequestMapping(value = "/listAllEventActions", method = RequestMethod.GET)
+    public @ResponseBody
+    String getAllEventActions() {
+
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject(
+                "http://137.226.117.226:8080/AnalyticsEngine/GetEventActions",
+                String.class);
+
+        return result;
+    }
+
+    /**
+     * Get List of all Event Sessions
+     * @return String JSON string containing ids and names of Event Sessions
+     */
+    @RequestMapping(value = "/listAllEventSessions", method = RequestMethod.GET)
+    public @ResponseBody
+    String getAllEventSessions() {
+
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject(
+                "http://137.226.117.226:8080/AnalyticsEngine/GetEventSessions",
+                String.class);
+
+        return result;
+    }
+
+    /**
+     * Get List of all Event Timestamps
+     * @return String JSON string containing ids and names of Event Timestamps
+     */
+    @RequestMapping(value = "/listAllEventTimestamps", method = RequestMethod.GET)
+    public @ResponseBody
+    String getAllEventTimestamps() {
+
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject (
+                "http://137.226.117.226:8080/AnalyticsEngine/GetEventTimestamps",
+                String.class);
+
+        return result;
+    }
 }
