@@ -1,6 +1,6 @@
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,13 +30,16 @@ import java.util.List;
 public class EntityValues implements Serializable,Cloneable {
     private String key;
     private String eValues;
+    private String title;
+
 //    private String type;
     public EntityValues(){}
 //    public EntityValues(String key,String eValues, String type){
-    public EntityValues(String key,String eValues){
+    public EntityValues(String key,String eValues, String title){
         this.eValues = eValues;
 //        this.type = type;
         this.key = key;
+        this.title = title;
     }
     @Override
     public EntityValues clone() {
@@ -71,7 +74,15 @@ public class EntityValues implements Serializable,Cloneable {
         this.eValues = eValues;
     }
 
-//    public String getType() {
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    //    public String getType() {
 //        return type;
 //    }
 //

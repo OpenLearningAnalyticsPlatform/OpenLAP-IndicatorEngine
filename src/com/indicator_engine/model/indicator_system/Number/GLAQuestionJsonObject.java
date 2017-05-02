@@ -1,6 +1,6 @@
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
 package com.indicator_engine.model.indicator_system.Number;
 
 import com.google.gson.annotations.Expose;
-import com.indicator_engine.datamodel.GLAQuestion;
+import de.rwthaachen.openlap.analyticsengine.core.dtos.response.QuestionResponse;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class GLAQuestionJsonObject {
     @Expose
     String sColumns;
     @Expose
-    List<GLAQuestion> aaData;
+    List<QuestionResponse> aaData;
 
     public int getiTotalRecords() {
         return iTotalRecords;
@@ -73,11 +73,11 @@ public class GLAQuestionJsonObject {
         this.sColumns = sColumns;
     }
 
-    public List<GLAQuestion> getAaData() {
+    public List<QuestionResponse> getAaData() {
         return aaData;
     }
 
-    public void setAaData(List<GLAQuestion> aaData) {
+    public void setAaData(List<QuestionResponse> aaData) {
         this.aaData = aaData;
     }
 }

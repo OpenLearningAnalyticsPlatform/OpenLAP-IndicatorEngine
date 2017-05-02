@@ -1,7 +1,7 @@
 
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,39 +20,30 @@
 
 package com.indicator_engine.controller;
 
-import DataSet.OLAPPortConfiguration;
-import DataSet.OLAPPortMapping;
-import com.google.gson.*;
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.indicator_engine.dao.*;
-import com.indicator_engine.datamodel.*;
+import com.indicator_engine.datamodel.GLAIndicator;
+import com.indicator_engine.datamodel.GLAQuestion;
 import com.indicator_engine.graphgenerator.cewolf.PageViewCountData;
 import com.indicator_engine.indicator_system.IndicatorPreProcessing;
 import com.indicator_engine.indicator_system.Number.OperationNumberProcessorDao;
 import com.indicator_engine.misc.NumberChecks;
 import com.indicator_engine.model.app.SearchQuestionForm;
 import com.indicator_engine.model.indicator_system.Number.*;
-import de.rwthaachen.openlap.analyticsengine.core.dtos.request.IndicatorSaveRequest;
-import de.rwthaachen.openlap.analyticsengine.core.dtos.request.QuestionSaveRequest;
 import de.rwthaachen.openlap.analyticsengine.core.dtos.response.IndicatorPreviewResponse;
-import de.rwthaachen.openlap.analyticsengine.core.dtos.response.QuestionSaveResponse;
+import de.rwthaachen.openlap.dataset.OpenLAPPortConfig;
+import de.rwthaachen.openlap.dataset.OpenLAPPortMapping;
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import java.io.IOException;
+
 import java.lang.reflect.Type;
 import java.sql.Timestamp;
 import java.util.*;
@@ -78,159 +69,72 @@ public class GAIndicatorSystemController {
         return new ModelAndView("indicator_system/indicators_home");
     }
 
-    @RequestMapping(value = "/indicators_definition", method = RequestMethod.GET)
+    @RequestMapping(value = "/define_new", method = RequestMethod.GET)
     public String getNewIndicatorDefinitionHome(Map<String, Object> model) {
         IndicatorPreProcessing indicatorPreProcessor = (IndicatorPreProcessing) appContext.getBean("indicatorPreProcessor");
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         SelectNumberParameters selectNumberParameters = indicatorPreProcessor.initSelectNumberParametersObject();
         model.put("selectNumberParameters", selectNumberParameters);
 //        return "indicator_system/number/question_indicator_editor";
-        return "indicator_system/number/question_indicator_editor_new";
+        return "indicator_system/editor/define_new";
     }
 
-    @RequestMapping(value = "/initSources", method = RequestMethod.GET)
-    public @ResponseBody
-    String processAJAXRequest_initSources(Model model) {
-
-        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
-        Gson gson = new Gson();
-        return gson.toJson(glaEventBean.selectAll("source"));
+    @RequestMapping(value = "/view_existing", method = RequestMethod.GET)
+    public ModelAndView viewExistingIndicator() {
+        return  new ModelAndView("indicator_system/editor/view_existing");
     }
 
-    @RequestMapping(value = "/initAction", method = RequestMethod.GET)
+    @RequestMapping(value = "/addNewIndicator", method = RequestMethod.GET)
     public @ResponseBody
-    String processAJAXRequest_initAction(Model model) {
-
-        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
-        Gson gson = new Gson();
-        return gson.toJson(glaEventBean.selectAll("action"));
-    }
-    @RequestMapping(value = "/initPlatform", method = RequestMethod.GET)
-    public @ResponseBody
-    String processAJAXRequest_initPlatform(Model model) {
-
-        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
-        Gson gson = new Gson();
-        return gson.toJson(glaEventBean.selectAll("platform"));
-    }
-
-    @RequestMapping(value = "/validateQName", method = RequestMethod.GET)
-    public @ResponseBody
-    String processAJAXRequest_validateQuestionName(
-            @RequestParam(value="qname", required = true) String questionName, Model model) {
-
-        String status = null;
-        GLAQuestionDao glaQuestionBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
-        List<GLAQuestion> glaQuestions = glaQuestionBean.displayAll(null, null, false);
-        if (questionName == null)
-           status = "null";
-        else{
-            if(questionName.length() < 6) {
-                status = "short";
-            }
-            else {
-
-                for (GLAQuestion gQuestion : glaQuestions) {
-                    if (questionName.equals(gQuestion.getQuestion_name())) {
-                        status = "exists";
-                        break;
-                    }
-                }
-            }
-        }
-        return  status;
-    }
-
-    @RequestMapping(value = "/validateIndName", method = RequestMethod.GET)
-    public @ResponseBody
-    String processAJAXRequest_validateIndicatorName(
-            @RequestParam(value="indname", required = true) String indicatorName,
-            @RequestParam(value="indicatorIndex", required = false, defaultValue = "-1") String indicatorIndex,
-            Model model) {
-
-        String status = null;
-        GLAIndicatorDao glaIndicatorBean = (GLAIndicatorDao) appContext.getBean("glaIndicator");
-        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        List<GLAIndicator> glaIndicatorList = glaIndicatorBean.displayall(null, null, false);
-        int targetIndicatorIndex = Integer.parseInt(indicatorIndex);
-
-        if (indicatorName.isEmpty())
-            status = "null";
-        else{
-            if(indicatorName.length() < 6) {
-                status = "short";
-            }
-            else {
-                for (GLAIndicator glaIndicator : glaIndicatorList) {
-                    if (indicatorName.equals(glaIndicator.getIndicator_name())) {
-                        status = "exists";
-                        break;
-                    }
-                }
-                int index = 0;
-                for(GenQuery genQuery : entitySpecificationBean.getQuestionsContainer().getGenQueries()) {
-                    if(genQuery.getIndicatorName().equals(indicatorName) && targetIndicatorIndex != index) {
-                        status = "exists";
-//                        status = Integer.toString(index);
-                        break;
-                    }
-                    index++;
-                }
-            }
-        }
-        return status;
-    }
-
-    @RequestMapping(value = "/populateCategories", method = RequestMethod.GET)
-    public @ResponseBody
-    String processAJAXRequest_populateCategoryTypes(@RequestParam(value="action", required = true) String action,
-                                                      @RequestParam(value="platform", required = true) String platform,
-                                                      @RequestParam(value="sources", required = true) List<String> sources,
-                                                      Model model) {
-
-        IndicatorPreProcessing indicatorPreProcessor = (IndicatorPreProcessing)
-                appContext.getBean("indicatorPreProcessor");
-        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        List<Categories> categoriesList = new ArrayList<>();
-        Gson gson = new Gson();
-
-        entitySpecificationBean.setSelectedAction(action);
-        entitySpecificationBean.setSelectedPlatform(platform);
-        entitySpecificationBean.setSelectedSource(sources);
-
-        List<String> types = indicatorPreProcessor.initPopulateTypes(sources, action, platform);
-        List<String> majors = indicatorPreProcessor.initPopulateMajors(sources, action, platform);
-        List<String> minors = indicatorPreProcessor.initPopulateMinors(sources, action, platform);
-
-        for ( int i =0 ; i < minors.size();i++ ){
-            categoriesList.add(new Categories(types.get(i),majors.get(i), minors.get(i)));
-        }
-        return gson.toJson(categoriesList);
-    }
-
-    @RequestMapping(value = "/populateEntities", method = RequestMethod.GET)
-    public @ResponseBody
-    String processAJAXRequest_populateEntities(@RequestParam(value="minor", required = true) String minor,
-                                                    Model model) {
-        IndicatorPreProcessing indicatorPreProcessor = (IndicatorPreProcessing)
-                appContext.getBean("indicatorPreProcessor");
+    String  addNewIndicator(@RequestParam(value="type", required = true) String type, Model model) {
         Gson gson = new Gson();
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        entitySpecificationBean.setSelectedMinor(minor);
-        List<String> keys = indicatorPreProcessor.initAvailableEntities_DB(minor);
-        return gson.toJson(keys);
+        entitySpecificationBean.reset();
+        entitySpecificationBean.getCurrentIndicator().setIndicatorType(type);
+        return gson.toJson(entitySpecificationBean.getCurrentQuestion());
     }
 
-        @RequestMapping(value = "/addEntity", method = RequestMethod.GET)
-        public @ResponseBody
-        String  addEntity(@RequestParam(value="key", required = true) String key,
-                          @RequestParam(value="value", required = true) String value,
-                          Model model) {
-            Gson gson = new Gson();
-            EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+    @RequestMapping(value = "/refreshQuestionSummary", method = RequestMethod.GET)
+    public @ResponseBody
+    String  refreshQuestionSummary(@RequestParam(value="indName" ,required = false)String indicatorName, Model model) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        if(indicatorName == null) {
+            return gson.toJson(entitySpecificationBean.getCurrentQuestion());
+        }
+        else {
+            SessionQuestion sessionQuestion = entitySpecificationBean.getCurrentQuestion();
+            for(SessionIndicator sessionIndicator : sessionQuestion.getSessionIndicators()){
+                //if(sessionIndicator.getIndicatorName().equals(indicatorName) && !sessionIndicator.getGenIndicatorProps().isComposite())
+                if(sessionIndicator.getIndicatorName().equals(indicatorName) && sessionIndicator.getIndicatorType().equals("simple"))
+                    return gson.toJson(sessionIndicator);
+            }
+        }
+        return gson.toJson(null);
+    }
 
-            boolean hasEntity = false;
-            for (Iterator<EntityValues> entityValues = entitySpecificationBean.getEntityValues().iterator(); entityValues.hasNext(); ) {
+
+
+
+    @RequestMapping(value = "/addEntity", method = RequestMethod.GET)
+    public @ResponseBody
+    String  addEntity(@RequestParam(value="key", required = true) String key,
+                      @RequestParam(value="value", required = true) String value,
+                      @RequestParam(value="title", required = true) String title,
+                      Model model) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+
+        boolean hasEntity = false;
+        String indType = entitySpecificationBean.getCurrentIndicator().getIndicatorType();
+        if(indType.equals("simple")) {
+
+            if(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().size()<= 0)
+                entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().put("0", new IndicatorDataset());
+
+            Iterator<EntityValues> entityValues = entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getEntityValues().iterator();
+
+            while(entityValues.hasNext()) {
                 EntityValues aEntityValue = entityValues.next();
                 if (aEntityValue.getKey().equals(key) && aEntityValue.geteValues().equals(value)) {
                     hasEntity = true;
@@ -238,11 +142,25 @@ public class GAIndicatorSystemController {
                 }
             }
             if (!hasEntity) {
-                entitySpecificationBean.getEntityValues().add(new EntityValues(key, value));
+                entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getEntityValues().add(new EntityValues(key, value, title));
             }
 
-            return gson.toJson(entitySpecificationBean.getEntityValues());
+            return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getEntityValues());
+        }
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "composite") {
 
+            //TODO adding entity for composite indicator type
+
+            return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getEntityValues());
+        }
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "multianalysis") {
+
+            //TODO adding entity for multianalysis indicator type
+
+            return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getEntityValues());
+        }
+
+        return null;
     }
 
     @RequestMapping(value = "/getEntities", method = RequestMethod.GET)
@@ -250,74 +168,122 @@ public class GAIndicatorSystemController {
     String  getEntities(Model model, @RequestParam(value="size", required = false) String size) {
         Gson gson = new Gson();
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        if(size != null && size.equals("Y"))
-            return gson.toJson(entitySpecificationBean.getEntityValues().size());
-        return gson.toJson(entitySpecificationBean.getEntityValues());
+
+        if(entitySpecificationBean.getCurrentIndicator().getIndicatorType().equals("simple")) {
+            if(size != null && size.equals("Y")) {
+                if(!entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().containsKey("0"))
+                    entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().put("0", new IndicatorDataset());
+
+                return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getEntityValues().size());
+            }
+            return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getEntityValues());
+        }
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "composite") {
+
+            //TODO adding entity for composite indicator type
+            return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getEntityValues());
+        }
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "multianalysis") {
+
+            //TODO adding entity for multianalysis indicator type
+            return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getEntityValues());
+        }
+
+        return null;
     }
+
     @RequestMapping(value = "/deleteEntities", method = RequestMethod.GET)
     public @ResponseBody
     String  deleteEntities(Model model, @RequestParam(value="filter", required = true) String filter) {
         Gson gson = new Gson();
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        if(filter.equals("ALL"))
-            entitySpecificationBean.getEntityValues().clear();
-        else {
-            String[] filterTerms = filter.split("_");
-            for (Iterator<EntityValues> entityValues = entitySpecificationBean.getEntityValues().iterator(); entityValues.hasNext(); ) {
-                EntityValues aEntityValue = entityValues.next();
-                if (aEntityValue.getKey().equals(filterTerms[0]) && aEntityValue.geteValues().equals(filterTerms[1])) {
-                    entityValues.remove();
-                    break;
+
+
+        if(entitySpecificationBean.getCurrentIndicator().getIndicatorType().equals("simple")) {
+            if(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().containsKey("0")){
+                if(filter.equals("ALL"))
+                    entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getEntityValues().clear();
+                else {
+                    String[] filterTerms = filter.split("_");
+                    Iterator<EntityValues> entityValues = entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getEntityValues().iterator();
+                    while(entityValues.hasNext()) {
+                        EntityValues aEntityValue = entityValues.next();
+                        if (aEntityValue.getKey().equals(filterTerms[0]) && aEntityValue.geteValues().equals(filterTerms[1])) {
+                            entityValues.remove();
+                            break;
+                        }
+                    }
                 }
             }
+            else{
+                entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().put("0", new IndicatorDataset());
+            }
+            return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getEntityValues());
         }
-        return gson.toJson(entitySpecificationBean.getEntityValues());
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "composite") {
+
+            //TODO deleting entity for composite indicator type
+            return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getEntityValues());
+        }
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "multianalysis") {
+
+            //TODO deleting entity for multianalysis indicator type
+            return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getEntityValues());
+        }
+
+        return null;
     }
 
-    @RequestMapping(value = "/searchUser", method = RequestMethod.GET)
+    @RequestMapping(value = "/addUserFilter", method = RequestMethod.GET)
     public @ResponseBody
-    String  searchUsers(@RequestParam(value="keyword", required = true) String keyword,
-                      @RequestParam(value="searchtype", required = true) String searchtype,
-                      Model model) {
-        GLAUserDao glaUserBean = (GLAUserDao) appContext.getBean("glaUser");
+    String  addUserFilter(@RequestParam(value="isUserData", defaultValue = "false") String isUserData, Model model) {
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         Gson gson = new Gson();
-        List<String> searchResults = glaUserBean.searchSimilarUserDetails(searchtype, keyword);
-        return gson.toJson(searchResults);
-    }
+        boolean isUserDataSet = Boolean.parseBoolean(isUserData);
 
-    @RequestMapping(value = "/searchAttributeValues", method = RequestMethod.GET)
-    public @ResponseBody
-    String  searchAttributesValues(@RequestParam(value="minor", required = true) String minor,
-                                   @RequestParam(value="key", required = true) String key,
-                        Model model) {
-        GLACategoryDao glacategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
-        Gson gson = new Gson();
-        long category_id = glacategoryBean.findCategoryID(minor);
-        GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
-        List<String> keyValues = new ArrayList<String>(new HashSet<String>(glaEntityBean.loadEntityKeyValuesByCategoryID(category_id, key)));
-        return gson.toJson(keyValues);
-    }
 
-//    @RequestMapping(value = "/addUserFilter", method = RequestMethod.GET)
-//    public @ResponseBody
-//    String  addUserFilter(@RequestParam(value="userdata", required = true) String userdata,
-//                        @RequestParam(value="searchType", required = true) String searchType,
-//                          @RequestParam(value="userType", required = true) String userType,
-//                        Model model) {
-//        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-//        Gson gson = new Gson();
-//        entitySpecificationBean.getUserSpecifications().add(new UserSearchSpecifications(userType, userdata, searchType));
-//        return gson.toJson(entitySpecificationBean.getUserSpecifications());
-//
-//    }
+        if(entitySpecificationBean.getCurrentIndicator().getIndicatorType().equals("simple")) {
+            if(!entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().containsKey("0"))
+                entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().put("0", new IndicatorDataset());
+
+            entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getUserSpecifications().clear();
+            if(isUserDataSet) {
+                UserSearchSpecifications aUserSearchSpecifications = new UserSearchSpecifications("isUserDataSet", isUserData, "", "", "");
+                entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getUserSpecifications().add(0, aUserSearchSpecifications);
+            }
+
+            return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getUserSpecifications());
+        }
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "composite") {
+            //TODO for composite indicator type
+        }
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "multianalysis") {
+            //TODO for multianalysis indicator type
+        }
+
+        return null;
+    }
 
     @RequestMapping(value = "/getUserFilters", method = RequestMethod.GET)
     public @ResponseBody
     String  getUserFilters(Model model) {
         Gson gson = new Gson();
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        return gson.toJson(entitySpecificationBean.getUserSpecifications());
 
+        if(!entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().containsKey("0"))
+            entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().put("0", new IndicatorDataset());
+
+        if(entitySpecificationBean.getCurrentIndicator().getIndicatorType().equals("simple")) {
+            return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getUserSpecifications());
+        }
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "composite") {
+            //TODO for composite indicator type
+        }
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "multianalysis") {
+            //TODO for multianalysis indicator type
+        }
+
+        return null;
     }
 
     @RequestMapping(value = "/deleteUserFilters", method = RequestMethod.GET)
@@ -326,15 +292,21 @@ public class GAIndicatorSystemController {
         Gson gson = new Gson();
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
 
-        String[] filterTerms = filter.split("_");
-        for (Iterator<UserSearchSpecifications> userSearchSpecifications = entitySpecificationBean.getUserSpecifications().iterator(); userSearchSpecifications.hasNext(); ) {
-            UserSearchSpecifications aUserSearchSpecifications = userSearchSpecifications.next();
-            if (aUserSearchSpecifications.getKey().equals(filterTerms[0]) && aUserSearchSpecifications.getValue().equals(filterTerms[1])) {
-                userSearchSpecifications.remove();
-                break;
-            }
+        if(entitySpecificationBean.getCurrentIndicator().getIndicatorType().equals("simple")) {
+            if(!entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().containsKey("0"))
+                entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().put("0", new IndicatorDataset());
+
+            entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getUserSpecifications().clear();
+            return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getUserSpecifications());
         }
-        return gson.toJson(entitySpecificationBean.getUserSpecifications());
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "composite") {
+            //TODO for composite indicator type
+        }
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "multianalysis") {
+            //TODO for multianalysis indicator type
+        }
+
+        return null;
     }
 
     @RequestMapping(value = "/searchTime", method = RequestMethod.GET)
@@ -350,35 +322,46 @@ public class GAIndicatorSystemController {
 
     @RequestMapping(value = "/addTimeFilter", method = RequestMethod.GET)
     public @ResponseBody
-    String  addTimeFilter(@RequestParam(value="time", required = true) List<String> time,
+    String  addTimeFilter(@RequestParam(value="time", required = true) String time,
                           @RequestParam(value="timeType", required = true) String timeType,
-                          @RequestParam(value="isUserData", required = false, defaultValue = "false") String isUserData,
                           Model model) {
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         Gson gson = new Gson();
-        boolean hasTimeFilter = false;
-        for (Iterator<TimeSearchSpecifications> timeSearchSpecifications = entitySpecificationBean.getTimeSpecifications().iterator(); timeSearchSpecifications.hasNext(); ) {
-            TimeSearchSpecifications aTimeSearchSpecifications = timeSearchSpecifications.next();
 
-            if (aTimeSearchSpecifications.getType().equals(timeType)) {
-                hasTimeFilter = true;
-                break;
+        if(entitySpecificationBean.getCurrentIndicator().getIndicatorType().equals("simple")) {
+            boolean hasTimeFilter = false;
+            int timeFilterIndex = -1;
+
+            if(!entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().containsKey("0"))
+                entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().put("0", new IndicatorDataset());
+
+            Iterator<TimeSearchSpecifications> timeSearchSpecifications = entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getTimeSpecifications().iterator();
+
+            while(timeSearchSpecifications.hasNext()) {
+                TimeSearchSpecifications aTimeSearchSpecifications = timeSearchSpecifications.next();
+
+                if (aTimeSearchSpecifications.getType().equals(timeType)) {
+                    hasTimeFilter = true;
+                    timeFilterIndex = entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getTimeSpecifications().indexOf(aTimeSearchSpecifications);
+                    break;
+                }
             }
+
+            if (!hasTimeFilter)
+                entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getTimeSpecifications().add(new TimeSearchSpecifications(timeType, time));
+            else
+                entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getTimeSpecifications().get(timeFilterIndex).setTimestamp(time);
+
+            return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getTimeSpecifications());
         }
-        if (!hasTimeFilter) {
-            entitySpecificationBean.getTimeSpecifications().add(new TimeSearchSpecifications(timeType, time));
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "composite") {
+            //TODO for composite indicator type
+        }
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "multianalysis") {
+            //TODO for multianalysis indicator type
         }
 
-        boolean isUserDataSet = Boolean.parseBoolean(isUserData);
-        if (isUserDataSet) {
-            UserSearchSpecifications aUserSearchSpecifications = new UserSearchSpecifications("isUserDataSet", isUserData, "", "", "");
-            if (entitySpecificationBean.getUserSpecifications().size() > 0) {
-                entitySpecificationBean.getUserSpecifications().set(0, aUserSearchSpecifications);
-            } else {
-                entitySpecificationBean.getUserSpecifications().add(0, aUserSearchSpecifications);
-            }
-        }
-        return gson.toJson(entitySpecificationBean.getTimeSpecifications());
+        return null;
     }
 
     @RequestMapping(value = "/getTimeFilters", method = RequestMethod.GET)
@@ -386,7 +369,21 @@ public class GAIndicatorSystemController {
     String  getTimeFilters(Model model) {
         Gson gson = new Gson();
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        return gson.toJson(entitySpecificationBean.getTimeSpecifications());
+
+        if(entitySpecificationBean.getCurrentIndicator().getIndicatorType().equals("simple")) {
+            if(!entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().containsKey("0"))
+                entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().put("0", new IndicatorDataset());
+
+            return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getTimeSpecifications());
+        }
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "composite") {
+            //TODO for composite indicator type
+        }
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "multianalysis") {
+            //TODO for multianalysis indicator type
+        }
+
+        return null;
 
     }
 
@@ -397,70 +394,78 @@ public class GAIndicatorSystemController {
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         String[] filterTerms = filter.split("_");
 
-        for (Iterator<TimeSearchSpecifications> timeSearchSpecifications = entitySpecificationBean.getTimeSpecifications().iterator(); timeSearchSpecifications.hasNext(); ) {
-            TimeSearchSpecifications aTimeSearchSpecifications = timeSearchSpecifications.next();
+        if(entitySpecificationBean.getCurrentIndicator().getIndicatorType().equals("simple")) {
 
-            if (aTimeSearchSpecifications.getType().equals(filterTerms[0]) && aTimeSearchSpecifications.getTimestamp().get(0).equals(filterTerms[1])) {
-                timeSearchSpecifications.remove();
-                break;
-            }
-        }
-        return gson.toJson(entitySpecificationBean.getTimeSpecifications());
-    }
+            if(!entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().containsKey("0"))
+                entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().put("0", new IndicatorDataset());
 
-    @RequestMapping(value = "/searchSession", method = RequestMethod.GET)
-    public @ResponseBody
-    String  searchSessions(@RequestParam(value="keyword", required = true) String keyword,
-                        @RequestParam(value="searchType", required = true) String searchType,
-                        Model model) {
-        GLAEventDao glaEventBean = (GLAEventDao) appContext.getBean("glaEvent");
-        Gson gson = new Gson();
-        List<String> searchResults = glaEventBean.searchSimilarSessionDetails(searchType, keyword);
-        return gson.toJson(searchResults);
-    }
+            Iterator<TimeSearchSpecifications> timeSearchSpecifications = entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getTimeSpecifications().iterator();
 
+            while(timeSearchSpecifications.hasNext()) {
+                TimeSearchSpecifications aTimeSearchSpecifications = timeSearchSpecifications.next();
 
-    @RequestMapping(value = "/addSessionFilter", method = RequestMethod.GET)
-    public @ResponseBody
-    String  addSessionFilter(@RequestParam(value="sessionData", required = true) String sessionData,
-                          @RequestParam(value="searchType", required = true) String searchType,
-
-                          Model model) {
-        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        Gson gson = new Gson();
-        entitySpecificationBean.getSessionSpecifications().add(new SessionSpecifications(searchType, sessionData));
-        return gson.toJson(entitySpecificationBean.getUserSpecifications());
-
-    }
-    @RequestMapping(value = "/getSessionFilters", method = RequestMethod.GET)
-    public @ResponseBody
-    String  getSessionFilters(Model model) {
-        Gson gson = new Gson();
-        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        return gson.toJson(entitySpecificationBean.getSessionSpecifications());
-
-    }
-    @RequestMapping(value = "/deleteSessionFilters", method = RequestMethod.GET)
-    public @ResponseBody
-    String  deleteSessionFilters(Model model, @RequestParam(value="filter", required = true) String filter) {
-        Gson gson = new Gson();
-        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        if(filter.equals("ALL"))
-            entitySpecificationBean.getSessionSpecifications().clear();
-        else {
-            String[] filterTerms = filter.split("_");
-            for (Iterator<SessionSpecifications> sessionSpecifications = entitySpecificationBean.getSessionSpecifications().iterator(); sessionSpecifications.hasNext(); ) {
-                SessionSpecifications aSessionSpecifications = sessionSpecifications.next();
-                if (aSessionSpecifications.getSession().equals(filterTerms[0]) && aSessionSpecifications.getType().equals(filterTerms[1])) {
-                    sessionSpecifications.remove();
+                if (aTimeSearchSpecifications.getType().equals(filterTerms[0])) {
+                    timeSearchSpecifications.remove();
                     break;
                 }
             }
+
+            return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getTimeSpecifications());
         }
-        return gson.toJson(entitySpecificationBean.getSessionSpecifications());
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "composite") {
+            //TODO for composite indicator type
+        }
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "multianalysis") {
+            //TODO for multianalysis indicator type
+        }
+
+        return null;
     }
 
-    @RequestMapping(value = "/refreshGraph", method = RequestMethod.GET)
+//    @RequestMapping(value = "/addSessionFilter", method = RequestMethod.GET)
+//    public @ResponseBody
+//    String  addSessionFilter(@RequestParam(value="sessionData", required = true) String sessionData,
+//                          @RequestParam(value="searchType", required = true) String searchType,
+//
+//                          Model model) {
+//        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+//        Gson gson = new Gson();
+//        entitySpecificationBean.getSessionSpecifications().add(new SessionSpecifications(searchType, sessionData));
+//
+//        return gson.toJson(entitySpecificationBean.getSessionSpecifications());
+//
+//    }
+//    @RequestMapping(value = "/getSessionFilters", method = RequestMethod.GET)
+//    public @ResponseBody
+//    String  getSessionFilters(Model model) {
+//        Gson gson = new Gson();
+//        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+//        return gson.toJson(entitySpecificationBean.getSessionSpecifications());
+//
+//    }
+//    @RequestMapping(value = "/deleteSessionFilters", method = RequestMethod.GET)
+//    public @ResponseBody
+//    String  deleteSessionFilters(Model model, @RequestParam(value="filter", required = true) String filter) {
+//        Gson gson = new Gson();
+//        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+//        if(filter.equals("ALL"))
+//            entitySpecificationBean.getSessionSpecifications().clear();
+//        else {
+//            String[] filterTerms = filter.split("_");
+//            for (Iterator<SessionSpecifications> sessionSpecifications = entitySpecificationBean.getSessionSpecifications().iterator(); sessionSpecifications.hasNext(); ) {
+//                SessionSpecifications aSessionSpecifications = sessionSpecifications.next();
+//                if (aSessionSpecifications.getSession().equals(filterTerms[0]) && aSessionSpecifications.getType().equals(filterTerms[1])) {
+//                    sessionSpecifications.remove();
+//                    break;
+//                }
+//            }
+//        }
+//        return gson.toJson(entitySpecificationBean.getSessionSpecifications());
+//    }
+
+
+    // Tanmaya code
+    /*@RequestMapping(value = "/refreshGraph", method = RequestMethod.GET)
     public @ResponseBody
     String  refreshGraph(@RequestParam(value="questionName", required = true) String questionName,
                          @RequestParam(value="indicatorName", required = true) String indicatorName,
@@ -484,47 +489,48 @@ public class GAIndicatorSystemController {
         long result = glaEntityBean.findNumber(entitySpecificationBean.getHql());
         log.info("Dumping Result \n" + result);
         return gson.toJson("true");
-    }
+    }*/
 
-    @RequestMapping(value = "/loadQuestion", method = RequestMethod.GET)
+ /*   @RequestMapping(value = "/loadQuestion", method = RequestMethod.GET)
     public @ResponseBody
     String loadQuestion(@RequestParam(value="name", required = true) String name) {
         Questions question = retrieveQuestion(name);
-//        String questionName = question.getQuestionName();
-//        Gson gson = new Gson();
+        String questionName = question.getQuestionName();
+        Gson gson = new Gson();
 
-//        for( GenQuery query : question.getGenQueries()){
-//            IndicatorXMLData data = query.getIndicatorXMLData();
-//            finalizeIndicator(questionName, query.getIndicatorName(), query.getGenIndicatorProps().getChartType(), query.getGenIndicatorProps().getChartEngine(),
-//                    null, data.getAnalyticsMethodId(), data.getQueryToMethodConfig(), data.getMethodToVisualizationConfig(), data.getRetrievableObjects());
-//        }
+        for( SessionIndicator query : question.getGenQueries()){
+            IndicatorXMLData data = query.getIndicatorXMLData();
+            finalizeIndicator(questionName, query.getIndicatorName(), query.getGenIndicatorProps().getChartType(), query.getGenIndicatorProps().getChartEngine(),
+                    null, data.getAnalyticsMethodId(), data.getQueryToMethodConfig(), data.getMethodToVisualizationConfig(), data.getRetrievableObjects());
+        }
 
-//        GLAQuestionDao glaQuestionsBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
-//        long question_id = glaQuestionsBean.findQuestionID(name);
-//        GLAQuestion glaQuestion = glaQuestionsBean.loadByQuestionID(question_id);
-//        Questions questions = new Questions();
-//        questions.setQuestionId(glaQuestion.getId());
-//        questions.setQuestionName(glaQuestion.getQuestion_name());
-//        questions.setTotalExecutions(glaQuestion.getGlaQuestionProps().getTotalExecutions());
-//        questions.setLast_executionTime(glaQuestion.getGlaQuestionProps().getLast_executionTime());
-//        questions.setLast_executionTime(glaQuestion.getGlaQuestionProps().getLast_executionTime());
-//        questions.setUserName(glaQuestion.getGlaQuestionProps().getUserName());
-//        questions.setNumIndicators(glaQuestion.getIndicators_num());
-//        for( GLAIndicator glaIndicators : glaQuestion.getGlaIndicators()){
-//            GenQuery genQuery = new GenQuery(glaIndicators.getHql(),glaIndicators.getIndicator_name(),
-//                    glaIndicators.getId());
-//            genQuery.setGenIndicatorProps(glaIndicators.getGlaIndicatorProps().getId(),glaIndicators.getGlaIndicatorProps().getLast_executionTime(),
-//                    glaIndicators.getGlaIndicatorProps().getTotalExecutions(),glaIndicators.getGlaIndicatorProps().getChartType(),
-//                    glaIndicators.getGlaIndicatorProps().getChartEngine(), glaIndicators.getGlaIndicatorProps().getUserName(), glaIndicators.getGlaIndicatorProps().getJson_data());
-//            questions.getGenQueries().add(genQuery);
-//        }
-//        return questions;
+        GLAQuestionDao glaQuestionsBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
+        long question_id = glaQuestionsBean.findQuestionID(name);
+        GLAQuestion glaQuestion = glaQuestionsBean.loadByQuestionID(question_id);
+        Questions questions = new Questions();
+        questions.setQuestionId(glaQuestion.getId());
+        questions.setQuestionName(glaQuestion.getQuestion_name());
+        questions.setTotalExecutions(glaQuestion.getGlaQuestionProps().getTotalExecutions());
+        questions.setLast_executionTime(glaQuestion.getGlaQuestionProps().getLast_executionTime());
+        questions.setLast_executionTime(glaQuestion.getGlaQuestionProps().getLast_executionTime());
+        questions.setUserName(glaQuestion.getGlaQuestionProps().getUserName());
+        questions.setNumIndicators(glaQuestion.getIndicators_num());
+        for( GLAIndicator glaIndicators : glaQuestion.getGlaIndicators()){
+            SessionIndicator genQuery = new SessionIndicator(glaIndicators.getHql(),glaIndicators.getIndicator_name(),
+                    glaIndicators.getId());
+            genQuery.setGenIndicatorProps(glaIndicators.getGlaIndicatorProps().getId(),glaIndicators.getGlaIndicatorProps().getLast_executionTime(),
+                    glaIndicators.getGlaIndicatorProps().getTotalExecutions(),glaIndicators.getGlaIndicatorProps().getChartType(),
+                    glaIndicators.getGlaIndicatorProps().getChartEngine(), glaIndicators.getGlaIndicatorProps().getUserName(), glaIndicators.getGlaIndicatorProps().getJson_data());
+            questions.getGenQueries().add(genQuery);
+        }
+        return questions;
 
 
 
         Gson gson = new Gson();
         return gson.toJson(question);
-    }
+    }*/
+
 
     @RequestMapping(value = "/finalize", method = RequestMethod.GET)
     public @ResponseBody
@@ -537,174 +543,179 @@ public class GAIndicatorSystemController {
                               @RequestParam(value="analyticsMethod", required = true) String analyticsMethod,
                               @RequestParam(value="methodMappings", required = true) String methodMappings,
                               @RequestParam(value="visualizationMappings", required = true) String visualizationMappings,
-                              @RequestParam(value="selectedMethods", required = true) String selectedMethods,
+                              @RequestParam(value="selectedMethods", required = true) String selectedMethodDataColumns,
                               Model model) {
         Gson gson = new Gson();
 
+        List<String> entityDisplayObjects = new ArrayList<>();
+        if(selectedMethodDataColumns != null && !selectedMethodDataColumns.isEmpty())
+            entityDisplayObjects = Arrays.asList(selectedMethodDataColumns.split("\\s*,\\s*"));
 
-        Type olapPortMappingType = new TypeToken<List<OLAPPortMapping>>(){}.getType();
-        List<OLAPPortMapping> methodOLAPPortMappingList = gson.fromJson(methodMappings, olapPortMappingType);
-        OLAPPortConfiguration queryToMethodConfig = new OLAPPortConfiguration();
-        for (OLAPPortMapping methodPortMapping : methodOLAPPortMappingList) {
+        Type olapPortMappingType = new TypeToken<List<OpenLAPPortMapping>>(){}.getType();
+        List<OpenLAPPortMapping> methodOpenLAPPortMappingList = gson.fromJson(methodMappings, olapPortMappingType);
+        OpenLAPPortConfig queryToMethodConfig = new OpenLAPPortConfig();
+        for (OpenLAPPortMapping methodPortMapping : methodOpenLAPPortMappingList) {
             queryToMethodConfig.getMapping().add(methodPortMapping);
         }
 
-        List<OLAPPortMapping> visualizationOLAPPortMappingList = gson.fromJson(visualizationMappings, olapPortMappingType);
-        OLAPPortConfiguration methodToVisualizationConfig = new OLAPPortConfiguration();
-        for (OLAPPortMapping visualizationPortMapping : visualizationOLAPPortMappingList) {
+        List<OpenLAPPortMapping> visualizationOpenLAPPortMappingList = gson.fromJson(visualizationMappings, olapPortMappingType);
+        OpenLAPPortConfig methodToVisualizationConfig = new OpenLAPPortConfig();
+        for (OpenLAPPortMapping visualizationPortMapping : visualizationOpenLAPPortMappingList) {
             methodToVisualizationConfig.getMapping().add(visualizationPortMapping);
         }
 
-        GLACategoryDao glaCategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
+        //GLACategoryDao glaCategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
         OperationNumberProcessorDao operationNumberProcessorBean =  (OperationNumberProcessorDao) appContext.getBean("operationNumberProcessor");
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        entitySpecificationBean.setSelectedChartType(graphType);
-        entitySpecificationBean.setSelectedChartEngine(graphEngine);
-        entitySpecificationBean.setComposite(false);
-        entitySpecificationBean.setAnalyticsMethodId(Long.parseLong(analyticsMethod));
+        //entitySpecificationBean.setComposite(false);
+
         entitySpecificationBean.setGoalId(Long.parseLong(goalId));
         entitySpecificationBean.setQuestionName(questionName);
-        entitySpecificationBean.setIndicatorName(indicatorName);
-        entitySpecificationBean.setRetrievableObjects(selectedMethods);
-        entitySpecificationBean.setQueryToMethodConfig(queryToMethodConfig);
-        entitySpecificationBean.setMethodToVisualizationConfig(methodToVisualizationConfig);
+        entitySpecificationBean.getCurrentIndicator().setIndicatorName(indicatorName);
+
+        //entitySpecificationBean.setAnalyticsMethodId(Long.parseLong(analyticsMethod));
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getAnalyticsMethodId().put("0",Long.parseLong(analyticsMethod));
+
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().setVisualizationType(graphType);
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().setVisualizationLibrary(graphEngine);
+
+        //entitySpecificationBean.setQueryToMethodConfig(queryToMethodConfig);
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getQueryToMethodConfig().put("0",queryToMethodConfig);
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().setMethodToVisualizationConfig(methodToVisualizationConfig);
+
+        //entitySpecificationBean.setRetrievableObjects(selectedMethods);
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().setEntityDisplayObjects(entityDisplayObjects);
 
         //If user Directly finalizes the Indicator, then we have to implicitly generate the HQL
-        if(entitySpecificationBean.getHql() == null ) {
+        if(entitySpecificationBean.getCurrentIndicator().getHqlQuery().get("0") == null ) {
 //            entitySpecificationBean.setGoalId(Long.parseLong(goalId));
 //            entitySpecificationBean.setQuestionName(questionName);
-            GLACategory glaCategory = glaCategoryBean.loadCategoryByName(entitySpecificationBean.getSelectedMinor());
-            entitySpecificationBean.setSelectedMajor(glaCategory.getMajor());
-            entitySpecificationBean.setSelectedType(glaCategory.getType());
-            operationNumberProcessorBean.computeResult(entitySpecificationBean);
-        }
-        List<EntityValues>  xMLentityValues = new ArrayList<EntityValues>(entitySpecificationBean.getEntityValues().size());
-        Iterator<EntityValues> entityIterator = entitySpecificationBean.getEntityValues().iterator();
-        while(entityIterator.hasNext()){
-            xMLentityValues.add(entityIterator.next().clone());
-        }
-        List<UserSearchSpecifications>  xMlUserSpecifications = new ArrayList<UserSearchSpecifications>(entitySpecificationBean.getUserSpecifications().size());
-        Iterator<UserSearchSpecifications> userSpecIterator = entitySpecificationBean.getUserSpecifications().iterator();
-        while(userSpecIterator.hasNext()){
-            xMlUserSpecifications.add(userSpecIterator.next().clone());
+
+            //GLACategory glaCategory = glaCategoryBean.loadCategoryByName(entitySpecificationBean.getSelectedMinor());
+            //entitySpecificationBean.setSelectedMajor(glaCategory.getMajor());
+            //entitySpecificationBean.setSelectedType(glaCategory.getType());
+
+            operationNumberProcessorBean.computeResult(entitySpecificationBean, "0");
         }
 
-        List<SessionSpecifications>  xMLSessionSpecifications = new ArrayList<SessionSpecifications>(entitySpecificationBean.getSessionSpecifications().size());
-        Iterator<SessionSpecifications> sessionSpecIterator = entitySpecificationBean.getSessionSpecifications().iterator();
-        while(sessionSpecIterator.hasNext()){
-            xMLSessionSpecifications.add(sessionSpecIterator.next().clone());
-        }
-        List<TimeSearchSpecifications>  xMLTimeSpecifications = new ArrayList<TimeSearchSpecifications>(entitySpecificationBean.getTimeSpecifications().size());
-        Iterator<TimeSearchSpecifications> timeSpecIterator = entitySpecificationBean.getTimeSpecifications().iterator();
-        while(timeSpecIterator.hasNext()){
-            xMLTimeSpecifications.add(timeSpecIterator.next().clone());
-        }
+//        List<EntityValues>  xMLentityValues = new ArrayList<EntityValues>();
+//        Iterator<EntityValues> entityIterator = entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getEntityValues().iterator();
+//        while(entityIterator.hasNext()){
+//            xMLentityValues.add(entityIterator.next().clone());
+//        }
+//        List<UserSearchSpecifications>  xMlUserSpecifications = new ArrayList<UserSearchSpecifications>();
+//        Iterator<UserSearchSpecifications> userSpecIterator = entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getUserSpecifications().iterator();
+//        while(userSpecIterator.hasNext()){
+//            xMlUserSpecifications.add(userSpecIterator.next().clone());
+//        }
+//
+//        List<SessionSpecifications>  xMLSessionSpecifications = new ArrayList<SessionSpecifications>();
+//        Iterator<SessionSpecifications> sessionSpecIterator = entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getSessionSpecifications().iterator();
+//        while(sessionSpecIterator.hasNext()){
+//            xMLSessionSpecifications.add(sessionSpecIterator.next().clone());
+//        }
+//        List<TimeSearchSpecifications>  xMLTimeSpecifications = new ArrayList<TimeSearchSpecifications>();
+//        Iterator<TimeSearchSpecifications> timeSpecIterator = entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getTimeSpecifications().iterator();
+//        while(timeSpecIterator.hasNext()){
+//            xMLTimeSpecifications.add(timeSpecIterator.next().clone());
+//        }
 
         AnalyticsEngineController analyticsEngineController = appContext.getBean(AnalyticsEngineController.class);
-        String visualizationCode = analyticsEngineController.getIndicatorPreviewVisualizationCode("400", "205", analyticsMethod, graphEngine, graphType, indicatorName,
-                methodMappings, visualizationMappings, selectedMethods);
 
-        if(entitySpecificationBean.getQuestionsContainer().getGenQueries().size() == 0 ) {
-            Questions questions = new Questions();
-            GenIndicatorProps genIndicatorProps = new GenIndicatorProps();
-            genIndicatorProps.setChartEngine(entitySpecificationBean.getSelectedChartEngine());
-            genIndicatorProps.setChartType(entitySpecificationBean.getSelectedChartType());
-            genIndicatorProps.setComposite(entitySpecificationBean.isComposite());
-//            genIndicatorProps.setAnalyticsMethodId(entitySpecificationBean.getAnalyticsMethodId());
-            IndicatorXMLData indicatorXMLData = new IndicatorXMLData(entitySpecificationBean.getSelectedSource(), entitySpecificationBean.getSelectedPlatform(),
-                    entitySpecificationBean.getSelectedAction(),entitySpecificationBean.getSelectedMinor(),entitySpecificationBean.getSelectedMajor(),
-                    entitySpecificationBean.getFilteringType(),xMLentityValues, xMlUserSpecifications, xMLSessionSpecifications, xMLTimeSpecifications, entitySpecificationBean.getSelectedChartType(),
-                    entitySpecificationBean.getSelectedChartEngine(), entitySpecificationBean.getAnalyticsMethodId(), entitySpecificationBean.getRetrievableObjects(),
-                    entitySpecificationBean.getQueryToMethodConfig(), entitySpecificationBean.getMethodToVisualizationConfig());
-            questions.setGoalId(Long.parseLong(goalId));
-            questions.setQuestionName(entitySpecificationBean.getQuestionName());
-            questions.getGenQueries().add(new GenQuery(entitySpecificationBean.getHql(),entitySpecificationBean.getIndicatorName(),1, indicatorXMLData, genIndicatorProps, visualizationCode));
-            entitySpecificationBean.setQuestionsContainer(questions);
+        String visualizationCode;
+        if(entitySpecificationBean.getCurrentIndicator().getVisualization() == null || entitySpecificationBean.getCurrentIndicator().getVisualization().isEmpty()){
+                String previewResponse = analyticsEngineController.getIndicatorPreviewVisualizationCode("xxxheightxxx", "xxxwidthxxx", analyticsMethod, graphEngine, graphType, indicatorName,
+                    methodMappings, visualizationMappings, selectedMethodDataColumns);
+
+            IndicatorPreviewResponse indicatorPreviewResponse = gson.fromJson(previewResponse, IndicatorPreviewResponse.class);
+
+            if(indicatorPreviewResponse.isSuccess())
+                visualizationCode = indicatorPreviewResponse.getVisualizationCode();
+            else
+                visualizationCode = indicatorPreviewResponse.getErrorMessage();
         }
-        else if(entitySpecificationBean.getQuestionsContainer().getGenQueries().size() >= 1) {
-            IndicatorXMLData indicatorXMLData = new IndicatorXMLData(entitySpecificationBean.getSelectedSource(), entitySpecificationBean.getSelectedPlatform(),
-                    entitySpecificationBean.getSelectedAction(),entitySpecificationBean.getSelectedMinor(),entitySpecificationBean.getSelectedMajor(),
-                    entitySpecificationBean.getFilteringType(), xMLentityValues, xMlUserSpecifications, xMLSessionSpecifications, xMLTimeSpecifications, entitySpecificationBean.getSelectedChartType(),
-                    entitySpecificationBean.getSelectedChartEngine(), entitySpecificationBean.getAnalyticsMethodId(), entitySpecificationBean.getRetrievableObjects(),
-                    entitySpecificationBean.getQueryToMethodConfig(), entitySpecificationBean.getMethodToVisualizationConfig());
-            GenIndicatorProps genIndicatorProps = new GenIndicatorProps();
-            genIndicatorProps.setChartEngine(entitySpecificationBean.getSelectedChartEngine());
-            genIndicatorProps.setChartType(entitySpecificationBean.getSelectedChartType());
-            genIndicatorProps.setComposite(entitySpecificationBean.isComposite());
-//            genIndicatorProps.setAnalyticsMethodId(entitySpecificationBean.getAnalyticsMethodId());
+        else
+            visualizationCode = entitySpecificationBean.getCurrentIndicator().getVisualization();
 
+
+
+
+
+        SessionIndicator sessionIndicator = null;
+        try {
+            sessionIndicator = entitySpecificationBean.getCurrentIndicator().clone();
+
+
+            int curIndID =  entitySpecificationBean.getCurrentIndicator().getIdentifier();
+            int cloneIndID =  sessionIndicator.getIdentifier();
+
+            Log.info("Current indicator identifier:" + curIndID + ", Clonned indicator identifier: " + cloneIndID);
+
+            sessionIndicator.setIdentifier(entitySpecificationBean.getCurrentIndicator().getIdentifier());
+
+        } catch (CloneNotSupportedException e) {
+            IndicatorDataset indicatorDataset = new IndicatorDataset();
+            indicatorDataset.setSelectedSource(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getSelectedSource());
+            indicatorDataset.setSelectedPlatform(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getSelectedPlatform());
+            indicatorDataset.setSelectedAction(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getSelectedAction());
+            indicatorDataset.setSelectedMinor(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getSelectedMinor());
+            indicatorDataset.setSelectedMajor(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getSelectedMajor());
+            indicatorDataset.setSelectedType(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getSelectedType());
+            indicatorDataset.setEntityValues(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getEntityValues());
+            indicatorDataset.setUserSpecifications(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getUserSpecifications());
+            indicatorDataset.setSessionSpecifications(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getSessionSpecifications());
+            indicatorDataset.setTimeSpecifications(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getTimeSpecifications());
+
+            IndicatorParameters indicatorParameters = new IndicatorParameters();
+            indicatorParameters.getIndicatorDataset().put("0", indicatorDataset);
+            indicatorParameters.getAnalyticsMethodId().put("0", entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getAnalyticsMethodId().get("0"));
+            indicatorParameters.setVisualizationLibrary(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getVisualizationLibrary());
+            indicatorParameters.setVisualizationType(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getVisualizationType());
+            indicatorParameters.setRetrievableObjects(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getRetrievableObjects());
+            indicatorParameters.setEntityDisplayObjects(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getEntityDisplayObjects());
+            indicatorParameters.setQueryToMethodConfig(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getQueryToMethodConfig());
+            indicatorParameters.setMethodToVisualizationConfig(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getMethodToVisualizationConfig());
+
+            sessionIndicator = new SessionIndicator();
+            sessionIndicator.setIndicatorName(entitySpecificationBean.getCurrentIndicator().getIndicatorName());
+            sessionIndicator.setIndicatorType(entitySpecificationBean.getCurrentIndicator().getIndicatorType());
+            sessionIndicator.setHqlQuery(entitySpecificationBean.getCurrentIndicator().getHqlQuery());
+            sessionIndicator.setIndicatorParameters(indicatorParameters);
+            sessionIndicator.setIdentifier(entitySpecificationBean.getCurrentIndicator().getIdentifier());
+        }
+
+        sessionIndicator.setVisualization(visualizationCode);
+
+        if(entitySpecificationBean.getCurrentQuestion().getSessionIndicators().size() == 0 ) {
+            SessionQuestion sessionQuestion = new SessionQuestion();
+            sessionQuestion.setGoalId(Long.parseLong(goalId));
+            sessionQuestion.setQuestionName(entitySpecificationBean.getQuestionName());
+            sessionQuestion.getSessionIndicators().add(sessionIndicator);
+
+            entitySpecificationBean.setCurrentQuestion(sessionQuestion);
+        }
+        else if(entitySpecificationBean.getCurrentQuestion().getSessionIndicators().size() >= 1) {
             if(indicatorIdentifier.equals("null")) {
-                entitySpecificationBean.getQuestionsContainer().getGenQueries().add(new GenQuery(entitySpecificationBean.getHql(), entitySpecificationBean.getIndicatorName(), 1, indicatorXMLData, genIndicatorProps, visualizationCode));
+                entitySpecificationBean.getCurrentQuestion().getSessionIndicators().add(sessionIndicator);
             } else {
-//                entitySpecificationBean.getQuestionsContainer().getGenQueries().set(Integer.parseInt(indicatorIndex), new GenQuery(entitySpecificationBean.getHql(),entitySpecificationBean.getIndicatorName(),1, indicatorXMLData, genIndicatorProps));
+//                entitySpecificationBean.getQuestionsContainer().getGenQueries().set(Integer.parseInt(indicatorIndex), new SessionIndicator(entitySpecificationBean.getHql(),entitySpecificationBean.getIndicatorName(),1, indicatorXMLData, genIndicatorProps));
 
-                ListIterator<GenQuery> genQueryIterator = entitySpecificationBean.getQuestionsContainer().getGenQueries().listIterator();
-                while(genQueryIterator.hasNext()){
-                    GenQuery element = genQueryIterator.next();
-                    if(element.getIdentifier() == Integer.parseInt(indicatorIdentifier)) {
-                        genQueryIterator.set(new GenQuery(entitySpecificationBean.getHql(),entitySpecificationBean.getIndicatorName(),1, indicatorXMLData, genIndicatorProps, visualizationCode));
+                ListIterator<SessionIndicator> sessionIndicatorListIterator = entitySpecificationBean.getCurrentQuestion().getSessionIndicators().listIterator();
+                while(sessionIndicatorListIterator.hasNext()){
+                    SessionIndicator indicator = sessionIndicatorListIterator.next();
+                    if(indicator.getIdentifier() == Integer.parseInt(indicatorIdentifier)) {
+                        sessionIndicatorListIterator.set(sessionIndicator);
                     }
                 }
             }
         }
-        return gson.toJson(entitySpecificationBean.getQuestionsContainer());
+        return gson.toJson(entitySpecificationBean.getCurrentQuestion());
     }
 
 
-    @RequestMapping(value = "/addCompositeIndicator", method = RequestMethod.GET)
-    public @ResponseBody
-    String  addCompositeIndicator(@RequestParam(value="indName", required = true) String indicatorName,
-                         @RequestParam(value="graphType", required = true) String graphType,
-                         @RequestParam(value="graphEngine", required = true) String graphEngine,
-                         @RequestParam(value="compositeSources", required = true) List<String> compositeSources,
-                         Model model) {
-        Gson gson = new Gson();
-        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        GenIndicatorProps genIndicatorProps = new GenIndicatorProps();
-        genIndicatorProps.setChartEngine(graphEngine);
-        genIndicatorProps.setChartType(graphType);
-        genIndicatorProps.setComposite(true);
-        List<CompositeQuery> compositeQueryList = new ArrayList<>();
-        for (String indName : compositeSources ) {
-            for (Iterator<GenQuery> genQuery = entitySpecificationBean.getQuestionsContainer().getGenQueries().iterator(); genQuery.hasNext(); ) {
-                GenQuery agenQuery = genQuery.next();
-                if (agenQuery.getIndicatorName().equals(indName)) {
-                    compositeQueryList.add(new CompositeQuery(agenQuery.getQuery(), agenQuery.getIndicatorName()));
-                }
-            }
-        }
-        entitySpecificationBean.getQuestionsContainer().getGenQueries().add(new GenQuery(gson.toJson(compositeQueryList), indicatorName, 1, null, genIndicatorProps, ""));
-        return gson.toJson(entitySpecificationBean.getQuestionsContainer());
 
-    }
 
-    @RequestMapping(value = "/addNewIndicator", method = RequestMethod.GET)
-    public @ResponseBody
-    String  addNewIndicator(Model model) {
-        Gson gson = new Gson();
-        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        entitySpecificationBean.reset();
-        return gson.toJson(entitySpecificationBean.getQuestionsContainer());
-    }
-
-    @RequestMapping(value = "/refreshQuestionSummary", method = RequestMethod.GET)
-    public @ResponseBody
-    String  refreshQuestionSummary(@RequestParam(value="indName" ,required = false)String indicatorName, Model model) {
-        Gson gson = new Gson();
-        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        if(indicatorName == null) {
-            return gson.toJson(entitySpecificationBean.getQuestionsContainer());
-        }
-        else {
-            Questions questions = entitySpecificationBean.getQuestionsContainer();
-            for(GenQuery genQuery : questions.getGenQueries()){
-                if(genQuery.getIndicatorName().equals(indicatorName) && !genQuery.getGenIndicatorProps().isComposite())
-                    return gson.toJson(genQuery);
-            }
-        }
-        return gson.toJson(null);
-    }
-    @RequestMapping(value = "/refreshCurrentIndicator", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/refreshCurrentIndicator", method = RequestMethod.GET)
     public @ResponseBody
     String  refreshCurrentIndicator(Model model) {
 
@@ -716,7 +727,7 @@ public class GAIndicatorSystemController {
                 entitySpecificationBean.getTimeSpecifications().size());
         return gson.toJson(currentIndicatorSummary);
 
-    }
+    }*/
 
     @RequestMapping(value = "/deleteIndFromQn", method = RequestMethod.GET)
     public @ResponseBody
@@ -726,14 +737,14 @@ public class GAIndicatorSystemController {
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         String msg = null;
         if (indicatorIdentifier == null) {
-           msg = "Error Deletion Indicator. No Indicator Specified";
+           msg = "No indicator specified for deletion.";
         } else {
-            for (Iterator<GenQuery> genQuery = entitySpecificationBean.getQuestionsContainer().getGenQueries().iterator(); genQuery.hasNext(); ) {
-                GenQuery agenQuery = genQuery.next();
-//                if (agenQuery.getIndicatorName().equals(indicatorName)) {
-                if (agenQuery.getIdentifier() == Integer.parseInt(indicatorIdentifier)) {
-                    msg=agenQuery.getIndicatorName()+" Successfully Deleted from Current Question Set. Please press the Refesh Button";
-                    genQuery.remove();
+            Iterator<SessionIndicator> sessionIndicatorIterator = entitySpecificationBean.getCurrentQuestion().getSessionIndicators().iterator();
+            while(sessionIndicatorIterator.hasNext()) {
+                SessionIndicator indicator = sessionIndicatorIterator.next();
+                if (indicator.getIdentifier() == Integer.parseInt(indicatorIdentifier)) {
+                    sessionIndicatorIterator.remove();
+                    msg=indicator.getIndicatorName() + " successfully deleted from current question.";
                 }
             }
         }
@@ -743,103 +754,88 @@ public class GAIndicatorSystemController {
     @RequestMapping(value = "/loadIndFromQnSetToEditor", method = RequestMethod.GET)
     public @ResponseBody
 //    String  loadIndicatorFromQn(@RequestParam(value="indName" ,required = false)String indicatorName, Model model) {
-    String loadIndicatorFromQn(@RequestParam(value="indIdentifier" ,required = false)String indicatorIdentifier, Model model) {
+    String loadIndicatorFromQn(@RequestParam(value="indIdentifier" ,required = false)String indicatorIdentifier, Model model) throws CloneNotSupportedException {
         Gson gson = new Gson();
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         String msg = null;
         if (indicatorIdentifier != null) {
-            Questions temp = entitySpecificationBean.getQuestionsContainer();
-            for (Iterator<GenQuery> genQuery = entitySpecificationBean.getQuestionsContainer().getGenQueries().iterator(); genQuery.hasNext(); ) {
-                GenQuery agenQuery = genQuery.next();
+            //SessionQuestion temp = entitySpecificationBean.getCurrentQuestion();
+            Iterator<SessionIndicator> sessionIndicatorIterator = entitySpecificationBean.getCurrentQuestion().getSessionIndicators().iterator();
+
+            while (sessionIndicatorIterator.hasNext()) {
+                SessionIndicator indicator = sessionIndicatorIterator.next();
 //                if (agenQuery.getIndicatorName().equals(indicatorName) && !agenQuery.getGenIndicatorProps().isComposite()) {
-                if (agenQuery.getIdentifier() == Integer.parseInt(indicatorIdentifier) && !agenQuery.getGenIndicatorProps().isComposite()) {
-                    entitySpecificationBean.setEntityValues(new ArrayList<EntityValues>(agenQuery.getIndicatorXMLData().getEntityValues().size()));
-                    Iterator<EntityValues> entityIterator = agenQuery.getIndicatorXMLData().getEntityValues().iterator();
-                    while(entityIterator.hasNext()) {
-                        entitySpecificationBean.getEntityValues().add(entityIterator.next().clone());
-                    }
-                    entitySpecificationBean.setUserSpecifications(new ArrayList<UserSearchSpecifications>(agenQuery.getIndicatorXMLData().getUserSpecifications().size()));
-                    Iterator<UserSearchSpecifications> userSpecIterator = agenQuery.getIndicatorXMLData().getUserSpecifications().iterator();
-                    while(userSpecIterator.hasNext()){
-                        entitySpecificationBean.getUserSpecifications().add(userSpecIterator.next().clone());
-                    }
-                    entitySpecificationBean.setSessionSpecifications(new ArrayList<SessionSpecifications>(agenQuery.getIndicatorXMLData().getSessionSpecifications().size()));
-                    Iterator<SessionSpecifications> sessionSpecIterator = agenQuery.getIndicatorXMLData().getSessionSpecifications().iterator();
-                    while(sessionSpecIterator.hasNext()){
-                        entitySpecificationBean.getSessionSpecifications().add(sessionSpecIterator.next().clone());
-                    }
-                    entitySpecificationBean.setTimeSpecifications(new ArrayList<TimeSearchSpecifications>(agenQuery.getIndicatorXMLData().getTimeSpecifications().size()));
-                    Iterator<TimeSearchSpecifications> timeSpecIterator = agenQuery.getIndicatorXMLData().getTimeSpecifications().iterator();
-                    while(timeSpecIterator.hasNext()){
-                        entitySpecificationBean.getTimeSpecifications().add(timeSpecIterator.next().clone());
-                    }
-//                    genQuery.remove();
-                    return gson.toJson(agenQuery);
+                if (indicator.getIdentifier() == Integer.parseInt(indicatorIdentifier) && indicator.getIndicatorType().equals("simple")) {
+
+                    entitySpecificationBean.reset();
+
+
+                    entitySpecificationBean.setCurrentIndicator(indicator.clone());
+
+
+//                    if(!entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().containsKey("0"))
+//                        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().put("0", new IndicatorDataset());
+//
+//                    entitySpecificationBean.getCurrentIndicator().setIdentifier(Integer.parseInt(indicatorIdentifier));
+//                    entitySpecificationBean.getCurrentIndicator().setIndicatorType("simple");
+//
+//                    entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").setEntityValues(new ArrayList<EntityValues>());
+//                    Iterator<EntityValues> entityIterator = indicator.getIndicatorParameters().getIndicatorDataset().get("0").getEntityValues().iterator();
+//                    while(entityIterator.hasNext()) {
+//                        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getEntityValues().add(entityIterator.next().clone());
+//                    }
+//
+//                    entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").setUserSpecifications(new ArrayList<UserSearchSpecifications>());
+//                    Iterator<UserSearchSpecifications> userSpecIterator = indicator.getIndicatorParameters().getIndicatorDataset().get("0").getUserSpecifications().iterator();
+//                    while(userSpecIterator.hasNext()){
+//                        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getUserSpecifications().add(userSpecIterator.next().clone());
+//                    }
+//                    entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").setSessionSpecifications(new ArrayList<SessionSpecifications>());
+//                    Iterator<SessionSpecifications> sessionSpecIterator = indicator.getIndicatorParameters().getIndicatorDataset().get("0").getSessionSpecifications().iterator();
+//                    while(sessionSpecIterator.hasNext()){
+//                        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getSessionSpecifications().add(sessionSpecIterator.next().clone());
+//                    }
+//                    entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").setTimeSpecifications(new ArrayList<TimeSearchSpecifications>());
+//                    Iterator<TimeSearchSpecifications> timeSpecIterator = indicator.getIndicatorParameters().getIndicatorDataset().get("0").getTimeSpecifications().iterator();
+//                    while(timeSpecIterator.hasNext()){
+//                        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getTimeSpecifications().add(timeSpecIterator.next().clone());
+//                    }
+
+                    return gson.toJson(indicator);
+                }
+                else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "composite") {
+                    //TODO for composite indicator type
+                }
+                else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType() == "multianalysis") {
+                    //TODO for multianalysis indicator type
                 }
             }
         }
         return gson.toJson(null);
     }
 
-    @RequestMapping(value = "/saveQuestionDB", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/saveQuestionDB", method = RequestMethod.GET)
     public @ResponseBody
-    String  saveQnToDB(@RequestParam(value="userName" ,required = true)String userName,
+    String  saveQnToDB(@RequestParam(value="userName" ,required = true) String userName,
                        Model model) {
 
-        log.info("Saving Indicator and all its Questions/Queries : STARTED " );
+        log.info("Saving question and asoicated indicators");
         Gson gson = new Gson();
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         GLAQuestionDao glaQuestionBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
         Calendar calendar = Calendar.getInstance();
         java.util.Date now = calendar.getTime();
-        Set<GLAIndicator> glaIndicatorHashSet = new HashSet<GLAIndicator>();
-        //Create the Question
-        GLAQuestion glaQuestion = new GLAQuestion();
-        glaQuestion.setIndicators_num(entitySpecificationBean.getQuestionsContainer().getGenQueries().size());
-        glaQuestion.setQuestion_name(entitySpecificationBean.getQuestionsContainer().getQuestionName());
-        //Create the Question Properties
-        GLAQuestionProps glaQuestionProps = new GLAQuestionProps();
-        glaQuestionProps.setUserName(userName);
-        glaQuestionProps.setGlaQuestion(glaQuestion);
-        glaQuestionProps.setLast_executionTime(new java.sql.Timestamp(now.getTime()));
-        glaQuestionProps.setTotalExecutions(1);
-        glaQuestion.setGlaQuestionProps(glaQuestionProps);
-        for(GenQuery genQuery : entitySpecificationBean.getQuestionsContainer().getGenQueries())
-        {
-            //Creating & Settings a Indicator
-            GLAIndicator glaIndicator = new GLAIndicator();
-            glaIndicator.setIndicator_name(genQuery.getIndicatorName());
-            glaIndicator.setHql(genQuery.getQuery());
-            //Creating  &  Setting its Properties
-            GLAIndicatorProps glaIndicatorProps = new GLAIndicatorProps();
-            glaIndicatorProps.setComposite(genQuery.getGenIndicatorProps().isComposite());
-            glaIndicatorProps.setTotalExecutions(1);
-            glaIndicatorProps.setLast_executionTime(new java.sql.Timestamp(now.getTime()));
-            glaIndicatorProps.setUserName(userName);
-            glaIndicatorProps.setJson_data(gson.toJson(genQuery.getIndicatorXMLData()));
-            glaIndicatorProps.setChartEngine(genQuery.getGenIndicatorProps().getChartEngine());
-            glaIndicatorProps.setChartType(genQuery.getGenIndicatorProps().getChartType());
-            glaIndicatorProps.setGlaIndicator(glaIndicator);
-            // Pushing this property set to the Indicator
-            glaIndicator.setGlaIndicatorProps(glaIndicatorProps);
-            //Adding to the Hashset
-            glaIndicatorHashSet.add(glaIndicator);
-        }
 
-        long qid = glaQuestionBean.add(glaQuestion, glaIndicatorHashSet);
-//        entitySpecificationBean.completeReset();
-//        entitySpecificationBean.setQuestionsContainer(new Questions());
+        entitySpecificationBean.setGoalId(Long.parseLong(goalId));
+        entitySpecificationBean.setQuestionName(questionName);
 
-
-        // new Question saving via API
         QuestionSaveRequest questionSaveRequest = new QuestionSaveRequest();
-        questionSaveRequest.setGoalID(entitySpecificationBean.getQuestionsContainer().getGoalId());
-        questionSaveRequest.setQuestion(entitySpecificationBean.getQuestionsContainer().getQuestionName());
-        questionSaveRequest.setGoalID(entitySpecificationBean.getQuestionsContainer().getGoalId());
+        questionSaveRequest.setGoalID(Long.parseLong(goalId));
+        questionSaveRequest.setQuestion(questionName);
 
         List<IndicatorSaveRequest> indicatorSaveRequestList = new ArrayList<>();
         IndicatorSaveRequest indicatorSaveRequest;
-        for (GenQuery genQuery : entitySpecificationBean.getQuestionsContainer().getGenQueries()) {
+        for (SessionIndicator genQuery : entitySpecificationBean.getQuestionsContainer().getGenQueries()) {
             indicatorSaveRequest = new IndicatorSaveRequest();
             indicatorSaveRequest.setName(genQuery.getIndicatorName());
             indicatorSaveRequest.setCreatedBy(userName);
@@ -873,18 +869,17 @@ public class GAIndicatorSystemController {
 //        return gson.toJson(qid);
         return gson.toJson(result);
 
-    }
+    }*/
 
     @RequestMapping(value = "/deleteDataFromSession", method = RequestMethod.GET)
     public @ResponseBody
     void deleteDataFromSession() {
-
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-//        entitySpecificationBean.completeReset();
-        entitySpecificationBean.setQuestionsContainer(new Questions());
+        //entitySpecificationBean.setCurrentQuestion(new SessionQuestion());
+        entitySpecificationBean.completeReset();
     }
 
-    @RequestMapping(value = "/searchIndicator", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/searchIndicator", method = RequestMethod.GET)
     public @ResponseBody
     String  searchIndicator(@RequestParam(value="searchString" ,required = true)String searchString,
                             @RequestParam(value="searchType" ,required = true)String searchType) {
@@ -909,9 +904,9 @@ public class GAIndicatorSystemController {
             }
         }
         return gson.toJson(names);
-    }
+    }*/
 
-    @RequestMapping(value = "/loadIndicator", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/loadIndicator", method = RequestMethod.GET)
     public @ResponseBody
     String  loadIndicatorFromDB(@RequestParam(value="indName" ,required = true)String indName,
                                 @RequestParam(value="loadTemplate" ,required = false)String loadTemplate) {
@@ -950,7 +945,7 @@ public class GAIndicatorSystemController {
             }
         }
         return gson.toJson(glaIndicator);
-    }
+    }*/
 
     @RequestMapping(value = "/viewall", method = RequestMethod.GET)
     public String getIndicatorsViewAll(Map<String, Object> model) {
@@ -959,7 +954,7 @@ public class GAIndicatorSystemController {
         return  "indicator_system/viewall_indicators";
     }
 
-    @RequestMapping(value = "/viewall", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/viewall", method = RequestMethod.POST)
     public ModelAndView processIndicatorSearchForm( @RequestParam String action,
                                                     @Valid @ModelAttribute("searchQuestionForm") SearchQuestionForm searchQuestionForm,
                                                     BindingResult bindingResult, HttpSession session) {
@@ -993,9 +988,9 @@ public class GAIndicatorSystemController {
 
         }
         return model;
-    }
+    }*/
 
-    @RequestMapping(value = "/fetchExistingQuestionsData.web", method = RequestMethod.GET, produces = "application/json")
+    /*@RequestMapping(value = "/fetchExistingQuestionsData.web", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
     String fetchQuestionData(HttpServletRequest request) throws IOException {
 
@@ -1083,9 +1078,9 @@ public class GAIndicatorSystemController {
         }
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         return gson.toJson(glaQuestionJsonObject);
-    }
+    }*/
 
-    @RequestMapping(value = "/fetchExistingIndicatorsData.web", method = RequestMethod.GET, produces = "application/json")
+   /* @RequestMapping(value = "/fetchExistingIndicatorsData.web", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
     String fetchIndicatorData(HttpServletRequest request) throws IOException {
 
@@ -1099,14 +1094,16 @@ public class GAIndicatorSystemController {
         GLAIndicatorJsonObject glaIndicatorJsonObject = new GLAIndicatorJsonObject();
         if (null != request.getParameter("iDisplayStart")) {
             idisplayStart = Integer.valueOf(request.getParameter("iDisplayStart"));
-            log.info("iDisplayStart : \t" + request.getParameter("iDisplayStart") + "\n");
+            //log.info("iDisplayStart : \t" + request.getParameter("iDisplayStart") + "\n");
         }
         //Fetch search parameter
         String searchParameter = request.getParameter("sSearch");
-        log.info("sSearch : \t"+ searchParameter+"\n");
+        //log.info("sSearch : \t"+ searchParameter+"\n");
+
         //Fetch Page display length
         Integer pageDisplayLength = Integer.parseInt(request.getParameter("iDisplayLength"));
-        log.info("iDisplayLength : \t"+ pageDisplayLength+"\n");
+        //log.info("iDisplayLength : \t"+ pageDisplayLength+"\n");
+
         //Create page list data
         if(searchParameter == null || searchParameter.isEmpty()) {
             String colName = null;
@@ -1173,9 +1170,9 @@ public class GAIndicatorSystemController {
         }
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         return gson.toJson(glaIndicatorJsonObject);
-    }
+    }*/
 
-    private Questions retrieveQuestion(String questionName){
+    /*private Questions retrieveQuestion(String questionName){
         GLAQuestionDao glaQuestionsBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
         long question_id = glaQuestionsBean.findQuestionID(questionName);
         GLAQuestion glaQuestion = glaQuestionsBean.loadByQuestionID(question_id);
@@ -1188,8 +1185,7 @@ public class GAIndicatorSystemController {
         questions.setUserName(glaQuestion.getGlaQuestionProps().getUserName());
         questions.setNumIndicators(glaQuestion.getIndicators_num());
         for( GLAIndicator glaIndicators : glaQuestion.getGlaIndicators()){
-            GenQuery genQuery = new GenQuery(glaIndicators.getHql(),glaIndicators.getIndicator_name(),
-                    glaIndicators.getId());
+            SessionIndicator genQuery = new SessionIndicator(glaIndicators.getHql(),glaIndicators.getIndicator_name(), glaIndicators.getId());
             System.out.println(glaIndicators.getGlaIndicatorProps().getJson_data());
             System.out.println(genQuery.getIndicatorXMLData());
             genQuery.setIndicatorXMLData(genQuery.getIndicatorXMLData());
@@ -1200,8 +1196,9 @@ public class GAIndicatorSystemController {
         }
         return questions;
 
-    }
-    private void processSearchParams(SearchQuestionForm searchQuestionForm){
+    }*/
+
+    /*private void processSearchParams(SearchQuestionForm searchQuestionForm){
         log.info("processSearchParams : STARTED \n");
         GLAQuestionDao glaQuestionBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
         GLAQuestion glaQuestion = null;
@@ -1223,175 +1220,175 @@ public class GAIndicatorSystemController {
             }
         }
         log.info("processSearchParams : ENDED \n");
-    }
+    }*/
 }
 
-class Categories {
+//class Categories {
+//
+//    String type;
+//    String major;
+//    String minor;
+//
+//    Categories(String type, String major, String minor) {
+//        this.major = major;
+//        this.minor = minor;
+//        this.type = type;
+//    }
+//    public String getType() {
+//        return type;
+//    }
+//
+//    public void setType(String type) {
+//        this.type = type;
+//    }
+//
+//    public String getMajor() {
+//        return major;
+//    }
+//
+//    public void setMajor(String major) {
+//        this.major = major;
+//    }
+//
+//    public String getMinor() {
+//        return minor;
+//    }
+//
+//    public void setMinor(String minor) {
+//        this.minor = minor;
+//    }
+//}
 
-    String type;
-    String major;
-    String minor;
+//class CurrentIndicatorSummary {
+//
+//    String name;
+//    String platform;
+//    String action;
+//    String chartType;
+//    String chartEngine;
+//    String hql;
+//    int entityFilters;
+//    int userFilters;
+//    int sessionFilters;
+//    int timeFilters;
+//
+//    CurrentIndicatorSummary() {}
+//    CurrentIndicatorSummary(String name, String platform, String action, String chartType, String chartEngine,
+//                            String hql, int entityFilters, int userFilters, int sessionFilters, int timeFilters) {
+//        this.name = name;
+//        this.action = action;
+//        this.platform = platform;
+//        this.chartEngine = chartEngine;
+//        this.chartType = chartType;
+//        this.hql = hql;
+//        this.entityFilters = entityFilters;
+//        this.userFilters = userFilters;
+//        this.sessionFilters = sessionFilters;
+//        this.timeFilters = timeFilters;
+//    }
+//
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+//
+//    public String getPlatform() {
+//        return platform;
+//    }
+//
+//    public void setPlatform(String platform) {
+//        this.platform = platform;
+//    }
+//
+//    public String getAction() {
+//        return action;
+//    }
+//
+//    public void setAction(String action) {
+//        this.action = action;
+//    }
+//
+//    public String getChartType() {
+//        return chartType;
+//    }
+//
+//    public void setChartType(String chartType) {
+//        this.chartType = chartType;
+//    }
+//
+//    public String getChartEngine() {
+//        return chartEngine;
+//    }
+//
+//    public void setChartEngine(String chartEngine) {
+//        this.chartEngine = chartEngine;
+//    }
+//
+//    public String getHql() {
+//        return hql;
+//    }
+//
+//    public void setHql(String hql) {
+//        this.hql = hql;
+//    }
+//
+//    public int getEntityFilters() {
+//        return entityFilters;
+//    }
+//
+//    public void setEntityFilters(int entityFilters) {
+//        this.entityFilters = entityFilters;
+//    }
+//
+//    public int getUserFilters() {
+//        return userFilters;
+//    }
+//
+//    public void setUserFilters(int userFilters) {
+//        this.userFilters = userFilters;
+//    }
+//
+//    public int getSessionFilters() {
+//        return sessionFilters;
+//    }
+//
+//    public void setSessionFilters(int sessionFilters) {
+//        this.sessionFilters = sessionFilters;
+//    }
+//
+//    public int getTimeFilters() {
+//        return timeFilters;
+//    }
+//
+//    public void setTimeFilters(int timeFilters) {
+//        this.timeFilters = timeFilters;
+//    }
+//}
 
-    Categories(String type, String major, String minor) {
-        this.major = major;
-        this.minor = minor;
-        this.type = type;
-    }
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getMajor() {
-        return major;
-    }
-
-    public void setMajor(String major) {
-        this.major = major;
-    }
-
-    public String getMinor() {
-        return minor;
-    }
-
-    public void setMinor(String minor) {
-        this.minor = minor;
-    }
-}
-
-class CurrentIndicatorSummary {
-
-    String name;
-    String platform;
-    String action;
-    String chartType;
-    String chartEngine;
-    String hql;
-    int entityFilters;
-    int userFilters;
-    int sessionFilters;
-    int timeFilters;
-
-    CurrentIndicatorSummary() {}
-    CurrentIndicatorSummary(String name, String platform, String action, String chartType, String chartEngine,
-                            String hql, int entityFilters, int userFilters, int sessionFilters, int timeFilters) {
-        this.name = name;
-        this.action = action;
-        this.platform = platform;
-        this.chartEngine = chartEngine;
-        this.chartType = chartType;
-        this.hql = hql;
-        this.entityFilters = entityFilters;
-        this.userFilters = userFilters;
-        this.sessionFilters = sessionFilters;
-        this.timeFilters = timeFilters;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(String platform) {
-        this.platform = platform;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-    public String getChartType() {
-        return chartType;
-    }
-
-    public void setChartType(String chartType) {
-        this.chartType = chartType;
-    }
-
-    public String getChartEngine() {
-        return chartEngine;
-    }
-
-    public void setChartEngine(String chartEngine) {
-        this.chartEngine = chartEngine;
-    }
-
-    public String getHql() {
-        return hql;
-    }
-
-    public void setHql(String hql) {
-        this.hql = hql;
-    }
-
-    public int getEntityFilters() {
-        return entityFilters;
-    }
-
-    public void setEntityFilters(int entityFilters) {
-        this.entityFilters = entityFilters;
-    }
-
-    public int getUserFilters() {
-        return userFilters;
-    }
-
-    public void setUserFilters(int userFilters) {
-        this.userFilters = userFilters;
-    }
-
-    public int getSessionFilters() {
-        return sessionFilters;
-    }
-
-    public void setSessionFilters(int sessionFilters) {
-        this.sessionFilters = sessionFilters;
-    }
-
-    public int getTimeFilters() {
-        return timeFilters;
-    }
-
-    public void setTimeFilters(int timeFilters) {
-        this.timeFilters = timeFilters;
-    }
-}
-
-class CompositeQuery {
-    private String parentIndName;
-    private String query;
-
-    CompositeQuery(String query,String parentIndName) {
-        this.query = query;
-        this.parentIndName = parentIndName;
-    }
-    public String getQuery() {
-        return query;
-    }
-
-    public void setQuery(String query) {
-        this.query = query;
-    }
-
-    public String getParentIndName() {
-        return parentIndName;
-    }
-
-    public void setParentIndName(String parentIndName) {
-        this.parentIndName = parentIndName;
-    }
-}
+//class CompositeQuery {
+//    private String parentIndName;
+//    private String query;
+//
+//    CompositeQuery(String query,String parentIndName) {
+//        this.query = query;
+//        this.parentIndName = parentIndName;
+//    }
+//    public String getQuery() {
+//        return query;
+//    }
+//
+//    public void setQuery(String query) {
+//        this.query = query;
+//    }
+//
+//    public String getParentIndName() {
+//        return parentIndName;
+//    }
+//
+//    public void setParentIndName(String parentIndName) {
+//        this.parentIndName = parentIndName;
+//    }
+//}

@@ -1,6 +1,6 @@
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,12 +33,12 @@ function createRequest() {
     }
 }
 
-function populateSPA() {
-
-    populateSources();
-    populatePlatform();
-    populateAction();
-}
+// function populateSPA() {
+//
+//     populateSources();
+//     populatePlatform();
+//     populateAction();
+// }
 
 function FilterInit() {
     request = createRequest();
@@ -63,13 +63,13 @@ function processReceivedFilters() {
     }
 
 }
-function populateSources() {
-    request = createRequest();
-    var url ="/indicators/initSources";
-    request.open("GET",url,false);
-    request.onreadystatechange=processReceivedSources;
-    request.send(null);
-}
+// function populateSources() {
+//     request = createRequest();
+//     var url ="/indicators/initSources";
+//     request.open("GET",url,false);
+//     request.onreadystatechange=processReceivedSources;
+//     request.send(null);
+// }
 
 function processReceivedSources() {
     if (request.readyState == 4) {
@@ -85,13 +85,13 @@ function processReceivedSources() {
     }
 }
 
-function populatePlatform() {
-    request = createRequest();
-    var url ="/indicators/initPlatform";
-    request.open("GET",url,false);
-    request.onreadystatechange=processReceivedPlatforms;
-    request.send(null);
-}
+// function populatePlatform() {
+//     request = createRequest();
+//     var url ="/indicators/initPlatform";
+//     request.open("GET",url,false);
+//     request.onreadystatechange=processReceivedPlatforms;
+//     request.send(null);
+// }
 
 function processReceivedPlatforms() {
     if (request.readyState == 4) {
@@ -107,13 +107,13 @@ function processReceivedPlatforms() {
     }
 }
 
-function populateAction() {
-    request = createRequest();
-    var url ="/indicators/initAction";
-    request.open("GET",url,false);
-    request.onreadystatechange=processReceivedActions;
-    request.send(null);
-}
+// function populateAction() {
+//     request = createRequest();
+//     var url ="/indicators/initAction";
+//     request.open("GET",url,false);
+//     request.onreadystatechange=processReceivedActions;
+//     request.send(null);
+// }
 
 function processReceivedActions() {
     if (request.readyState == 4) {

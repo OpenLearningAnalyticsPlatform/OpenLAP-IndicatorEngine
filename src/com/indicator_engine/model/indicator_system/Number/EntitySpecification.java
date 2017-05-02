@@ -1,6 +1,6 @@
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,14 +19,12 @@
 
 package com.indicator_engine.model.indicator_system.Number;
 
-import DataSet.OLAPPortConfiguration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import de.rwthaachen.openlap.dataset.OpenLAPPortConfig;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Tanmaya Mahapatra on 10-06-2015.
@@ -36,178 +34,25 @@ public class EntitySpecification implements Serializable {
 
     private long goalId;
     private String questionName;
-    private String indicatorName;
-    private String hql;
 
-    private List<String> selectedSource;
-    private String selectedPlatform;
-    private String selectedAction;
+    private SessionIndicator currentIndicator;
 
-    private String selectedMinor;
-    private String selectedMajor;
-    private String selectedType;
-
-
-    private List<EntityValues>  entityValues = new ArrayList<EntityValues>();
-    private List<UserSearchSpecifications>  userSpecifications = new ArrayList<UserSearchSpecifications>();
-    private List<SessionSpecifications>  sessionSpecifications = new ArrayList<SessionSpecifications>();
-    private List<TimeSearchSpecifications>  timeSpecifications = new ArrayList<TimeSearchSpecifications>();
-
-    private String selectedChartType;
-    private String selectedChartEngine;
-
-    private boolean isComposite;
-    private long analyticsMethodId;
-
-    private final String  persistenceObject;
-    private final String filteringType;
-    private String retrievableObjects;
-
-    private OLAPPortConfiguration queryToMethodConfig;
-    private OLAPPortConfiguration methodToVisualizationConfig;
-
-    private Questions questionsContainer = new Questions();
+    private SessionQuestion currentQuestion;
 
     public EntitySpecification() {
-        this.persistenceObject = "GLAEntity";
-        this.filteringType  ="AND";
-        //this.retrievableObjects = " COUNT(*) ";
-
+        completeReset();
     }
 
     public void reset() {
-
-        this.questionName = null;
-        this.goalId = 0L;
-
-        this.indicatorName = null;
-        this.hql = null;
-
-        this.selectedAction = null;
-        this.selectedPlatform = null;
-        this.selectedSource = null;
-
-        this.selectedMajor = null;
-        this.selectedMinor = null;
-        this.selectedType = null;
-
-        this.selectedChartEngine = null;
-        this.selectedChartType = null;
-        this.isComposite = false;
-        this.analyticsMethodId = 0L;
-
-        this.entityValues.clear();
-        this.userSpecifications.clear();
-        this.timeSpecifications.clear();
-        this.sessionSpecifications.clear();
-
-        this.queryToMethodConfig = null;
-        this.methodToVisualizationConfig = null;
+        this.currentIndicator = new SessionIndicator();
     }
 
     public void completeReset() {
-
+        this.questionName = null;
+        this.goalId = 0L;
+        this.currentQuestion = new SessionQuestion();
         reset();
-        this.questionsContainer = null;
     }
-
-
-    public List<String> getSelectedSource() {
-        return selectedSource;
-    }
-
-    public void setSelectedSource(List<String> selectedSource) {
-        this.selectedSource = selectedSource;
-    }
-
-    public String getSelectedPlatform() {
-        return selectedPlatform;
-    }
-
-    public void setSelectedPlatform(String selectedPlatform) {
-        this.selectedPlatform = selectedPlatform;
-    }
-
-    public String getSelectedAction() {
-        return selectedAction;
-    }
-
-    public void setSelectedAction(String selectedAction) {
-        this.selectedAction = selectedAction;
-    }
-
-    public String getSelectedMinor() {
-        return selectedMinor;
-    }
-
-    public void setSelectedMinor(String selectedMinor) {
-        this.selectedMinor = selectedMinor;
-    }
-
-    public String getSelectedMajor() {
-        return selectedMajor;
-    }
-
-    public void setSelectedMajor(String selectedMajor) {
-        this.selectedMajor = selectedMajor;
-    }
-
-    public String getSelectedType() {
-        return selectedType;
-    }
-
-    public void setSelectedType(String selectedType) {
-        this.selectedType = selectedType;
-    }
-
-    public List<EntityValues> getEntityValues() {
-        return entityValues;
-    }
-
-    public void setEntityValues(List<EntityValues> entityValues) {
-        this.entityValues = entityValues;
-    }
-
-    public List<UserSearchSpecifications> getUserSpecifications() {
-        return userSpecifications;
-    }
-
-    public void setUserSpecifications(List<UserSearchSpecifications> userSpecifications) {
-        this.userSpecifications = userSpecifications;
-    }
-
-    public List<SessionSpecifications> getSessionSpecifications() {
-        return sessionSpecifications;
-    }
-
-    public void setSessionSpecifications(List<SessionSpecifications> sessionSpecifications) {
-        this.sessionSpecifications = sessionSpecifications;
-    }
-
-    public List<TimeSearchSpecifications> getTimeSpecifications() {
-        return timeSpecifications;
-    }
-
-    public void setTimeSpecifications(List<TimeSearchSpecifications> timeSpecifications) {
-        this.timeSpecifications = timeSpecifications;
-    }
-
-    public String getSelectedChartType() {
-        return selectedChartType;
-    }
-
-    public void setSelectedChartType(String selectedChartType) {
-        this.selectedChartType = selectedChartType;
-    }
-
-    public String getSelectedChartEngine() {
-        return selectedChartEngine;
-    }
-
-    public void setSelectedChartEngine(String selectedChartEngine) {
-        this.selectedChartEngine = selectedChartEngine;
-    }
-
 
     public long getGoalId() {
         return goalId;
@@ -217,7 +62,6 @@ public class EntitySpecification implements Serializable {
         this.goalId = goalId;
     }
 
-
     public String getQuestionName() {
         return questionName;
     }
@@ -226,70 +70,225 @@ public class EntitySpecification implements Serializable {
         this.questionName = questionName;
     }
 
-    public String getIndicatorName() {
-        return indicatorName;
+    public SessionIndicator getCurrentIndicator() {
+        return currentIndicator;
     }
 
-    public void setIndicatorName(String indicatorName) {
-        this.indicatorName = indicatorName;
+    public void setCurrentIndicator(SessionIndicator currentIndicator) {
+        this.currentIndicator = currentIndicator;
     }
 
-    public String getHql() {
-        return hql;
+    public SessionQuestion getCurrentQuestion() {
+        return currentQuestion;
     }
 
-    public void setHql(String hql) {
-        this.hql = hql;
+    public void setCurrentQuestion(SessionQuestion currentQuestion) {
+        this.currentQuestion = currentQuestion;
     }
 
-    public Questions getQuestionsContainer() {
-        return questionsContainer;
-    }
+    //    public List<String> getSelectedSource() {
+//        return selectedSource;
+//    }
+//
+//    public void setSelectedSource(List<String> selectedSource) {
+//        this.selectedSource = selectedSource;
+//    }
+//
+//
+//    public List<String> getSelectedPlatform() {
+//        return selectedPlatform;
+//    }
+//
+//    public void setSelectedPlatform(List<String> selectedPlatform) {
+//        this.selectedPlatform = selectedPlatform;
+//    }
+//
+//    public List<String> getSelectedAction() {
+//        return selectedAction;
+//    }
+//
+//    public void setSelectedAction(List<String> selectedAction) {
+//        this.selectedAction = selectedAction;
+//    }
+//
+//    public List<Integer> getSelectedMinor() {
+//        return selectedMinor;
+//    }
+//
+//    public void setSelectedMinor(List<Integer> selectedMinor) {
+//        this.selectedMinor = selectedMinor;
+//    }
+//
+//    public String getSelectedMajor() {
+//        return selectedMajor;
+//    }
+//
+//    public void setSelectedMajor(String selectedMajor) {
+//        this.selectedMajor = selectedMajor;
+//    }
+//
+//    public String getSelectedType() {
+//        return selectedType;
+//    }
+//
+//    public void setSelectedType(String selectedType) {
+//        this.selectedType = selectedType;
+//    }
+//
+//    public List<EntityValues> getEntityValues() {
+//        return entityValues;
+//    }
+//
+//    public void setEntityValues(List<EntityValues> entityValues) {
+//        this.entityValues = entityValues;
+//    }
+//
+//    public List<UserSearchSpecifications> getUserSpecifications() {
+//        return userSpecifications;
+//    }
+//
+//    public void setUserSpecifications(List<UserSearchSpecifications> userSpecifications) {
+//        this.userSpecifications = userSpecifications;
+//    }
+//
+//    public List<SessionSpecifications> getSessionSpecifications() {
+//        return sessionSpecifications;
+//    }
+//
+//    public void setSessionSpecifications(List<SessionSpecifications> sessionSpecifications) {
+//        this.sessionSpecifications = sessionSpecifications;
+//    }
+//
+//    public List<TimeSearchSpecifications> getTimeSpecifications() {
+//        return timeSpecifications;
+//    }
+//
+//    public void setTimeSpecifications(List<TimeSearchSpecifications> timeSpecifications) {
+//        this.timeSpecifications = timeSpecifications;
+//    }
 
-    public void setQuestionsContainer(Questions questionsContainer) {
-        this.questionsContainer = questionsContainer;
-    }
+//    public String getSelectedChartType() {
+//        return selectedChartType;
+//    }
+//
+//    public void setSelectedChartType(String selectedChartType) {
+//        this.selectedChartType = selectedChartType;
+//    }
+//
+//    public String getSelectedChartEngine() {
+//        return selectedChartEngine;
+//    }
+//
+//    public void setSelectedChartEngine(String selectedChartEngine) {
+//        this.selectedChartEngine = selectedChartEngine;
+//    }
 
-    public String getPersistenceObject() {
-        return persistenceObject;
-    }
+//    public String getIndicatorName() {
+//        return indicatorName;
+//    }
+//
+//    public void setIndicatorName(String indicatorName) {
+//        this.indicatorName = indicatorName;
+//    }
 
-    public String getFilteringType() {
-        return filteringType;
-    }
+//    public String getHql() {
+//        return hql;
+//    }
+//
+//    public void setHql(String hql) {
+//        this.hql = hql;
+//    }
 
-    public String getRetrievableObjects() {
-        return retrievableObjects;
-    }
+//    public Map<String, String> getHqlQuery() {
+//        return hqlQuery;
+//    }
+//
+//    public void setHqlQuery(Map<String, String> hqlQuery) {
+//        this.hqlQuery = hqlQuery;
+//    }
 
-    public void setRetrievableObjects(String retrievableObjects) {
-        this.retrievableObjects = retrievableObjects;
-    }
-    public boolean isComposite() {
-        return isComposite;
-    }
+    //    public String getPersistenceObject() {
+//        return persistenceObject;
+//    }
 
-    public void setComposite(boolean isComposite) {
-        this.isComposite = isComposite;
-    }
+//    public String getFilteringType() {
+//        return filteringType;
+//    }
 
-    public long getAnalyticsMethodId() {
-        return analyticsMethodId;
-    }
+//    public String getRetrievableObjects() {
+//        return retrievableObjects;
+//    }
+//
+//    public void setRetrievableObjects(String retrievableObjects) {
+//        this.retrievableObjects = retrievableObjects;
+//    }
+//
+//    public List<String> getEntityDisplayObjects() {
+//        return entityDisplayObjects;
+//    }
+//
+//    public void setEntityDisplayObjects(List<String> entityDisplayObjects) {
+//        this.entityDisplayObjects = entityDisplayObjects;
+//    }
+//
+//    public boolean isComposite() {
+//        return isComposite;
+//    }
+//
+//    public void setComposite(boolean isComposite) {
+//        this.isComposite = isComposite;
+//    }
 
-    public void setAnalyticsMethodId(long analyticsMethodId) {
-        this.analyticsMethodId = analyticsMethodId;
-    }
+//    public long getAnalyticsMethodId() {
+//        return analyticsMethodId;
+//    }
+//
+//    public void setAnalyticsMethodId(long analyticsMethodId) {
+//        this.analyticsMethodId = analyticsMethodId;
+//    }
+//
+//    public OpenLAPPortConfig getQueryToMethodConfig() {
+//        return queryToMethodConfig;
+//    }
+//
+//    public void setQueryToMethodConfig(OpenLAPPortConfig queryToMethodConfig) { this.queryToMethodConfig = queryToMethodConfig; }
 
-    public OLAPPortConfiguration getQueryToMethodConfig() {
-        return queryToMethodConfig;
-    }
 
-    public void setQueryToMethodConfig(OLAPPortConfiguration queryToMethodConfig) { this.queryToMethodConfig = queryToMethodConfig; }
-
-    public OLAPPortConfiguration getMethodToVisualizationConfig() {
-        return methodToVisualizationConfig;
-    }
-
-    public void setMethodToVisualizationConfig(OLAPPortConfiguration methodToVisualizationConfig) { this.methodToVisualizationConfig = methodToVisualizationConfig; }
+//    public Map<String, IndicatorDataset> getIndicatorDataset() {
+//        return indicatorDataset;
+//    }
+//
+//    public void setIndicatorDataset(Map<String, IndicatorDataset> indicatorDataset) {
+//        this.indicatorDataset = indicatorDataset;
+//    }
+//
+//    public Map<String, Long> getAnalyticsMethodId() {
+//        return analyticsMethodId;
+//    }
+//
+//    public void setAnalyticsMethodId(Map<String, Long> analyticsMethodId) {
+//        this.analyticsMethodId = analyticsMethodId;
+//    }
+//
+//    public Map<String, OpenLAPPortConfig> getQueryToMethodConfig() {
+//        return queryToMethodConfig;
+//    }
+//
+//    public void setQueryToMethodConfig(Map<String, OpenLAPPortConfig> queryToMethodConfig) {
+//        this.queryToMethodConfig = queryToMethodConfig;
+//    }
+//
+//    public OpenLAPPortConfig getMethodToVisualizationConfig() {
+//        return methodToVisualizationConfig;
+//    }
+//
+//    public void setMethodToVisualizationConfig(OpenLAPPortConfig methodToVisualizationConfig) { this.methodToVisualizationConfig = methodToVisualizationConfig; }
+//
+//    public String getPreviewVisualization() {
+//        return previewVisualization;
+//    }
+//
+//    public void setPreviewVisualization(String previewVisualization) {
+//        this.previewVisualization = previewVisualization;
+//    }
 }

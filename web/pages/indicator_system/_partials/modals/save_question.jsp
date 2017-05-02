@@ -11,7 +11,7 @@
             Close
         </button>
         <button class="btn waves-effect waves-light light-blue darken-2" type="button" title="Copy Request code"
-                name="copyCode" id="copyCode" value="Copy Code" onclick="copy();">
+                name="copyCode" id="copyCode" value="Copy Code" onclick="copyCode();">
             Copy
         </button>
     </div>

@@ -1,6 +1,6 @@
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -302,7 +302,8 @@ public class ProcessUserFilters_old implements ProcessUserFiltersDao {
         String hibernateExactTime =" AND glaEvent.timestamp IN (";
         String hibernateRangeTime ="  ";
         String type = null;
-        List<String> time = new ArrayList<>();
+        //List<String> time = new ArrayList<>();
+        String time = null;
         int counterTime = 0;
         int counterRangeTime = 0;
         for(TimeSearchSpecifications timeSpec : timeSearchSpecifications){
@@ -311,7 +312,8 @@ public class ProcessUserFilters_old implements ProcessUserFiltersDao {
             if(type.equals("EXACT")) {
                 if(counterTime == 0) {
 
-                    Date date = new Date(Long.parseLong(time.get(0))); // *1000 is to convert seconds to milliseconds
+                    //Date date = new Date(Long.parseLong(time.get(0))); // *1000 is to convert seconds to milliseconds
+                    Date date = new Date(Long.parseLong(time)); // *1000 is to convert seconds to milliseconds
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // the format of your date
                     String formattedDate = sdf.format(date);
                     hibernateExactTime += "'"+formattedDate+"'";
@@ -320,7 +322,8 @@ public class ProcessUserFilters_old implements ProcessUserFiltersDao {
                 }
                 if(counterTime >= 1 ) {
 
-                    Date date = new Date(Long.parseLong(time.get(0)));
+                    //Date date = new Date(Long.parseLong(time.get(0)));
+                    Date date = new Date(Long.parseLong(time));
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String formattedDate = sdf.format(date);
                     hibernateExactTime += ", '"+ formattedDate + "' ";
@@ -331,20 +334,24 @@ public class ProcessUserFilters_old implements ProcessUserFiltersDao {
             if(type.equals("RANGE")) {
 
                 if(counterRangeTime == 0) {
-                    Date startDate = new Date(Long.parseLong(time.get(0)));
+                    //Date startDate = new Date(Long.parseLong(time.get(0)));
+                    Date startDate = new Date(Long.parseLong(time));
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String startFormattedDate = sdf.format(startDate);
-                    Date endDate = new Date(Long.parseLong(time.get(1)));
+                    //Date endDate = new Date(Long.parseLong(time.get(1)));
+                    Date endDate = new Date(Long.parseLong(time));
                     String endFormattedDate = sdf.format(endDate);
                     hibernateRangeTime += " AND glaEvent.timestamp BETWEEN ' " + startFormattedDate + "' AND '" + endFormattedDate+"' ";
                     counterRangeTime++;
                     continue;
                 }
                 if(counterRangeTime >= 1 ) {
-                    Date startDate = new Date(Long.parseLong(time.get(0)));
+                    //Date startDate = new Date(Long.parseLong(time.get(0)));
+                    Date startDate = new Date(Long.parseLong(time));
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String startFormattedDate = sdf.format(startDate);
-                    Date endDate = new Date(Long.parseLong(time.get(1)));
+                    //Date endDate = new Date(Long.parseLong(time.get(1)));
+                    Date endDate = new Date(Long.parseLong(time));
                     String endFormattedDate = sdf.format(endDate);
                     hibernateRangeTime += " AND glaEvent.timestamp BETWEEN ' " + startFormattedDate + "' AND '" + endFormattedDate+"' ";
                     counterRangeTime++;

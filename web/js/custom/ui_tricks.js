@@ -1,5 +1,7 @@
 $(function() {
 
+
+
     $('.datepicker').pickadate({
         selectMonths: true, // Creates a dropdown to control month
         selectYears: 15 // Creates a dropdown of 15 years to control year
@@ -12,24 +14,6 @@ $(function() {
     toggleVisibilityVisualizerMappingTable();
 
 
-    var current = location.pathname;
-    $('#nav-mobile li a').each(function(){
-        var $this = $(this);
-        // if the current path is like this link, make it active
-        if($this.attr('href').indexOf(current) !== -1){
-            $this.parent().addClass('active');
-            if($this.parent().hasClass('left-menu-admin')) {
-                $('.left-menu-admin').removeClass('hide');
-                $("#leftMenuAdmin").addClass('selected-left-menu-admin');
-            }
-        }
-    });
-
-    $("#leftMenuAdmin").click(function() {
-        $('.left-menu-admin').toggleClass('hide');
-        $("#leftMenuAdmin").addClass('selected-left-menu-admin');
-     });
-
     $("#questionNaming").keydown(function() {
         if(!$('#warnings').is(':empty')) {
             $('#warnings').empty();
@@ -41,14 +25,19 @@ $(function() {
     $('.modal-trigger').leanModal();
 
     $('#selectedMinorSpinner').hide();
+    $('#inputForMethodsSpinner').hide();
+    $('#selectedChartTypeSpinner').hide();
+    $("#inputForVisualizerSpinner").hide();
+    $("#entityValueSpinner").hide();
+
     $('#graphLoaderSpinner').hide();
     $("#indicatorDefinition").hide();
-    $("#CompositeClosedButton").hide();
+    //$("#CompositeClosedButton").hide();
     $("#preview_chart").hide();
     $("#saveQuestion").attr('disabled', 'disabled');
 
     if( $('#associatedIndicatorsDiv').is(':empty') ) {
-        $('#associatedIndicatorsDiv').append("No Associated Indicators Found");
+        $('#associatedIndicatorsDiv').append("No Associated Indicators");
     }
 
     if( $('#appliedAttributeFiltersDiv').is(':empty') ) {
@@ -65,35 +54,60 @@ $(function() {
     }
 
     $('#saveIndicator').click(function() {
-        if ($('#sessionSelection').valid()) {
+        if ($('#GQSelectionForm').valid() && $('#SimpleForm').valid()) {
             finalizeIndicator();
         }
     });
 
     $("#addIndicator").click(function() {
-        addNewIndicator();
+        addNewIndicator('simple');
+        localStorage.setItem('indType', "simple");
         $("#indicatorDefinition").show();
         $('body').animate({
             scrollTop: $("#indicatorDefinition").offset().top
-        }, 2000);
+        }, 1000);
     });
     $("#cancelIndicator").click(function() {
         $(".chip").removeClass('chip-bg');
         $("#indicatorDefinition").hide();
         $('body').animate({
             scrollTop: $("body").offset().top
-        }, 2000);
+        }, 1000);
     });
+
     $("#compositeIndicator").click(function() {
-        LoadIndicatorVisualizations();
+        addNewIndicator('composite');
+        localStorage.setItem('indType', "composite");
+        OpenCompositeModal();
+        $("#comp_indicatorDefinition").show();
+        $('body').animate({
+            scrollTop: $("#comp_indicatorDefinition").offset().top
+        }, 1000);
     });
+    $("#comp_CloseButton").click(function() {
+        $(".chip").removeClass('chip-bg');
+        $("#comp_indicatorDefinition").hide();
+        $('body').animate({
+            scrollTop: $("body").offset().top
+        }, 1000);
+    });
+    // $("#compositeIndicator").click(function() {
+    //     LoadIndicatorVisualizations();
+    // });
     $('#analyticsMethod').change(function() {
         updateAnalyticsMethodDesc();
     });
+
+    $('#GoalSelection').change(function() {
+        updateAnalyticsGoalDesc();
+    });
+
     $("#indicatorData").on('click', 'tr', (function() {
         $(this).parent().children().removeClass("selected");
         $(this).addClass("selected");
-        viewIndicatorProp();
+        enableIndicatorLoad();
+        //viewIndicatorProp();
+        //displayIndicatorProp();
     }));
 
     $("#questionData").on('click', 'tr', (function() {
@@ -101,10 +115,16 @@ $(function() {
         $(this).addClass("selected");
     }));
 
+    refreshQuestionSummary();
 });
 
+function updateAnalyticsGoalDesc() {
+    //$('#GoalSelectionDesc').html('<i class="material-icons">info</i>' + "&nbsp;" + $('#GoalSelection').find('option:selected').attr('data-tooltip'));
+    $('#GoalSelectionDesc').html('<i class="material-icons">info</i>' + "&nbsp;" + $('#GoalSelection').find('option:selected').attr('title'));
+};
+
 function updateAnalyticsMethodDesc() {
-    $('#analyticsMethodDesc').html('<i class="material-icons">info</i>' + "&nbsp;" + $('#analyticsMethod').find('option:selected').attr('description'));
+    $('#analyticsMethodDesc').html('<i class="material-icons">info</i>' + "&nbsp;" + $('#analyticsMethod').find('option:selected').attr('title'));
 };
 
 function deleteIndicator() {
@@ -129,11 +149,12 @@ function loadIndicator(indicatorName){
         $('#loading-screen').removeClass('loader-hide');
         $("#preview_chart").hide();
         $(indicatorName).addClass("chip-bg").siblings().removeClass('chip-bg');
-        localStorage.setItem("selectedIndicatorIndex", $(indicatorName).attr("id"));
+        localStorage.setItem("selectedIndicatorIdentifier", $(indicatorName).attr("id"));
+        localStorage.setItem('selectedMethods', "[]");
         $("#indicatorDefinition").show();
         $('body').animate({
             scrollTop: $("#indicatorDefinition").offset().top
-        }, 2000);
+        }, 1000);
         $.ajax({
             type: "GET",
             url: "/indicators/loadIndFromQnSetToEditor",
@@ -147,7 +168,7 @@ function loadIndicator(indicatorName){
                     refreshQuestionSummary();
                 }
                 else {
-                    console.log(response);
+                    //console.log(response);
                     updateScreenAfterLoadInd(response);
                 }
             }
@@ -155,52 +176,39 @@ function loadIndicator(indicatorName){
     // });
 }
 
-function loadIndicatorTemplate(rawData) {
+function loadIndicatorTemplate(selectedIndicator) {
 
     $('#loading-screen').removeClass('loader-hide');
 
     $("#preview_chart").hide();
 
-    var properties = JSON.parse(rawData.glaIndicatorProps.json_data);
+    var properties = JSON.parse(selectedIndicator.parameters);
 
-    $('#indicatorNaming').val(rawData.indicator_name);
+    $('#indicatorNaming').val(selectedIndicator.name);
+    $('#sourceSelection').val(properties.indicatorDataset[0].selectedSource);
+    $('#PlatformSelection').val(properties.indicatorDataset[0].selectedPlatform);
+    $('#actionSelection').val(properties.indicatorDataset[0].selectedAction);
 
-    $('#PlatformSelection').val(properties.platform);
-
-    $('#actionSelection').val(properties.action);
-
-    $('#selectedChartType').val(properties.selectedChartType);
-
-    $('#EngineSelect').val(properties.selectedChartEngine);
-
-    $('#analyticsMethod').val(properties.analyticsMethodId);
-
-    var optionsToSelect = properties.source;
-    var select = document.getElementById( 'sourceSelection' );
-
-    for ( var i = 0, l = select.options.length, o; i < l; i++ )
-    {
-        o = select.options[i];
-        if ( optionsToSelect.indexOf( o.text ) != -1 )
-        {
-            o.selected = true;
-        }
-    }
-
-    var entityValues = properties.entityValues;
-    var userSpecs = properties.userSpecifications;
-    var sessionSpecs = properties.sessionSpecifications;
-    var timeSpecs = properties.timeSpecifications;
+    var entityValues = properties.indicatorDataset[0].entityValues;
+    //var userSpecs = properties.indicatorDataset[0].userSpecifications;
+    var sessionSpecs = properties.indicatorDataset[0].sessionSpecifications;
+    var timeSpecs = properties.indicatorDataset[0].timeSpecifications;
     loadAssociatedEntityFilters(entityValues);
     loadAssociatedSessionFilters(sessionSpecs);
-    loadAssociatedUserTimeFilters(userSpecs, timeSpecs);
+    loadAssociatedTimeFilters(timeSpecs);
+    //loadAssociatedUserFilters(userSpecs);
 
     populateAnalyticsMethods(JSON.stringify(properties));
-    populateCategories(properties.minor);
 
-    setTimeout(function(){
-        addLoadedIndicatorToAssociatedIndicatorList(rawData.indicator_name, properties);
-    },5000);
+    populateCategories(properties.indicatorDataset[0].selectedMinor);
+
+
+    //We dont need to add them to associate indicators list yet. the user can edit it and finalize is
+    /*setTimeout(function(){
+        addLoadedIndicatorToAssociatedIndicatorList(selectedIndicator.name, properties);
+    },2500);*/
+
+    $('#loading-screen').addClass('loader-hide');
 }
 
 function addLoadedIndicatorToAssociatedIndicatorList(indicatorName, properties) {
@@ -214,7 +222,10 @@ function addLoadedIndicatorToAssociatedIndicatorList(indicatorName, properties) 
 
     var methodMappings = JSON.stringify(properties.queryToMethodConfig.mapping);
     var visualizationMappings = JSON.stringify(properties.methodToVisualizationConfig.mapping);
-    var selectedMethods = properties.retrievableObjects;
+    //var selectedMethods = properties.retrievableObjects;
+    var selectedMethods = properties.entityDisplayObjects;
+    if(selectedMethods.length > 0)
+        selectedMethods = JSON.parse(selectedMethods).join(',');
 
 
     $.ajax({
@@ -246,18 +257,18 @@ function processReceivedAnalyticsMethods(request, data) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
-            
             var analyticsMethodSelection = document.getElementById("analyticsMethod");
             removeOptions(analyticsMethodSelection);
+
             for (var i=0;i< parsedJSON.length;i++) {
                 var newOption = new Option(parsedJSON[i].name, parsedJSON[i].id);
-                newOption.setAttribute('description', parsedJSON[i].description);
+                newOption.setAttribute('title', parsedJSON[i].description);
                 analyticsMethodSelection.appendChild(newOption);
             }
             analyticsMethodSelection.selectedIndex = -1;
             if (data) {
                 var dataObj = JSON.parse(data);
-                $('#analyticsMethod').val(dataObj.analyticsMethodId);
+                $('#analyticsMethod').val(dataObj.analyticsMethodId[0]);
                 getAnalyticsMethodInputs(data);
             }
             populateVisualizationFrameworks(data);
@@ -278,14 +289,27 @@ function processReceivedAnalyticsGoal(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
-
             var goalSelection = document.getElementById("GoalSelection");
             removeOptions(goalSelection);
+
+            // var emptyOption = new Option("Select analtyics goal", "");
+            // emptyOption.setAttribute("disabled", "");
+            // emptyOption.setAttribute("selected", "");
+            // goalSelection.appendChild(emptyOption);
+
             for (var i=0;i< parsedJSON.length;i++) {
                 var newOption = new Option(parsedJSON[i].name, parsedJSON[i].id);
+                newOption.setAttribute('title', parsedJSON[i].description);
+                // newOption.setAttribute("data-position", "right");
+                // newOption.setAttribute("data-tooltip", parsedJSON[i].description);
+                // newOption.setAttribute("data-delay", "100");
                 goalSelection.appendChild(newOption);
+
+                //$(newOption).tooltip({delay: 100});
             }
-            goalSelection.selectedIndex = 0;
+            goalSelection.selectedIndex = -1;
+
+            //$(goalSelection).material_select();
         }
     }
 }
@@ -324,7 +348,7 @@ function processReceivedVisualizationFrameworks(request, data) {
 
             if (data) {
                 var dataObj = JSON.parse(data);
-                $('#EngineSelect').val(dataObj.selectedChartEngine);
+                $('#EngineSelect').val(dataObj.visualizationLibrary);
                 // $('#selectedChartType').val(dataObj.selectedChartType);
                 populateVisualizationMethods(data);
                 // loadVisualizationMappingToTable(data);
@@ -337,6 +361,8 @@ function processReceivedVisualizationFrameworks(request, data) {
 function populateVisualizationMethods(data) {
 
     data = data || false;
+
+    $('#selectedChartTypeSpinner').show();
 
     var engineSelect = $("#EngineSelect").val();
     var request = createRequest();
@@ -368,10 +394,12 @@ function processReceivedVisualizationMethods(request, data) {
             // visualizationFrameworksSelection.selectedIndex = -1;
             chartTypeSelection.selectedIndex = -1;
 
+            $('#selectedChartTypeSpinner').hide();
+
             if (data) {
                 var dataObj = JSON.parse(data);
                 // $('#EngineSelect').val(dataObj.selectedChartEngine);
-                $('#selectedChartType').val(dataObj.selectedChartType);
+                $('#selectedChartType').val(dataObj.visualizationType);
 
                 loadVisualizationMappingToTable(data);
             }
@@ -381,7 +409,11 @@ function processReceivedVisualizationMethods(request, data) {
 
 function getIndicatorPreviewVisualizationCode() {
 
-    if ($('#sessionSelection').valid()) {
+    $('#preview_msg').empty();
+
+    if ($('#GQSelectionForm').valid() && $('#SimpleForm').valid()) {
+
+        slideToElement("previewChartLabel");
 
         $('#preview_chart').hide();
         $('#graphLoaderSpinner').show();
@@ -390,11 +422,12 @@ function getIndicatorPreviewVisualizationCode() {
         var methodMappings = localStorage.getItem('methodMappings') || "";
         var visualizationMappings = localStorage.getItem('visualizationMappings') || "";
         var selectedMethods = localStorage.getItem('selectedMethods') || "";
-        selectedMethods = JSON.parse(selectedMethods).join(',');
+        if(selectedMethods.length > 0)
+            selectedMethods = JSON.parse(selectedMethods).join(',');
 
         var request = createRequest();
-        var url = "/engine/getIndicatorPreviewVisualizationCode?width=" + $('#chart_wrap').parent().width()
-            + "&height=" + $('#chart_wrap').parent().height()
+        var url = "/engine/getIndicatorPreviewVisualizationCode?width=xxxwidthxxx"
+            + "&height=xxxheightxxx"
             + "&analyticsMethodId=" + $("#analyticsMethod").val()
             + "&EngineSelect=" + $("#EngineSelect").val()
             + "&selectedChartType=" + $("#selectedChartType").val()
@@ -408,26 +441,78 @@ function getIndicatorPreviewVisualizationCode() {
         };
         request.send(null);
     }
+    else{
+        var formValidator = $('#GQSelectionForm').data("validator");
+        var invalidElements = formValidator.invalidElements(); // contain the invalid elements
+
+        var msg = "";
+
+        for (i = 0; i < invalidElements.length; i++) {
+            if($(invalidElements[i]).is("select"))
+                msg = msg + "<p id='"+invalidElements[i].id+"_msg'><a onclick='slideToElement(\""+ invalidElements[i].id +"\")'>" + $(invalidElements[i]).prev("label").attr("data-error") + "</a></p>";
+            else
+                msg = msg + "<p id='"+invalidElements[i].id+"_msg'><a onclick='slideToElement(\""+ invalidElements[i].id +"\")'>" + $(invalidElements[i]).next("label").attr("data-error") + "</a></p>";
+        }
+
+        formValidator = $('#SimpleForm').data("validator");
+        invalidElements = formValidator.invalidElements(); // contain the invalid elements
+
+
+        for (i = 0; i < invalidElements.length; i++) {
+            if($(invalidElements[i]).is("select"))
+                msg = msg + "<p id='"+invalidElements[i].id+"_msg'><a onclick='slideToElement(\""+ invalidElements[i].id +"\")'>" + $(invalidElements[i]).prev("label").attr("data-error") + "</a></p>";
+            else
+                msg = msg + "<p id='"+invalidElements[i].id+"_msg'><a onclick='slideToElement(\""+ invalidElements[i].id +"\")'>" + $(invalidElements[i]).next("label").attr("data-error") + "</a></p>";
+        }
+
+        //msg = msg.substring(0,msg.length-4);
+
+        $('#preview_msg').html(msg);
+    }
+}
+
+function slideToElement(id){
+    $('body').animate({
+        scrollTop: ($("#"+id).offset().top - 20)
+    }, 1000);
 }
 
 function embedIndicatorPreviewVisualizationCode(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             $('#graphLoaderSpinner').hide();
-            if ((typeof google === 'undefined') || (typeof google.visualization === 'undefined')) {
+            /*if ((typeof google === 'undefined') || (typeof google.visualization === 'undefined')) {
                 console.log('Google Charts Lib is not loaded');
             }
-            else {
+            else {*/
                 var parsedJSON = JSON.parse(request.responseText);
-                var decodedGraphData = decodeURIComponent(parsedJSON);
 
-                if (decodedGraphData === "null" ) {
-                    decodedGraphData = '<div class="alert alert-warning"> Error generating Preview. Please check visualization mappings. </div>';
+                //console.log(parsedJSON);
+
+                var decodedGraphData;
+
+                if(parsedJSON.isSuccess) {
+                    decodedGraphData = decodeURIComponent(parsedJSON.visualizationCode);
+
+                    decodedGraphData = decodedGraphData.replace("xxxwidthxxx","$('#chart_wrap').outerWidth(true)");
+                    decodedGraphData = decodedGraphData.replace("xxxheightxxx","$('#chart_wrap').outerHeight(true)");
                 }
-                $("#preview_chart").html(decodedGraphData);
-                $('#preview_chart').show();
-                $("#generateGraph").removeAttr('disabled');
-            }
+                else {
+                    decodedGraphData = '<div class="alert alert-error">' + parsedJSON.errorMessage + '</div>';
+                }
+
+            $("#generateGraph").removeAttr('disabled');
+
+                try {
+                    $('#preview_chart').show();
+                    $("#preview_chart").html(decodedGraphData);
+                }
+                catch(err) {
+                    $("#preview_chart").append("<span>" + err.message + "</span>");
+                }
+
+
+            // }
         }
     }
 }
@@ -466,16 +551,16 @@ function showDeleteIndicatorModal(filter, event) {
 }
 
 function LoadExistingIndicator() {
-    var questionName = document.getElementById("questionNaming").value;
+    //var questionName = document.getElementById("questionNaming").value;
 
-    if (questionName) {
+    //if (questionName) {
         $('#loadIndicatorTemplateModel').openModal();
-    } else {
+    /*} else {
         $('#warnings').append('<div class="alert alert-danger"> Please enter a question name. </div>');
         $('body').animate({
             scrollTop: $("#warnings").offset().top
-        }, 2000);
-    }
+        }, 1000);
+    }*/
 }
 
 function loadQuestionFromTemplate() {
@@ -495,13 +580,13 @@ function loadQuestionFromTemplate() {
         url: "/indicators/loadQuestion?name=" + questionName,
         dataType: "json",
         success: function (response) {
-            console.log(response);
-            console.log(response.questionName);
+            //console.log(response);
+            //console.log(response.questionName);
 
             $('#questionNaming').val(response.questionName);
 
-            for(var i=0; i<response.genQueries.length; i++) {
-                var indicatorObj = response.genQueries[i];
+            for(var i=0; i<response.sessionIndicators.length; i++) {
+                var indicatorObj = response.sessionIndicators[i];
                 var jsonProps = JSON.parse(indicatorObj.genIndicatorProps.jsonData);
 
                 var indicatorName = indicatorObj.indicatorName;
@@ -524,14 +609,155 @@ function loadQuestionFromTemplate() {
     });
 }
 
-function clearLocalStorage() {
-    localStorage.removeItem("selectedIndicatorIndex");
-    localStorage.removeItem("selectedMethods");
-    localStorage.removeItem("methodMappings");
-    localStorage.removeItem("visualizationMappings");
+function clearLocalStorage(type) {
+    if(type=='simple') {
+        localStorage.removeItem("selectedIndicatorIdentifier");
+        localStorage.removeItem("selectedMethods");
+        localStorage.removeItem("methodMappings");
+        localStorage.removeItem("visualizationMappings");
+    }
+    else if(type=='composite') {
+        localStorage.removeItem("comp_visualizationMappings");
+    }
+    else if(type=='multianalysis') {
+        localStorage.removeItem("mlai_selectedIndicatorIdentifier");
+        localStorage.removeItem("mlai_selectedMethods");
+        localStorage.removeItem("mlai_methodMappings");
+        localStorage.removeItem("mlai_visualizationMappings");
+    }
 }
 
-function copy() {
+function clearGoalArea(){
+    //$('#GoalSelection option:selected').prop("selectedIndex", -1);
+    $('#GoalSelectionDesc').empty();
+    var goalSelection = document.getElementById("GoalSelection");
+    goalSelection.selectedIndex = -1;
+}
+
+function clearQuestionArea(){
+    $('#questionNaming').val("");
+    $('#associatedIndicatorsDiv').empty();
+    $('#associatedIndicatorsDiv').append("No Associated Indicators");
+    $("#saveQuestion").attr('disabled', 'disabled');
+}
+
+function clearIndicatorArea(type){
+    if(type=='simple') {
+        clearSimpleIndicatorArea();
+    }
+    else if(type=='multianalysis') {
+        clearMLAIIndicatorArea();
+    }
+    else if(type=='composite') {
+        clearCompIndicatorArea();
+    }
+    else {
+        clearSimpleIndicatorArea();
+        clearCompIndicatorArea();
+        //clearMLAIIndicatorArea();
+    }
+}
+
+function clearSimpleIndicatorArea(){
+    $('#indicatorNaming').val("");
+
+    $('#sourceSelection option:selected').prop('selected', false);
+    $('#PlatformSelection option:selected').prop('selected', false);
+    $('#actionSelection option:selected').prop('selected', false);
+
+    $('#selectedMinor').empty();
+    $('#entityKeySelection').empty();
+    $('#entityValue').empty();
+
+    $('#appliedAttributeFiltersDiv').empty();
+    $('#appliedAttributeFiltersDiv').hide();
+    $('#appliedAttributeFiltersLabel').hide();
+
+    // $('#appliedSessionFiltersDiv').empty();
+    // $('#appliedSessionFiltersDiv').hide();
+    // $('#appliedSessionFiltersLabel').hide();
+
+    // $('#isMyData').attr('checked', false);
+
+    $('#appliedUserTimeFiltersDiv').empty();
+    $('#appliedUserTimeFiltersDiv').hide();
+    $('#appliedUserTimeFiltersLabel').hide();
+
+    $('#analyticsMethodDesc').empty();
+    $('#analyticsMethod option:selected').prop('selected', false);
+
+    $('#methodDataColumns').empty();
+    $('#inputForMethods').empty();
+    $('#addMethodMapping').prop('disabled', false);
+
+    $("#methodMappingTable > tbody:last").children().remove();
+    toggleVisibilityMethodMappingTable();
+
+
+    $('#EngineSelect option:selected').prop('selected', false);
+    $('#selectedChartType option:selected').prop('selected', false);
+
+    $('#outputForMethods').empty();
+    $('#inputForVisualizer').empty();
+    $('#addVisualizationMapping').prop('disabled', false);
+
+    $("#visualizerMappingTable > tbody:last").children().remove();
+    toggleVisibilityVisualizerMappingTable();
+
+    $("#preview_chart").empty();
+    $("#preview_chart").hide();
+
+    populateAnalyticsMethods();
+}
+
+/*function clearMLAIIndicatorArea(){
+    $('#mlai_indicatorNaming').val("");
+
+    $('#mlai_analyticsMethodDesc').empty();
+    $('#mlai_analyticsMethod option:selected').prop('selected', false);
+
+    $('#mlai_methodDataColumns').empty();
+    $('#mlai_inputForMethods').empty();
+    $('#mlai_addMethodMapping').prop('disabled', false);
+
+    $("#mlai_methodMappingTable > tbody:last").children().remove();
+    toggleMLAIVisibilityMethodMappingTable();
+
+
+    $('#mlai_EngineSelect option:selected').prop('selected', false);
+    $('#mlai_selectedChartType option:selected').prop('selected', false);
+
+    $('#mlai_outputForMethods').empty();
+    $('#mlai_inputForVisualizer').empty();
+    $('#mlai_addVisualizationMapping').prop('disabled', false);
+
+    $("#mlai_visualizerMappingTable > tbody:last").children().remove();
+    toggleMLAIVisibilityVisualizerMappingTable();
+
+    $("#mlai_preview_chart").empty();
+    $("#mlai_preview_chart").hide();
+
+    populateAnalyticsMethods();
+}*/
+
+function clearCompIndicatorArea(){
+ $('#comp_indicatorNaming').val("");
+
+ $('#comp_EngineSelect option:selected').prop('selected', false);
+ $('#comp_selectedChartType option:selected').prop('selected', false);
+
+ $('#comp_outputForMethods').empty();
+ $('#comp_inputForVisualizer').empty();
+ $('#comp_addVisualizationMapping').prop('disabled', false);
+
+ $("#comp_visualizerMappingTable > tbody:last").children().remove();
+ toggleCompVisibilityVisualizerMappingTable();
+
+ $("#comp_preview_chart").empty();
+ $("#comp_preview_chart").hide();
+ }
+
+function copyCode() {
     try {
         $('#questionRequestCode').select();
         document.execCommand('copy');

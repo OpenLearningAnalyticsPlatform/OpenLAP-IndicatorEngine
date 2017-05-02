@@ -7,9 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Tanmaya Mahapatra on 31-03-2015.
@@ -89,7 +87,7 @@ public class SelectNumberParameters implements Serializable{
     @NotNull
     private String selectedChartEngine;
 
-    private Questions questionsContainer = new Questions();
+    private SessionQuestion questionsContainer = new SessionQuestion();
 
     public void reset(){
         // Reset everything to your default values
@@ -178,7 +176,7 @@ public class SelectNumberParameters implements Serializable{
         chartTypes.add("Pie");
         chartEngines.add("JFreeGraph");
         chartEngines.add("CEWOLF");
-        this.questionsContainer = new Questions();
+        this.questionsContainer = new SessionQuestion();
 
     }
 
@@ -497,11 +495,11 @@ public class SelectNumberParameters implements Serializable{
         this.indicatorName = indicatorName;
     }
 
-    public Questions getQuestionsContainer() {
+    public SessionQuestion getQuestionsContainer() {
         return questionsContainer;
     }
 
-    public void setQuestionsContainer(Questions questionsContainer) {
+    public void setQuestionsContainer(SessionQuestion questionsContainer) {
         this.questionsContainer = questionsContainer;
     }
 

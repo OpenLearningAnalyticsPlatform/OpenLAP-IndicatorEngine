@@ -1,6 +1,6 @@
 <%--
-  ~ Open Platform Learning Analytics : Indicator Engine
-  ~ Copyright (C) 2015  Learning Technologies Group, RWTH
+  ~ Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -75,7 +75,7 @@
                     <i class="fa fa-database"></i> Indicator System <div class="pull-right"><span class="caret"></span></div>
                 </a>
                 <ul class="templatemo-submenu">
-                    <li><a href="/indicators/indicators_definition"><i class="fa fa-file"></i><span class="badge pull-right"></span>Define New</a></li>
+                    <li><a href="/indicators/define_new"><i class="fa fa-file"></i><span class="badge pull-right"></span>Define New</a></li>
                     <li><a href="/indicators/viewall"><i class="fa fa-th-large"></i><span class="badge pull-right"></span>View Existing</a></li>
                     <li><a href="/indicators/trialrun"><i class="fa fa-play"></i><span class="badge pull-right"></span>Trial Run</a></li>
                 </ul>
@@ -129,7 +129,7 @@
     </div>
     <footer class="templatemo-footer">
         <div class="templatemo-copyright">
-            <p>Copyright &copy; 2015 Learning Technologies Group, RWTH</p>
+            <p>Open Learning Analytics Platform (OpenLAP)</p>
         </div>
     </footer>
 </div>

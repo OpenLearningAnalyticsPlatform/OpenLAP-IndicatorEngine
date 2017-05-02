@@ -15,10 +15,11 @@ import java.util.List;
 @SuppressWarnings({"unused", "unchecked"})
 public class TimeSearchSpecifications  implements Serializable,Cloneable{
     private String type;
-    private List<String> timestamp = new ArrayList<>();
+    //private List<String> timestamp = new ArrayList<>();
+    private String timestamp;
 
     public TimeSearchSpecifications(){}
-    public TimeSearchSpecifications(String type, List<String> timestamp ){
+    public TimeSearchSpecifications(String type, String timestamp ){
         this.type = type;
         this.timestamp = timestamp;
     }
@@ -40,11 +41,11 @@ public class TimeSearchSpecifications  implements Serializable,Cloneable{
 
     public void setType(String type) { this.type = type; }
 
-    public List<String> getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(List<String> timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 }

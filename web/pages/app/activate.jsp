@@ -1,6 +1,6 @@
 <%--
-  ~ Open Platform Learning Analytics : Indicator Engine
-  ~ Copyright (C) 2015  Learning Technologies Group, RWTH
+  ~ Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     if ((session.getAttribute("activationStatus") != "false"))
-    response.sendRedirect("/welcome");
+    response.sendRedirect("/login");
     else
     {
 
@@ -37,7 +37,7 @@
 <head>
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-    <title>Goal Oriented LA Toolkit Activation : Status</title>
+    <title>OpenLAP Activation : Status</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
@@ -48,7 +48,7 @@
 <div id="main-wrapper">
     <div class="navbar navbar-inverse" role="navigation">
         <div class="navbar-header">
-            <div class="logo"><h1>Goal Oriented LA Toolkit : Activation Status</h1></div>
+            <div class="logo"><h1>OpenLAP : Activation Status</h1></div>
         </div>
     </div>
     <div align="center">

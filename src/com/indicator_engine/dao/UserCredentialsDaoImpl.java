@@ -1,6 +1,6 @@
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -54,7 +54,7 @@ public class UserCredentialsDaoImpl implements UserCredentialsDao {
     public UserCredentials add(UserCredentials uc){
         log.info("Executing add()");
         factory.getCurrentSession().saveOrUpdate(uc);
-        SecurityRoleEntity entity = new SecurityRoleEntity("ROLE_USER");
+        SecurityRoleEntity entity = new SecurityRoleEntity("User");
         entity.setUc(uc);
         uc.getRoleEntitySet().add(entity);
         factory.getCurrentSession().save(entity);
@@ -88,7 +88,7 @@ public class UserCredentialsDaoImpl implements UserCredentialsDao {
     public void addAdminROLE(UserCredentials uc){
         log.info("Executing add()");
         factory.getCurrentSession().saveOrUpdate(uc);
-        SecurityRoleEntity entity = new SecurityRoleEntity("ROLE_ADMIN");
+        SecurityRoleEntity entity = new SecurityRoleEntity("Admin");
         entity.setUc(uc);
         uc.getRoleEntitySet().add(entity);
         factory.getCurrentSession().save(entity);

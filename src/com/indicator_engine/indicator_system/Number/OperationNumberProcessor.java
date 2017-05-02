@@ -1,6 +1,6 @@
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -41,7 +41,7 @@ public class OperationNumberProcessor implements OperationNumberProcessorDao {
     private ApplicationContext appContext;
 
     @Override
-    public void computeResult(EntitySpecification entitySpecification){
+    public void computeResult(EntitySpecification entitySpecification, String indReference){
 
         StatefulKnowledgeSession session = null;
         try {
@@ -56,6 +56,7 @@ public class OperationNumberProcessor implements OperationNumberProcessorDao {
             session = knowledgeBase.newStatefulKnowledgeSession();
             session.insert(entitySpecification);
             session.insert(new ProcessUserFilters());
+            session.insert(indReference);
             session.fireAllRules();
         } catch(Throwable t) {
             t.printStackTrace();
@@ -64,7 +65,7 @@ public class OperationNumberProcessor implements OperationNumberProcessorDao {
                 session.dispose();
             }
         }
-        log.info("Dumping HQL" + entitySpecification.getHql());
+        //log.info("Dumping HQL" + entitySpecification.getHql());
 
         log.info("Result Finished ");
 

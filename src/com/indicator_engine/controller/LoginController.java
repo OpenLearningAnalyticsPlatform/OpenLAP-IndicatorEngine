@@ -1,7 +1,7 @@
 
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -54,15 +54,15 @@ public class LoginController {
     @Autowired
     private BCryptPasswordEncoder encoder;
 
-    @RequestMapping(value = {"/", "/welcome**"}, method = RequestMethod.GET)
+    /*@RequestMapping(value = {"/", "/welcome**"}, method = RequestMethod.GET)
     public ModelAndView LoginController() {
 
         ModelAndView model = new ModelAndView();
         model.setViewName("app/welcome");
         return model;
-    }
+    }*/
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
     public String getLogin(Map<String, Object> model) {
         LoginForm loginForm = new LoginForm();
         model.put("loginForm", loginForm);
@@ -100,10 +100,12 @@ public class LoginController {
                         List<SecurityRoleEntity> roleEntity = securityRoleEntityBean.searchRolesByID(eachuser.getUid());
                         for (SecurityRoleEntity roles : roleEntity)
                         {
-                            if (roles.getRole().equals("ROLE_ADMIN"))
+                            if (roles.getRole().equals("Admin"))
                                 admin_role = "YES";
-                            if( roles.getRole().equals("ROLE_USER"))
-                                user_role = "ROLE_USER";
+                            if( roles.getRole().equals("Dev"))
+                                user_role = "Dev";
+                            if( roles.getRole().equals("User"))
+                                user_role = "User";
                         }
                         break;
                     }
@@ -119,7 +121,7 @@ public class LoginController {
         if (authid && activation_status) {
             String sid = session.getId();
 //            model = new ModelAndView("app/home");
-            model = new ModelAndView("redirect:/indicators/indicators_definition");
+            model = new ModelAndView("redirect:/indicators/define_new");
             model.addObject("sid", sid);
             model.addObject("loggedIn", "true");
             model.addObject("userName", sessionUserName);

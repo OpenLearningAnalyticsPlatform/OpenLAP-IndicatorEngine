@@ -1,6 +1,6 @@
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,7 +19,6 @@
 
 package com.indicator_engine.indicator_system;
 
-import com.indicator_engine.model.indicator_system.Number.Questions;
 import com.indicator_engine.model.indicator_system.Number.SelectNumberParameters;
 
 import java.util.List;
@@ -29,10 +28,10 @@ import java.util.List;
  */
 public interface IndicatorPreProcessingDao {
 
-    public List<String> initAvailableEntities_DB(String minor);
-    public List<String> initAvailableEvents_DB(String minor);
+    public List<String> initAvailableEntities_DB(List<Integer> minor);
+    public List<String> initAvailableEvents_DB(List<Integer> minor);
     public SelectNumberParameters initSelectNumberParametersObject();
-    public List<String> initPopulateMinors(List<String> sources, String action, String platform);
-    public List<String> initPopulateTypes(List<String> sources, String action, String platform);
-    public List<String> initPopulateMajors(List<String> sources, String action, String platform);
+    public List<String> initPopulateMinors(List<String> sources, List<String> action, List<String> platform);
+    public List<String> initPopulateTypes(List<String> sources, List<String> action, List<String> platform);
+    public List<String> initPopulateMajors(List<String> sources, List<String> action, List<String> platform);
 }

@@ -2,6 +2,7 @@
 function loadAssociatedEntityFilters(entityValues) {
 
     $('#appliedAttributeFiltersDiv').empty();
+
     if (entityValues.length == 0) {
         $('#appliedAttributeFiltersDiv').hide();
         $('#appliedAttributeFiltersLabel').hide();
@@ -11,24 +12,30 @@ function loadAssociatedEntityFilters(entityValues) {
         $('#appliedAttributeFiltersDiv').show();
         $('#appliedAttributeFiltersLabel').show();
     // }
-    var selectedMethods = JSON.parse(localStorage.getItem('selectedMethods')) || [];
 
-    for (var entityValuesIndex = 0;
-         entityValuesIndex < entityValues.length;
-         entityValuesIndex++) {
+
+    //var selectedMethods = JSON.parse(localStorage.getItem('selectedMethods')) || [];
+
+    for (var entityValuesIndex = 0; entityValuesIndex < entityValues.length; entityValuesIndex++) {
 
         var entityValue = entityValues[entityValuesIndex];
-        $('#appliedAttributeFiltersDiv').append("<div class='chip filter-chip'"
-            + "' id='" + entityValue.key + "_" + entityValue.eValues + "' " +
-            "title='" + entityValue.key + "_" + entityValue.eValues +"'>" +
-            "<span>" + entityValue.key + ": " + entityValue.eValues +
+
+        var etKey = entityValue.key;
+        var etValue = entityValue.eValues;
+        var etTitle = entityValue.title;
+
+        $('#appliedAttributeFiltersDiv').append("<div class='chip filter-chip' "
+            + "data='" + etKey + "_" + etValue + "' " +
+            + "id='" + etKey + "_" + etValue.replace(",", "_") + "' " +
+            "title='" + etTitle + "_" + etValue +"'>" +
+            "<span>" + etTitle + ": " + etValue +
             "</span><i class='material-icons' onclick='showDeleteEntityFilterModal(this, event);'>close</i></div>");
 
-        var index = selectedMethods.indexOf(entityValue.key);
-        if (index < 0) {
-            selectedMethods.push(entityValue.key);
-            localStorage.setItem('selectedMethods', JSON.stringify(selectedMethods));
-        }
+        // var index = selectedMethods.indexOf(entityValue.key);
+        // if (index < 0) {
+        //     selectedMethods.push(entityValue.key);
+        //     localStorage.setItem('selectedMethods', JSON.stringify(selectedMethods));
+        // }
     }
 }
 
@@ -56,43 +63,51 @@ function loadAssociatedSessionFilters(sessionSpecs) {
     }
 }
 
-function loadAssociatedUserTimeFilters(userSpecs, timeSpecs) {
+function loadAssociatedTimeFilters(timeSpecs) {
 
     $('#appliedUserTimeFiltersDiv').empty();
-    if (userSpecs.length == 0 && timeSpecs.length == 0) {
+
+    if (timeSpecs.length == 0) {
         $('#appliedUserTimeFiltersDiv').hide();
         $('#appliedUserTimeFiltersLabel').hide();
         return;
     }
-    // if (userSpecs.length > 0 || timeSpecs.length > 0) {
-        $('#appliedUserTimeFiltersDiv').show();
-        $('#appliedUserTimeFiltersLabel').show();
-    // }
 
-    for (var userSpecsIndex = 0;
-         userSpecsIndex < userSpecs.length;
-         userSpecsIndex++) {
-        var userSpec = userSpecs[userSpecsIndex];
-        $('#appliedUserTimeFiltersDiv').append("<div class='chip filter-chip'"
-            + "' id='" + userSpec.key + "_" + userSpec.value +
-            "' title='" + userSpec.key + "-" + userSpec.value +"'>" +
-            "<span>" + userSpec.key + ": " + userSpec.value
-            + "</span><i class='material-icons' onclick='showDeleteUserFilterModal(this, event);'>close</i></div>");
-    }
+    $('#appliedUserTimeFiltersDiv').show();
+    $('#appliedUserTimeFiltersLabel').show();
 
-    for (var timeSpecsIndex = 0;
-         timeSpecsIndex < timeSpecs.length;
-         timeSpecsIndex++) {
+    for (var timeSpecsIndex = 0; timeSpecsIndex < timeSpecs.length; timeSpecsIndex++) {
         var timeSpec = timeSpecs[timeSpecsIndex];
-        var parsedDate = new Date(parseInt(timeSpec.timestamp[0]));
+        var parsedDate = new Date(parseInt(timeSpec.timestamp)*1000);
         var formattedDate = parsedDate.toDateString();
+
+        var timeTitle = "";
+        if(timeSpec.type == "fromDate")
+            timeTitle = "Start Date";
+        else if(timeSpec.type == "toDate")
+            timeTitle = "End Date";
+
         $('#appliedUserTimeFiltersDiv').append("<div class='chip filter-chip'"
-            + "' id='" + timeSpec.type + "_" + timeSpec.timestamp[0] +
+            + "' id='" + timeSpec.type + "_" + timeSpec.timestamp +
             "' title='" + timeSpec.type + "_" + formattedDate + "'>" +
-            "<span>" + timeSpec.type + ": " + formattedDate
+            "<span>" + timeTitle + ": " + formattedDate
             + "</span><i class='material-icons' onclick='showDeleteTimeFilterModal(this, event);'>close</i></div>");
     }
 }
+//
+// function loadAssociatedUserFilters(userSpecs) {
+//
+//     for (var userSpecsIndex = 0; userSpecsIndex < userSpecs.length; userSpecsIndex++) {
+//         var userSpec = userSpecs[userSpecsIndex];
+//
+//         $('#appliedUserTimeFiltersDiv').append("<div class='chip filter-chip'"
+//             + "' id='" + userSpec.key + "_" + userSpec.value +
+//             "' title='" + userSpec.key + "-" + userSpec.value +"'>" +
+//             "<span>" + userSpec.key + ": " + userSpec.value
+//             + "</span><i class='material-icons' onclick='showDeleteUserFilterModal(this, event);'>close</i></div>");
+//     }
+// }
+//
 
 function deleteEntityFilter() {
     // var e = event;
@@ -114,24 +129,32 @@ function addTimeFilter() {
     $(function() {
         var dateType = $("#dateType").val();
         var dateFilterVal = $("#dateFilterVal").val();
-        var isUserData = ( $("#isMyData").is(':checked') ) ? true : false;
-        var date = [];
-        date[0] = +(new Date(dateFilterVal));
+
+        /*var date = [];
+        date[0] = +(new Date(dateFilterVal).getTime()/1000|0); //Converting selected date to unix timestamp*/
+
+        var date = new Date(dateFilterVal).getTime()/1000|0; //Converting selected date to unix timestamp
+
         $.ajax({
             type: "GET",
-            url: "/indicators/addTimeFilter?time=" + date + "&timeType=" + dateType + "&isUserData=" + isUserData,
+            url: "/indicators/addTimeFilter?time=" + date + "&timeType=" + dateType,
             dataType: "json",
             success: function (timeFilterResponse) {
-                if (timeFilterResponse.length > 0) {
-                    $.ajax({
-                        type: "GET",
-                        url: "/indicators/getUserFilters",
-                        dataType: "json",
-                        success: function (userFilterResponse) {
-                            loadAssociatedUserTimeFilters(userFilterResponse, timeFilterResponse);
-                        }
-                    });
-                }
+                loadAssociatedTimeFilters(timeFilterResponse);
+            }
+        });
+    });
+}
+
+function addUserFilter() {
+    $(function() {
+        var isUserData = ( $("#isMyData").is(':checked') ) ? true : false;
+        $.ajax({
+            type: "GET",
+            url: "/indicators/addUserFilter?isUserData=" + isUserData,
+            dataType: "json",
+            success: function (userFilterResponse) {
+                loadAssociatedUserFilters(userFilterResponse);
             }
         });
     });
@@ -147,15 +170,17 @@ function deleteTimeFilter() {
             data: {filter: $("#deleteTimeFilterValue").val()},
             dataType: "json",
             success: function (timeFilterResponse) {
+                loadAssociatedTimeFilters(timeFilterResponse);
+
                 // if (timeFilterResponse.length > 0) {
-                    $.ajax({
-                        type: "GET",
-                        url: "/indicators/getUserFilters",
-                        dataType: "json",
-                        success: function (userFilterResponse) {
-                            loadAssociatedUserTimeFilters(userFilterResponse, timeFilterResponse);
-                        }
-                    });
+                //     $.ajax({
+                //         type: "GET",
+                //         url: "/indicators/getUserFilters",
+                //         dataType: "json",
+                //         success: function (userFilterResponse) {
+                //             loadAssociatedUserTimeFilters(userFilterResponse, timeFilterResponse);
+                //         }
+                //     });
                 // }
             }
         });
@@ -172,15 +197,16 @@ function deleteUserFilter() {
             data: {filter: $("#deleteUserFilterValue").val()},
             dataType: "json",
             success: function (userFilterResponse) {
+                loadAssociatedUserFilters(userFilterResponse);
                 // if (userFilterResponse.length > 0) {
-                    $.ajax({
-                        type: "GET",
-                        url: "/indicators/getTimeFilters",
-                        dataType: "json",
-                        success: function (timeFilterResponse) {
-                            loadAssociatedUserTimeFilters(userFilterResponse, timeFilterResponse);
-                        }
-                    });
+                //     $.ajax({
+                //         type: "GET",
+                //         url: "/indicators/getTimeFilters",
+                //         dataType: "json",
+                //         success: function (timeFilterResponse) {
+                //             loadAssociatedUserTimeFilters(userFilterResponse, timeFilterResponse);
+                //         }
+                //     });
                 // }
             }
         });
@@ -188,7 +214,7 @@ function deleteUserFilter() {
 }
 
 function showDeleteEntityFilterModal(filter, event) {
-    $("#deleteEntityFilterValue").val($(filter).closest('div').attr("id"));
+    $("#deleteEntityFilterValue").val($(filter).closest('div').attr("data"));
     $('#confirmEntityDeleteModal').openModal();
     event.stopPropagation();
 }

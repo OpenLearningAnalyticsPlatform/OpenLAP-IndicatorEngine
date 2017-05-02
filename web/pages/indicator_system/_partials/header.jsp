@@ -1,6 +1,6 @@
 <%--
-  ~ Open Platform Learning Analytics : Indicator Engine
-  ~ Copyright (C) 2015  Learning Technologies Group, RWTH
+  ~ Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -41,142 +41,22 @@
 <head>
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-    <title> Question Indicator Editor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Goal Oriented LA ToolKit : Question Indicator Editor" />
-    <meta name="author" content="Tanmaya Mahapatra" />
+    <meta name="author" content="Arham Muslim" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/js/jquery-ui/jquery-ui.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/indicator_editor.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/templatemo_main.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/error.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/js/materialize/css/materialize.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/custom.css">
-    <link href="${pageContext.request.contextPath}/js/jquery-ui/jquery-ui.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/indicator_editor.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/animate.css" rel="stylesheet">
-    <link href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/js/materialize/css/materialize.min.css" rel="stylesheet">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/dist/jquery.js"></script>
-    <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.min.js"></script>
-    <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/additional-methods.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-ui/jquery-ui.js"></script>
+
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.validation/1.15.0/additional-methods.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/materialize/js/materialize.min.js"></script>
-    <%--<script type="text/javascript" src="${pageContext.request.contextPath}/js/noty-2.3.5/js/noty/jquery.noty.js"  ></script>--%>
-    <%--<script type="text/javascript" src="${pageContext.request.contextPath}/js/noty-2.3.5/js/noty/layouts/bottomRight.js"></script>--%>
-    <%--<script type="text/javascript" src="${pageContext.request.contextPath}/js/noty-2.3.5/js/noty/themes/relax.js"></script>--%>
-    <script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/indicator_editor.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/mapping.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/ui_tricks.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/validations.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/filters.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/admin.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3.chart/0.2.1/d3.chart.js"></script>
-    <script>
-        google.charts.load("current", {packages:["corechart"]});
-    </script>
-
-    <script type="text/javascript">
-
-        (function($) {
-            //Plug-in to fetch page data
-            jQuery.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
-            {
-                return {
-                    "iStart":         oSettings._iDisplayStart,
-                    "iEnd":           oSettings.fnDisplayEnd(),
-                    "iLength":        oSettings._iDisplayLength,
-                    "iTotal":         oSettings.fnRecordsTotal(),
-                    "iFilteredTotal": oSettings.fnRecordsDisplay(),
-                    "iPage":          oSettings._iDisplayLength === -1 ?
-                            0 : Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength ),
-                    "iTotalPages":    oSettings._iDisplayLength === -1 ?
-                            0 : Math.ceil( oSettings.fnRecordsDisplay() / oSettings._iDisplayLength )
-                };
-            };
-
-            $(document).ready(function() {
-
-                $("#indicatorData").dataTable( {
-                    "bProcessing": true,
-                    "bServerSide": true,
-                    "sort": "position",
-                    "bLengthChange": false,
-                    "language": {
-                        "searchPlaceholder": "Search Indicator",
-                        "sSearch": ""
-                    },
-                    "dom": '<"pull-left"f><"pull-right"l>tip',
-                    //bStateSave variable you can use to save state on client cookies: set value "true"
-                    "bStateSave": false,
-                    //Default: Page display length
-                    "iDisplayLength": 8,
-                    //We will use below variable to track page number on server side(For more information visit: http://legacy.datatables.net/usage/options#iDisplayStart)
-                    "iDisplayStart": 0,
-                    "fnDrawCallback": function () {
-                        //Get page numer on client. Please note: number start from 0 So
-                        //for the first page you will see 0 second page 1 third page 2...
-                        //Un-comment below alert to see page number
-                        //alert("Current page number: "+this.fnPagingInfo().iPage);
-                    },
-                    "sAjaxSource": "/indicators/fetchExistingIndicatorsData.web",
-                    "aoColumns": [
-                        { "mData": "id" },
-                        { "mData": "indicator_name" },
-//                        { "mData": "short_name" },
-                    ]
-                } );
-
-                $("#questionData").dataTable( {
-                    "bProcessing": true,
-                    "bServerSide": true,
-                    "sort": "position",
-                    "bLengthChange": false,
-                    "language": {
-                        "searchPlaceholder": "Search Question",
-                        "sSearch": ""
-                    },
-                    "dom": '<"pull-left"f><"pull-right"l>tip',
-                    //bStateSave variable you can use to save state on client cookies: set value "true"
-                    "bStateSave": false,
-                    //Default: Page display length
-                    "iDisplayLength": 8,
-                    //We will use below variable to track page number on server side(For more information visit: http://legacy.datatables.net/usage/options#iDisplayStart)
-                    "iDisplayStart": 0,
-                    "fnDrawCallback": function () {
-                        //Get page numer on client. Please note: number start from 0 So
-                        //for the first page you will see 0 second page 1 third page 2...
-                        //Un-comment below alert to see page number
-                        //alert("Current page number: "+this.fnPagingInfo().iPage);
-                    },
-                    "sAjaxSource": "/indicators/fetchExistingQuestionsData.web",
-                    "aoColumns": [
-                        { "mData": "id" },
-                        { "mData": "question_name" },
-                        { "mData": "indicators_num" },
-                    ]
-                } );
-
-            } );
-        })(jQuery);
-    </script>
-
-</head>
-
-<div id="loading-screen" class="loading-overlay loader-hide">
-    <div class="request-loader">
-        <div class="preloader-wrapper big active">
-            <div class="spinner-layer spinner-blue-only">
-                <div class="circle-clipper left">
-                    <div class="circle"></div>
-                </div><div class="gap-patch">
-                <div class="circle"></div>
-            </div><div class="circle-clipper right">
-                <div class="circle"></div>
-            </div>
-            </div>
-        </div>
-   </div>
-</div>
-
-<%@ include file="nav_bar.jsp" %>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/openlap.js"></script>

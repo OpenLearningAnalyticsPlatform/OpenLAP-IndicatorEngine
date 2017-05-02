@@ -1,6 +1,6 @@
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,300 +23,37 @@ import java.util.List;
 
 dialect  "mvel"
 
-rule "When Only Entity Filtering (Default Rule) is Present"
+rule "When no entity filter is present"
 when
-    EntitySpecification ( userSpecifications.isEmpty() == true,
-                             timeSpecifications.isEmpty() == true,
-                             sessionSpecifications.isEmpty() == true,
-                             entityValues.size()== 1,
-                             entityValues.get(0).geteValues() ==  "ALL")
+    EntitySpecification (currentIndicator.indicatorParameters.entityDisplayObjects.isEmpty() == true)
     $pFilter : ProcessUserFilters()
-    $userParameter : EntitySpecification( $source : selectedSource,
-                                             $platform : selectedPlatform,
-                                             $action : selectedAction,
-                                             $major : selectedMajor,
-                                             $minor : selectedMinor,
-                                             $type : selectedType,
-                                             $key : entityValues,
-                                             $pobject: persistenceObject,
-                                             $filter : filteringType,
-                                             $robject : retrievableObjects)
+    $userParameter : EntitySpecification( $indparams : currentIndicator.indicatorParameters)
+    $indReference : String()
 then
-
-    $userParameter.setHql("SELECT " + $robject + " From ("
-							+ "Select value, EntityKey, Event_fk From Entity Where Event_fk in "
-							+ "(SELECT E.Event_Id FROM Event E INNER JOIN Category C ON E.C_ID = C.C_Id "
-							+ "WHERE C.Minor = '"+$minor+"' AND C.Major = '"+$major+"' AND C.Type = '"+$type+"' "
-							+ "AND E.Action = '"+$action+"' AND E.Source IN "+$pFilter.processSource($source,$filter)
-							+ " AND E.Platform = '"+$platform+"' ) ) d pivot ( max(value) "
-							+ "for EntityKey in (" + $robject + ") ) piv WHERE " + $pFilter.processNullValues($robject));
-
+    $userParameter.getCurrentIndicator().getHqlQuery().put($indReference, "select event from OpenLAPEvent event" + $pFilter.processEntitiesFrom($indparams, $indReference) + " where "
+							+ "event.action in (" + $pFilter.processStringList($indparams, "action", $indReference) + ") and "
+							+ "event.platform in (" + $pFilter.processStringList($indparams, "platform", $indReference) + ") and "
+							+ "event.source in (" + $pFilter.processStringList($indparams, "source", $indReference) + ") and "
+							+ "event.categoryByCId.cId in (" + $pFilter.processIntegerList($indparams, "minor", $indReference) + ") "
+							+ $pFilter.processTimestamp("event.timestamp", $indparams, $indReference)
+							+ $pFilter.processEntitiesJoins("event.eventId", $indparams, $indReference)
+							+ $pFilter.processEntitiesFilter($indparams, $indReference));
 end
 
-rule "When Only Entity Filtering (2+) is Present"
+rule "When any number of entity filters are present"
 when
-    EntitySpecification ( userSpecifications.isEmpty() == true,
-                             timeSpecifications.isEmpty() == true,
-                             sessionSpecifications.isEmpty() == true,
-                             entityValues.isEmpty() == false)
-
+    EntitySpecification (currentIndicator.indicatorParameters.entityDisplayObjects.isEmpty() == false)
     $pFilter : ProcessUserFilters()
-    $userParameter : EntitySpecification( $source : selectedSource,
-                                              $platform : selectedPlatform,
-                                              $action : selectedAction,
-                                              $major : selectedMajor,
-                                              $minor : selectedMinor,
-                                              $type : selectedType,
-                                              $key : entityValues,
-                                              $filter : filteringType,
-                                              $pobject: persistenceObject,
-                                              $robject : retrievableObjects)
-
+    $userParameter : EntitySpecification( $indparams : currentIndicator.indicatorParameters)
+    $indReference : String()
 then
-
-	$userParameter.setHql("SELECT " + $robject + " From ("
-							+ "Select value, EntityKey, Event_fk From Entity Where Event_fk in "
-							+ "(SELECT E.Event_Id FROM Event E INNER JOIN Category C ON E.C_ID = C.C_Id "
-							+ "WHERE C.Minor = '"+$minor+"' AND C.Major = '"+$major+"' AND C.Type = '"+$type+"' "
-							+ "AND E.Action = '"+$action+"' AND E.Source IN "+$pFilter.processSource($source,$filter)
-							+ " AND E.Platform = '"+$platform+"' ) ) d pivot ( max(value) "
-							+ "for EntityKey in (" + $robject + ") ) piv "
-							+ " Where " + $pFilter.processEntities($key,$filter) + " AND " + $pFilter.processNullValues($robject));
-end
-
-rule "When Only User Filtering and Entity Filtering are Present"
-when
-    EntitySpecification ( userSpecifications.isEmpty() == false,
-                             timeSpecifications.isEmpty() == true,
-                             sessionSpecifications.isEmpty() == true,
-                             entityValues.isEmpty() == false)
-
-    $pFilter : ProcessUserFilters()
-    $userParameter : EntitySpecification( $source : selectedSource,
-                                              $platform : selectedPlatform,
-                                              $action : selectedAction,
-                                              $major : selectedMajor,
-                                              $minor : selectedMinor,
-                                              $type : selectedType,
-                                              $key : entityValues,
-                                              $user : userSpecifications,
-                                              $filter : filteringType,
-                                              $pobject: persistenceObject,
-                                              $robject : retrievableObjects)
-
-then
-								 
-	$userParameter.setHql("SELECT " + $robject + " From ("
-							+ "Select value, EntityKey, Event_fk From Entity Where Event_fk in "
-							+ "(SELECT E.Event_Id FROM Event E INNER JOIN Category C ON E.C_ID = C.C_Id "
-							+ "WHERE C.Minor = '"+$minor+"' AND C.Major = '"+$major+"' AND C.Type = '"+$type+"' "
-							+ "AND E.Action = '"+$action+"' AND E.Source IN "+$pFilter.processSource($source,$filter)
-							+ " AND E.Platform = '"+$platform+"' "
-							+ "AND E.U_Id In (Select U_Id FROM Users Where Name = '"+$pFilter.processUsers($user, $filter)
-							+ "') ) ) d pivot ( max(value) for EntityKey in (" + $robject + ") ) piv "
-							+ " Where " + $pFilter.processEntities($key,$filter) + " AND " + $pFilter.processNullValues($robject));
-end
-
-rule "When Session & Entity Filtering are Present"
-when
-    EntitySpecification ( userSpecifications.isEmpty() == true,
-                             timeSpecifications.isEmpty() == true,
-                             sessionSpecifications.isEmpty() == false,
-                             entityValues.isEmpty() == false)
-
-    $pFilter : ProcessUserFilters()
-    $userParameter : EntitySpecification( $source : selectedSource,
-                                              $platform : selectedPlatform,
-                                              $action : selectedAction,
-                                              $major : selectedMajor,
-                                              $minor : selectedMinor,
-                                              $type : selectedType,
-                                              $key : entityValues,
-                                              $session : sessionSpecifications,
-                                              $filter : filteringType,
-                                              $pobject: persistenceObject,
-                                              $robject : retrievableObjects)
-
-then
-	$userParameter.setHql("SELECT " + $robject + " From ("
-							+ "Select value, EntityKey, Event_fk From Entity Where Event_fk in "
-							+ "(SELECT E.Event_Id FROM Event E INNER JOIN Category C ON E.C_ID = C.C_Id "
-							+ "WHERE C.Minor = '"+$minor+"' AND C.Major = '"+$major+"' AND C.Type = '"+$type+"' "
-							+ "AND E.Action = '"+$action+"' AND E.Source IN "+$pFilter.processSource($source,$filter)
-							+ " AND E.Platform = '"+$platform+"' " + $pFilter.processSessions($session,$filter)
-							+ " ) ) d pivot ( max(value) "
-							+ "for EntityKey in (" + $robject + ") ) piv "
-							+ " Where " + $pFilter.processEntities($key,$filter) + " AND " + $pFilter.processNullValues($robject));
-end
-
-
-rule "When User Filtering, Session & Entity Filtering are Present"
-when
-    EntitySpecification ( userSpecifications.isEmpty() == false,
-                             timeSpecifications.isEmpty() == true,
-                             sessionSpecifications.isEmpty() == false,
-                             entityValues.isEmpty() == false)
-
-    $pFilter : ProcessUserFilters()
-    $userParameter : EntitySpecification( $source : selectedSource,
-                                              $platform : selectedPlatform,
-                                              $action : selectedAction,
-                                              $major : selectedMajor,
-                                              $minor : selectedMinor,
-                                              $type : selectedType,
-                                              $key : entityValues,
-                                              $user : userSpecifications,
-                                              $session : sessionSpecifications,
-                                              $filter : filteringType,
-                                              $pobject: persistenceObject,
-                                              $robject : retrievableObjects)
-
-then
-	$userParameter.setHql("SELECT " + $robject + " From ("
-							+ "Select value, EntityKey, Event_fk From Entity Where Event_fk in "
-							+ "(SELECT E.Event_Id FROM Event E INNER JOIN Category C ON E.C_ID = C.C_Id "
-							+ "WHERE C.Minor = '"+$minor+"' AND C.Major = '"+$major+"' AND C.Type = '"+$type+"' "
-							+ "AND E.Action = '"+$action+"' AND E.Source IN "+$pFilter.processSource($source,$filter)
-							+ " AND E.Platform = '"+$platform+"' "
-							+ "AND E.U_Id In (Select U_Id FROM Users Where Name = '"+$pFilter.processUsers($user, $filter)
-							+ "') " + $pFilter.processSessions($session,$filter)
-							+ " ) ) d pivot ( max(value) for EntityKey in (" + $robject + ") ) piv "
-							+ " Where " + $pFilter.processEntities($key,$filter) + " AND " + $pFilter.processNullValues($robject));
-end
-
-
-rule "When Time & Entity Filtering are Present"
-when
-    EntitySpecification ( userSpecifications.isEmpty() == true,
-                             timeSpecifications.isEmpty() == false,
-                             sessionSpecifications.isEmpty() == true,
-                             entityValues.isEmpty() == false)
-
-    $pFilter : ProcessUserFilters()
-    $userParameter : EntitySpecification( $source : selectedSource,
-                                              $platform : selectedPlatform,
-                                              $action : selectedAction,
-                                              $major : selectedMajor,
-                                              $minor : selectedMinor,
-                                              $type : selectedType,
-                                              $key : entityValues,
-                                              $time : timeSpecifications,
-                                              $filter : filteringType,
-                                              $pobject: persistenceObject,
-                                              $robject : retrievableObjects)
-
-then
-	$userParameter.setHql("SELECT " + $robject + " From ("
-							+ "Select value, EntityKey, Event_fk From Entity Where Event_fk in "
-							+ "(SELECT E.Event_Id FROM Event E INNER JOIN Category C ON E.C_ID = C.C_Id "
-							+ "WHERE C.Minor = '"+$minor+"' AND C.Major = '"+$major+"' AND C.Type = '"+$type+"' "
-							+ "AND E.Action = '"+$action+"' AND E.Source IN "+$pFilter.processSource($source,$filter)
-							+ " AND E.Platform = '"+$platform+"' " + $pFilter.processTime($time,$filter) 
-							+ " ) ) d pivot ( max(value) "
-							+ "for EntityKey in (" + $robject + ") ) piv "
-							+ " Where " + $pFilter.processEntities($key,$filter) + " AND " + $pFilter.processNullValues($robject));
-end
-
-rule "When All Filters are Present"
-when
-    EntitySpecification ( userSpecifications.isEmpty() == false,
-                             timeSpecifications.isEmpty() == false,
-                             sessionSpecifications.isEmpty() == false,
-                             entityValues.isEmpty() == false)
-
-    $pFilter : ProcessUserFilters()
-    $userParameter : EntitySpecification( $source : selectedSource,
-                                              $platform : selectedPlatform,
-                                              $action : selectedAction,
-                                              $major : selectedMajor,
-                                              $minor : selectedMinor,
-                                              $type : selectedType,
-                                              $key : entityValues,
-                                              $time : timeSpecifications,
-                                              $filter : filteringType,
-                                              $pobject: persistenceObject,
-                                              $user : userSpecifications,
-                                              $session : sessionSpecifications,
-                                              $robject : retrievableObjects)
-
-then
-	$userParameter.setHql("SELECT " + $robject + " From ("
-							+ "Select value, EntityKey, Event_fk From Entity Where Event_fk in "
-							+ "(SELECT E.Event_Id FROM Event E INNER JOIN Category C ON E.C_ID = C.C_Id "
-							+ "WHERE C.Minor = '"+$minor+"' AND C.Major = '"+$major+"' AND C.Type = '"+$type+"' "
-							+ "AND E.Action = '"+$action+"' AND E.Source IN "+$pFilter.processSource($source,$filter)
-							+ " AND E.Platform = '"+$platform+"' " + $pFilter.processTime($time,$filter) 
-							+ " AND E.U_Id In (Select U_Id FROM Users Where Name = '"+$pFilter.processUsers($user, $filter)
-							+ "') " + $pFilter.processSessions($session,$filter)
-							+ " ) ) d pivot ( max(value) "
-							+ "for EntityKey in (" + $robject + ") ) piv "
-							+ " Where " + $pFilter.processEntities($key,$filter) + " AND " + $pFilter.processNullValues($robject));
-end
-
-rule "When Time, Entity and User Filters are present"
-when
-    EntitySpecification ( userSpecifications.isEmpty() == false,
-                             timeSpecifications.isEmpty() == false,
-                             sessionSpecifications.isEmpty() == true,
-                             entityValues.isEmpty() == false)
-
-    $pFilter : ProcessUserFilters()
-    $userParameter : EntitySpecification( $source : selectedSource,
-                                              $platform : selectedPlatform,
-                                              $action : selectedAction,
-                                              $major : selectedMajor,
-                                              $minor : selectedMinor,
-                                              $type : selectedType,
-                                              $key : entityValues,
-                                              $time : timeSpecifications,
-                                              $filter : filteringType,
-                                              $pobject: persistenceObject,
-                                              $user : userSpecifications,
-                                              $robject : retrievableObjects)
-
-then
-	$userParameter.setHql("SELECT " + $robject + " From ("
-							+ "Select value, EntityKey, Event_fk From Entity Where Event_fk in "
-							+ "(SELECT E.Event_Id FROM Event E INNER JOIN Category C ON E.C_ID = C.C_Id "
-							+ "WHERE C.Minor = '"+$minor+"' AND C.Major = '"+$major+"' AND C.Type = '"+$type+"' "
-							+ "AND E.Action = '"+$action+"' AND E.Source IN "+$pFilter.processSource($source,$filter)
-							+ " AND E.Platform = '"+$platform+"' " + $pFilter.processTime($time,$filter) 
-							+ " AND E.U_Id In (Select U_Id FROM Users Where Name = '"+$pFilter.processUsers($user, $filter)
-							+ "') ) ) d pivot ( max(value) "
-							+ "for EntityKey in (" + $robject + ") ) piv "
-							+ " Where " + $pFilter.processEntities($key,$filter) + " AND " + $pFilter.processNullValues($robject));
-end
-
-rule "When Time, Entity & Session Filters are present"
-when
-    EntitySpecification ( userSpecifications.isEmpty() == true,
-                             timeSpecifications.isEmpty() == false,
-                             sessionSpecifications.isEmpty() == false,
-                             entityValues.isEmpty() == false)
-
-    $pFilter : ProcessUserFilters()
-    $userParameter : EntitySpecification( $source : selectedSource,
-                                              $platform : selectedPlatform,
-                                              $action : selectedAction,
-                                              $major : selectedMajor,
-                                              $minor : selectedMinor,
-                                              $type : selectedType,
-                                              $key : entityValues,
-                                              $time : timeSpecifications,
-                                              $filter : filteringType,
-                                              $pobject: persistenceObject,
-                                              $session : sessionSpecifications,
-                                              $robject : retrievableObjects)
-
-then
-	$userParameter.setHql("SELECT " + $robject + " From ("
-							+ "Select value, EntityKey, Event_fk From Entity Where Event_fk in "
-							+ "(SELECT E.Event_Id FROM Event E INNER JOIN Category C ON E.C_ID = C.C_Id "
-							+ "WHERE C.Minor = '"+$minor+"' AND C.Major = '"+$major+"' AND C.Type = '"+$type+"' "
-							+ "AND E.Action = '"+$action+"' AND E.Source IN "+$pFilter.processSource($source,$filter)
-							+ " AND E.Platform = '"+$platform+"' " + $pFilter.processTime($time,$filter) 
-							+ " " + $pFilter.processSessions($session,$filter)
-							+ " ) ) d pivot ( max(value) "
-							+ "for EntityKey in (" + $robject + ") ) piv "
-							+ " Where " + $pFilter.processEntities($key,$filter) + " AND " + $pFilter.processNullValues($robject));
+    $userParameter.getCurrentIndicator().getHqlQuery().put($indReference, "select e1.eventByEventFk, e1 from OpenLAPEntity e1" + $pFilter.processEntitiesFrom($indparams, $indReference) + " where "
+							+ "e1.eventByEventFk.action in (" + $pFilter.processStringList($indparams, "action", $indReference) + ") and "
+							+ "e1.eventByEventFk.platform in (" + $pFilter.processStringList($indparams, "platform", $indReference) + ") and "
+							+ "e1.eventByEventFk.source in (" + $pFilter.processStringList($indparams, "source", $indReference) + ") and "
+							+ "e1.eventByEventFk.categoryByCId.cId in (" + $pFilter.processIntegerList($indparams, "minor", $indReference) + ") and "
+							+ "e1.entityKey in (" + $pFilter.processStringList($indparams, "entityDisplay", $indReference) + ") "
+							+ $pFilter.processTimestamp("e1.eventByEventFk.timestamp", $indparams, $indReference)
+							+ $pFilter.processEntitiesJoins("e1.eventByEventFk.eventId", $indparams, $indReference)
+							+ $pFilter.processEntitiesFilter($indparams, $indReference) + " order by e1.eventByEventFk.eventId");
 end

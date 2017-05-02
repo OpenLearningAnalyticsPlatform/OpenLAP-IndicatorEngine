@@ -1,6 +1,6 @@
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,5 +26,5 @@ import com.indicator_engine.model.indicator_system.Number.EntitySpecification;
  */
 public interface OperationNumberProcessorDao {
 
-    public void computeResult(EntitySpecification entitySpecification);
+    public void computeResult(EntitySpecification entitySpecification, String indReference);
 }

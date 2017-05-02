@@ -1,6 +1,6 @@
 <%--
-  ~ Open Platform Learning Analytics : Indicator Engine
-  ~ Copyright (C) 2015  Learning Technologies Group, RWTH
+  ~ Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -38,7 +38,7 @@ else{
 <head>
     <meta charset="utf-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
-    <title>Goal Oriented LA Toolkit Dashboard</title>
+    <title>OpenLAP Dashboard</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width">
@@ -51,7 +51,7 @@ else{
 <body>
 <div class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <div class="logo"><h1>Goal Oriented LA Toolkit</h1></div>
+        <div class="logo"><h1>OpenLAP</h1></div>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -97,16 +97,16 @@ else{
             <ol class="breadcrumb">
                 <li><a href="/toolkit/admin">Toolkit Admin</a></li>
                 <li><a href="/home/dashboard">Dashboard</a></li>
-                <li><a href="/welcome">Home</a></li>
+                <li><a href="/login">Home</a></li>
             </ol>
-            <h1>Goal Oriented LA</h1>
+            <h1>Open Learning Analytics Platform (OpenLAP)</h1>
             <p>This is the Dashboard. In Progress.</p>
 
             <div class="margin-bottom-30">
                 <div class="row">
                     <div class="col-md-12">
                         <ul class="nav nav-pills">
-                            <li class="active"><a href="/welcome">Home<span class="badge"></span></a></li>
+                            <li class="active"><a href="/login">Home<span class="badge"></span></a></li>
                             <li class="active"><a href="/home/user_profile">My Profile <span class="badge"></span></a></li>
                             <li class="active"><a href="/toolkit/admin">Toolkit Admin<span class="badge"></span></a></li>
                         </ul>
@@ -172,7 +172,7 @@ else{
     </div>
     <footer class="templatemo-footer">
         <div class="templatemo-copyright">
-            <p>Copyright &copy; 2015 Learning Technologies Group, RWTH</p>
+            <p>Open Learning Analytics Platform (OpenLAP)</p>
         </div>
     </footer>
 </div>

@@ -1,30 +1,95 @@
 function getDataColumns() {
-    // $(function() {
-        var selectedMinor = $("#selectedMinor").val();
+    var selectedMinors = $("#selectedMinor").val();
+
+    if(selectedMinors){
+        var selectedMinor = selectedMinors.join();
+
         $.ajax({
             type: "GET",
-            url: "/engine/getDataColumnsByCatName?categoryName=" + selectedMinor,
+            url: "/engine/getDataColumnsByCatIDs?categoryIDs=" + selectedMinor,
             dataType: "json",
             success: function (response) {
+
+                var entityKeySelection = $('#entityKeySelection');
+                entityKeySelection.empty();
+
                 var methodDataColumnsSelect = $('#methodDataColumns');
                 methodDataColumnsSelect.empty();
+
+                var dividerNotAdded = true;
+
                 for (var i=0;i< response.length;i++) {
+
+                    if(response[i].required == false){
+                        entityKeySelection
+                            .append($("<option></option>")
+                                .attr("value", response[i].id)
+                                .attr("title", response[i].description)
+                                .attr("data-value", JSON.stringify(response[i]))
+                                .text(response[i].title));
+
+                        if(dividerNotAdded) {
+                            methodDataColumnsSelect
+                                .append($("<option disabled>──────────────────</option>"));
+                            dividerNotAdded = false;
+                        }
+                    }
+
                     methodDataColumnsSelect
                         .append($("<option></option>")
                             .attr("value", response[i].id)
                             .attr("title", response[i].description)
                             .attr("data-value", JSON.stringify(response[i]))
-                            .text(response[i].title));
+                            .text(response[i].title + " (" + response[i].type + ")" ));
                 }
                 $("select#methodDataColumns")[0].selectedIndex = 0;
             }
         });
-    // });
+    }
+}
+
+function searchAttributeValues(){
+
+    $("#entityValueSpinner").show();
+
+    var key = $('#entityKeySelection').val();
+
+    var selectedSources = $("#sourceSelection").val();
+    var selectedSource = selectedSources.join();
+
+    var selectedActions = $('#actionSelection').val();
+    var selectedAction = selectedActions.join();
+
+    var selectedPlatforms = $('#PlatformSelection').val();
+    var selectedPlatform = selectedPlatforms.join();
+
+    var selectedCategories = $('#selectedMinor').val();
+    var selectedCategory = selectedCategories.join();
+
+    $.ajax({
+        context: true,
+        type: "GET",
+        url: "/engine/getAttributesValues?categoryIDs="+selectedCategory+"&key="+key+"&action="+selectedAction+"&source="+selectedSource+"&platform="+selectedPlatform,
+        dataType: "json",
+        success: function (response) {
+            var entityValue = document.getElementById("entityValue");
+            removeOptions(entityValue);
+            for (var i=0;i< response.length;i++) {
+                var newOption = new Option(response[i], response[i]);
+                entityValue.appendChild(newOption);
+            }
+
+            $("#entityValueSpinner").hide();
+        }
+    });
 }
 
 function getAnalyticsMethodInputs(data) {
 
     data = data || false;
+
+    var spinner = $('#inputForMethodsSpinner');
+    spinner.show();
 
     // $(function() {
         var analyticsMethodId = $("#analyticsMethod").val();
@@ -35,28 +100,51 @@ function getAnalyticsMethodInputs(data) {
             success: function (response) {
                 var inputForMethodsSelect = $('#inputForMethods');
                 inputForMethodsSelect.empty();
+
+                $('#methodMappingTable >tbody').empty();
+                localStorage.removeItem("methodMappings");
+                toggleVisibilityMethodMappingTable()
+
                 for (var i=0;i< response.length;i++) {
                     inputForMethodsSelect
                         .append($("<option></option>")
                             .attr("value", response[i].id)
                             .attr("title", response[i].description)
+                            .attr("is-required", response[i].required)
                             .attr("data-value", JSON.stringify(response[i]))
-                            .text(response[i].title));
+                            .text(response[i].title + " (" + response[i].type + ")" ));
                 }
                 $("select#inputForMethods")[0].selectedIndex = 0;
+
+                var inputForMethodOptionSize = $('#inputForMethods option').size();
+                if (inputForMethodOptionSize > 0) {
+                    $('#addMethodMapping').prop('disabled', false);
+                }
+
+                spinner.hide();
+
                 if (data) {
                     loadMethodMappingToTable(data);
                 }
+
                 getAnalyticsMethodOutputs();
+
+                if(!data) {
+                    getVisualizationMethodInputs();
+                }
             }
         });
     // });
 }
 
-function getVisualizationMethodInputs() {
-    // $(function() {
-        var chartTypeId = $("#selectedChartType").val();
-        var engineSelect = $("#EngineSelect").val();
+function getVisualizationMethodInputs(isMethodChanged) {
+    var chartTypeId = $("#selectedChartType").val();
+    var engineSelect = $("#EngineSelect").val();
+
+    isMethodChanged = isMethodChanged || false;
+
+    if(chartTypeId && engineSelect) {
+        $("#inputForVisualizerSpinner").show();
 
         $.ajax({
             type: "GET",
@@ -65,17 +153,19 @@ function getVisualizationMethodInputs() {
             success: function (response) {
                 var visualizationInputSelect = $('#inputForVisualizer');
                 visualizationInputSelect.empty();
+
                 $('#visualizerMappingTable >tbody').empty();
                 localStorage.removeItem("visualizationMappings");
                 toggleVisibilityVisualizerMappingTable();
 
-                for (var i=0;i< response.length;i++) {
+                for (var i = 0; i < response.length; i++) {
                     visualizationInputSelect
                         .append($("<option></option>")
                             .attr("value", response[i].id)
                             .attr("title", response[i].description)
+                            .attr("is-required", response[i].required)
                             .attr("data-value", JSON.stringify(response[i]))
-                            .text(response[i].title));
+                            .text(response[i].title + " (" + response[i].type + ")"));
                 }
                 $("select#inputForVisualizer")[0].selectedIndex = 0;
 
@@ -83,9 +173,11 @@ function getVisualizationMethodInputs() {
                 if (inputForVisualizerOptionSize > 0) {
                     $('#addVisualizationMapping').prop('disabled', false);
                 }
+
+                $("#inputForVisualizerSpinner").hide();
             }
         });
-    // });
+    }
 }
 
 function getAnalyticsMethodOutputs() {
@@ -105,7 +197,7 @@ function getAnalyticsMethodOutputs() {
                             .attr("value", response[i].id)
                             .attr("title", response[i].description)
                             .attr("data-value", JSON.stringify(response[i]))
-                            .text(response[i].title));
+                            .text(response[i].title + " (" + response[i].type + ")" ));
                 }
                 $("select#outputForMethods")[0].selectedIndex = 0;
             }
@@ -124,8 +216,8 @@ function addMethodMappingToTable() {
         var inputForMethodsData = inputForMethodsSelect.find(':selected').data('value');
 
         var row = "<tr data-methodcols='" + JSON.stringify(methodDataColumnsData) + "' data-methodsdata='" + JSON.stringify(inputForMethodsData) + "'>" +
-                        "<td>" + methodDataColumnsData.title + "</td>" +
-                        "<td>" + inputForMethodsData.title + "</td>" +
+                        "<td>" + methodDataColumnsData.title+ " (" + methodDataColumnsData.type + ")" + "</td>" +
+                        "<td>" + inputForMethodsData.title + " (" + inputForMethodsData.type + ")"  + "</td>" +
                         "<td><i class='material-icons' onclick='deleteMethodMappingTableRow(this, event);'>close</i></td>" +
                   "</tr>";
 
@@ -133,14 +225,17 @@ function addMethodMappingToTable() {
         methodMappings.push({outputPort: methodDataColumnsData, inputPort: inputForMethodsData});
         localStorage.setItem('methodMappings', JSON.stringify(methodMappings));
 
-        var selectedMethods = JSON.parse(localStorage.getItem('selectedMethods')) || [];
+        //console.log(methodDataColumnsData);
+        //only adding to the selected Methods if required is false means the selected column is from Entity table
+        if(methodDataColumnsData.required == false) {
+            var selectedMethods = JSON.parse(localStorage.getItem('selectedMethods')) || [];
 
-        var index = selectedMethods.indexOf(methodDataColumnsData.id);
-        if (index < 0) {
-            selectedMethods.push(methodDataColumnsData.id);
-            localStorage.setItem('selectedMethods', JSON.stringify(selectedMethods));
+            var index = selectedMethods.indexOf(methodDataColumnsData.id);
+            if (index < 0) {
+                selectedMethods.push(methodDataColumnsData.id);
+                localStorage.setItem('selectedMethods', JSON.stringify(selectedMethods));
+            }
         }
-        
         // $("#methodDataColumns option:selected").remove();
         $("#inputForMethods option:selected").remove();
         var methodDataColumnsOptionSize = $('#methodDataColumns option').size();
@@ -153,6 +248,8 @@ function addMethodMappingToTable() {
         $('#methodMappingTable > tbody:last').append(row);
         toggleVisibilityMethodMappingTable();
     }
+
+    $('#inputForMethods').valid();
 }
 
 function deleteMethodMappingTableRow(column, event) {
@@ -184,8 +281,9 @@ function deleteMethodMappingTableRow(column, event) {
         .prepend($("<option></option>")
             .attr("value", inputForMethodsData.id)
             .attr("title", inputForMethodsData.description)
+            .attr("is-required", inputForMethodsData.required)
             .attr("data-value", JSON.stringify(inputForMethodsData))
-            .text(inputForMethodsData.title));
+            .text(inputForMethodsData.title + " (" + inputForMethodsData.type + ")"));
 
     var methodDataColumnsOptionSize = $('#methodDataColumns option').size();
     var inputForMethodsOptionSize = $('#inputForMethods option').size();
@@ -218,8 +316,8 @@ function addVisualizationMappingToTable() {
         var inputForVisualizerData = inputForVisualizerSelect.find(':selected').data('value');
 
         var row = "<tr data-methodcols='" + JSON.stringify(outputForMethodsData) + "' data-visualdata='" + JSON.stringify(inputForVisualizerData) + "'>" +
-            "<td>" + outputForMethodsData.title + "</td>" +
-            "<td>" + inputForVisualizerData.title + "</td>" +
+            "<td>" + outputForMethodsData.title + " (" + outputForMethodsData.type + ")" + "</td>" +
+            "<td>" + inputForVisualizerData.title + " (" + inputForVisualizerData.type + ")" + "</td>" +
             "<td><i class='material-icons' onclick='deleteVisualizerMappingTableRow(this, event);'>close</i></td>" +
             "</tr>";
 
@@ -239,6 +337,8 @@ function addVisualizationMappingToTable() {
         $('#visualizerMappingTable > tbody:last').append(row);
         toggleVisibilityVisualizerMappingTable();
     }
+
+    $('#inputForVisualizer').valid();
 }
 
 
@@ -274,8 +374,9 @@ function deleteVisualizerMappingTableRow(column, event) {
         .prepend($("<option></option>")
             .attr("value", inputForVisualizerData.id)
             .attr("title", inputForVisualizerData.description)
+            .attr("is-required", inputForVisualizerData.required)
             .attr("data-value", JSON.stringify(inputForVisualizerData))
-            .text(inputForVisualizerData.title));
+            .text(inputForVisualizerData.title + " (" + inputForVisualizerData.type + ")"));
 
     var outputForMethodsOptionSize = $('#outputForMethods option').size();
     var inputForVisualizerOptionSize = $('#inputForVisualizer option').size();
@@ -297,7 +398,7 @@ function loadMethodMappingToTable(data) {
         $("#methodMappingTable > tbody:last").children().remove();
 
         var dataObj = JSON.parse(data);
-        var queryToMethodConfig = dataObj.queryToMethodConfig;
+        var queryToMethodConfig = dataObj.queryToMethodConfig[0];
 
         var selectedMethods = JSON.parse(localStorage.getItem('selectedMethods')) || [];
         var methodMappings = [];
@@ -315,9 +416,11 @@ function loadMethodMappingToTable(data) {
 
             methodMappings.push({outputPort: methodDataColumnsData, inputPort: inputForMethodsData});
 
-            var index = selectedMethods.indexOf(methodDataColumnsData.id);
-            if (index < 0) {
-                selectedMethods.push(methodDataColumnsData.id);
+            if(methodDataColumnsData.required == false) {
+                var index = selectedMethods.indexOf(methodDataColumnsData.id);
+                if (index < 0) {
+                    selectedMethods.push(methodDataColumnsData.id);
+                }
             }
 
             $('#inputForMethods option[value="' + inputForMethodsData.id + '"]').remove();

@@ -1,8 +1,8 @@
 
 
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@ package com.indicator_engine.dao;
 
 import com.indicator_engine.datamodel.GLAEntity;
 import com.indicator_engine.datamodel.GLAEvent;
+import com.sun.deploy.util.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.*;
 import org.hibernate.criterion.Order;
@@ -193,6 +194,26 @@ public class GLAEventDaoImpl implements GLAEventDao {
     public List<Long> findCategoryId(String action, String source, String platform){
         Session session = factory.getCurrentSession();
         String hql = "SELECT DISTINCT glaCategory.id FROM GLAEvent WHERE action = '"+ action+"'"+ " AND source = '"+ source+"'"+ " AND platform = '"+ platform+"'";
+        Query query = session.createQuery(hql);
+        return query.list();
+
+    }
+
+    /**
+     * Adds a new GLA Entity Object to the Database.
+     * @param glaEntity New GLA Entity Object to be saved.
+     * @return ID of the Newly Created GLA Entity object in DB.
+     **/
+    @Override
+    @Transactional(readOnly = true)
+    public List<Long> findCategoryId(List<String> actions, List<String> sources, List<String> platforms){
+
+        String source = "'" + StringUtils.join(sources,"','") + "'";
+        String action = "'" + StringUtils.join(actions,"','") + "'";
+        String platform = "'" + StringUtils.join(platforms,"','") + "'";
+
+        Session session = factory.getCurrentSession();
+        String hql = "SELECT DISTINCT glaCategory.id FROM GLAEvent WHERE action in ("+ action+") AND source in ("+ source+") AND platform in ("+ platform+")";
         Query query = session.createQuery(hql);
         return query.list();
 

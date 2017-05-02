@@ -1,6 +1,6 @@
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,21 +19,16 @@
 
 package com.indicator_engine.indicator_system.Number;
 
-import com.indicator_engine.model.indicator_system.Number.EntityValues;
-import com.indicator_engine.model.indicator_system.Number.SessionSpecifications;
-import com.indicator_engine.model.indicator_system.Number.TimeSearchSpecifications;
-import com.indicator_engine.model.indicator_system.Number.UserSearchSpecifications;
+import com.indicator_engine.model.indicator_system.Number.*;
+import com.sun.deploy.util.StringUtils;
 import jxl.write.DateTime;
 import org.drools.definition.process.*;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.util.Date;
+import java.util.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Parses the User Input given during Indicator Definition process and generates equivalent Hibernate Queries.
@@ -43,6 +38,228 @@ import java.util.TimeZone;
 @SuppressWarnings({"unused", "unchecked"})
 public class ProcessUserFilters implements ProcessUserFiltersDao {
 
+    @Override
+    public String processEntities(List<EntityValues> entityValues, String filter) {
+        return null;
+    }
+
+    @Override
+    public String processUsers(List<UserSearchSpecifications> userSpecifications, String filter) {
+        return null;
+    }
+
+    @Override
+    public String processSource(List<String> sources, String filter) {
+        return null;
+    }
+
+//    public String processEntitiesFrom(List<EntityValues> list){
+//        int count = list.size();
+//        String returnValue = "";
+//
+//        for(int i=1; i<=count; i++)
+//            returnValue += ", OpenLAPEntity e" + (i+1);
+//
+//        return returnValue;
+//    }
+
+    public String processEntitiesFrom(IndicatorParameters params, String indReference){
+
+        List<EntityValues> list = params.getIndicatorDataset().get(indReference).getEntityValues();
+
+        int count = list.size();
+        String returnValue = "";
+
+        for(int i=1; i<=count; i++)
+            returnValue += ", OpenLAPEntity e" + (i+1);
+
+        return returnValue;
+    }
+
+//    public String processEntitiesJoins(String baseTableIdentity, List<EntityValues> list){
+//        int count = list.size();
+//        String returnValue = "";
+//
+//        for(int i=1; i<=count; i++)
+//            returnValue += " and " + baseTableIdentity + " = e" + (i+1) +".eventByEventFk.eventId";
+//
+//        return returnValue;
+//    }
+
+    public String processEntitiesJoins(String baseTableIdentity, IndicatorParameters params, String indReference){
+        List<EntityValues> entityValues = params.getIndicatorDataset().get(indReference).getEntityValues();
+
+        int count = entityValues.size();
+        String returnValue = "";
+
+        for(int i=1; i<=count; i++)
+            returnValue += " and " + baseTableIdentity + " = e" + (i+1) +".eventByEventFk.eventId";
+
+        return returnValue;
+    }
+
+//    public String processEntitiesFilter(List<EntityValues> entityValues){
+//        int count = entityValues.size();
+//        String returnValue = "";
+//        for(int i=1; i<=count; i++) {
+//
+//            List<String> eValues = Arrays.asList(entityValues.get(i - 1).geteValues().split("\\s*,\\s*"));
+//
+//            //returnValue += " and (e" + (i + 1) + ".entityKey = '" + entityValues.get(i - 1).getKey() + "' and e" + (i + 1) + ".value = '" + entityValues.get(i - 1).geteValues() + "')";
+//
+//            if(eValues.size()>1)
+//                returnValue += " and (e" + (i + 1) + ".entityKey = '" + entityValues.get(i - 1).getKey() + "' and e" + (i + 1) + ".value in (" + processStringList(eValues) + "))";
+//            else
+//                returnValue += " and (e" + (i + 1) + ".entityKey = '" + entityValues.get(i - 1).getKey() + "' and e" + (i + 1) + ".value = '" + entityValues.get(i - 1).geteValues() + "')";
+//        }
+//
+//        return returnValue;
+//    }
+
+    public String processEntitiesFilter(IndicatorParameters params, String indReference){
+
+        List<EntityValues> entityValues = params.getIndicatorDataset().get(indReference).getEntityValues();
+
+        int count = entityValues.size();
+        String returnValue = "";
+        for(int i=1; i<=count; i++) {
+
+            List<String> eValues = Arrays.asList(entityValues.get(i - 1).geteValues().split("\\s*,\\s*"));
+
+            //returnValue += " and (e" + (i + 1) + ".entityKey = '" + entityValues.get(i - 1).getKey() + "' and e" + (i + 1) + ".value = '" + entityValues.get(i - 1).geteValues() + "')";
+
+            if(eValues.size()>1)
+                returnValue += " and (e" + (i + 1) + ".entityKey = '" + entityValues.get(i - 1).getKey() + "' and e" + (i + 1) + ".value in (" + processStringList(eValues) + "))";
+            else
+                returnValue += " and (e" + (i + 1) + ".entityKey = '" + entityValues.get(i - 1).getKey() + "' and e" + (i + 1) + ".value = '" + entityValues.get(i - 1).geteValues() + "')";
+        }
+
+        return returnValue;
+    }
+
+//    public String processTimestamp(String baseTableIdentity, List<TimeSearchSpecifications> timeValues){
+//        int count = timeValues.size();
+//        String returnValue = "";
+//
+//        for(int i=0; i<count; i++) {
+//            if(timeValues.get(i).getType().equals("fromDate"))
+//                returnValue += " and " + baseTableIdentity + " >= " + timeValues.get(i).getTimestamp();
+//            else if(timeValues.get(i).getType().equals("toDate"))
+//                returnValue += " and " + baseTableIdentity + " <= " + timeValues.get(i).getTimestamp();
+//        }
+//
+//        return returnValue;
+//    }
+
+    public String processTimestamp(String baseTableIdentity, IndicatorParameters params, String indReference){
+
+        List<TimeSearchSpecifications> timeValues = params.getIndicatorDataset().get(indReference).getTimeSpecifications();
+
+        int count = timeValues.size();
+        String returnValue = "";
+
+        for(int i=0; i<count; i++) {
+            if(timeValues.get(i).getType().equals("fromDate"))
+                returnValue += " and " + baseTableIdentity + " >= " + timeValues.get(i).getTimestamp();
+            else if(timeValues.get(i).getType().equals("toDate"))
+                returnValue += " and " + baseTableIdentity + " <= " + timeValues.get(i).getTimestamp();
+        }
+
+        return returnValue;
+    }
+
+
+
+    public String processStringList(List<String> list) {
+        StringBuffer returnValue = new StringBuffer();
+
+        for(Iterator listIterator = list.iterator(); listIterator.hasNext(); returnValue.append((String)listIterator.next())) {
+            if(returnValue.length() != 0) {
+                returnValue.append("','");
+            }
+        }
+        returnValue.append("'");
+
+        return "'"+returnValue.toString();
+    }
+
+    public String processStringList(IndicatorParameters params, String attribute, String indReference) {
+        StringBuffer returnValue = new StringBuffer();
+        List<String> list = null;
+
+        switch(attribute)
+        {
+            case "action":
+                list = params.getIndicatorDataset().get(indReference).getSelectedAction();
+                break;
+            case "platform":
+                list = params.getIndicatorDataset().get(indReference).getSelectedPlatform();
+                break;
+            case "source":
+                list = params.getIndicatorDataset().get(indReference).getSelectedSource();
+                break;
+            case "entityDisplay":
+                list = params.getEntityDisplayObjects();
+                break;
+            default:
+                break;
+        }
+
+        if(list != null) {
+            for (Iterator listIterator = list.iterator(); listIterator.hasNext(); returnValue.append((String) listIterator.next())) {
+                if (returnValue.length() != 0) {
+                    returnValue.append("','");
+                }
+            }
+            returnValue.append("'");
+
+            return "'"+returnValue.toString();
+        }
+        else
+            return "";
+    }
+
+//    public String processIntegerList(List<Integer> list) {
+//        StringBuffer returnValue = new StringBuffer();
+//
+//        for(Iterator listIterator = list.iterator(); listIterator.hasNext(); returnValue.append((int)listIterator.next())) {
+//            if(returnValue.length() != 0) {
+//                returnValue.append(",");
+//            }
+//        }
+//
+//        return returnValue.toString();
+//    }
+
+    public String processIntegerList(IndicatorParameters params, String attribute, String indReference) {
+        StringBuffer returnValue = new StringBuffer();
+        List<Integer> list = null;
+
+        switch(attribute)
+        {
+            case "minor":
+                list = params.getIndicatorDataset().get(indReference).getSelectedMinor();
+                break;
+            default:
+                break;
+        }
+
+        if(list != null) {
+            for (Iterator listIterator = list.iterator(); listIterator.hasNext(); returnValue.append((int) listIterator.next())) {
+                if (returnValue.length() != 0) {
+                    returnValue.append(",");
+                }
+            }
+
+            return returnValue.toString();
+        }
+        else
+            return "";
+    }
+
+    //region Commented out code from Tanmaya and SQL
+/*
+    //SQL Code
     @Override
     public String processSource(List<String> sources, String filter) {
         String hibenateQuery = "(";
@@ -63,7 +280,8 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
         return hibenateQuery;
     }
 
-    /*@Override
+    //Tanmaya Code
+    @Override
     public String processEntities( List<EntityValues> entityValues , String filter){
         String entityTextAllQuery = "AND key IN (";
         String entityTextValueQuery = "AND key IN (";
@@ -156,8 +374,9 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
         if(entityRegexValueCounter > 0)
             hibernateQuery += entityRegexValueQuery;
         return hibernateQuery;
-    }*/
+    }
 
+    //SQL Code
     @Override
     public String processEntities(List<EntityValues> entityValues, String filter) {
         String hibernateQuery = "";
@@ -184,29 +403,12 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
                     entityValueCounter++;
                 }
             }
-            /*}
-            else if(type.equals("REGEX"))
-            {
-                if(!eValue.equals("ALL"))
-                {
-                    if(entityValueCounter == 0)
-                    {
-                        hibernateQuery += " " + key + " LIKE '%" + eValue + "%' ";
-                        entityValueCounter++;
-                    }
-                    else
-                    {
-                        hibernateQuery += filter + " " + key + " LIKE '%" + eValue + "%' ";
-                        entityValueCounter++;
-                    }
-                }
-            }*/
         }
         return hibernateQuery;
     }
 
-
-    /*@Override
+    //Tanmaya Code
+    @Override
     public String processUsers( List<UserSearchSpecifications>  userSpecifications, String filter){
         String hibernateQuery=" ";
         String hibernateUserNameQuery =" AND glaEvent.glaUser.username IN (";
@@ -297,8 +499,9 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
             hibernateQuery += hibernateLikeEmailQuery;
         return hibernateQuery;
 
-    }*/
+    }
 
+    //SQL Code
     @Override
     public String processUsers(List<UserSearchSpecifications> userSpecifications, String filter) {
         String hibernateQuery = "";
@@ -308,7 +511,7 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
         return hibernateQuery;
     }
 
-    /*
+    //Tanmaya Code
     public String processSessions( List<SessionSpecifications>  sessionSpecifications, String filter){
         String hibernateQuery=" ";
         String hibernateExactSession =" AND glaEvent.session IN (";
@@ -354,8 +557,9 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
             hibernateQuery += hibernateLikeSession;
 
         return hibernateQuery;
-    }*/
+    }
 
+    //SQL Code
     public String processSessions(List<SessionSpecifications> sessionSpecifications, String filter) {
         String hibernateQuery = "AND (";
         String hibernateExactSession = " E.Session IN (";
@@ -402,7 +606,7 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
         return hibernateQuery;
     }
 
-    /*
+    //Tanmaya Code
     public String processTime( List<TimeSearchSpecifications>  timeSearchSpecifications, String filter){
         String hibernateQuery=" ";
         String hibernateExactTime =" AND glaEvent.timestamp IN (";
@@ -465,8 +669,9 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
             hibernateQuery += hibernateRangeTime;
 
         return hibernateQuery;
-    }*/
+    }
 
+    //SQL Code
     public String processTime(List<TimeSearchSpecifications> timeSearchSpecifications, String filter) {
         String hibernateStartTime = "";
         String hibernateEndTime = "";
@@ -491,6 +696,7 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
         return hibernateStartTime + hibernateEndTime;
     }
 
+    //SQL Code
     public String processNullValues(String columnNames){
 
         StringBuilder updatedColStringBuilder = new StringBuilder();
@@ -508,5 +714,6 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
         }
         return updatedColStringBuilder.toString();
     }
-
+    */
+//endregion
 }

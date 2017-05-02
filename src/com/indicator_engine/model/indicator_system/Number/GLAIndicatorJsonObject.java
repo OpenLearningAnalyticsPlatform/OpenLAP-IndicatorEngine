@@ -2,6 +2,7 @@ package com.indicator_engine.model.indicator_system.Number;
 
 import com.google.gson.annotations.Expose;
 import com.indicator_engine.datamodel.GLAIndicator;
+import de.rwthaachen.openlap.analyticsengine.core.dtos.response.IndicatorResponse;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class GLAIndicatorJsonObject {
     @Expose
     String sColumns;
     @Expose
-    List<GLAIndicator> aaData;
+    List<IndicatorResponse> aaData;
 
     public int getiTotalRecords() {
         return iTotalRecords;
@@ -55,11 +56,11 @@ public class GLAIndicatorJsonObject {
         this.sColumns = sColumns;
     }
 
-    public List<GLAIndicator> getAaData() {
+    public List<IndicatorResponse> getAaData() {
         return aaData;
     }
 
-    public void setAaData(List<GLAIndicator> aaData) {
+    public void setAaData(List<IndicatorResponse> aaData) {
         this.aaData = aaData;
     }
 }

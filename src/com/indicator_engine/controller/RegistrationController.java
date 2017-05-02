@@ -1,8 +1,8 @@
 
 
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -48,6 +48,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -189,6 +191,10 @@ public class RegistrationController {
         log.info("Executing validate OTp");
         log.info(username);
         log.info(otp);
+
+        otp = decodeURIComponent(otp);
+        username = decodeURIComponent(username);
+
         List<UserCredentials> selectedUserList = userDetailsBean.searchByUserName(username);
         String status = "false";
         log.info("Selected User List " +selectedUserList);
@@ -202,6 +208,23 @@ public class RegistrationController {
             }
         }
         return status;
+    }
+
+    public String decodeURIComponent(String s) {
+        if (s == null) {
+            return null;
+        }
+
+        String result = null;
+
+        try {
+            result = URLDecoder.decode(s, "UTF-8");
+        }
+        catch (UnsupportedEncodingException e) {
+            result = s;
+        }
+
+        return result;
     }
 
 }

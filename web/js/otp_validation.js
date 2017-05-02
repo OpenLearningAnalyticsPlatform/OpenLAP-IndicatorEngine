@@ -1,6 +1,5 @@
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,26 +23,62 @@
 function Logout() {
     window.location="/logoff";
 }
-var request;
-function createRequest() {
+//var request;
+/*function createRequest() {
     try {
-        request = new XMLHttpRequest();
+        if (window.XMLHttpRequest) {
+            request = new XMLHttpRequest();
+        }
+        else {
+            request = new ActiveXObject("Microsoft.XMLHTTP");
+        }
     } catch(failed){
         alert("Error creating request object!");
         request = null;
     }
+}*/
+
+function createRequest(success) {
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function (xmlhttp) {
+        if (xmlhttp.currentTarget.readyState == 4 && success != undefined) {
+            success();
+        }
+    };
+    return xmlhttp;
 }
 
 function validateOTP(){
-    request = createRequest();
+    //var request = createRequest();
     var otpEntered = document . getElementById("otp").value;
     var username = document . getElementById("username").value;;
-    var url ="/validateotp?otp="+escape(otpEntered)+"&username="+escape(username);
-    request.open("GET",url,true);
-    request.onreadystatechange=alert_updateStatus;
-    request.send(null);
+    var url ="/validateotp?otp="+encodeURIComponent(otpEntered)+"&username="+encodeURIComponent(username);
+    //request.open("GET",url,true);
+    //request.onreadystatechange=alert_updateStatus;
+    //request.send(null);
 
+    var xmlhttp = createRequest(function () {
+        if (xmlhttp.status == 200) {
+            if (xmlhttp.responseText == "true") {
+                document.getElementById("status").value = "Your Account is Activated";
+            }
+            else {
+                document.getElementById("status").value = "Failed to Activate your account. Please Try again!";
+            }
+        }
+    });
+
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
 }
+
+/*
 function alert_updateStatus() {
     if (request.readyState == 4) {
         if (request.status == 200) {
@@ -58,4 +93,4 @@ function alert_updateStatus() {
 
         }
     }
-}
+}*/

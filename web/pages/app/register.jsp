@@ -1,6 +1,6 @@
 <%--
-  ~ Open Platform Learning Analytics : Indicator Engine
-  ~ Copyright (C) 2015  Learning Technologies Group, RWTH
+  ~ Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -41,9 +41,9 @@
 <head>
     <meta charset="UTF-8" />
     <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  -->
-    <title>Goal Oriented LA ToolKit : Login</title>
+    <title>OpenLAP : Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Goal Oriented LA ToolKit : Register" />
+    <meta name="description" content="OpenLAP : Register" />
     <meta name="keywords" content="html5, css3, form, switch, animation, :target, pseudo-class" />
     <meta name="author" content="Tanmaya Mahapatra" />
     <script language="JavaScript" src="${pageContext.request.contextPath}/js/user_registration_checks.js"> </script>
@@ -61,7 +61,7 @@
             <strong>&laquo; Attention: </strong>You may experience Problems !!
         </a>
                 <span class="right">
-                    <a href="/welcome">
+                    <a href="/login">
                         <strong>Back to Home Page</strong>
                     </a>
                 </span>

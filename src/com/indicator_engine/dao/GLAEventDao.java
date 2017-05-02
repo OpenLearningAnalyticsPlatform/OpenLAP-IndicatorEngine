@@ -1,8 +1,8 @@
 
 
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -39,6 +39,7 @@ public interface GLAEventDao {
     public GLAEvent loadEventByID(Long id);
     public List<String> selectAll(String EventComponent);
     public List<Long> findCategoryId(String action, String source, String platform);
+    public List<Long> findCategoryId(List<String> action, List<String> source, List<String> platform);
     public List<String> searchSimilarSessionDetails(String searchType, String searchCriteria);
     public List<Timestamp> searchSimilarTimeDetails(String searchType, String searchCriteria);
     public List<GLAEvent> searchEventsByAction(String searchParameter, boolean exactSearch,

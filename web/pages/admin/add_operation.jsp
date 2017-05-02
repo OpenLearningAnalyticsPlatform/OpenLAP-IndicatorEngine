@@ -1,6 +1,6 @@
 <%--
-  ~ Open Platform Learning Analytics : Indicator Engine
-  ~ Copyright (C) 2015  Learning Technologies Group, RWTH
+  ~ Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -29,7 +29,7 @@
 <%
     if ((session.getAttribute("loggedIn") == null) || (session.getAttribute("loggedIn") == ""))
         response.sendRedirect("/login");
-    if ((session.getAttribute("loggedIn") != null) && (session.getAttribute("loggedIn") != "") && (session.getAttribute("role").equals("ROLE_USER")) && (session.getAttribute("admin_access").equals("NO")))
+    if ((session.getAttribute("loggedIn") != null) && (session.getAttribute("loggedIn") != "") && (session.getAttribute("role").equals("User")) && (session.getAttribute("admin_access").equals("NO")))
         response.sendRedirect("/home/dashboard");
     if ((session.getAttribute("loggedIn") != null) && (session.getAttribute("loggedIn") != "") && (session.getAttribute("admin_access").equals("YES")))
     {
@@ -137,7 +137,7 @@
     </div>
     <footer class="templatemo-footer">
         <div class="templatemo-copyright">
-            <p>Copyright &copy; 2015 Learning Technologies Group, RWTH</p>
+            <p>Open Learning Analytics Platform (OpenLAP)</p>
         </div>
     </footer>
 </div>

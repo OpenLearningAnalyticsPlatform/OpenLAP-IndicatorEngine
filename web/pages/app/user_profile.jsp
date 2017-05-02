@@ -1,7 +1,7 @@
 <%@ page import="com.indicator_engine.datamodel.UserProfile" %>
 <%--
-  ~ Open Platform Learning Analytics : Indicator Engine
-  ~ Copyright (C) 2015  Learning Technologies Group, RWTH
+  ~ Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -215,7 +215,7 @@
     </div>
     <footer class="templatemo-footer">
         <div class="templatemo-copyright">
-            <p>Copyright &copy; 2015 Learning Technologies Group, RWTH</p>
+            <p>Open Learning Analytics Platform (OpenLAP)</p>
         </div>
     </footer>
 </div>

@@ -1,8 +1,7 @@
 
 
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -54,7 +53,8 @@ public class GAToolKitDashBoardController {
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
     public ModelAndView getDashboard() {
-        return new ModelAndView("app/home");
+        //return new ModelAndView("app/home");
+        return new ModelAndView("redirect:/indicators/define_new");
     }
 
     @RequestMapping(value = "/user_profile", method = RequestMethod.GET)

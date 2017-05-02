@@ -4,8 +4,20 @@
         <div id="visualizeQuestionContent"></div>
     </div>
     <div class="modal-footer">
-        <button class="modal-action modal-close waves-effect waves-light btn light-blue darken-2" >
-            Close
-        </button>
+        <table>
+            <tbody>
+            <tr>
+                <td class="full-width">
+                    <span id="question_preview_msg" class="preview-err-msg"></span>
+                </td>
+                <td>
+                    <button class="modal-action modal-close waves-effect waves-light btn light-blue darken-2" onclick="resetQuestionVisualization()">
+                        Close
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
     </div>
 </div>

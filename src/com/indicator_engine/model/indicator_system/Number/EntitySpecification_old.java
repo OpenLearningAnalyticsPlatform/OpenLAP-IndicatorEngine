@@ -1,6 +1,6 @@
 /*
- * Open Platform Learning Analytics : Indicator Engine
- * Copyright (C) 2015  Learning Technologies Group, RWTH
+ * Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,11 +19,7 @@
 
 package com.indicator_engine.model.indicator_system.Number;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +57,7 @@ public class EntitySpecification_old implements Serializable {
     private final String filteringType;
     private final String retrievableObjects;
 
-    private Questions questionsContainer = new Questions();
+    private SessionQuestion sessionQuestionContainer = new SessionQuestion();
 
     public EntitySpecification_old() {
         this.persistenceObject = "GLAEntity";
@@ -97,7 +93,7 @@ public class EntitySpecification_old implements Serializable {
 
         this.questionName = null;
         reset();
-        this.questionsContainer = null;
+        this.sessionQuestionContainer = null;
     }
 
 
@@ -221,12 +217,12 @@ public class EntitySpecification_old implements Serializable {
         this.hql = hql;
     }
 
-    public Questions getQuestionsContainer() {
-        return questionsContainer;
+    public SessionQuestion getSessionQuestionContainer() {
+        return sessionQuestionContainer;
     }
 
-    public void setQuestionsContainer(Questions questionsContainer) {
-        this.questionsContainer = questionsContainer;
+    public void setSessionQuestionContainer(SessionQuestion sessionQuestionContainer) {
+        this.sessionQuestionContainer = sessionQuestionContainer;
     }
 
     public String getPersistenceObject() {

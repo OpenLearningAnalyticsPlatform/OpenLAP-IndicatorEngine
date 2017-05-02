@@ -4,20 +4,15 @@ $(document).ready(function() {
         var errorMsg = '', $valid = false;
         $.ajax({
             async: false,
-            url:'/indicators/validateQName?qname='+enteredQuestionName,
+            url:'/engine/validateQuestionName?name='+enteredQuestionName,
             type:"GET",
-            data : {},
             success:function(response){
-                if(response == "exists"){
-                    errorMsg = "Question name already exists. Duplicate names are not allowed";
+                if(response == "server"){
+                    errorMsg = "Entered question already exists in OpenLAP.";
                     $valid = false;
                 }
-                else if(response == "short"){
-                    errorMsg = "Question Name must have at least 6 characters";
-                    $valid = false;
-                }
-                else if(response == "null"){
-                    errorMsg = "Question Name is a required field";
+                else if(response == "invalid"){
+                    errorMsg = "Enter question name.";
                     $valid = false;
                 }
                 else{
@@ -33,25 +28,37 @@ $(document).ready(function() {
     },'');
 
     $.validator.addMethod("validateIndicator",function(val, elem){
-        var enteredIndicatorName = $('#indicatorNaming').val();
+
+        //var indType = localStorage.getItem('indType');
+        var enteredIndicatorName = elem.value;
+
+        // if (indType == 'simple'){
+        //     enteredIndicatorName = $('#indicatorNaming').val();
+        // }
+        // else if (indType == 'multianalysis') {
+        //     enteredIndicatorName = $('#mlai_indicatorNaming').val();
+        // }
+        // else if (indType == 'composite') {
+        //     enteredIndicatorName = $('#comp_indicatorNaming').val();
+        // }
+
         var errorMsg = '', $valid = false;
-        var indicatorIndexUrlParam = (localStorage.getItem("selectedIndicatorIndex") === null) ? "" : '&indicatorIndex=' + localStorage.getItem("selectedIndicatorIndex");
+        var indicatorIndexUrlParam = (localStorage.getItem("selectedIndicatorIdentifier") === null) ? "" : '&index=' + localStorage.getItem("selectedIndicatorIdentifier");
         $.ajax({
             async: false,
-            url:'/indicators/validateIndName?indname=' + enteredIndicatorName + indicatorIndexUrlParam,
+            url:'/engine/validateIndicatorName?name=' + enteredIndicatorName + indicatorIndexUrlParam,
             type:"GET",
-            data : {},
             success:function(response){
-                if(response == "exists"){
-                    errorMsg = "Indicator name already exists. Duplicate names are not allowed";
+                if(response == "server"){
+                    errorMsg = "Entered indicator name already exists in OpenLAP.";
                     $valid = false;
                 }
-                else if(response == "short"){
-                    errorMsg = "Indicator Name must have at least 6 characters";
+                else if(response == "session"){
+                    errorMsg = "Entered indicator name already exists in current Question.";
                     $valid = false;
                 }
-                else if(response == "null"){
-                    errorMsg = "Indicator Name is a required field";
+                else if(response == "invalid"){
+                    errorMsg = "Enter indicator name.";
                     $valid = false;
                 }
                 else{
@@ -67,32 +74,65 @@ $(document).ready(function() {
     },'');
 
     $.validator.addMethod("hasNoOptionLeft",function(val, elem){
-        var $valid = false;
-        var optionsSize =  elem.options.length;
-        if (optionsSize == 0) {
-            $valid = true;
+        var $valid = true;
+        var options =  elem.options;
+        for (i = 0; i < options.length; i++) {
+            if (options[i].hasAttribute("is-required")) {
+                var isRequired = options[i].getAttribute("is-required");
+                if(isRequired == "true")
+                    $valid = false;
+            }
         }
-        $.validator.messages["hasNoOptionLeft"] = "All inputs must be selected";
+
+        $.validator.messages["hasNoOptionLeft"] = "All required inputs must be selected";
         return $valid;
     },'');
 
-
-    $('#sessionSelection').validate({
+    $('#GQSelectionForm').validate({
         ignore: false,
         onkeyup: false,
+        ignoreTitle: true,
         rules: {
             "questionsContainer.questionName": {
                 required: true,
-                minlength: 6
-                // validateQuestion: true
+                minlength: 6,
+                validateQuestion: true
             },
             GoalSelection: {
                 required: true
+            }
+        },
+        messages: {
+            GoalSelection: {
+                required: "Select analytics goal."
             },
+            "questionsContainer.questionName": {
+                required: "Question name is required.",
+                minlength: "Question name should be at least 6 characters."
+            }
+        },
+        errorClass: 'invalid',
+        errorPlacement: function (error, element) {
+            if(element.is("select"))
+                element.prev("label").attr("data-error", error.contents().text());
+            else
+                element.next("label").attr("data-error", error.contents().text());
+        },
+        onfocusout: function(element, event) {
+            if($(element).valid())
+                $('#preview_msg').find("#"+element.id+"_msg").remove();
+        }
+    });
+
+    $('#SimpleForm').validate({
+        ignore: false,
+        onkeyup: false,
+        ignoreTitle: true,
+        rules: {
             indicatorName: {
                 required: true,
-                minlength: 6
-                // validateIndicator: true
+                minlength: 6,
+                validateIndicator: true
             },
             selectedSource: {
                 required: true
@@ -109,7 +149,7 @@ $(document).ready(function() {
             analyticsMethod: {
                 required: true
             },
-            selectedChartEngine: {
+            EngineSelect: {
                 required: true
             },
             selectedChartType: {
@@ -123,10 +163,42 @@ $(document).ready(function() {
             }
         },
         messages: {
+            indicatorName: {
+                required: "Indicator name is required.",
+                minlength: "Indicator name should be at least 6 characters."
+            },
+            selectedSource: {
+                required: "Select sources for dataset."
+            },
+            selectedPlatform: {
+                required: "Select platforms for dataset."
+            },
+            selectedAction: {
+                required: "Select actions for dataset."
+            },
+            selectedMinor: {
+                required: "Select categories for dataset."
+            },
+            analyticsMethod: {
+                required: "Select analytics method."
+            },
+            EngineSelect: {
+                required: "Select visualization library."
+            },
+            selectedChartType: {
+                required: "Select visualization type."
+            }
         },
         errorClass: 'invalid',
         errorPlacement: function (error, element) {
-            element.next("label").attr("data-error", error.contents().text());
+            if(element.is("select"))
+                element.prev("label").attr("data-error", error.contents().text());
+            else
+                element.next("label").attr("data-error", error.contents().text());
+        },
+        onfocusout: function(element, event) {
+            if($(element).valid())
+                $('#preview_msg').find("#"+element.id+"_msg").remove();
         }
     });
 
@@ -205,4 +277,23 @@ $(document).ready(function() {
             element.next("label").attr("data-error", error.contents().text());
         }
     });
+
+/*    $('#goalRequestTemplateModel').validate({
+        ignore: false,
+        onkeyup: false,
+        rules: {
+            "new-analytics-goal-name": {
+                required: true
+            },
+            "new-analytics-goal-desc": {
+                required: true,
+            }
+        },
+        messages: {
+        },
+        errorClass: 'invalid',
+        errorPlacement: function (error, element) {
+            element.next("label").attr("data-error", error.contents().text());
+        }
+    });*/
 });

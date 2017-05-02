@@ -1,6 +1,6 @@
 <%--
-  ~ Open Platform Learning Analytics : Indicator Engine
-  ~ Copyright (C) 2015  Learning Technologies Group, RWTH
+  ~ Open Learning Analytics Platform (OpenLAP) : Indicator Engine
+
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Goal Oriented Learning Analytics</title>
+    <title>OpenLAP</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/homepage_style.css" type="text/css" media="screen" />
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/print.css" media="print" />
     <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
