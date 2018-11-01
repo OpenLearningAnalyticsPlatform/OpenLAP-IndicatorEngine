@@ -58,9 +58,9 @@ public class RegistrationForm {
 
 
 
-    @DateTimeFormat(pattern="dd-MM-yyyy")
-    @NotNull(message = "Date of Birth cannot be Null")
-    @Past(message = "Date of Birth Cannot be a Future Date.")
+//    @DateTimeFormat(pattern="dd-MM-yyyy")
+//    @NotNull(message = "Date of Birth cannot be Null")
+//    @Past(message = "Date of Birth Cannot be a Future Date.")
     private Date dob;
 
 

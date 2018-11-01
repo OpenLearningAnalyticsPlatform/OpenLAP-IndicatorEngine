@@ -20,7 +20,7 @@
         <div id="IndPropsFromDB"></div>
     </div>
     <div class="modal-footer">
-        <button class="modal-close waves-effect waves-light btn light-blue darken-2" title="Click to use the selected Question as a template." onclick="loadQuestionFromTemplate()" >
+        <button class="modal-close waves-effect waves-light btn light-blue darken-2 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Load selected question as a template" onclick="loadQuestionFromTemplate()" >
             Load
         </button>
     </div>

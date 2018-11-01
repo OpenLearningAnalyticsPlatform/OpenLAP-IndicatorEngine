@@ -25,10 +25,10 @@ dialect  "mvel"
 
 rule "When no entity filter is present"
 when
-    EntitySpecification (currentIndicator.indicatorParameters.entityDisplayObjects.isEmpty() == true)
+    $indReference : String()
+    EntitySpecification (currentIndicator.indicatorParameters.indicatorDataset.get($indReference).entityDisplayObjects.isEmpty() == true)
     $pFilter : ProcessUserFilters()
     $userParameter : EntitySpecification( $indparams : currentIndicator.indicatorParameters)
-    $indReference : String()
 then
     $userParameter.getCurrentIndicator().getHqlQuery().put($indReference, "select event from OpenLAPEvent event" + $pFilter.processEntitiesFrom($indparams, $indReference) + " where "
 							+ "event.action in (" + $pFilter.processStringList($indparams, "action", $indReference) + ") and "
@@ -37,15 +37,16 @@ then
 							+ "event.categoryByCId.cId in (" + $pFilter.processIntegerList($indparams, "minor", $indReference) + ") "
 							+ $pFilter.processTimestamp("event.timestamp", $indparams, $indReference)
 							+ $pFilter.processEntitiesJoins("event.eventId", $indparams, $indReference)
-							+ $pFilter.processEntitiesFilter($indparams, $indReference));
+							+ $pFilter.processEntitiesFilter($indparams, $indReference)
+							+ $pFilter.processUserFilter("event", $indparams, $indReference));
 end
 
 rule "When any number of entity filters are present"
 when
-    EntitySpecification (currentIndicator.indicatorParameters.entityDisplayObjects.isEmpty() == false)
+    $indReference : String()
+    EntitySpecification (currentIndicator.indicatorParameters.indicatorDataset.get($indReference).entityDisplayObjects.isEmpty() == false)
     $pFilter : ProcessUserFilters()
     $userParameter : EntitySpecification( $indparams : currentIndicator.indicatorParameters)
-    $indReference : String()
 then
     $userParameter.getCurrentIndicator().getHqlQuery().put($indReference, "select e1.eventByEventFk, e1 from OpenLAPEntity e1" + $pFilter.processEntitiesFrom($indparams, $indReference) + " where "
 							+ "e1.eventByEventFk.action in (" + $pFilter.processStringList($indparams, "action", $indReference) + ") and "
@@ -55,5 +56,6 @@ then
 							+ "e1.entityKey in (" + $pFilter.processStringList($indparams, "entityDisplay", $indReference) + ") "
 							+ $pFilter.processTimestamp("e1.eventByEventFk.timestamp", $indparams, $indReference)
 							+ $pFilter.processEntitiesJoins("e1.eventByEventFk.eventId", $indparams, $indReference)
+							+ $pFilter.processUserFilter("e1.eventByEventFk", $indparams, $indReference)
 							+ $pFilter.processEntitiesFilter($indparams, $indReference) + " order by e1.eventByEventFk.eventId");
 end

@@ -140,9 +140,10 @@ function getCompVisualizationMethodInputs() {
                     visualizationInputSelect
                         .append($("<option></option>")
                             .attr("value", response[i].id)
-                            .attr("title", response[i].description)
+                            .attr("title", response[i].description + (response[i].required?" (Required)":" (Optional)"))
                             .attr("is-required", response[i].required)
                             .attr("data-value", JSON.stringify(response[i]))
+                            .attr("class",response[i].required?"required-column":"optional-column")
                             .text(response[i].title + " (" + response[i].type + ")"));
                 }
                 $("select#comp_inputForVisualizer")[0].selectedIndex = 0;
@@ -160,6 +161,8 @@ function getCompVisualizationMethodInputs() {
 
 function addCompVisualizationMappingToTable() {
 
+    $('#comp_addVisualizationMapping_msg').empty();
+
     var outputForMethodsSelect = $('#comp_outputForMethods');
     var inputForVisualizerSelect = $('#comp_inputForVisualizer');
 
@@ -168,27 +171,35 @@ function addCompVisualizationMappingToTable() {
         var outputForMethodsData = outputForMethodsSelect.find(':selected').data('value');
         var inputForVisualizerData = inputForVisualizerSelect.find(':selected').data('value');
 
-        var row = "<tr data-methodcols='" + JSON.stringify(outputForMethodsData) + "' data-visualdata='" + JSON.stringify(inputForVisualizerData) + "'>" +
-            "<td>" + outputForMethodsData.title + " (" + outputForMethodsData.type + ")" + "</td>" +
-            "<td>" + inputForVisualizerData.title + " (" + inputForVisualizerData.type + ")" + "</td>" +
-            "<td><i class='material-icons' onclick='deleteCompVisualizerMappingTableRow(this, event);'>close</i></td>" +
-            "</tr>";
+        if(validateMapping(outputForMethodsData, inputForVisualizerData)) {
+            var row = "<tr data-methodcols='" + JSON.stringify(outputForMethodsData) + "' data-visualdata='" + JSON.stringify(inputForVisualizerData) + "'>" +
+                "<td>" + outputForMethodsData.title + " (" + outputForMethodsData.type + ")" + "</td>" +
+                "<td>" + inputForVisualizerData.title + " (" + inputForVisualizerData.type + ")" + "</td>" +
+                "<td><i class='material-icons' onclick='deleteCompVisualizerMappingTableRow(this, event);'>close</i></td>" +
+                "</tr>";
 
-        var visualizationMappings = JSON.parse(localStorage.getItem('comp_visualizationMappings')) || [];
-        visualizationMappings.push({outputPort: outputForMethodsData, inputPort: inputForVisualizerData});
-        localStorage.setItem('comp_visualizationMappings', JSON.stringify(visualizationMappings));
+            var visualizationMappings = JSON.parse(localStorage.getItem('comp_visualizationMappings')) || [];
+            visualizationMappings.push({outputPort: outputForMethodsData, inputPort: inputForVisualizerData});
+            localStorage.setItem('comp_visualizationMappings', JSON.stringify(visualizationMappings));
 
-        // $("#outputForMethods option:selected").remove();
-        $("#comp_inputForVisualizer option:selected").remove();
-        var outputForMethodsOptionSize = $('#comp_outputForMethods option').size();
-        var inputForVisualizerOptionSize = $('#comp_inputForVisualizer option').size();
+            // $("#outputForMethods option:selected").remove();
+            $("#comp_inputForVisualizer option:selected").remove();
+            var outputForMethodsOptionSize = $('#comp_outputForMethods option').size();
+            var inputForVisualizerOptionSize = $('#comp_inputForVisualizer option').size();
 
-        if (outputForMethodsOptionSize == 0 || inputForVisualizerOptionSize == 0) {
-            $('#comp_addVisualizationMapping').prop('disabled', true);
+            if (outputForMethodsOptionSize == 0 || inputForVisualizerOptionSize == 0) {
+                $('#comp_addVisualizationMapping').prop('disabled', true);
+            }
+
+            $('#comp_visualizerMappingTable > tbody:last').append(row);
+            toggleCompVisibilityVisualizerMappingTable();
         }
-
-        $('#comp_visualizerMappingTable > tbody:last').append(row);
-        toggleCompVisibilityVisualizerMappingTable();
+        else{
+            $('#comp_addVisualizationMapping_msg').html("<p>Fields of the same type can be added.</p>");
+        }
+    }
+    else{
+        $('#comp_addVisualizationMapping_msg').html("<p>Select a field from 'Outputs of Method' and from 'Inputs of Visualization' before adding.</p>");
     }
 
     $('#comp_inputForVisualizer').valid();
@@ -216,9 +227,10 @@ function deleteCompVisualizerMappingTableRow(column, event) {
     $('#comp_inputForVisualizer')
         .prepend($("<option></option>")
             .attr("value", inputForVisualizerData.id)
-            .attr("title", inputForVisualizerData.description)
+            .attr("title", inputForVisualizerData.description + (inputForVisualizerData.required?" (Required)":" (Optional)"))
             .attr("is-required", inputForVisualizerData.required)
             .attr("data-value", JSON.stringify(inputForVisualizerData))
+            .attr("class",inputForVisualizerData.required?"required-column":"optional-column")
             .text(inputForVisualizerData.title + " (" + inputForVisualizerData.type + ")"));
 
     var outputForMethodsOptionSize = $('#comp_outputForMethods option').size();
@@ -342,7 +354,7 @@ function updateCompositeModal(request) {
                         checkbox.type = "checkbox";    // make the element a checkbox
                         checkbox.name = "comp_checkbox_" + parsedJSON.sessionIndicators[i].identifier;
                         checkbox.value = parsedJSON.sessionIndicators[i].identifier;         // make its value "pair"
-                        checkbox.setAttribute("method_id", parsedJSON.sessionIndicators[i].indicatorParameters.analyticsMethodId[0]);
+                        checkbox.setAttribute("method_id", parsedJSON.sessionIndicators[i].indicatorParameters.indicatorDataset[0].analyticsMethodId);
                         checkbox.addEventListener("click", function() {
                             enableValidCompIndicators(this);
                         });
@@ -468,8 +480,8 @@ function getCompAnalyticsMethodOutputs(analyticsMethodId) {
             .append($("<option></option>")
                 .attr("value", "indicator_names")
                 .attr("title", "Names of the indicators combines together to form the composite.")
-                .attr("data-value", "{\"type\":\"STRING\",\"id\":\"indicator_names\",\"required\":true,\"title\":\"Indicator Names\",\"description\":\"Names of the indicators combines together to form the composite.\"}")
-                .text("Indicator Names (STRING)" ));
+                .attr("data-value", "{\"type\":\"Text\",\"id\":\"indicator_names\",\"required\":true,\"title\":\"Indicator Names\",\"description\":\"Names of the indicators combines together to form the composite.\"}")
+                .text("Indicator Names (Text)" ));
 
             $("select#comp_outputForMethods")[0].selectedIndex = 0;
         }

@@ -57,19 +57,18 @@
 <div class="container">
     <!-- Codrops top bar -->
     <div class="codrops-top">
-        <a href="">
-            <strong>&laquo; Attention: </strong>You may experience Problems !!
-        </a>
-                <span class="right">
-                    <a href="/login">
-                        <strong>Back to Home Page</strong>
-                    </a>
-                </span>
-        <div class="clr"></div>
+        <%--<a href="">--%>
+            <%--<strong>&laquo; Attention: </strong>You may experience Problems !!--%>
+        <%--</a>--%>
+                <%--<span class="right">--%>
+                    <%--<a href="/login">--%>
+                        <%--<strong>Back to Home Page</strong>--%>
+                    <%--</a>--%>
+                <%--</span>--%>
+        <%--<div class="clr"></div>--%>
     </div><!--/ Codrops top bar -->
     <header>
-        <h1>Goal Oriented <span>Learning Analytics ToolKit</span></h1>
-
+        <h1>Open Learning Analytics Platform <span>(OpenLAP)</span></h1>
     </header>
     <section>
         <div id="container_demo" >
@@ -83,25 +82,25 @@
                         <p>
 
                             <label for="usernamesignup" class="uname" data-icon="u">Your username</label>
-                            <form:input  path="userName" name="usernamesignup" id = "usernamesignup" required="required" type="text" placeholder="mysuperusername690" onchange="checkPreExistingUserName()" />
+                            <form:input  path="userName" name="usernamesignup" id = "usernamesignup" required="required" type="text" placeholder="username" onchange="checkPreExistingUserName()" />
 
                         </p>
                         <p>
                             <label for="emailsignup" class="youmail" data-icon="e" > Your email</label>
-                            <form:input id="emailsignup" name="emailsignup" required="required" type="email" placeholder="mysupermail@mail.com" path="email" onchange="checkPreExistingEmailID()"/>
+                            <form:input id="emailsignup" name="emailsignup" required="required" type="email" placeholder="email" path="email" onchange="checkPreExistingEmailID()"/>
                         </p>
                         <p>
                             <label for="passwordsignup" class="youpasswd" data-icon="p">Your password </label>
-                            <form:input id="passwordsignup" name="passwordsignup" required="required" type="password" placeholder="eg. X8df!90EO" path="password"/>
+                            <form:input id="passwordsignup" name="passwordsignup" required="required" type="password" placeholder="password" path="password"/>
                         </p>
                         <p>
                             <label for="passwordsignup_confirm" class="youpasswd" data-icon="p">Please confirm your password </label>
-                            <form:input id="passwordsignup_confirm" name="passwordsignup_confirm" required="required" type="password" placeholder="eg. X8df!90EO" path="confirmpassword" onchange="checkPassword()"/>
+                            <form:input id="passwordsignup_confirm" name="passwordsignup_confirm" required="required" type="password" placeholder="password" path="confirmpassword" onchange="checkPassword()"/>
                         </p>
-                        <p>
-                            <label for="dob" class="dob" data-icon="d"> Date of Brith </label>
-                            <form:input id="dob" name="dob"  type="text" required="required" placeholder="DD-MM-yyyy" path="dob" onchange="checkDate()"/>
-                        </p>
+                        <%--<p>--%>
+                            <%--<label for="dob" class="dob" data-icon="d"> Date of Brith </label>--%>
+                            <%--<form:input id="dob" name="dob"  type="text" required="required" placeholder="DD-MM-yyyy" path="dob" onchange="checkDate()"/>--%>
+                        <%--</p>--%>
                         <p>
                             <form:errors path="*" cssClass="errorblock" element="div" />
                         </p>

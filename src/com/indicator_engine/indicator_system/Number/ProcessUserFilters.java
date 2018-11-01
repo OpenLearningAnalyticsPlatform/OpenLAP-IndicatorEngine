@@ -137,6 +137,22 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
         return returnValue;
     }
 
+    public String processUserFilter(String baseTableIdentity, IndicatorParameters params, String indReference){
+
+        List<UserSearchSpecifications> userFilters = params.getIndicatorDataset().get(indReference).getUserSpecifications();
+
+        int count = userFilters.size();
+        String returnValue = "";
+        for(int i=0; i<count; i++) {
+            if(userFilters.get(i).getKey().equals("mine"))
+                returnValue += " and " + baseTableIdentity + ".usersByUId.name = '" + userFilters.get(i).getValue() + "'";
+            else if(userFilters.get(i).getKey().equals("notmine"))
+                returnValue += " and " + baseTableIdentity + ".usersByUId.name != '" + userFilters.get(i).getValue() + "'";
+        }
+
+        return returnValue;
+    }
+
 //    public String processTimestamp(String baseTableIdentity, List<TimeSearchSpecifications> timeValues){
 //        int count = timeValues.size();
 //        String returnValue = "";
@@ -199,7 +215,7 @@ public class ProcessUserFilters implements ProcessUserFiltersDao {
                 list = params.getIndicatorDataset().get(indReference).getSelectedSource();
                 break;
             case "entityDisplay":
-                list = params.getEntityDisplayObjects();
+                list = params.getIndicatorDataset().get(indReference).getEntityDisplayObjects();
                 break;
             default:
                 break;

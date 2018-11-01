@@ -19,6 +19,7 @@
 
 package com.indicator_engine.model.indicator_system.Number;
 
+import de.rwthaachen.openlap.analyticsmodules.model.OpenLAPDataSetMergeMapping;
 import de.rwthaachen.openlap.dataset.OpenLAPPortConfig;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Tanmaya Mahapatra on 21-06-2015.
@@ -35,24 +37,35 @@ import java.util.Map;
 @Component
 @Scope("session")
 public class IndicatorParameters implements Serializable {
+    private AtomicInteger count = new AtomicInteger(1);
 
     private Map<String, IndicatorDataset> indicatorDataset;
 
-    private Map<String, Long> analyticsMethodId;
-
     private String visualizationLibrary;
     private String visualizationType;
-
-    private String retrievableObjects;
-    private List<String> entityDisplayObjects;
-
-    private Map<String, OpenLAPPortConfig> queryToMethodConfig;
     private OpenLAPPortConfig methodToVisualizationConfig;
+    private String visualizationParams;
+
+    private List<OpenLAPDataSetMergeMapping> combineMappingList;
+
 
     public IndicatorParameters() {
         indicatorDataset = new HashMap<>();
-        analyticsMethodId = new HashMap<>();
-        queryToMethodConfig = new HashMap<>();
+        indicatorDataset.put("0", new IndicatorDataset());
+    }
+
+    public int addNewDataSource(){
+        int newCount = count.getAndIncrement();
+
+        indicatorDataset.put(""+newCount, new IndicatorDataset());
+
+        return newCount;
+    }
+
+    public void removeDataSource(String dsid){
+        indicatorDataset.remove(dsid);
+
+        return;
     }
 
     public Map<String, IndicatorDataset> getIndicatorDataset() {
@@ -61,14 +74,6 @@ public class IndicatorParameters implements Serializable {
 
     public void setIndicatorDataset(Map<String, IndicatorDataset> indicatorDataset) {
         this.indicatorDataset = indicatorDataset;
-    }
-
-    public Map<String, Long> getAnalyticsMethodId() {
-        return analyticsMethodId;
-    }
-
-    public void setAnalyticsMethodId(Map<String, Long> analyticsMethodId) {
-        this.analyticsMethodId = analyticsMethodId;
     }
 
     public String getVisualizationLibrary() {
@@ -87,29 +92,21 @@ public class IndicatorParameters implements Serializable {
         this.visualizationType = visualizationType;
     }
 
-    public String getRetrievableObjects() {
-        return retrievableObjects;
-    }
-
-    public void setRetrievableObjects(String retrievableObjects) {
-        this.retrievableObjects = retrievableObjects;
-    }
-
-    public List<String> getEntityDisplayObjects() {
-        return entityDisplayObjects;
-    }
-
-    public void setEntityDisplayObjects(List<String> entityDisplayObjects) {
-        this.entityDisplayObjects = entityDisplayObjects;
-    }
-
-    public Map<String, OpenLAPPortConfig> getQueryToMethodConfig() {
-        return queryToMethodConfig;
-    }
-
-    public void setQueryToMethodConfig(Map<String, OpenLAPPortConfig> queryToMethodConfig) {
-        this.queryToMethodConfig = queryToMethodConfig;
-    }
+//    public String getRetrievableObjects() {
+//        return retrievableObjects;
+//    }
+//
+//    public void setRetrievableObjects(String retrievableObjects) {
+//        this.retrievableObjects = retrievableObjects;
+//    }
+//
+//    public List<String> getEntityDisplayObjects() {
+//        return entityDisplayObjects;
+//    }
+//
+//    public void setEntityDisplayObjects(List<String> entityDisplayObjects) {
+//        this.entityDisplayObjects = entityDisplayObjects;
+//    }
 
     public OpenLAPPortConfig getMethodToVisualizationConfig() {
         return methodToVisualizationConfig;
@@ -117,5 +114,21 @@ public class IndicatorParameters implements Serializable {
 
     public void setMethodToVisualizationConfig(OpenLAPPortConfig methodToVisualizationConfig) {
         this.methodToVisualizationConfig = methodToVisualizationConfig;
+    }
+
+    public String getVisualizationParams() {
+        return visualizationParams;
+    }
+
+    public void setVisualizationParams(String visualizationParams) {
+        this.visualizationParams = visualizationParams;
+    }
+
+    public List<OpenLAPDataSetMergeMapping> getCombineMappingList() {
+        return combineMappingList;
+    }
+
+    public void setCombineMappingList(List<OpenLAPDataSetMergeMapping> combineMappingList) {
+        this.combineMappingList = combineMappingList;
     }
 }

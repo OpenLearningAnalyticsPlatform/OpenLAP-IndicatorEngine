@@ -2,9 +2,9 @@
     <div class="panel panel-default">
         <div class="panel-heading light-blue darken-2">
             Indicator
-            <a class="modal-trigger orange-text openlap-help-icon tooltipped" id="simpleIndicatorHelp" data-position="right" data-delay="50" data-tooltip="Click to see help related to indicator defination."
+            <a class="modal-trigger amber-text openlap-help-icon tooltipped" id="simpleIndicatorHelp" data-position="right" data-delay="50" data-tooltip="Click to see help related to indicator defination."
                href="#simpleIndicatorHelpModel">
-                <i class="material-icons">help</i>
+                <i class="material-icons">help_outline</i>
             </a>
         </div>
         <div class="panel-body">
@@ -12,9 +12,9 @@
                 <li>
                     <div class="light-blue lighten-5 collapsible-header active">
                         Dataset
-                        <a class="modal-trigger orange-text openlap-help-icon tooltipped" id="simpleIndicatorHelpDataset" data-position="right" data-delay="50" data-tooltip="Click to see help related to Dataset section."
+                        <a class="modal-trigger amber-text openlap-help-icon tooltipped" id="simpleIndicatorHelpDataset" data-position="right" data-delay="50" data-tooltip="Click to see help related to Dataset section."
                            href="#simpleIndicatorHelpModel" onclick="clickElement('simple_help_dataset', event)">
-                            <i class="material-icons">help</i>
+                            <i class="material-icons">help_outline</i>
                         </a>
                     </div>
                     <div class="collapsible-body panel-body">
@@ -23,43 +23,43 @@
                             <tr>
                                 <div class="row">
                                     <div class="col-md-6 input-field">
-                                        <form:input path="indicatorName" type="text" class="form-control" name ="indicatorNaming"
+                                        <input type="text" class="form-control" name ="indicatorNaming"
                                                     id="indicatorNaming"  required="required" placeholder="Type your Indicator Name"/>
-                                        <label for="indicatorNaming">Indicator Name</label>
+                                        <label class="item-title" for="indicatorNaming">Indicator Name</label>
                                     </div>
                                 </div>
                             </tr>
                             <tr>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label for="sourceSelection" class="tooltipped" data-position="right" data-delay="50" data-tooltip="Select data source(s) for the dataset">Source(s)</label>
-                                        <form:select multiple="true" size="2" class="form-control browser-default" name ="sourceSelection"
-                                                     path="selectedSource" items="${selectNumberParameters.source}" id="sourceSelection"/>
+                                        <%--class="item-title tooltipped" data-position="right" data-delay="50" data-tooltip="Select data source(s) for the dataset"--%>
+                                        <label for="sourceSelection">Source(s)</label>
+                                        <select multiple="true" size="2" class="form-control browser-default" name ="sourceSelection" id="sourceSelection"/>
                                     </div>
                                 </div>
                             </tr>
                             <tr>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label for="PlatformSelection" class="tooltipped" data-position="right" data-delay="50" data-tooltip="Select platform(s) for the dataset">Platform(s)</label>
-                                        <form:select multiple="true" size="2" class="form-control browser-default"
-                                                     path="selectedPlatform" items="${selectNumberParameters.platform}" name ="PlatformSelection" id="PlatformSelection"/>
+                                        <%--class="item-title tooltipped" data-position="right" data-delay="50" data-tooltip="Select platform(s) for the dataset"--%>
+                                        <label for="PlatformSelection">Platform(s)</label>
+                                        <select multiple="true" size="2" class="form-control browser-default" name ="PlatformSelection" id="PlatformSelection"/>
                                     </div>
                                 </div>
                             </tr>
                             <tr>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label for="actionSelection" class="tooltipped" data-position="right" data-delay="50" data-tooltip="Select learning activity action(s) for the dataset">Action(s)</label>
-                                        <form:select multiple="true" size="4" class="form-control browser-default"
-                                                     path="selectedAction" items="${selectNumberParameters.action}" name ="actionSelection" id="actionSelection" onchange="populateCategories();"/>
+                                        <%--class="item-title tooltipped" data-position="right" data-delay="50" data-tooltip="Select learning activity action(s) for the dataset"--%>
+                                        <label for="actionSelection">Action(s)</label>
+                                        <select multiple="true" size="4" class="form-control browser-default" name ="actionSelection" id="actionSelection" onchange="populateCategories();"/>
                                     </div>
                                 </div>
                             </tr>
                             <tr>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div id="selectedMinorSpinner" class="preloader-wrapper small active" style="left:120px;">
+                                        <div id="selectedMinorSpinner" class="preloader-wrapper small active" style="left:160px;">
                                             <div class="spinner-layer spinner-blue-only">
                                                 <div class="circle-clipper left">
                                                     <div class="circle"></div>
@@ -72,11 +72,15 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <label for="selectedMinor" class="tooltipped" data-position="right" data-delay="50"
+                                        <label for="selectedMinor" >Category(ies)
+                                            <a class="green-text openlap-help-icon tooltipped" data-position="right" data-delay="50"
                                                data-tooltip="<ul style='margin:0px;text-align:left;'>
                                                <li>- Categories are available after the Sources, Platforms and Actions parameters have been selected.</li>
                                                <li>- Select category(ies) related to which data should be used in dataset.</li>
-                                               </ul>">Category(ies)</label>
+                                               </ul>">
+                                                <i class="material-icons">info_outline</i>
+                                            </a>
+                                        </label>
                                         <form:select multiple="true" size="6" class="form-control browser-default"
                                                      path="selectedMinor" items="${selectNumberParameters.minors}" name ="selectedMinor" id="selectedMinor" onchange="populateEntities();"/>
                                     </div>
@@ -89,19 +93,19 @@
                 <li>
                     <div class="light-blue lighten-5 collapsible-header active">
                         Filters
-                        <a class="modal-trigger orange-text openlap-help-icon tooltipped" id="simpleIndicatorHelpFilter" data-position="right" data-delay="50" data-tooltip="Click to see help related to Filters section."
+                        <a class="modal-trigger amber-text openlap-help-icon tooltipped" id="simpleIndicatorHelpFilter" data-position="right" data-delay="50" data-tooltip="Click to see help related to Filters section."
                            href="#simpleIndicatorHelpModel" onclick="clickElement('simple_help_filter', event)">
-                            <i class="material-icons">help</i>
+                            <i class="material-icons">help_outline</i>
                         </a>
                     </div>
                     <div class="collapsible-body panel-body">
                         <div class="row">
                             <div class="col s12">
-                                <ul class="tabs">
+                                <ul class="tabs" id="filterTabs">
                                     <li class="tab col s3"><a href="#attribute" class="active">Attribute</a></li>
                                     <%--<li class="tab col s3"><a href="#session">Session</a></li>--%>
                                     <%--<li class="tab col s3"><a href="#userAndTime">User & Time</a></li>--%>
-                                    <li class="tab col s3"><a href="#userAndTime">Time</a></li>
+                                    <li class="tab col s3"><a href="#userAndTime">Time / User</a></li>
                                 </ul>
                             </div>
                             <div class="col s12 m12 l12">
@@ -122,14 +126,35 @@
                                 <div class="row">
                                     <div class="col s12 m6 l6">
                                         <br/>
+                                        <div id="filterAttributeSpinner" class="preloader-wrapper small active" style="left:200px;">
+                                            <div class="spinner-layer spinner-blue-only">
+                                                <div class="circle-clipper left">
+                                                    <div class="circle"></div>
+                                                </div>
+                                                <div class="gap-patch">
+                                                    <div class="circle"></div>
+                                                </div>
+                                                <div class="circle-clipper right">
+                                                    <div class="circle"></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <label for="entityKeySelection">Attribute
                                             <a class="green-text openlap-help-icon tooltipped" data-position="right" data-delay="50"
                                                data-tooltip="<ul style='margin:0px;text-align:left;'>
                                                <li>- Select appropriate attribute and click Search.</li>
                                                <li>- Select one or more values and click Apply.</li>
-                                               <li>- If no filters are applied than all values will be considered.</li>
                                                </ul>">
-                                                <i class="material-icons">info</i>
+                                                <i class="material-icons">info_outline</i>
+                                            </a>
+
+                                            <a style="margin-left:30px;" class="red-text openlap-help-icon tooltipped" data-position="right" data-delay="50"
+                                               data-tooltip="<ul style='margin:0px;text-align:left;'>
+                                               <li>- At least add 'Course ID' filter to use data relevant to your course only.</li>
+                                               <li>- Search results shows data from the whole database. Already applied filters do not affect new search.</li>
+                                               <li>- If no filters are applied then all values will be considered.</li>
+                                               </ul>">
+                                                <i class="material-icons">info_outline</i>
                                             </a>
                                         </label>
                                         <form:select class="browser-default" path="selectedKeys" items="${selectNumberParameters.keys}" name ="entityKeySelection" id="entityKeySelection"/>
@@ -138,7 +163,7 @@
                                             <button class="waves-effect waves-light btn light-blue tooltipped" type="button" name="_eventId_searchAttributes" value="Search" onfocus="searchAttributes()" data-position="right" data-delay="50" data-tooltip="Search values for the selected attributes." >Search</button>
                                         </div>
                                         <br/>
-                                        <div id="entityValueSpinner" class="preloader-wrapper small active" style="left:190px;">
+                                        <div id="entityValueSpinner" class="preloader-wrapper small active" style="left:200px;">
                                             <div class="spinner-layer spinner-blue-only">
                                                 <div class="circle-clipper left">
                                                     <div class="circle"></div>
@@ -218,26 +243,23 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <br/>
                                     <div class="col s12 m6 l6">
-                                        <%--<br/>
-                                        <br/>
-                                        <input type="checkbox" id="isMyData"/>
-                                        <label for="isMyData">My data only</label>
-                                        <br/>
-                                        <br/>
-                                        <div class="col s12 m12 l12">
-                                            <div class="divider"></div>
-                                        </div>
-                                        <br/>
-                                        <br/>--%>
+                                        <label>Time Filter</label>
+                                        <div class="divider"></div>
+                                    </div>
+                                    <br/>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12 m6 l6">
                                         <label for="dateType">Date Type
                                             <a class="green-text openlap-help-icon tooltipped" data-position="right" data-delay="50"
                                                data-tooltip="<ul style='margin:0px;text-align:left;'>
-                                               <li>- Select the Date Type, such as, Start date or End date.</li>
+                                               <li>- Select the Date Type, such as Start date or End date.</li>
                                                <li>- Specify the Date for the selected type and click Apply.</li>
-                                               <li>- If no date filters are applied than all data will be considered.</li>
+                                               <li>- If no date filters are applied then all data will be considered.</li>
                                                </ul>">
-                                                <i class="material-icons">info</i>
+                                                <i class="material-icons">info_outline</i>
                                             </a>
                                         </label>
                                         <select class="browser-default"name ="dateType" id="dateType">
@@ -254,6 +276,49 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <br/>
+                                    <div class="col s12 m6 l6">
+                                        <label>User Filter</label>
+                                        <div class="divider"></div>
+                                    </div>
+                                    <br/>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12 m6 l6">
+                                        <div id="userFilterRadioDiv">
+                                            <input class="with-gap" name="user-filter-group" type="radio" id="userFilterAll" checked onclick="userFilterChanged()"/>
+                                            <label for="userFilterAll">Use all data</label>
+
+                                            <input class="with-gap" name="user-filter-group" type="radio" id="userFilterMy"  onclick="userFilterChanged()"/>
+                                            <label for="userFilterMy">Use my data only</label>
+
+                                            <input class="with-gap"  name="user-filter-group" type="radio" id="userFilterOthers"  onclick="userFilterChanged()"/>
+                                            <label for="userFilterOthers">Exclude my data</label>
+                                        </div>
+
+                                        <%--<div id="userFilterRadioAction" style="display:none;">--%>
+                                            <%--<div class="input-field">--%>
+                                                <%--<input placeholder="Enter your encrypted user key here." id="userEncryptedHash" name="userEncryptedHash" type="text" class="form-control">--%>
+                                                <%--<label for="userEncryptedHash">User Encrypted Key--%>
+                                                    <%--<a class="red-text openlap-help-icon tooltipped" data-position="right" data-delay="50"--%>
+                                                       <%--data-tooltip="<ul style='margin:0px;text-align:left;'>--%>
+                                               <%--<li>- OpenLAP in not fully integrated with L<sup>2</sup>P.</li>--%>
+                                               <%--<li>- Therefore the encrypted key of users is not automatically available.</li>--%>
+                                               <%--<li>- Contact OpenLAP admins to get your encrypted key.</li>--%>
+                                               <%--</ul>">--%>
+                                                        <%--<i class="material-icons">info_outline</i>--%>
+                                                    <%--</a>--%>
+                                                <%--</label>--%>
+                                            <%--</div>--%>
+    <%----%>
+                                            <%--<div class="right-align">--%>
+                                                <%--<button class="waves-effect waves-light btn light-blue tooltipped" type="button" name="btn_SetUserFilter" onclick="setUserFilter()" data-position="right" data-delay="50" data-tooltip="Set the selected user filter.">Set Filter</button>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -261,9 +326,9 @@
                 <li>
                     <div class="light-blue lighten-5 collapsible-header active">
                         Analysis
-                        <a class="modal-trigger orange-text openlap-help-icon tooltipped" id="simpleIndicatorHelpAnalyze" data-position="right" data-delay="50" data-tooltip="Click to see help related to Analysis section."
+                        <a class="modal-trigger amber-text openlap-help-icon tooltipped" id="simpleIndicatorHelpAnalyze" data-position="right" data-delay="50" data-tooltip="Click to see help related to Analysis section."
                            href="#simpleIndicatorHelpModel" onclick="clickElement('simple_help_analysis', event)">
-                            <i class="material-icons">help</i>
+                            <i class="material-icons">help_outline</i>
                         </a>
                     </div>
                     <div class="collapsible-body panel-body">
@@ -275,7 +340,7 @@
                                        <li>- Select an analytics method which you want to apply on the dataset.</li>
                                        <li>- Description of each analtyics method is available when you hover over its name.</li>
                                        </ul>">
-                                        <i class="material-icons">info</i>
+                                        <i class="material-icons">info_outline</i>
                                     </a>
                                 </label>
                                 <select class="browser-default" name ="analyticsMethod" id="analyticsMethod"
@@ -284,6 +349,15 @@
                             <div class="col m6 l6">
                                 <div class="select-desc hide-on-small-only">
                                     <span id="analyticsMethodDesc"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="methodDynamicParamsRow">
+                            <div class="col s12 m6 l6">
+                                <label>Additional Parameters</label>
+                                <div class="divider"></div>
+                                <div id="methodDynamicParams" class="dynamic-params">
+                                    <div class='select-desc' style='margin-top: 5px;'><span>No additional parameters</span></div>
                                 </div>
                             </div>
                         </div>
@@ -309,10 +383,11 @@
                                        <li>- Select a column from the 'Data Columns' list.</li>
                                        <li>- Select an input from 'Inputs of Methods' list in which you want to send the selected column.</li>
                                        <li>- Click 'Add' to finalize this mapping.</li>
-                                       <li>- Specify mappings for all the required inputs in 'Inputs for Methods' list.</li>
+                                       <li>- Specify mappings for all the required inputs (in Red) in 'Inputs for Methods' list.</li>
+                                       <li>- Green colored mappings are optional and can be skipped. Read their tooltips for more info.</li>
                                        <li>- Description of each data column and input is available when you hover over its name.</li>
                                        </ul>">
-                                        <i class="material-icons">info</i>
+                                        <i class="material-icons">info_outline</i>
                                     </a>
                                 </label>
                                 <div class="divider"></div>
@@ -333,9 +408,20 @@
                         </div>
                         <div class="row">
                             <div class="col s12 m6 l6 right-align">
-                                <button class="btn waves-effect waves-light light-blue" type="button"
-                                        id="addMethodMapping" name="addMethodMapping" value="Add Mapping" onclick="addMethodMappingToTable();">Add
-                                </button>
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td class="full-width">
+                                            <span id="addMethodMapping_msg" class="preview-err-msg"></span>
+                                        </td>
+                                        <td>
+                                            <button class="btn waves-effect waves-light light-blue" type="button"
+                                                    id="addMethodMapping" name="addMethodMapping" value="Add Mapping" onclick="addMethodMappingToTable();">Add
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                         <div class="row">
@@ -357,9 +443,9 @@
                 <li>
                     <div class="light-blue lighten-5 collapsible-header active">
                         Visualization
-                        <a class="modal-trigger orange-text openlap-help-icon tooltipped" id="simpleIndicatorHelpVisualize" data-position="right" data-delay="50" data-tooltip="Click to see help related to the Visualization section."
+                        <a class="modal-trigger amber-text openlap-help-icon tooltipped" id="simpleIndicatorHelpVisualize" data-position="right" data-delay="50" data-tooltip="Click to see help related to the Visualization section."
                            href="#simpleIndicatorHelpModel" onclick="clickElement('simple_help_visualize', event)">
-                            <i class="material-icons">help</i>
+                            <i class="material-icons">help_outline</i>
                         </a>
                     </div>
                     <div class="collapsible-body panel-body">
@@ -372,14 +458,14 @@
                                        <li>- Select a visualization library (e.g. Google Charts, C3.js) using which you want to visualize the indicator.</li>
                                        <li>- Select a visualization type (e.g. Bar Chart, Pie Chart) using which you want to visualize the indicator.</li>
                                        </ul>">
-                                            <i class="material-icons">info</i>
+                                            <i class="material-icons">info_outline</i>
                                         </a>
                                     </label>
                                     <select class="browser-default" name ="EngineSelect" id="EngineSelect" onchange="populateVisualizationMethods();">
                                     </select>
                                 </div>
                                 <div class="row">
-                                    <div id="selectedChartTypeSpinner" class="preloader-wrapper small active" style="left:220px;">
+                                    <div id="selectedChartTypeSpinner" class="preloader-wrapper small active" style="left:190px;">
                                         <div class="spinner-layer spinner-blue-only">
                                             <div class="circle-clipper left">
                                                 <div class="circle"></div>
@@ -398,7 +484,7 @@
                                 <div class="row">
                                     <br/>
                                     <div class="col s12 m12 l12">
-                                        <div id="inputForVisualizerSpinner" class="preloader-wrapper small active" style="left:140px;">
+                                        <div id="inputForVisualizerSpinner" class="preloader-wrapper small active" style="left:170px;">
                                             <div class="spinner-layer spinner-blue-only">
                                                 <div class="circle-clipper left">
                                                     <div class="circle"></div>
@@ -417,10 +503,11 @@
                                                    <li>- Select an output from the 'Outputs of Method' list.</li>
                                                    <li>- Select an input from 'Inputs of Visualization' list in which you want to send the selected input.</li>
                                                    <li>- Click 'Add' to finalize this mapping.</li>
-                                                   <li>- Specify mappings for all the required inputs in 'Inputs of Visualization' list.</li>
+                                                   <li>- Specify mappings for all the required inputs (in Red) in 'Inputs of Visualization' list.</li>
+                                                   <li>- Green colored mappings are optional and can be skipped. Read their tooltips for more info.</li>
                                                    <li>- Description of each input and output is available when you hover over its name.</li>
                                                    </ul>">
-                                                <i class="material-icons">info</i>
+                                                <i class="material-icons">info_outline</i>
                                             </a>
                                         </label>
                                         <div class="divider"></div>
@@ -435,17 +522,24 @@
                                     <div class="col s6 m6 l6">
                                         <label for="inputForVisualizer">Inputs of Visualization</label>
                                         <select class="form-control browser-default" name ="inputForVisualizer" id="inputForVisualizer" size="4"></select>
-                                        <br/>
-                                        <div class="right-align">
-                                            <button class="btn waves-effect waves-light light-blue" type="button"
-                                                    id="addVisualizationMapping" name="addVisualizationMapping" value="Add Mapping" onclick="addVisualizationMappingToTable();">Add
-                                            </button>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col s12 m12 l12">
-                                        <div class="divider"></div>
+                                   <div class="col s12 m12 l12 right-align">
+                                        <table>
+                                            <tbody>
+                                            <tr>
+                                                <td class="full-width">
+                                                    <span id="addVisualizationMapping_msg" class="preview-err-msg"></span>
+                                                </td>
+                                                <td>
+                                                    <button class="btn waves-effect waves-light light-blue" type="button"
+                                                            id="addVisualizationMapping" name="addVisualizationMapping" value="Add Mapping" onclick="addVisualizationMappingToTable();">Add
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -453,14 +547,17 @@
                                         <table id="visualizerMappingTable" class="centered">
                                             <thead>
                                             <tr>
-                                                <th data-field="id">Output for Methods</th>
-                                                <th data-field="name">Input for Visualization</th>
+                                                <th data-field="id">Outputs of Method</th>
+                                                <th data-field="name">Inputs of Visualization</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             </tbody>
                                         </table>
                                     </div>
+                                </div>
+                                <div class="row">
+                                    <div class="divider"></div>
                                 </div>
                                 <div class="row">
                                     <div class="right-align preview-action">
@@ -508,7 +605,7 @@
                         name="cancelIndicator" id="cancelIndicator" value="Cancel Indicator">Cancel
                 </button>
                 <button class="btn waves-effect waves-light light-blue tooltipped" type="button" data-position="top" data-delay="50" data-tooltip="Save current indicator."
-                        id="saveIndicator" name="saveIndicator" value="Finalize Settings">Save
+                        id="saveIndicator" name="saveIndicator" value="Finalize Settings">Associate
                 </button>
             </div>
         </div>

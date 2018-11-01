@@ -32,14 +32,14 @@ function updateScreenAfterLoadInd(data) {
     $('#actionSelection').val(data.indicatorParameters.indicatorDataset[0].selectedAction);
 
     var entityValues = data.indicatorParameters.indicatorDataset[0].entityValues;
-    //var userSpecs = data.indicatorParameters.indicatorDataset[0].userSpecifications;
+    var userSpecs = data.indicatorParameters.indicatorDataset[0].userSpecifications;
     var sessionSpecs = data.indicatorParameters.indicatorDataset[0].sessionSpecifications;
     var timeSpecs = data.indicatorParameters.indicatorDataset[0].timeSpecifications;
 
     loadAssociatedEntityFilters(entityValues);
     loadAssociatedSessionFilters(sessionSpecs);
     loadAssociatedTimeFilters(timeSpecs);
-    //loadAssociatedUserFilters(userSpecs);
+    loadAssociatedUserFilters(userSpecs);
 
     populateAnalyticsMethods(JSON.stringify(data.indicatorParameters));
 
@@ -112,16 +112,15 @@ $.event.special.hoverintent = {
     }
 };
 
-var request;
 function createRequest() {
-    try {
-        var request = new XMLHttpRequest();
-    } catch(failed){
-        alert("Error creating request object!");
-        request = null;
-    } finally {
-        return request;
+    var request;
+    if (window.XMLHttpRequest) {
+        request = new XMLHttpRequest();
     }
+    else {
+        request = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    return request;
 }
 
 function removeOptions(selectbox) {
@@ -130,6 +129,66 @@ function removeOptions(selectbox) {
         for (i = selectbox.options.length - 1; i >= 0; i--)
             selectbox.remove(i);
     }
+}
+
+function populateSources(){
+    $.ajax({
+        type: "GET",
+        url: "/engine/listAllEventSources",
+        dataType: "json",
+        success: function (response) {
+            var element = $('#sourceSelection');
+            element.empty();
+
+            for (var i=0;i< response.length;i++) {
+                element
+                    .append($("<option></option>")
+                        .attr("value", response[i])
+                        .text(response[i]));
+            }
+            $("select#sourceSelection")[0].selectedIndex = 0;
+        }
+    });
+}
+
+function populatePlatforms(){
+    $.ajax({
+        type: "GET",
+        url: "/engine/listAllEventPlatforms",
+        dataType: "json",
+        success: function (response) {
+            var element = $('#PlatformSelection');
+            element.empty();
+
+            for (var i=0;i< response.length;i++) {
+                element
+                    .append($("<option></option>")
+                        .attr("value", response[i])
+                        .text(response[i]));
+            }
+            $("select#PlatformSelection")[0].selectedIndex = 0;
+        }
+    });
+}
+
+function populateActions(){
+    $.ajax({
+        type: "GET",
+        url: "/engine/listAllEventActions",
+        dataType: "json",
+        success: function (response) {
+            var element = $('#actionSelection');
+            element.empty();
+
+            for (var i=0;i< response.length;i++) {
+                element
+                    .append($("<option></option>")
+                        .attr("value", response[i])
+                        .text(response[i]));
+            }
+            $("select#actionSelection")[0].selectedIndex = 0;
+        }
+    });
 }
 
 function populateCategories(selectedValue){
@@ -160,8 +219,6 @@ function populateCategories(selectedValue){
                 selectedMinor.append($('<option>', {value:v, text:k}));
             });
 
-
-
             if(selectedValue !== null) {
                 selectedMinor.val(selectedValue);
             }
@@ -176,23 +233,12 @@ function populateEntities(data) {
     getDataColumns();
 }
 
-
 function addEntity(){
     var request = createRequest();
     var keySelected = document.getElementById("entityKeySelection").value;
 
     var selectedTitle = $('#entityKeySelection :selected').text();
-    //selectedTitle = selectedTitle.substr(0,selectedTitle.indexOf('(')-1);
 
-    // var selectedMethods = JSON.parse(localStorage.getItem('selectedMethods')) || [];
-    // var index = selectedMethods.indexOf(keySelected);
-    // if (index < 0) {
-    //     console.log(keySelected);
-    //     selectedMethods.push(keySelected);
-    //     localStorage.setItem('selectedMethods', JSON.stringify(selectedMethods));
-    // }
-
-    //var evalue = $('#entityValue').val();
     var selectedValues = $('#entityValue').val();
     var selectedJoinedValues = selectedValues.join();
 
@@ -253,112 +299,7 @@ function displaySearchTimeResults(request) {
 
 }
 
-
-// function refreshCurrentIndicator(){
-//     var request = createRequest();
-//     var url ="/indicators/refreshCurrentIndicator";
-//     request.open("GET",url,true);
-//     request.onreadystatechange =function(){displayCurrentIndProps(request)};
-//     request.send(null);
-// }
-
-// function displayCurrentIndProps(request) {
-//     if (request.readyState == 4) {
-//         if (request.status == 200) {
-//
-//             var parsedJSON = JSON.parse(request.responseText);
-//
-//             var placementDiv = document.getElementById("current_ind_basic_info");
-//             placementDiv.innerHTML = "";
-//             $("#current_ind_basic_info").append("<ul id='list'></ul>");
-//             $("#list").append("<li>" + "Name : "+ parsedJSON.name +"</li>");
-//             $("#list").append("<li>" + "Action "+ parsedJSON.action +"</li>");
-//             $("#list").append("<li>" + "Platform : "+ parsedJSON.platform +"</li>");
-//             $("#list").append("<li>" + "Chart Type : "+ parsedJSON.chartType +"</li>");
-//             $("#list").append("<li>" + "Chart Engine : "+ parsedJSON.chartEngine +"</li>");
-//
-//             placementDiv = document.getElementById("filters_at_a_glance");
-//             placementDiv.innerHTML = "";
-//             $("#filters_at_a_glance").append("<ul id='filterInfoList'></ul>");
-//             $("#filterInfoList").append("<li>" + "Entity Filters : "+ parsedJSON.entityFilters +"</li>");
-//             $("#filterInfoList").append("<li>" + "User Filters : "+ parsedJSON.userFilters +"</li>");
-//             $("#filterInfoList").append("<li>" + "Session Filters : "+ parsedJSON.sessionFilters +"</li>");
-//             $("#filterInfoList").append("<li>" + "Time Filters : "+ parsedJSON.timeFilters +"</li>");
-//
-//             placementDiv = document.getElementById("currentIndHQL");
-//             placementDiv.innerHTML = "";
-//             $("#currentIndHQL").append("<ul id='queryList'></ul>");
-//             $("#queryList").append("<li>" + "Hibernate Query : "+ parsedJSON.hql +"</li>");
-//         }
-//     }
-//
-// }
-
-
-// function refreshGraph(filterPresent) {
-//     if(filterPresent) {
-//         var questionName = document.getElementById("questionNaming").value;
-//         var indicatorName = document.getElementById("indicatorNaming").value;
-//         var graphType = document.getElementById("selectedChartType").value;
-//         var graphEngine = document.getElementById("EngineSelect").value;
-//         var request = createRequest();
-//         var url ="/indicators/refreshGraph?questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
-//             +"&graphEngine="+graphEngine;
-//         request.open("GET",url,true);
-//         request.onreadystatechange=function(){drawGraph(request)};
-//         request.send(null);
-//     }
-//     else {
-//         checkForDefaultRule(1);
-//     }
-//
-// }
-// function checkForDefaultRule(funcId) {
-//     var request = createRequest();
-//     var url ="/indicators/getEntities?size=Y";
-//     request.open("GET",url,false);
-//     request.onreadystatechange = function(){addDefaultRule(funcId,request)};
-//     request.send(null);
-// }
-//
-// function addDefaultRule(funcID,request) {
-//     if (request.readyState == 4) {
-//         if (request.status == 200) {
-//             if(request.responseText == 0) {
-//
-//                 request = createRequest();
-//                 var keySelected = document.getElementById("entityKeySelection").value;
-//                 // var searchType = document.getElementById("specificationType").value;
-//                 var evalue = 'ALL';
-//                 // var url ="/indicators/addEntity?key="+keySelected+"&search="+searchType+"&value="+evalue;
-//                 var url ="/indicators/addEntity?key="+keySelected+"&value="+evalue;
-//                 request.open("GET",url,false);
-//                 if(funcID == 1)
-//                     request.onreadystatechange = function(){refreshGraph(new Boolean(true))};
-//                 else
-//                     request.onreadystatechange = function(){finalizeIndicator(new Boolean(true))};
-//                 request.send(null);
-//             }
-//             else {
-//                 if(funcID == 1)
-//                    refreshGraph(new Boolean(true));
-//                 else
-//                     finalizeIndicator(new Boolean(true));
-//
-//             }
-//         }
-//     }
-// }
-//
-// function drawGraph(request) {
-//     if (request.readyState == 4) {
-//         if (request.status == 200) {
-//         }
-//     }
-// }
-
 function refreshQuestionSummary() {
-
     $.ajax({
         type: "GET",
         url: "/indicators/refreshQuestionSummary",
@@ -459,12 +400,14 @@ function finalizeIndicator() {
     if(selectedMethods.length > 0)
         selectedMethods = JSON.parse(selectedMethods).join(',');
 
+    var methodParams = getDynamicParamsValues("methodDynamicParams");
+
     $('#saveIndicator').prop('disabled', true);
     $.ajax({
         type: "GET",
         url: "/indicators/finalize?goalId="+goalId+"&questionName="+questionName+"&indicatorName="+indicatorName+"&graphType="+graphType
                 +"&graphEngine="+graphEngine+"&indicatorIdentifier="+indicatorIndex+"&analyticsMethod="+analyticsMethod + "&methodMappings=" + methodMappings
-                + "&visualizationMappings=" + visualizationMappings + "&selectedMethods=" + selectedMethods,
+                + "&visualizationMappings=" + visualizationMappings + "&selectedMethods=" + selectedMethods + "&methodParams=" + methodParams,
         dataType: "json",
         success: function (response) {
             $('#loading-screen').addClass('loader-hide');
@@ -472,12 +415,13 @@ function finalizeIndicator() {
             postrefreshQuestionSummary(response);
 
             $('#saveIndicator').prop('disabled', false);
-            $(function() {
-                $("#indicatorDefinition").hide();
-                $('body').animate({
-                    scrollTop: $("body").offset().top
-                }, 1000);
-            });
+
+            $("#indicatorDefinition").hide();
+            $('body').animate({
+                scrollTop: $("body").offset().top
+            }, 1000);
+
+            localStorage.removeItem("indType");
         }
     });
 
@@ -558,23 +502,18 @@ function SaveQuestionIndicators() {
     var questionName = document.getElementById("questionNaming").value;
     var userName = document.getElementById("userName").value;
 
-    // var request = createRequest();
-    // var url ="/indicators/saveQuestionDB?userName="+userName;
-    // request.open("GET",url,true);
-    // request.onreadystatechange=function(){processScreenForNextQuestion(request)};
-    // request.send(null);
 
-    $('#question_preview_msg').html('<div>Please wait! The question is being saved and the indicator request codes are being generated.</div>');
+    $('#question_preview_msg').html("<div class='preview-err-msg right-align'>Please wait! The question is being saved and the Indicator Request Codes are being generated.</div>");
     $.ajax({
         type: "GET",
         url: "/engine/saveQuestionIndicators?userName=" + userName + "&goalId=" + goalId + "&questionName=" + questionName,
         dataType: "json",
         success: function (response) {
             showRequestCodes(response);
-            $('#question_preview_msg').html('<div>The question has been saved and the request codes are avaialble for each indicator.</div>');
+            $('#question_preview_msg').html("<div class='preview-success-msg right-align'>The question has been saved and the Indicator Request Codes are available for each indicator.</div>");
         },
         fail: function (response) {
-            $('#question_preview_msg').html('<div>There was error in saving the question and the request codes were not generated.</div>');
+            $('#question_preview_msg').html("<div class='preview-err-msg right-align'>There was error in saving the question and the Indicator Request Codes were not generated.</div>");
         }
     });
 }
@@ -594,7 +533,7 @@ function showRequestCodes(response){
         var visualizationModal =  $("#visualizeQuestionModel");
 
         var qCardContentDivID = "#questionCardContent";
-        var qCardContentDiv = visualizationModal.find(qCardContentDivID + " span");
+        var qCardContentDiv = visualizationModal.find(qCardContentDivID + " span")[0];
         var questionName = visualizationModal.find(qCardContentDivID).text();
 
         // var qCardMoreIcon = document.createElement("i");
@@ -692,7 +631,7 @@ function showRequestCodes(response){
 
         for(var i=0; i<response.indicatorSaveResponses.length; i++) {
             var cardContentDivID = "#visualizeCardGraphContent_" + response.indicatorSaveResponses[i].indicatorClientID;
-            var cardContentDiv = visualizationModal.find(cardContentDivID + " span");
+            var cardContentDiv = visualizationModal.find(cardContentDivID + " span")[0];
             var indicatorName = visualizationModal.find(cardContentDivID).text();
 
             // var cardMoreIcon = document.createElement("i");
@@ -965,7 +904,7 @@ function updateVisualizationModal(request) {
                     decodedGraphData = decodedGraphData.replace("xxxwidthxxx","$('#" + divId + "').outerWidth(true)");
                     decodedGraphData = decodedGraphData.replace("xxxheightxxx","$('#" + divId + "').outerHeight(true)");
 
-                    console.log(divId);
+                    //console.log(divId);
                     $('#'+divId).html(decodedGraphData);
                 }
                 $("#saveQuestion").removeAttr('disabled');
@@ -976,196 +915,10 @@ function updateVisualizationModal(request) {
     }
 }
 
-
-/*function updateVisualisationTab(request) {
- if (request.readyState == 4) {
- if (request.status == 200) {
- var parsedJSON = JSON.parse(request.responseText);
- if(parsedJSON.sessionIndicators.length ==0) {
- var compositeModelHtml = document.getElementById("runIndMem");
- var visualizeQModelHtml = document.getElementById("visualizeQuestionContent");
- compositeModelHtml.innerHTML = "";
- visualizeQModelHtml.innerHTML = "";
-
- var div = document.createElement("div");
- div.className = "alert alert-warning";
- var alertDescription = document.createTextNode("Please add Indicators to build composite Indicators.");
- div.appendChild(alertDescription);
- compositeModelHtml.appendChild(div);
-
- var div1 = document.createElement("div");
- div1.className = "alert alert-warning";
- var alertDescription1 = document.createTextNode("Please add Indicators for visualization.");
- div1.appendChild(alertDescription1);
- visualizeQModelHtml.appendChild(div1);
-
- $(function() {
- $("#compositeIndicatorModelContentDesc").hide();
- $("#compositeIndicatorModelContentControls").hide();
- $('#CompositeIndButton').hide();
- $('#CompositeClosedButton').show();
- });
- }
- else {
- $(function() {
- $('#CompositeIndButton').show();
- $('#CompositeClosedButton').hide();
- });
- var src = document.getElementById("runIndMem");
- var src1 = document.getElementById("visualizeQuestionContent");
- src.innerHTML = "";
- src1.innerHTML = "";
- for(var i=0; i<parsedJSON.sessionIndicators.length; i++) {
-
- var pTag= document.createElement("p");
- var label= document.createElement("label");
- label.setAttribute("for", "checkbox-" + parsedJSON.sessionIndicators[i].indicatorName);
- var description = document.createTextNode(parsedJSON.sessionIndicators[i].indicatorName);
- var checkbox = document.createElement("input");
- checkbox.id = "checkbox-" + parsedJSON.sessionIndicators[i].indicatorName;
- checkbox.type = "checkbox";    // make the element a checkbox
- checkbox.name = parsedJSON.sessionIndicators[i].indicatorName;      // give it a name we can check on the server side
- checkbox.value = parsedJSON.sessionIndicators[i].indicatorName;         // make its value "pair"
- checkbox.className = "filled-in";
-
-
- label.appendChild(description);// add the description to the element
- pTag.appendChild(checkbox);   // add the box to the element
- pTag.appendChild(label);   // add the box to the element
- // add the label element to your div
- src.appendChild(pTag);
-
- var imgDiv = document.createElement("div");
- imgDiv.className = "card col-md-10";
- var img = document.createElement("img");
- img.src = "/graphs/jgraph?runFromMemory=true&indicator="+parsedJSON.sessionIndicators[i].indicatorName;
- img.className = "responsive-img center-align";
- imgDiv.appendChild(img);
- src.appendChild(imgDiv);
-
-
- var cardDiv = document.createElement("div");
- cardDiv.className = "card small col-md-6";
-
- var cardImageDiv = document.createElement("div");
- cardImageDiv.className = "card-image waves-effect waves-block waves-light";
-
- var cardImg = document.createElement("img");
- cardImg.src = "/graphs/jgraph?runFromMemory=true&indicator="+parsedJSON.sessionIndicators[i].indicatorName;
- cardImg.className = "activator";
-
- cardImageDiv.appendChild(cardImg);
-
- cardDiv.appendChild(cardImageDiv);
-
- var cardContentDiv = document.createElement("div");
- cardContentDiv.className = "card-content";
-
- var cardContentSpan = document.createElement("span");
- cardContentSpan.className = "card-title activator grey-text text-darken-4";
- var cardTitle = document.createTextNode(parsedJSON.sessionIndicators[i].indicatorName);
- cardContentSpan.appendChild(cardTitle);
- var cardMoreIcon = document.createElement("i");
- cardMoreIcon.className = "material-icons right";
- var cardMoreIconText = document.createTextNode("more_vert");
- cardMoreIcon.appendChild(cardMoreIconText);
- cardContentSpan.appendChild(cardMoreIcon);
-
- cardContentDiv.appendChild(cardContentSpan);
-
- cardDiv.appendChild(cardContentDiv);
-
-
-
-
- var cardRevealDiv = document.createElement("div");
- cardRevealDiv.className = "card-reveal";
-
- var cardRevealSpan = document.createElement("span");
- cardRevealSpan.className = "card-title grey-text text-darken-4";
- var cardRevealTitle = document.createTextNode(parsedJSON.sessionIndicators[i].indicatorName);
- cardRevealSpan.appendChild(cardRevealTitle);
- var cardCloseIcon = document.createElement("i");
- cardCloseIcon.className = "material-icons right";
- var cardCloseIconText = document.createTextNode("close");
- cardCloseIcon.appendChild(cardCloseIconText);
- cardRevealSpan.appendChild(cardCloseIcon);
-
- cardRevealDiv.appendChild(cardRevealSpan);
-
- var cardRevealTextPara = document.createElement("p");
- var cardRevealText = document.createTextNode(
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on." +
- "Here is some more information about this product that is only revealed once clicked on.");
-
- cardRevealTextPara.appendChild(cardRevealText);
- cardRevealDiv.appendChild(cardRevealTextPara);
-
-
- cardDiv.appendChild(cardRevealDiv);
-
-
- src1.appendChild(cardDiv);
-
- }
- $(function() {
- $("#saveQuestion").removeAttr('disabled');
- });
- $('#qiEditorTab a[href="#QuestionRun"]').tab('show');
-
- }
-
- }
- }
- }*/
-
 function loadIndfromDB() {
     $('#qiEditorTab a[href="#TemplateLoad"]').tab('show');
 }
 
-// function searchIndicator() {
-//     var searchString = document.getElementById("IndSearch").value;
-//     var searchIndType = document.getElementById("searchIndType").value;
-//     var request = createRequest();
-//     var url ="/indicators/searchIndicator?searchString="+searchString+"&searchType="+searchIndType;
-//     request.open("GET",url,true);
-//     request.onreadystatechange=function(){displayReceivedIndicators(request)};
-//     request.send(null);
-// }
 
 function displayReceivedIndicators(request) {
     if (request.readyState == 4) {
@@ -1193,79 +946,85 @@ function displayReceivedIndicators(request) {
 function enableIndicatorLoad(){
     var indicatorTable = $('#indicatorData').DataTable();
     var selectedRows = indicatorTable.rows(".selected").data();
-    var indType = selectedRows[0].indicatorType;
+    if(selectedRows && selectedRows.length > 0) {
+        var indType = selectedRows[0].indicatorType;
 
-    if(indType =='simple')
-        $("#loadIndicatorBtn").removeAttr('disabled');
-    else
+        if (indType == 'simple' || indType == 'multianalysis' )
+            $("#loadIndicatorBtn").removeAttr('disabled');
+        else
+            $("#loadIndicatorBtn").attr('disabled', 'disabled');
+    }
+    else{
         $("#loadIndicatorBtn").attr('disabled', 'disabled');
-
+    }
 }
 
 function displayIndicatorProp() {
     var indicatorTable = $('#indicatorData').DataTable();
     var selectedRows = indicatorTable.rows(".selected").data();
-    var selectedIndicator = selectedRows[0];
+    if(selectedRows && selectedRows.length > 0) {
+        var selectedIndicator = selectedRows[0];
 
 
-    var properties = JSON.parse(selectedIndicator.parameters);
+        var properties = JSON.parse(selectedIndicator.parameters);
 
-    var indicatorData = new Array();
-    indicatorData.push(["Property", "Value"]);
-    indicatorData.push(["Indicator Name", selectedIndicator.name]);
-    indicatorData.push(["Chart Type", properties.visualizationType]);
-    indicatorData.push(["Chart Engine", properties.visualizationLibrary]);
-    indicatorData.push(["Entity Filters", properties.indicatorDataset[0].entityValues.length]);
-    indicatorData.push(["Session Filters", properties.indicatorDataset[0].sessionSpecifications.length]);
-    indicatorData.push(["User Filters", properties.indicatorDataset[0].userSpecifications.length]);
-    indicatorData.push(["Time Filters",properties.indicatorDataset[0].timeSpecifications.length]);
-    indicatorData.push(["Sources", properties.indicatorDataset[0].selectedSource]);
-    indicatorData.push(["Platform", properties.indicatorDataset[0].selectedPlatform]);
-    indicatorData.push(["Actions", properties.indicatorDataset[0].selectedAction]);
-    indicatorData.push(["Categories", properties.indicatorDataset[0].selectedMinor]);
-    //indicatorData.push(["Major", properties.major]);
-    //indicatorData.push(["Hibernate Query", properties.hql]);
+        var indicatorData = new Array();
+        indicatorData.push(["Property", "Value"]);
+        indicatorData.push(["Indicator Name", selectedIndicator.name]);
+        indicatorData.push(["Chart Type", properties.visualizationType]);
+        indicatorData.push(["Chart Engine", properties.visualizationLibrary]);
+        indicatorData.push(["Entity Filters", properties.indicatorDataset[0].entityValues.length]);
+        indicatorData.push(["Session Filters", properties.indicatorDataset[0].sessionSpecifications.length]);
+        indicatorData.push(["User Filters", properties.indicatorDataset[0].userSpecifications.length]);
+        indicatorData.push(["Time Filters", properties.indicatorDataset[0].timeSpecifications.length]);
+        indicatorData.push(["Sources", properties.indicatorDataset[0].selectedSource]);
+        indicatorData.push(["Platform", properties.indicatorDataset[0].selectedPlatform]);
+        indicatorData.push(["Actions", properties.indicatorDataset[0].selectedAction]);
+        indicatorData.push(["Categories", properties.indicatorDataset[0].selectedMinor]);
+        //indicatorData.push(["Major", properties.major]);
+        //indicatorData.push(["Hibernate Query", properties.hql]);
 
-    //Create a HTML Table element.
-    var table = document.createElement("TABLE");
-    table.id = "indicatorPropsTable";
-    table.border = "1";
-    table.className = "table table-bordered";
+        //Create a HTML Table element.
+        var table = document.createElement("TABLE");
+        table.id = "indicatorPropsTable";
+        table.border = "1";
+        table.className = "table table-bordered";
 
-    //Get the count of columns.
-    var columnCount = indicatorData[0].length;
+        //Get the count of columns.
+        var columnCount = indicatorData[0].length;
 
-    //Add the header row.
-    // var row = table.insertRow(-1);
+        //Add the header row.
+        // var row = table.insertRow(-1);
 
-    var tableHead = document.createElement('THEAD');
-    table.appendChild(tableHead);
-    for (var i = 0; i < columnCount; i++) {
-        var headerCell = document.createElement("TH");
-        headerCell.innerHTML = indicatorData[0][i];
-        tableHead.appendChild(headerCell);
-    }
-
-    //Add the data rows.
-    var tableBody = document.createElement('TBODY');
-    table.appendChild(tableBody);
-    for (var i = 1; i < indicatorData.length; i++) {
-        var tr = document.createElement('TR');
-        tableBody.appendChild(tr);
-        // row = table.insertRow(-1);
-        for (var j = 0; j < columnCount; j++) {
-            // var cell = row.insertCell(-1);
-            // cell.innerHTML = indicatorData[i][j];
-            var td = document.createElement('TD');
-            td.appendChild(document.createTextNode(indicatorData[i][j]));
-            tr.appendChild(td);
+        var tableHead = document.createElement('THEAD');
+        table.appendChild(tableHead);
+        for (var i = 0; i < columnCount; i++) {
+            var headerCell = document.createElement("TH");
+            headerCell.innerHTML = indicatorData[0][i];
+            tableHead.appendChild(headerCell);
         }
+
+        //Add the data rows.
+        var tableBody = document.createElement('TBODY');
+        table.appendChild(tableBody);
+        for (var i = 1; i < indicatorData.length; i++) {
+            var tr = document.createElement('TR');
+            tableBody.appendChild(tr);
+            // row = table.insertRow(-1);
+            for (var j = 0; j < columnCount; j++) {
+                // var cell = row.insertCell(-1);
+                // cell.innerHTML = indicatorData[i][j];
+                var td = document.createElement('TD');
+                td.appendChild(document.createTextNode(indicatorData[i][j]));
+                tr.appendChild(td);
+            }
+        }
+
+        var dvTable = document.getElementById("IndPropsFromDB");
+
+        dvTable.innerHTML = "<hr><b>Indicator Properties: </b><hr>";
+        dvTable.appendChild(table);
     }
-
-    var dvTable = document.getElementById("IndPropsFromDB");
-
-    dvTable.innerHTML = "<hr><b>Indicator Properties: </b><hr>";
-    dvTable.appendChild(table);
 }
 
 function loadFromTemplate() {
@@ -1274,6 +1033,7 @@ function loadFromTemplate() {
     var indicatorTable = $('#indicatorData').DataTable();
     var selectedRows = indicatorTable.rows(".selected").data();
     var selectedRowId = selectedRows[0].id;
+    var selectedRowType = selectedRows[0].indicatorType;
 
 
     //var indName = $('tr.selected:first td:nth-child(2)', '#indicatorData').text();
@@ -1290,15 +1050,25 @@ function loadFromTemplate() {
     request.onreadystatechange=function(){
         if (request.readyState == 4) {
             if (request.status == 200) {
-                loadIndicatorTemplate(selectedRows[0]);
+                if(selectedRowType == "simple") {
+                    localStorage.setItem('indType', "simple");
+                    loadIndicatorTemplate(selectedRows[0]);
 
-                $("#indicatorDefinition").show();
-                $('body').animate({
-                    scrollTop: $("#indicatorDefinition").offset().top
-                }, 1000);
+                    $("#indicatorDefinition").show();
+                    $('body').animate({
+                        scrollTop: $("#indicatorDefinition").offset().top
+                    }, 1000);
+                }
+                else if(selectedRowType == "multianalysis"){
+                    localStorage.setItem('indType', "multianalysis");
+                    loadMLAIIndicatorTemplate(selectedRows[0]);
+
+                    $("#mlai_indicatorDefinition").show();
+                    $('body').animate({
+                        scrollTop: $("#mlai_indicatorDefinition").offset().top
+                    }, 1000);
+                }
                 $('#indicatorData tbody').children().removeClass("selected");
-
-                //console.log("Indicator successfully loaded in the session");
             }
             else
                 console.log("Indicator not loaded in the session. Error code:" + request.status);

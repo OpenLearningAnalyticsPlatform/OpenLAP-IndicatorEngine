@@ -48,7 +48,7 @@ import java.util.*;
 @Controller
 @Scope("session")
 @RequestMapping(value="/toolkit")
-@SessionAttributes({"loggedIn", "userName", "sid", "activationStatus","role", "admin_access"})
+@SessionAttributes({"loggedIn", "userName", "rid", "sid", "activationStatus","role", "admin_access"})
 public class ToolkitAdminController {
 
     @Autowired

@@ -105,9 +105,9 @@ public class RegistrationController {
         String uname = RegisterForm.getUserName();
         String password = RegisterForm.getPassword();
         String hashedPassword = encoder.encode(password);
-        Date dob = RegisterForm.getDob();
-        java.sql.Date sqlStartDate = null;
-        sqlStartDate = new java.sql.Date(dob.getTime());
+        //Date dob = RegisterForm.getDob();
+        Date dob = new Date(946684800); /// setting defauly dob to jan 1 2000
+        java.sql.Date sqlStartDate = new java.sql.Date(dob.getTime());
         String email = RegisterForm.getEmail();
         // Error Handling Not done Yet. Synchronize Java Script checks + Server Side checks. Eliminate redundant checks
         if(uname == null || email == null || password == null  )
@@ -118,24 +118,11 @@ public class RegistrationController {
         userDetailsBean.add(uc);
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom("goalla@rwth-aachen.de");
+            helper.setFrom("openlearninganalyticsplatform@gmail.com");
             helper.setTo(uc.getUp().getEmailid());
             helper.setSubject("One Time Password for Verification");
 
-            /*Map<String, Object> modelMsg = new HashMap<String, Object>();
-            model.put("UserName", uc.getUname());
-            model.put("EmailID", uc.getUp().getEmailid());
-            model.put("DOB", uc.getUp().getDob());
-            model.put("OTP", uc.getOtp());
-            String emailText = VelocityEngineUtils.mergeTemplateIntoString(
-                    velocityEngine, "registrationEmailTemplate.vm", "UTF-8", modelMsg); */
-
             helper.setText("OTP For Verification :  "+ uc.getOtp());
-            /*FileSystemResource couponImage =
-                   new FileSystemResource("logo.png");
-            helper.addAttachment("logo.png", logoImage);
-            ClassPathResource image = new ClassPathResource("rwth.png");
-            helper.addInline("UniLogo", image); */
         } catch (javax.mail.MessagingException ex ){}
         mailSender.send(message);
         model.put("msg", uc.getUid());
@@ -159,6 +146,7 @@ public class RegistrationController {
         return status;
 
     }
+
     @RequestMapping(value = "/checkemail", method = RequestMethod.GET)
     public @ResponseBody
     String processAJAXRequest_checkEmail(
@@ -176,6 +164,7 @@ public class RegistrationController {
         return status;
 
     }
+
     @RequestMapping(value="/activate",method = RequestMethod.GET)
     public ModelAndView getLogin(){
 

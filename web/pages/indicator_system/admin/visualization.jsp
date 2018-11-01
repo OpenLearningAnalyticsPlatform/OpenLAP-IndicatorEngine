@@ -16,6 +16,7 @@
             <li><a class="materialize-breadcrumb" href="/admin/visualization/new">Visualization</a></li>
         </ol>
         <input type="hidden" name="userName" id="userName" value="${sessionScope.userName}" />
+        <input type="hidden" name="rid" id="rid" value="${sessionScope.rid}" />
         <div class="tab-content">
             <form id="visualizationForm" enctype="multipart/form-data">
                 <div class="col s12 m6 card">

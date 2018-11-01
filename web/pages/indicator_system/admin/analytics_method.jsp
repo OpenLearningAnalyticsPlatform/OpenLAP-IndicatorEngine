@@ -17,6 +17,7 @@
             <li><a class="materialize-breadcrumb" href="/admin/analytics_method/new">Analytics Method</a></li>
         </ol>
         <input type="hidden" name="userName" id="userName" value="${sessionScope.userName}" />
+        <input type="hidden" name="rid" id="rid" value="${sessionScope.rid}" />
         <div class="tab-content">
             <form id="analyticsMethodForm" enctype="multipart/form-data">
                 <div class="col s12 m6 card">

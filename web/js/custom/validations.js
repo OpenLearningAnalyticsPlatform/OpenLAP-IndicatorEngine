@@ -28,19 +28,7 @@ $(document).ready(function() {
     },'');
 
     $.validator.addMethod("validateIndicator",function(val, elem){
-
-        //var indType = localStorage.getItem('indType');
         var enteredIndicatorName = elem.value;
-
-        // if (indType == 'simple'){
-        //     enteredIndicatorName = $('#indicatorNaming').val();
-        // }
-        // else if (indType == 'multianalysis') {
-        //     enteredIndicatorName = $('#mlai_indicatorNaming').val();
-        // }
-        // else if (indType == 'composite') {
-        //     enteredIndicatorName = $('#comp_indicatorNaming').val();
-        // }
 
         var errorMsg = '', $valid = false;
         var indicatorIndexUrlParam = (localStorage.getItem("selectedIndicatorIdentifier") === null) ? "" : '&index=' + localStorage.getItem("selectedIndicatorIdentifier");
@@ -88,12 +76,20 @@ $(document).ready(function() {
         return $valid;
     },'');
 
+    $.validator.addMethod("singleDatasetRemaining",function(val, elem){
+        if($(elem).find(".valign-wrapper").length !== 1) {
+            $.validator.messages["singleDatasetRemaining"] = "Please combine all first level analysis.";
+            return false;
+        }
+        return true;
+    },'');
+
     $('#GQSelectionForm').validate({
         ignore: false,
         onkeyup: false,
         ignoreTitle: true,
         rules: {
-            "questionsContainer.questionName": {
+            "questionNaming": {
                 required: true,
                 minlength: 6,
                 validateQuestion: true
@@ -106,7 +102,7 @@ $(document).ready(function() {
             GoalSelection: {
                 required: "Select analytics goal."
             },
-            "questionsContainer.questionName": {
+            "questionNaming": {
                 required: "Question name is required.",
                 minlength: "Question name should be at least 6 characters."
             }
@@ -129,7 +125,7 @@ $(document).ready(function() {
         onkeyup: false,
         ignoreTitle: true,
         rules: {
-            indicatorName: {
+            indicatorNaming: {
                 required: true,
                 minlength: 6,
                 validateIndicator: true
@@ -163,7 +159,7 @@ $(document).ready(function() {
             }
         },
         messages: {
-            indicatorName: {
+            indicatorNaming: {
                 required: "Indicator name is required.",
                 minlength: "Indicator name should be at least 6 characters."
             },

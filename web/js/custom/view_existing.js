@@ -166,6 +166,8 @@ function generateQuestionVisualization(response){
     if (!response.questionSaved) {
         alert(response.errorMessage);
     } else {
+        var userHash = $("#rid").val();
+
         var visualizeQModelHtml = document.getElementById("visualizeQuestionContent");
         visualizeQModelHtml.innerHTML = "";
 
@@ -261,7 +263,11 @@ function generateQuestionVisualization(response){
         var qCardRevealTextPara = document.createElement("p");
         qCardRevealTextPara.setAttribute("contenteditable", "true");
         qCardRevealTextPara.setAttribute("onfocus", "document.execCommand('selectAll',false,null);");
-        var qCardRevealText = document.createTextNode(response.questionRequestCode);
+
+        var questionRequestCode = response.questionRequestCode;
+        questionRequestCode = questionRequestCode.replace(/xxxridxxx/g, userHash);
+        var qCardRevealText = document.createTextNode(questionRequestCode);
+
 
         qCardRevealTextPara.appendChild(qCardRevealText);
         qCardRevealCodeDiv.appendChild(qCardRevealTextPara);
@@ -273,6 +279,9 @@ function generateQuestionVisualization(response){
         visualizeQModelHtml.appendChild(qColDiv);
 
         for(var i=0; i<response.indicatorSaveResponses.length; i++) {
+
+            var decodedGraphData = response.indicatorSaveResponses[i].indicatorRequestCode;
+            decodedGraphData = decodedGraphData.replace(/xxxridxxx/g, userHash);
 
             var indicatorName = response.indicatorSaveResponses[i].errorMessage;
 
@@ -386,7 +395,7 @@ function generateQuestionVisualization(response){
             var cardRevealTextPara = document.createElement("p");
             cardRevealTextPara.setAttribute("contenteditable", "true");
             cardRevealTextPara.setAttribute("onfocus", "document.execCommand('selectAll',false,null);");
-            var cardRevealText = document.createTextNode(response.indicatorSaveResponses[i].indicatorRequestCode);
+            var cardRevealText = document.createTextNode(decodedGraphData);
 
             cardRevealTextPara.appendChild(cardRevealText);
 
@@ -400,7 +409,7 @@ function generateQuestionVisualization(response){
 
             qCardImageDiv.appendChild(colDiv);
 
-            var decodedGraphData = response.indicatorSaveResponses[i].indicatorRequestCode;
+
             decodedGraphData = decodedGraphData.replace("xxxwidthxxx","$('#" + divId + "').outerWidth(true)");
             decodedGraphData = decodedGraphData.replace("xxxheightxxx","$('#" + divId + "').outerHeight(true)");
 
@@ -428,13 +437,7 @@ function visualizeIndicator(){
         url: "/engine/getIndicatorRequestCode?indicatorId="+selectedIndicator[0],
         dataType: "json",
         success: function (response) {
-            //console.log(response);
-            if ((typeof google === 'undefined') || (typeof google.visualization === 'undefined')) {
-                console.log('Google Charts Lib is not loaded');
-            }
-            else {
-                generateIndicatorVisualization(response)
-            }
+            generateIndicatorVisualization(response)
         },
         error: function (request, status, error) {
             $("#visualizeQuestionContent").html('<div class="alert alert-warning">' + error + '</div>');
@@ -447,6 +450,9 @@ function generateIndicatorVisualization(response){
     if (!response.indicatorSaved) {
         alert(response.errorMessage);
     } else {
+        var userHash = $("#rid").val();
+        var decodedGraphData = response.indicatorRequestCode;
+        decodedGraphData = decodedGraphData.replace(/xxxridxxx/g, userHash);
 
         var visualizeQModelHtml = document.getElementById("visualizeQuestionContent");
         visualizeQModelHtml.innerHTML = "";
@@ -555,7 +561,7 @@ function generateIndicatorVisualization(response){
         var cardRevealTextPara = document.createElement("p");
         cardRevealTextPara.setAttribute("contenteditable", "true");
         cardRevealTextPara.setAttribute("onfocus", "document.execCommand('selectAll',false,null);");
-        var cardRevealText = document.createTextNode(response.indicatorRequestCode);
+        var cardRevealText = document.createTextNode(decodedGraphData);
 
         cardRevealTextPara.appendChild(cardRevealText);
 
@@ -569,21 +575,9 @@ function generateIndicatorVisualization(response){
 
         visualizeQModelHtml.appendChild(colDiv);
 
-        var decodedGraphData = response.indicatorRequestCode;
         decodedGraphData = decodedGraphData.replace("xxxwidthxxx", "$('#" + divId + "').outerWidth(true)");
         decodedGraphData = decodedGraphData.replace("xxxheightxxx", "$('#" + divId + "').outerHeight(true)");
 
         $('#' + divId).html(decodedGraphData);
     }
-}
-
-function copyIndicatorRequestCode(element,event) {
-    event.stopPropagation();
-    var codeDiv = $(element).closest('.card-reveal').find(".request-code p");
-    codeDiv.focus();
-    var copied;
-    try { copied = document.execCommand('copy'); } catch (ex) { copied = false; }
-    codeDiv.blur();
-    //if ( document.selection ) { document.selection.empty(); } else if ( window.getSelection ) { window.getSelection().removeAllRanges(); }
-    if(copied) Materialize.toast('Indicator request code copied to clipborad.', 3000, 'rounded');
 }

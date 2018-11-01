@@ -28,7 +28,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/validations.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/filters.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/comp_functions.js"></script>
-    <%--<script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/mlai_functions.js"></script>--%>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/mlai_functions.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/google/loader.js"></script>
 
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/d3/d3.v3.min.js"></script>
@@ -110,43 +110,43 @@
             });
 
 
-            var questionTable = $("#questionData").dataTable( {
-                "bProcessing": true,
-                "bServerSide": true,
-                "sort": "position",
-                "bLengthChange": false,
-                "language": {
-                    "searchPlaceholder": "Search Question  (press enter to perform search)",
-                    "sSearch": ""
-                },
-                "dom": '<"pull-left"f><"pull-right"l>tip',
-                //bStateSave variable you can use to save state on client cookies: set value "true"
-                "bStateSave": false,
-                //Default: Page display length
-                "iDisplayLength": 8,
-                //We will use below variable to track page number on server side(For more information visit: http://legacy.datatables.net/usage/options#iDisplayStart)
-                "iDisplayStart": 0,
-                //adding the delay of 1 second before sending the request to fetch new data while typing search criteria
-                "searchDelay": 1000,
-                "fnDrawCallback": function () {
-                    //Get page numer on client. Please note: number start from 0 So
-                    //for the first page you will see 0 second page 1 third page 2...
-                    //Un-comment below alert to see page number
-                    //alert("Current page number: "+this.fnPagingInfo().iPage);
-                },
-                "sAjaxSource": "/engine/searchAllQuestions",
-                "aoColumns": [
-                    { "mData": "id" },
-                    { "mData": "name" },
-                    { "mData": "indicatorCount" },
-                ]
-            } );
-            $('#questionData_filter input').unbind();
-            $('#questionData_filter input').bind('keyup', function(e) {
-                if(e.which == 13 || e.keyCode == 13) {
-                    questionTable.fnFilter(this.value);
-                }
-            });
+//            var questionTable = $("#questionData").dataTable( {
+//                "bProcessing": true,
+//                "bServerSide": true,
+//                "sort": "position",
+//                "bLengthChange": false,
+//                "language": {
+//                    "searchPlaceholder": "Search Question  (press enter to perform search)",
+//                    "sSearch": ""
+//                },
+//                "dom": '<"pull-left"f><"pull-right"l>tip',
+//                //bStateSave variable you can use to save state on client cookies: set value "true"
+//                "bStateSave": false,
+//                //Default: Page display length
+//                "iDisplayLength": 8,
+//                //We will use below variable to track page number on server side(For more information visit: http://legacy.datatables.net/usage/options#iDisplayStart)
+//                "iDisplayStart": 0,
+//                //adding the delay of 1 second before sending the request to fetch new data while typing search criteria
+//                "searchDelay": 1000,
+//                "fnDrawCallback": function () {
+//                    //Get page numer on client. Please note: number start from 0 So
+//                    //for the first page you will see 0 second page 1 third page 2...
+//                    //Un-comment below alert to see page number
+//                    //alert("Current page number: "+this.fnPagingInfo().iPage);
+//                },
+//                "sAjaxSource": "/engine/searchAllQuestions",
+//                "aoColumns": [
+//                    { "mData": "id" },
+//                    { "mData": "name" },
+//                    { "mData": "indicatorCount" },
+//                ]
+//            } );
+//            $('#questionData_filter input').unbind();
+//            $('#questionData_filter input').bind('keyup', function(e) {
+//                if(e.which == 13 || e.keyCode == 13) {
+//                    questionTable.fnFilter(this.value);
+//                }
+//            });
 
         } );
     })(jQuery);
@@ -183,12 +183,15 @@
 
         <%--<h5>Indicator Editor</h5>--%>
         <input type="hidden" name="userName" id="userName" value="${sessionScope.userName}" />
+        <input type="hidden" name="rid" id="rid" value="${sessionScope.rid}" />
 
         <!--FORM for Indicator Editor-->
         <div class="tab-content">
 
             <form:form role="form" id="GQSelectionForm" method="POST" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">
-                <div id="warnings"></div>
+                <div id="warnings" class="preview-err-msg">
+                    <span></span>
+                </div>
                 <%@ include file="../_partials/components/goal.jsp" %>
                 <%@ include file="../_partials/components/question.jsp" %>
             </form:form>
@@ -202,9 +205,9 @@
             </form:form>
 
             <%--MLAI interface--%>
-            <%--<form:form role="form" id="MLAIForm" method="POST" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">--%>
-                <%--<%@ include file="../_partials/components/mlai_indicator.jsp" %>--%>
-            <%--</form:form>--%>
+            <form:form role="form" id="MLAIForm" method="POST" modelAttribute="selectNumberParameters" action="${flowExecutionUrl}">
+                <%@ include file="../_partials/components/mlai_indicator.jsp" %>
+            </form:form>
 
         </div>
 
@@ -214,7 +217,7 @@
 
 <%@ include file="../_partials/modals/load_indicator_template.jsp" %>
 
-<%@ include file="../_partials/modals/load_question_template.jsp" %>
+<%--<%@ include file="../_partials/modals/load_question_template.jsp" %>--%>
 
 <%@ include file="../_partials/modals/visualize_question.jsp" %>
 
@@ -222,11 +225,13 @@
 
 <%@ include file="../_partials/modals/confirm_entity_delete.jsp" %>
 
-<%@ include file="../_partials/modals/confirm_user_delete.jsp" %>
+<%--<%@ include file="../_partials/modals/confirm_user_delete.jsp" %>--%>
 
 <%@ include file="../_partials/modals/confirm_time_delete.jsp" %>
 
 <%@ include file="../_partials/modals/confirm_indicator_delete.jsp" %>
+
+<%@ include file="../_partials/modals/confirm_dataset_delete.jsp" %>
 
 <%@ include file="../_partials/modals/request_goal.jsp" %>
 
@@ -234,10 +239,14 @@
 
 <%@ include file="../_partials/help/composite_indicator.jsp" %>
 
+<%@ include file="../_partials/help/mlai_indicator_help.jsp" %>
+
 <%@ include file="../_partials/help/question_help.jsp" %>
 
-<%--Modal for MLAI--%>
-<%--<%@ include file="../_partials/modals/add_first_method.jsp" %>--%>
+<%@ include file="../_partials/help/goal_help.jsp" %>
 
+<%@ include file="../_partials/help/editor_help.jsp" %>
+<%--Modal for MLAI--%>
+<%@ include file="../_partials/modals/add_first_method.jsp" %>
 
 <%@ include file="../_partials/footer.jsp" %>

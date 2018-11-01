@@ -19,13 +19,17 @@
 
 package com.indicator_engine.model.indicator_system.Number;
 
+import de.rwthaachen.openlap.dataset.OpenLAPPortConfig;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Arham on 1/22/2017.
  */
-public class IndicatorDataset {
+public class IndicatorDataset implements Serializable, Cloneable {
     private List<String> selectedSource;
     private List<String> selectedPlatform;
     private List<String> selectedAction;
@@ -39,8 +43,14 @@ public class IndicatorDataset {
     private List<SessionSpecifications>  sessionSpecifications = new ArrayList<SessionSpecifications>();
     private List<TimeSearchSpecifications>  timeSpecifications = new ArrayList<TimeSearchSpecifications>();
 
-    private long loadedIndicatorID;
+    private String retrievableObjects;
+    private List<String> entityDisplayObjects;
 
+    private String datasetName;
+
+    private Long analyticsMethodId;
+    private OpenLAPPortConfig queryToMethodConfig;
+    private String analyticsMethodParams;
 
     public List<String> getSelectedSource() {
         return selectedSource;
@@ -122,11 +132,56 @@ public class IndicatorDataset {
         this.timeSpecifications = timeSpecifications;
     }
 
-    public long getLoadedIndicatorID() {
-        return loadedIndicatorID;
+    public String getRetrievableObjects() {
+        return retrievableObjects;
     }
 
-    public void setLoadedIndicatorID(long loadedIndicatorID) {
-        this.loadedIndicatorID = loadedIndicatorID;
+    public void setRetrievableObjects(String retrievableObjects) {
+        this.retrievableObjects = retrievableObjects;
+    }
+
+    public List<String> getEntityDisplayObjects() {
+        return entityDisplayObjects;
+    }
+
+    public void setEntityDisplayObjects(List<String> entityDisplayObjects) {
+        this.entityDisplayObjects = entityDisplayObjects;
+    }
+
+    public String getDatasetName() {
+        return datasetName;
+    }
+
+    public void setDatasetName(String datasetName) {
+        this.datasetName = datasetName;
+    }
+
+    public Long getAnalyticsMethodId() {
+        return analyticsMethodId;
+    }
+
+    public void setAnalyticsMethodId(Long analyticsMethodId) {
+        this.analyticsMethodId = analyticsMethodId;
+    }
+
+    public OpenLAPPortConfig getQueryToMethodConfig() {
+        return queryToMethodConfig;
+    }
+
+    public void setQueryToMethodConfig(OpenLAPPortConfig queryToMethodConfig) {
+        this.queryToMethodConfig = queryToMethodConfig;
+    }
+
+    public String getAnalyticsMethodParams() {
+        return analyticsMethodParams;
+    }
+
+    public void setAnalyticsMethodParams(String analyticsMethodParams) {
+        this.analyticsMethodParams = analyticsMethodParams;
+    }
+
+    @Override
+    public IndicatorDataset clone() throws CloneNotSupportedException {
+        return (IndicatorDataset)super.clone();
     }
 }

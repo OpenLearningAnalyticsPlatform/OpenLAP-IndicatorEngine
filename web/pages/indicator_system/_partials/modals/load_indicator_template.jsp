@@ -21,7 +21,7 @@
         <div id="IndPropsFromDB"></div>
     </div>
     <div class="modal-footer">
-        <button id="loadIndicatorBtn" disabled="disabled" class="modal-close waves-effect waves-light btn light-blue darken-2" title="Click to use the selected Indicator as a template." onclick="loadFromTemplate()" >
+        <button id="loadIndicatorBtn" disabled="disabled" class="modal-close waves-effect waves-light btn light-blue darken-2 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Load selected indicator as a template" onclick="loadFromTemplate()" >
             Load
         </button>
     </div>

@@ -29,15 +29,14 @@ import com.indicator_engine.model.indicator_system.Number.*;
 import de.rwthaachen.openlap.analyticsengine.core.dtos.request.IndicatorPreviewRequest;
 import de.rwthaachen.openlap.analyticsengine.core.dtos.request.IndicatorSaveRequest;
 import de.rwthaachen.openlap.analyticsengine.core.dtos.request.QuestionSaveRequest;
-import de.rwthaachen.openlap.analyticsengine.core.dtos.response.IndicatorPreviewResponse;
-import de.rwthaachen.openlap.analyticsengine.core.dtos.response.IndicatorResponse;
-import de.rwthaachen.openlap.analyticsengine.core.dtos.response.QuestionResponse;
-import de.rwthaachen.openlap.analyticsengine.core.dtos.response.QuestionSaveResponse;
+import de.rwthaachen.openlap.analyticsengine.core.dtos.response.*;
 import de.rwthaachen.openlap.analyticsmethods.model.AnalyticsMethodMetadata;
 import de.rwthaachen.openlap.analyticsmodules.model.AnalyticsGoal;
+import de.rwthaachen.openlap.analyticsmodules.model.OpenLAPDataSetMergeMapping;
 import de.rwthaachen.openlap.dataset.OpenLAPColumnConfigData;
 import de.rwthaachen.openlap.dataset.OpenLAPPortConfig;
 import de.rwthaachen.openlap.dataset.OpenLAPPortMapping;
+import de.rwthaachen.openlap.dynamicparam.OpenLAPDynamicParam;
 import de.rwthaachen.openlap.visualizer.core.dtos.response.VisualizationFrameworkDetailsResponse;
 import de.rwthaachen.openlap.visualizer.core.dtos.response.VisualizationFrameworksDetailsResponse;
 import org.apache.log4j.Logger;
@@ -65,7 +64,7 @@ import java.util.*;
  */
 @Controller
 @Scope("session")
-@SessionAttributes({"loggedIn", "userName", "sid", "activationStatus","role", "admin_access"})
+@SessionAttributes({"loggedIn", "userName", "rid", "sid", "activationStatus","role", "admin_access"})
 @RequestMapping(value="/engine")
 @SuppressWarnings({"unused", "unchecked"})
 public class AnalyticsEngineController {
@@ -102,11 +101,14 @@ public class AnalyticsEngineController {
      */
     @RequestMapping(value = "/listAllGoals", method = RequestMethod.GET)
     public @ResponseBody
-    String getAllGoals() {
+    String getAllGoals(HttpServletRequest request) {
+        String userId = request.getSession().getAttribute("userName").toString();
+        String userHash = request.getSession().getAttribute("rid").toString();
+        log.info("[Editor-New],user:"+userId+",rid:"+userHash);
 
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject (
-                AnalyticsEngineServerURL + "/AnalyticsEngine/GetActiveGoals",
+                AnalyticsEngineServerURL + "/AnalyticsEngine/GetActiveGoals?uid="+userId,
                 String.class);
 
         Gson gson = new Gson();
@@ -163,14 +165,16 @@ public class AnalyticsEngineController {
     @RequestMapping(value = "/getIndicatorPreviewVisualizationCode", method = RequestMethod.GET)
     public @ResponseBody
     String getIndicatorPreviewVisualizationCode(@RequestParam(value="height", required = true) String height,
-                                         @RequestParam(value="width", required = true) String width,
-                                         @RequestParam(value="analyticsMethodId", required = true) String analyticsMethodId,
-                                         @RequestParam(value="EngineSelect", required = true) String engineSelectId,
-                                         @RequestParam(value="selectedChartType", required = true) String selectedChartType,
-                                         @RequestParam(value="indicatorNaming", required = true) String indicatorName,
-                                         @RequestParam(value="methodMappings", required = true) String methodMappings,
-                                         @RequestParam(value="visualizationMappings", required = true) String visualizationMappings,
-                                         @RequestParam(value="selectedMethods", required = true) String selectedMethodDataColumns) {
+                                                @RequestParam(value="width", required = true) String width,
+                                                @RequestParam(value="analyticsMethodId", required = true) String analyticsMethodId,
+                                                @RequestParam(value="EngineSelect", required = true) String engineSelectId,
+                                                @RequestParam(value="selectedChartType", required = true) String selectedChartType,
+                                                @RequestParam(value="indicatorNaming", required = true) String indicatorName,
+                                                @RequestParam(value="methodMappings", required = true) String methodMappings,
+                                                @RequestParam(value="visualizationMappings", required = true) String visualizationMappings,
+                                                @RequestParam(value="selectedMethods", required = true) String selectedMethodDataColumns,
+                                                @RequestParam(value="methodParams", required = true) String methodParams,
+                                                HttpServletRequest request) {
 
         List<String> entityDisplayObjects = new ArrayList<>();
 
@@ -178,17 +182,14 @@ public class AnalyticsEngineController {
             entityDisplayObjects = Arrays.asList(selectedMethodDataColumns.split("\\s*,\\s*"));
 
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        //entitySpecificationBean.setRetrievableObjects(selectedMethodDataColumns);
-        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().setEntityDisplayObjects(entityDisplayObjects);
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").setEntityDisplayObjects(entityDisplayObjects);
 
-        //GLAEntityDao glaEntityBean = (GLAEntityDao) appContext.getBean("glaEntity");
-        //GLACategoryDao glaCategoryBean = (GLACategoryDao) appContext.getBean("glaCategory");
+
         OperationNumberProcessorDao operationNumberProcessorBean =  (OperationNumberProcessorDao) appContext.getBean("operationNumberProcessor");
         entitySpecificationBean.getCurrentIndicator().setIndicatorName(indicatorName);
         entitySpecificationBean.getCurrentIndicator().setIndicatorType("simple");
-        //GLACategory glaCategory = glaCategoryBean.loadCategoryByName(entitySpecificationBean.getSelectedMinor());
-        //entitySpecificationBean.setSelectedMajor(glaCategory.getMajor());
-        //entitySpecificationBean.setSelectedType(glaCategory.getType());
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").setAnalyticsMethodParams(methodParams);
+
         operationNumberProcessorBean.computeResult(entitySpecificationBean, "0");
 
 
@@ -198,10 +199,15 @@ public class AnalyticsEngineController {
         indicatorPreviewRequest.setVisualizationFrameworkId(Long.parseLong(engineSelectId));
         indicatorPreviewRequest.getQuery().put("0", entitySpecificationBean.getCurrentIndicator().getHqlQuery().get("0"));
         indicatorPreviewRequest.setIndicatorType(entitySpecificationBean.getCurrentIndicator().getIndicatorType());
+        //indicatorPreviewRequest.setMethodInputParams(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getAnalyticsMethodParams());
+        indicatorPreviewRequest.setMethodInputParams(new HashMap<String, String>());
+        indicatorPreviewRequest.getMethodInputParams().put("0", entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").getAnalyticsMethodParams());
 
         Map<String, Object> chartSizeParams = new HashMap<>();
         chartSizeParams.put("width", width);
         chartSizeParams.put("height", height);
+        chartSizeParams.put("rid", request.getSession().getAttribute("rid").toString());
+        chartSizeParams.put("uid", request.getSession().getAttribute("userName").toString());
         indicatorPreviewRequest.setAdditionalParams(chartSizeParams);
 
         Gson gson = new Gson();
@@ -238,7 +244,8 @@ public class AnalyticsEngineController {
         if(result.isSuccess())
             entitySpecificationBean.getCurrentIndicator().setVisualization(result.getVisualizationCode());
 
-        log.info(result);
+        String userId = request.getSession().getAttribute("userName").toString();
+        log.info("[Preview Simple],user:"+userId+",params:" + requestJson);
 
         return gson.toJson(result);
     }
@@ -250,12 +257,13 @@ public class AnalyticsEngineController {
     @RequestMapping(value = "/getCompIndicatorPreview", method = RequestMethod.GET)
     public @ResponseBody
     String getCompIndicatorPreview(@RequestParam(value="height", required = true) String height,
-                                                @RequestParam(value="width", required = true) String width,
-                                                @RequestParam(value="indicatorSelect", required = true) String indicatorSelect,
-                                                @RequestParam(value="EngineSelect", required = true) String engineSelectId,
-                                                @RequestParam(value="selectedChartType", required = true) String selectedChartType,
-                                                @RequestParam(value="indicatorNaming", required = true) String indicatorName,
-                                                @RequestParam(value="visualizationMappings", required = true) String visualizationMappings) {
+                                   @RequestParam(value="width", required = true) String width,
+                                   @RequestParam(value="indicatorSelect", required = true) String indicatorSelect,
+                                   @RequestParam(value="EngineSelect", required = true) String engineSelectId,
+                                   @RequestParam(value="selectedChartType", required = true) String selectedChartType,
+                                   @RequestParam(value="indicatorNaming", required = true) String indicatorName,
+                                   @RequestParam(value="visualizationMappings", required = true) String visualizationMappings,
+                                   HttpServletRequest request) {
 
         Gson gson = new Gson();
         Type openlapPortMappingType = new TypeToken<List<OpenLAPPortMapping>>(){}.getType();
@@ -270,10 +278,15 @@ public class AnalyticsEngineController {
 
         IndicatorPreviewRequest indicatorPreviewRequest = new IndicatorPreviewRequest();
         indicatorPreviewRequest.setIndicatorType("composite");
+
         Map<String, Object> chartSizeParams = new HashMap<>();
         chartSizeParams.put("width", width);
         chartSizeParams.put("height", height);
+        chartSizeParams.put("rid", request.getSession().getAttribute("rid").toString());
+        chartSizeParams.put("uid", request.getSession().getAttribute("userName").toString());
         indicatorPreviewRequest.setAdditionalParams(chartSizeParams);
+
+        indicatorPreviewRequest.setMethodInputParams(new HashMap<String, String>());
 
         for(String selectedIndicatorId : selectedIndicatorsID){
             int selectedIndId = Integer.parseInt(selectedIndicatorId);
@@ -284,9 +297,11 @@ public class AnalyticsEngineController {
                     selectedIndicator = sessionIndicator;
 
             if(selectedIndicator != null){
-                indicatorPreviewRequest.getAnalyticsMethodId().put(selectedIndicator.getIndicatorName(), selectedIndicator.getIndicatorParameters().getAnalyticsMethodId().get("0"));
+                indicatorPreviewRequest.getAnalyticsMethodId().put(selectedIndicator.getIndicatorName(), selectedIndicator.getIndicatorParameters().getIndicatorDataset().get("0").getAnalyticsMethodId());
+                indicatorPreviewRequest.getMethodInputParams().put(selectedIndicator.getIndicatorName(), selectedIndicator.getIndicatorParameters().getIndicatorDataset().get("0").getAnalyticsMethodParams());
+
                 indicatorPreviewRequest.getQuery().put(selectedIndicator.getIndicatorName(), selectedIndicator.getHqlQuery().get("0"));
-                indicatorPreviewRequest.getQueryToMethodConfig().put(selectedIndicator.getIndicatorName(), selectedIndicator.getIndicatorParameters().getQueryToMethodConfig().get("0"));
+                indicatorPreviewRequest.getQueryToMethodConfig().put(selectedIndicator.getIndicatorName(), selectedIndicator.getIndicatorParameters().getIndicatorDataset().get("0").getQueryToMethodConfig());
             }
         }
 
@@ -304,6 +319,10 @@ public class AnalyticsEngineController {
         RestTemplate restTemplate = new RestTemplate();
         String url = AnalyticsEngineServerURL + "/AnalyticsEngine/GetCompositeIndicatorPreview";
         String requestJson = gson.toJson(indicatorPreviewRequest);
+
+        String userId = request.getSession().getAttribute("userName").toString();
+        log.info("[Preview Composite],user:" +userId+ ",params:" + requestJson);
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -319,10 +338,11 @@ public class AnalyticsEngineController {
     @RequestMapping(value = "/finalizeCompIndicator", method = RequestMethod.GET)
     public @ResponseBody
     String finalizeCompIndicator(@RequestParam(value="indicatorSelect", required = true) String indicatorSelect,
-                                   @RequestParam(value="EngineSelect", required = true) String engineSelectId,
-                                   @RequestParam(value="selectedChartType", required = true) String selectedChartType,
-                                   @RequestParam(value="indicatorNaming", required = true) String indicatorName,
-                                   @RequestParam(value="visualizationMappings", required = true) String visualizationMappings) {
+                                 @RequestParam(value="EngineSelect", required = true) String engineSelectId,
+                                 @RequestParam(value="selectedChartType", required = true) String selectedChartType,
+                                 @RequestParam(value="indicatorNaming", required = true) String indicatorName,
+                                 @RequestParam(value="visualizationMappings", required = true) String visualizationMappings,
+                                 HttpServletRequest request) {
 
         Gson gson = new Gson();
         Type openlapPortMappingType = new TypeToken<List<OpenLAPPortMapping>>(){}.getType();
@@ -335,6 +355,9 @@ public class AnalyticsEngineController {
         entitySpecificationBean.getCurrentIndicator().setIndicatorName(indicatorName);
         entitySpecificationBean.getCurrentIndicator().setIndicatorType("composite");
 
+        //resetting the IndicatorDataset hashmap
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().setIndicatorDataset(new HashMap<String, IndicatorDataset>());
+
         for(String selectedIndicatorId : selectedIndicatorsID){
             int selectedIndId = Integer.parseInt(selectedIndicatorId);
             SessionIndicator selectedIndicator = null;
@@ -344,9 +367,25 @@ public class AnalyticsEngineController {
                     selectedIndicator = sessionIndicator;
 
             if(selectedIndicator != null){
-                entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getAnalyticsMethodId().put(selectedIndicator.getIndicatorName(), selectedIndicator.getIndicatorParameters().getAnalyticsMethodId().get("0"));
+
                 entitySpecificationBean.getCurrentIndicator().getHqlQuery().put(selectedIndicator.getIndicatorName(), selectedIndicator.getHqlQuery().get("0"));
-                entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getQueryToMethodConfig().put(selectedIndicator.getIndicatorName(), selectedIndicator.getIndicatorParameters().getQueryToMethodConfig().get("0"));
+
+                try {
+                    entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().put(selectedIndicator.getIndicatorName(), selectedIndicator.getIndicatorParameters().getIndicatorDataset().get("0").clone());
+                } catch (CloneNotSupportedException e) {
+                    IndicatorDataset indicatorDataset = new IndicatorDataset();
+
+                    indicatorDataset.setAnalyticsMethodId(selectedIndicator.getIndicatorParameters().getIndicatorDataset().get("0").getAnalyticsMethodId());
+                    indicatorDataset.setAnalyticsMethodParams(selectedIndicator.getIndicatorParameters().getIndicatorDataset().get("0").getAnalyticsMethodParams());
+                    indicatorDataset.setQueryToMethodConfig(selectedIndicator.getIndicatorParameters().getIndicatorDataset().get("0").getQueryToMethodConfig());
+
+                    entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().put(selectedIndicator.getIndicatorName(), indicatorDataset);
+                }
+
+
+//                entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get(selectedIndicator.getIndicatorName()).setAnalyticsMethodId(selectedIndicator.getIndicatorParameters().getIndicatorDataset().get("0").getAnalyticsMethodId());
+//                entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get(selectedIndicator.getIndicatorName()).setAnalyticsMethodParams(selectedIndicator.getIndicatorParameters().getIndicatorDataset().get("0").getAnalyticsMethodParams());
+//                entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get(selectedIndicator.getIndicatorName()).setQueryToMethodConfig(selectedIndicator.getIndicatorParameters().getIndicatorDataset().get("0").getQueryToMethodConfig());
             }
         }
 
@@ -366,7 +405,7 @@ public class AnalyticsEngineController {
 
         String visualizationCode;
         if(entitySpecificationBean.getCurrentIndicator().getVisualization() == null || entitySpecificationBean.getCurrentIndicator().getVisualization().isEmpty()){
-            String previewResponse = analyticsEngineController.getCompIndicatorPreview("xxxheightxxx", "xxxwidthxxx", indicatorSelect, engineSelectId, selectedChartType, indicatorName, visualizationMappings);
+            String previewResponse = analyticsEngineController.getCompIndicatorPreview("xxxheightxxx", "xxxwidthxxx", indicatorSelect, engineSelectId, selectedChartType, indicatorName, visualizationMappings, request);
 
             IndicatorPreviewResponse indicatorPreviewResponse = gson.fromJson(previewResponse, IndicatorPreviewResponse.class);
 
@@ -418,6 +457,10 @@ public class AnalyticsEngineController {
     public @ResponseBody
     String searchAllQuestions(HttpServletRequest request) {
 
+        String userId = request.getSession().getAttribute("userName").toString();
+        String userHash = request.getSession().getAttribute("rid").toString();
+        log.info("[Editor-View],user:"+userId+",rid:"+userHash);
+
         List<QuestionResponse> questionResponses = null;
         List<QuestionResponse> pagedQuestionResponses = new ArrayList<>();
 
@@ -467,7 +510,8 @@ public class AnalyticsEngineController {
                 + "searchParameter=" + searchParameter
                 + "&exactSearch=false&colName=" + colName
                 + "&sortDirection=" + sortDirection
-                + "&sort=" + isSorting;
+                + "&sort=" + isSorting
+                + "&uid="+userId;
 
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject (url, String.class);
@@ -660,33 +704,7 @@ public class AnalyticsEngineController {
         entitySpecificationBean.reset();
         entitySpecificationBean.getCurrentIndicator().setIndicatorParameters(indicatorParameters);
         entitySpecificationBean.getCurrentIndicator().setIndicatorType(indicatorResponse.getIndicatorType());
-
-//        if(loadTemplate != null && indicatorResponse.getIndicatorType().equals("simple")) {
-//            IndicatorDataset indicatorDataset = new IndicatorDataset();
-//
-//            //indicatorDataset.setEntityValues(new ArrayList<EntityValues>());
-//            Iterator<EntityValues> entityIterator = indicatorParameters.getIndicatorDataset().get("0").getEntityValues().iterator();
-//            while(entityIterator.hasNext()) {
-//                indicatorDataset.getEntityValues().add(entityIterator.next().clone());
-//            }
-//            //indicatorDataset.setUserSpecifications(new ArrayList<UserSearchSpecifications>());
-//            Iterator<UserSearchSpecifications> userSpecIterator = indicatorParameters.getIndicatorDataset().get("0").getUserSpecifications().iterator();
-//            while(userSpecIterator.hasNext()){
-//                indicatorDataset.getUserSpecifications().add(userSpecIterator.next().clone());
-//            }
-//            //indicatorDataset.setSessionSpecifications(new ArrayList<SessionSpecifications>());
-//            Iterator<SessionSpecifications> sessionSpecIterator = indicatorParameters.getIndicatorDataset().get("0").getSessionSpecifications().iterator();
-//            while(sessionSpecIterator.hasNext()){
-//                indicatorDataset.getSessionSpecifications().add(sessionSpecIterator.next().clone());
-//            }
-//            //indicatorDataset.setTimeSpecifications(new ArrayList<TimeSearchSpecifications>());
-//            Iterator<TimeSearchSpecifications> timeSpecIterator = indicatorParameters.getIndicatorDataset().get("0").getTimeSpecifications().iterator();
-//            while(timeSpecIterator.hasNext()){
-//                indicatorDataset.getTimeSpecifications().add(timeSpecIterator.next().clone());
-//            }
-//
-//            entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().put("0", indicatorDataset);
-//        }
+        //entitySpecificationBean.getCurrentIndicator().setLoadedIndicatorID(indicatorId);
 
         return gson.toJson(indicatorResponse);
     }
@@ -735,11 +753,19 @@ public class AnalyticsEngineController {
      */
     @RequestMapping(value = "/getDataColumnsByCatIDs", method = RequestMethod.GET)
     public @ResponseBody
-    String getDataColumnsByCatIDs(@RequestParam(value="categoryIDs", required = true) String categoryIDs) {
+    String getDataColumnsByCatIDs(@RequestParam(value="categoryIDs", required = true) String categoryIDs,
+                                  @RequestParam(value = "source", required = false) String source,
+                                  @RequestParam(value = "platform", required = false) String platform,
+                                  @RequestParam(value = "action", required = false) String action,
+                                  @RequestParam(value = "dsid", required = false) String dsid) {
+
+        if(source==null) source = "";
+        if(platform==null) platform = "";
+        if(action==null) action = "";
 
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject (
-                AnalyticsEngineServerURL + "/AnalyticsEngine/GetDataColumnsByCatID?categoryIDs=" + categoryIDs,
+                AnalyticsEngineServerURL + "/AnalyticsEngine/GetDataColumnsByCatID?categoryIDs=" + categoryIDs + "&action="+ action + "&source=" + source + "&platform="+platform,
                 String.class);
 
         String[] catIDs = categoryIDs.split("\\s*,\\s*");
@@ -750,12 +776,18 @@ public class AnalyticsEngineController {
         }
 
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
-        if(entitySpecificationBean.getCurrentIndicator().getIndicatorType().equals("simple"))
-            if(!entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().containsKey("0"))
+        if(entitySpecificationBean.getCurrentIndicator().getIndicatorType().equals("simple")) {
+            if (!entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().containsKey("0"))
                 entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().put("0", new IndicatorDataset());
 
             entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").setSelectedMinor(catIDList);
+        }
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType().equals("multianalysis")) {
+            if (!entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().containsKey(dsid))
+                entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().put(dsid, new IndicatorDataset());
 
+            entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get(dsid).setSelectedMinor(catIDList);
+        }
 
         Gson gson = new Gson();
         Type olapColumnConfigurationDataListType = new TypeToken<List<OpenLAPColumnConfigData>>(){}.getType();
@@ -775,7 +807,7 @@ public class AnalyticsEngineController {
             HttpServletRequest request) {
 
         if(source==null || source.isEmpty()) source = ""; else source = "&source=" + source ;
-        if(platform==null || platform.isEmpty()) platform = ""; else platform = "&platform=" + source ;
+        if(platform==null || platform.isEmpty()) platform = ""; else platform = "&platform=" + platform ;
         if(action==null || action.isEmpty()) action = ""; else action = "&action=" + action ;
 
         RestTemplate restTemplate = new RestTemplate();
@@ -845,6 +877,24 @@ public class AnalyticsEngineController {
         List<OpenLAPColumnConfigData> olapColumnConfigurationDataList = gson.fromJson(result, olapColumnConfigurationDataListType);
 
         return gson.toJson(olapColumnConfigurationDataList);
+    }
+
+
+    @RequestMapping(value = "/getAnalyticsMethodParams", method = RequestMethod.GET)
+    public @ResponseBody
+    String getAnalyticsMethodParams(@RequestParam(value="id", required = true) String id) {
+
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject (
+                AnalyticsEngineServerURL + "/AnalyticsEngine/GetAnalyticsMethodParams?id=" + id,
+                String.class);
+
+//        Gson gson = new Gson();
+//        Type openlapDynamicParamType = new TypeToken<List<OpenLAPDynamicParam>>(){}.getType();
+//        List<OpenLAPDynamicParam> dynamicParamsList = gson.fromJson(result, openlapDynamicParamType);
+//
+//        return gson.toJson(dynamicParamsList);
+        return result;
     }
 
     /**
@@ -954,7 +1004,8 @@ public class AnalyticsEngineController {
     public @ResponseBody String GetDistinctCategories(
             @RequestParam(value = "source", required = false) String source,
             @RequestParam(value = "platform", required = false) String platform,
-            @RequestParam(value = "action", required = false) String action) {
+            @RequestParam(value = "action", required = false) String action,
+            @RequestParam(value = "dsid", required = false) String dsid) {
 
         if(source==null) source = "";
         if(platform==null) platform = "";
@@ -974,6 +1025,14 @@ public class AnalyticsEngineController {
             entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").setSelectedAction(actions);
             entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").setSelectedPlatform(platforms);
             entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").setSelectedSource(sources);
+        }
+        else if(entitySpecificationBean.getCurrentIndicator().getIndicatorType().equals("multianalysis")){
+            if(!entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().containsKey(dsid))
+                entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().put(dsid, new IndicatorDataset());
+
+            entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get(dsid).setSelectedAction(actions);
+            entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get(dsid).setSelectedPlatform(platforms);
+            entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get(dsid).setSelectedSource(sources);
         }
             //entitySpecificationBean.getIndicatorDataset().get("0").setSelectedMinor(catIDList);
 
@@ -1005,9 +1064,8 @@ public class AnalyticsEngineController {
     String  saveQnToDB(@RequestParam(value="userName" ,required = true) String userName,
                        @RequestParam(value="goalId", required = true) String goalId,
                        @RequestParam(value="questionName", required = true) String questionName,
-                       Model model) {
+                       HttpServletRequest request) {
 
-        log.info("Saving question and asoicated indicators");
         Gson gson = new Gson();
         EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
         GLAQuestionDao glaQuestionBean = (GLAQuestionDao) appContext.getBean("glaQuestions");
@@ -1029,31 +1087,45 @@ public class AnalyticsEngineController {
             indicatorSaveRequest.setCreatedBy(userName);
             indicatorSaveRequest.setIndicatorType(sessionIndicator.getIndicatorType());
 
-            for (Map.Entry<String, String> hqlQuery : sessionIndicator.getHqlQuery().entrySet())
-                indicatorSaveRequest.getQuery().put(hqlQuery.getKey(), hqlQuery.getValue());
+            indicatorSaveRequest.setAnalyticsMethodId(new HashMap<String, Long>());
+            indicatorSaveRequest.setQueryToMethodConfig(new HashMap<String, OpenLAPPortConfig>());
+            indicatorSaveRequest.setMethodInputParams(new HashMap<String, String>());
+            indicatorSaveRequest.setQuery(new HashMap<String, String>());
+            indicatorSaveRequest.setServerID(new HashMap<String, Long>());
 
-            for (Map.Entry<String, OpenLAPPortConfig> queryToMethodConfig : sessionIndicator.getIndicatorParameters().getQueryToMethodConfig().entrySet())
-                indicatorSaveRequest.getQueryToMethodConfig().put(queryToMethodConfig.getKey(), queryToMethodConfig.getValue());
+            Set<String> datasetIds = sessionIndicator.getIndicatorParameters().getIndicatorDataset().keySet();
 
-            for (Map.Entry<String, Long> methodId : sessionIndicator.getIndicatorParameters().getAnalyticsMethodId().entrySet())
-                indicatorSaveRequest.getAnalyticsMethodId().put(methodId.getKey(), methodId.getValue());
+            for(String datasetId: datasetIds) {
+                indicatorSaveRequest.getQuery().put(datasetId, sessionIndicator.getHqlQuery().get(datasetId));
 
-            for (Map.Entry<String, String> hqlQuery : sessionIndicator.getHqlQuery().entrySet())
-                indicatorSaveRequest.getServerID().put(hqlQuery.getKey(), 0L);
+                indicatorSaveRequest.getQueryToMethodConfig().put(datasetId, sessionIndicator.getIndicatorParameters().getIndicatorDataset().get(datasetId).getQueryToMethodConfig());
+                indicatorSaveRequest.getAnalyticsMethodId().put(datasetId, sessionIndicator.getIndicatorParameters().getIndicatorDataset().get(datasetId).getAnalyticsMethodId());
+                indicatorSaveRequest.getMethodInputParams().put(datasetId, sessionIndicator.getIndicatorParameters().getIndicatorDataset().get(datasetId).getAnalyticsMethodParams());
 
-//            if (sessionIndicator.getIndicatorType().equals("simple")){
-//                indicatorSaveRequest.getQuery().put("0", sessionIndicator.getHqlQuery().get("0"));
-//
-//                indicatorSaveRequest.getQueryToMethodConfig().put("0", sessionIndicator.getIndicatorParameters().getQueryToMethodConfig().get("0"));
-//                indicatorSaveRequest.getServerID().put("0", 0L);
-//                indicatorSaveRequest.getAnalyticsMethodId().put("0", sessionIndicator.getIndicatorParameters().getAnalyticsMethodId().get("0"));
-//            }
+                //indicatorSaveRequest.getServerID().put(datasetId, sessionIndicator.getIndicatorParameters().getIndicatorDataset().get(datasetId).getLoadedIndicatorID());
+            }
+
+            //indicatorSaveRequest.getServerID().put(datasetId, sessionIndicator.getIndicatorParameters().getIndicatorDataset().get(datasetId).getLoadedIndicatorID());
+
+            indicatorSaveRequest.setDataSetMergeMappingList(sessionIndicator.getIndicatorParameters().getCombineMappingList());
 
             indicatorSaveRequest.setMethodToVisualizationConfig(sessionIndicator.getIndicatorParameters().getMethodToVisualizationConfig());
             indicatorSaveRequest.setIndicatorClientID(sessionIndicator.getIdentifier());
 
             indicatorSaveRequest.setVisualizationFrameworkId(Long.parseLong(sessionIndicator.getIndicatorParameters().getVisualizationLibrary()));
             indicatorSaveRequest.setVisualizationMethodId(Long.parseLong(sessionIndicator.getIndicatorParameters().getVisualizationType()));
+
+            String visParams = sessionIndicator.getIndicatorParameters().getVisualizationParams();
+
+            Type hashmapType = new TypeToken<HashMap<String,String>>(){}.getType();
+            HashMap<String,String> visParamsList;
+            if(visParams == null || visParams.isEmpty())
+                visParamsList = new HashMap<>();
+            else
+                visParamsList = gson.fromJson(visParams, hashmapType);
+
+            indicatorSaveRequest.setVisualizationInputParams(visParamsList);
+
             indicatorSaveRequest.setParameters(gson.toJson(sessionIndicator.getIndicatorParameters()));
             indicatorSaveRequestList.add(indicatorSaveRequest);
         }
@@ -1063,11 +1135,21 @@ public class AnalyticsEngineController {
         String url = AnalyticsEngineServerURL + "/AnalyticsEngine/SaveQuestionAndIndicators";
         //String url = AnalyticsEngineServerURL + "/AnalyticsEngine/SaveQuestionAndIndicatorsDummy";
         String requestJson = gson.toJson(questionSaveRequest);
+
+        String userId = request.getSession().getAttribute("userName").toString();
+        log.info("[Save Question],user:"+userId+",params:" + requestJson);
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<String>(requestJson,headers);
         QuestionSaveResponse result = restTemplate.postForObject(url, entity, QuestionSaveResponse.class);
+
+        //replacing the xxxridxxx with the current user hash
+        String userID = request.getSession().getAttribute("rid").toString();
+        for(IndicatorSaveResponse indicatorSaveResponse: result.getIndicatorSaveResponses()) {
+            indicatorSaveResponse.setIndicatorRequestCode(indicatorSaveResponse.getIndicatorRequestCode().replace("xxxridxxx", userID));
+        }
 
         //entitySpecificationBean.setSessionQuestionContainer(new SessionQuestion());
         entitySpecificationBean.completeReset();
@@ -1153,7 +1235,7 @@ public class AnalyticsEngineController {
 
             String url = AnalyticsEngineServerURL + "/AnalyticsEngine/GetIndicatorDataHQL?tid="+ triadID + paramString;
 
-            log.info("Executing indicator request for tid="+ triadID + paramString);
+            log.info("[Execute Indicator],params:" + paramString);
 
             RestTemplate restTemplate = new RestTemplate();
             String result = restTemplate.getForObject(url, String.class);
@@ -1162,5 +1244,295 @@ public class AnalyticsEngineController {
         } catch (Exception exc) {
             return exc.getMessage();
         }
+    }
+
+    @RequestMapping(value = "/initializeDataSource", method = RequestMethod.GET)
+    public @ResponseBody String InitializeDataSource() {
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        int sourceId = entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().addNewDataSource();
+        return ""+sourceId;
+    }
+
+    @RequestMapping(value = "/cancelDataSource", method = RequestMethod.GET)
+    public @ResponseBody String CancelDataSource(@RequestParam(value="dsid", required = true) String dsid) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().removeDataSource(dsid);
+        return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters());
+    }
+
+    @RequestMapping(value = "/finalizeDataSource", method = RequestMethod.GET)
+    public @ResponseBody
+    String  finalizeDataSource(@RequestParam(value="datasetName", required = true) String datasetName,
+                              @RequestParam(value="dsid", required = true) String dsid,
+                              @RequestParam(value="analyticsMethod", required = true) String analyticsMethod,
+                              @RequestParam(value="methodMappings", required = true) String methodMappings,
+                              @RequestParam(value="methodParams", required = true) String methodParams,
+                               @RequestParam(value="selectedMethods", required = true) String selectedMethodDataColumns,
+                              Model model) {
+        Gson gson = new Gson();
+
+        List<String> entityDisplayObjects = new ArrayList<>();
+        if(selectedMethodDataColumns != null && !selectedMethodDataColumns.isEmpty())
+            entityDisplayObjects = Arrays.asList(selectedMethodDataColumns.split("\\s*,\\s*"));
+
+        Type olapPortMappingType = new TypeToken<List<OpenLAPPortMapping>>(){}.getType();
+        List<OpenLAPPortMapping> methodOpenLAPPortMappingList = gson.fromJson(methodMappings, olapPortMappingType);
+        OpenLAPPortConfig queryToMethodConfig = new OpenLAPPortConfig();
+        for (OpenLAPPortMapping methodPortMapping : methodOpenLAPPortMappingList) {
+            queryToMethodConfig.getMapping().add(methodPortMapping);
+        }
+
+        OperationNumberProcessorDao operationNumberProcessorBean =  (OperationNumberProcessorDao) appContext.getBean("operationNumberProcessor");
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+
+
+//        if (!methodParams.isEmpty()) {
+//            Type hashmapType = new TypeToken<HashMap<String,String>>(){}.getType();
+//            Map<String, String> methodParamList = gson.fromJson(methodParams, hashmapType);
+//            entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get(dsid).setAnalyticsMethodParams(methodParams);
+//        }
+
+
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get(dsid).setDatasetName(datasetName);
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get(dsid).setAnalyticsMethodId(Long.parseLong(analyticsMethod));
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get(dsid).setAnalyticsMethodParams(methodParams);
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get(dsid).setQueryToMethodConfig(queryToMethodConfig);
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get(dsid).setEntityDisplayObjects(entityDisplayObjects);
+
+        if(entitySpecificationBean.getCurrentIndicator().getHqlQuery().get(dsid) == null ) {
+            operationNumberProcessorBean.computeResult(entitySpecificationBean, dsid);
+        }
+
+
+        return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters());
+    }
+
+    @RequestMapping(value = "/getIndicatorParameters", method = RequestMethod.GET)
+    public @ResponseBody
+    String  getIndicatorParameters(Model model) {
+        Gson gson = new Gson();
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        return gson.toJson(entitySpecificationBean.getCurrentIndicator().getIndicatorParameters());
+    }
+
+    @RequestMapping(value = "/getMLAIPreviewVisualizationCode", method = RequestMethod.GET)
+    public @ResponseBody
+    String getMLAIPreviewVisualizationCode(@RequestParam(value="height", required = true) String height,
+                                           @RequestParam(value="width", required = true) String width,
+                                           @RequestParam(value="analyticsMethodId", required = true) String finalAnalyticsMethodId,
+                                           @RequestParam(value="EngineSelect", required = true) String engineSelectId,
+                                           @RequestParam(value="selectedChartType", required = true) String selectedChartType,
+                                           @RequestParam(value="indicatorNaming", required = true) String indicatorName,
+                                           @RequestParam(value="methodMappings", required = true) String finalAnalyticsMethodMappings,
+                                           @RequestParam(value="visualizationMappings", required = true) String visualizationMappings,
+                                           @RequestParam(value="combineMapping", required = true) String combineMapping,
+                                           @RequestParam(value="methodParams", required = true) String finalMethodParams,
+                                           @RequestParam(value="visParams", required = true) String visParams,
+                                           HttpServletRequest request) {
+        Gson gson = new Gson();
+
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        OperationNumberProcessorDao operationNumberProcessorBean =  (OperationNumberProcessorDao) appContext.getBean("operationNumberProcessor");
+
+        Type openlapPortMappingType = new TypeToken<List<OpenLAPPortMapping>>(){}.getType();
+        List<OpenLAPPortMapping> finalMethodOpenLAPPortMappingList = gson.fromJson(finalAnalyticsMethodMappings, openlapPortMappingType);
+        OpenLAPPortConfig firstMethodToSecondMethodConfig = new OpenLAPPortConfig();
+        for (OpenLAPPortMapping methodPortMapping : finalMethodOpenLAPPortMappingList) {
+            firstMethodToSecondMethodConfig.getMapping().add(methodPortMapping);
+        }
+
+        entitySpecificationBean.getCurrentIndicator().setIndicatorName(indicatorName);
+        entitySpecificationBean.getCurrentIndicator().setIndicatorType("multianalysis");
+
+        // setting the second level analytics methods properties at index 0
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").setAnalyticsMethodId(Long.parseLong(finalAnalyticsMethodId));
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").setQueryToMethodConfig(firstMethodToSecondMethodConfig);
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").setAnalyticsMethodParams(finalMethodParams);
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().setVisualizationParams(visParams);
+
+        Set<String> datasetIds = entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().keySet();
+
+        for(String datasetId: datasetIds) {
+            if(datasetId.equals("0"))
+                continue;
+
+            operationNumberProcessorBean.computeResult(entitySpecificationBean, datasetId);
+        }
+
+        IndicatorPreviewRequest indicatorPreviewRequest = new IndicatorPreviewRequest();
+        indicatorPreviewRequest.setVisualizationMethodId(Long.parseLong(selectedChartType));
+        indicatorPreviewRequest.setVisualizationFrameworkId(Long.parseLong(engineSelectId));
+        indicatorPreviewRequest.setQuery(entitySpecificationBean.getCurrentIndicator().getHqlQuery());
+        indicatorPreviewRequest.setIndicatorType(entitySpecificationBean.getCurrentIndicator().getIndicatorType());
+
+        indicatorPreviewRequest.setAnalyticsMethodId(new HashMap<String, Long>());
+        indicatorPreviewRequest.setQueryToMethodConfig(new HashMap<String, OpenLAPPortConfig>());
+        indicatorPreviewRequest.setMethodInputParams(new HashMap<String, String>());
+
+        for(String datasetId: datasetIds) {
+            indicatorPreviewRequest.getAnalyticsMethodId().put(datasetId, entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get(datasetId).getAnalyticsMethodId());
+            indicatorPreviewRequest.getQueryToMethodConfig().put(datasetId, entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get(datasetId).getQueryToMethodConfig());
+            indicatorPreviewRequest.getMethodInputParams().put(datasetId, entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get(datasetId).getAnalyticsMethodParams());
+        }
+
+        Map<String, Object> chartSizeParams = new HashMap<>();
+        chartSizeParams.put("width", width);
+        chartSizeParams.put("height", height);
+        chartSizeParams.put("rid", request.getSession().getAttribute("rid").toString());
+        chartSizeParams.put("uid", request.getSession().getAttribute("userName").toString());
+        indicatorPreviewRequest.setAdditionalParams(chartSizeParams);
+
+        if (!combineMapping.isEmpty()) {
+            Type combineMappingType = new TypeToken<List<OpenLAPDataSetMergeMapping>>(){}.getType();
+            List<OpenLAPDataSetMergeMapping> combineMappingList = gson.fromJson(combineMapping, combineMappingType);
+            indicatorPreviewRequest.setDataSetMergeMappingList(combineMappingList);
+        }
+
+        if (!visualizationMappings.isEmpty()) {
+            List<OpenLAPPortMapping> visualizationOpenLAPPortMappingList = gson.fromJson(visualizationMappings, openlapPortMappingType);
+            OpenLAPPortConfig methodToVisConfig = new OpenLAPPortConfig();
+            for (OpenLAPPortMapping visualizationPortMapping : visualizationOpenLAPPortMappingList) {
+                methodToVisConfig.getMapping().add(visualizationPortMapping);
+            }
+
+            entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().setMethodToVisualizationConfig(methodToVisConfig);
+            indicatorPreviewRequest.setMethodToVisualizationConfig(methodToVisConfig);
+        }
+
+        if (!visParams.isEmpty()) {
+            Type hashmapType = new TypeToken<HashMap<String,String>>(){}.getType();
+            Map<String, String> visParamsList = gson.fromJson(visParams, hashmapType);
+            indicatorPreviewRequest.setVisualizationInputParams(visParamsList);
+        }
+
+
+        RestTemplate restTemplate = new RestTemplate();
+        String url = AnalyticsEngineServerURL + "/AnalyticsEngine/GetMLAIIndicatorPreview";
+        String requestJson = gson.toJson(indicatorPreviewRequest);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> entity = new HttpEntity<String>(requestJson,headers);
+        IndicatorPreviewResponse result = restTemplate.postForObject(url, entity, IndicatorPreviewResponse.class);
+
+        if(result.isSuccess())
+            entitySpecificationBean.getCurrentIndicator().setVisualization(result.getVisualizationCode());
+
+        String userId = request.getSession().getAttribute("userName").toString();
+        log.info("[Preview MLAI],user:"+userId+",params:" + requestJson);
+
+        return gson.toJson(result);
+    }
+
+    @RequestMapping(value = "/finalizeMLAIIndicator", method = RequestMethod.GET)
+    public @ResponseBody
+    String finalizeMLAIIndicator(@RequestParam(value="goalId", required = true) String goalId,
+                                 @RequestParam(value="questionName", required = true) String questionName,
+                                 @RequestParam(value="indicatorNaming", required = true) String indicatorName,
+                                 @RequestParam(value="indicatorIdentifier", required = true) String indicatorIdentifier,
+                                 @RequestParam(value="analyticsMethodId", required = true) String finalAnalyticsMethodId,
+                                 @RequestParam(value="EngineSelect", required = true) String engineSelectId,
+                                 @RequestParam(value="selectedChartType", required = true) String selectedChartType,
+                                 @RequestParam(value="methodMappings", required = true) String finalAnalyticsMethodMappings,
+                                 @RequestParam(value="visualizationMappings", required = true) String visualizationMappings,
+                                 @RequestParam(value="combineMapping", required = true) String combineMapping,
+                                 @RequestParam(value="methodParams", required = true) String finalMethodParams,
+                                 @RequestParam(value="visParams", required = true) String visParams,
+                                 HttpServletRequest request) {
+        Gson gson = new Gson();
+
+        EntitySpecification entitySpecificationBean = (EntitySpecification) appContext.getBean("entitySpecifications");
+        OperationNumberProcessorDao operationNumberProcessorBean =  (OperationNumberProcessorDao) appContext.getBean("operationNumberProcessor");
+
+        Type openlapPortMappingType = new TypeToken<List<OpenLAPPortMapping>>(){}.getType();
+        List<OpenLAPPortMapping> finalMethodOpenLAPPortMappingList = gson.fromJson(finalAnalyticsMethodMappings, openlapPortMappingType);
+        OpenLAPPortConfig firstMethodToSecondMethodConfig = new OpenLAPPortConfig();
+        for (OpenLAPPortMapping methodPortMapping : finalMethodOpenLAPPortMappingList) {
+            firstMethodToSecondMethodConfig.getMapping().add(methodPortMapping);
+        }
+
+        List<OpenLAPPortMapping> visualizationOpenLAPPortMappingList = gson.fromJson(visualizationMappings, openlapPortMappingType);
+        OpenLAPPortConfig methodToVisConfig = new OpenLAPPortConfig();
+        for (OpenLAPPortMapping visualizationPortMapping : visualizationOpenLAPPortMappingList) {
+            methodToVisConfig.getMapping().add(visualizationPortMapping);
+        }
+
+        Type combineMappingType = new TypeToken<List<OpenLAPDataSetMergeMapping>>(){}.getType();
+        List<OpenLAPDataSetMergeMapping> combineMappingList = gson.fromJson(combineMapping, combineMappingType);
+
+        entitySpecificationBean.setGoalId(Long.parseLong(goalId));
+        entitySpecificationBean.setQuestionName(questionName);
+
+        entitySpecificationBean.getCurrentIndicator().setIndicatorName(indicatorName);
+        entitySpecificationBean.getCurrentIndicator().setIndicatorType("multianalysis");
+
+        // setting the second level analytics methods properties at index 0
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").setAnalyticsMethodId(Long.parseLong(finalAnalyticsMethodId));
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").setQueryToMethodConfig(firstMethodToSecondMethodConfig);
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().get("0").setAnalyticsMethodParams(finalMethodParams);
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().setVisualizationParams(visParams);
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().setVisualizationLibrary(engineSelectId);
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().setVisualizationType(selectedChartType);
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().setMethodToVisualizationConfig(methodToVisConfig);
+        entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().setCombineMappingList(combineMappingList);
+
+        Set<String> datasetIds = entitySpecificationBean.getCurrentIndicator().getIndicatorParameters().getIndicatorDataset().keySet();
+
+        for(String datasetId: datasetIds) {
+            if(datasetId.equals("0"))
+                continue;
+
+            operationNumberProcessorBean.computeResult(entitySpecificationBean, datasetId);
+        }
+
+        AnalyticsEngineController analyticsEngineController = appContext.getBean(AnalyticsEngineController.class);
+
+
+        String visualizationCode;
+        if(entitySpecificationBean.getCurrentIndicator().getVisualization() == null || entitySpecificationBean.getCurrentIndicator().getVisualization().isEmpty()){
+            String previewResponse = analyticsEngineController.getMLAIPreviewVisualizationCode("xxxheightxxx", "xxxwidthxxx", finalAnalyticsMethodId, engineSelectId,
+                    selectedChartType, indicatorName, finalAnalyticsMethodMappings, visualizationMappings, combineMapping, finalMethodParams, visParams, request);
+
+            IndicatorPreviewResponse indicatorPreviewResponse = gson.fromJson(previewResponse, IndicatorPreviewResponse.class);
+
+            if(indicatorPreviewResponse.isSuccess())
+                visualizationCode = indicatorPreviewResponse.getVisualizationCode();
+            else
+                visualizationCode = indicatorPreviewResponse.getErrorMessage();
+        }
+        else
+            visualizationCode = entitySpecificationBean.getCurrentIndicator().getVisualization();
+
+        SessionIndicator sessionIndicator = null;
+        try {
+            sessionIndicator = entitySpecificationBean.getCurrentIndicator().clone();
+            sessionIndicator.setIdentifier(entitySpecificationBean.getCurrentIndicator().getIdentifier());
+        } catch (CloneNotSupportedException e) {}
+
+        sessionIndicator.setVisualization(visualizationCode);
+
+        if(entitySpecificationBean.getCurrentQuestion().getSessionIndicators().size() == 0 ) {
+            SessionQuestion sessionQuestion = new SessionQuestion();
+            sessionQuestion.setGoalId(Long.parseLong(goalId));
+            sessionQuestion.setQuestionName(entitySpecificationBean.getQuestionName());
+            sessionQuestion.getSessionIndicators().add(sessionIndicator);
+
+            entitySpecificationBean.setCurrentQuestion(sessionQuestion);
+        }
+        else if(entitySpecificationBean.getCurrentQuestion().getSessionIndicators().size() >= 1) {
+            if(indicatorIdentifier.equals("null")) {
+                entitySpecificationBean.getCurrentQuestion().getSessionIndicators().add(sessionIndicator);
+            } else {
+                ListIterator<SessionIndicator> sessionIndicatorListIterator = entitySpecificationBean.getCurrentQuestion().getSessionIndicators().listIterator();
+                while(sessionIndicatorListIterator.hasNext()){
+                    SessionIndicator indicator = sessionIndicatorListIterator.next();
+                    if(indicator.getIdentifier() == Integer.parseInt(indicatorIdentifier)) {
+                        sessionIndicatorListIterator.set(sessionIndicator);
+                    }
+                }
+            }
+        }
+        return gson.toJson(entitySpecificationBean.getCurrentQuestion());
     }
 }

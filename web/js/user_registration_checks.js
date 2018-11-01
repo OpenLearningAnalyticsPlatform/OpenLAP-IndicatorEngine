@@ -20,27 +20,28 @@
  * Created by Tanmaya Mahapatra on 16-03-2015.
  */
 
-var request;
 function createRequest() {
-    try {
+    var request;
+    if (window.XMLHttpRequest) {
         request = new XMLHttpRequest();
-    } catch(failed){
-        alert("Error creating request object!");
-        request = null;
     }
+    else {
+        request = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    return request;
 }
 
 function checkPreExistingUserName(){
-    request = createRequest();
+    var request = createRequest();
     var userNameEntered = document . getElementById("usernamesignup").value;
     var url ="/checkusername?username="+escape(userNameEntered);
     request.open("GET",url,true);
-    request.onreadystatechange=alert_duplicateUserName;
+    request.onreadystatechange=function(){alert_duplicateUserName(request)};
     request.send(null);
 
 }
 
-function alert_duplicateUserName() {
+function alert_duplicateUserName(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             if (request.responseText == "true")
@@ -54,16 +55,16 @@ function alert_duplicateUserName() {
 }
 
 function checkPreExistingEmailID(){
-    request = createRequest();
+    var request = createRequest();
     var emailEntered = document . getElementById("emailsignup").value;
     var url ="/checkemail?email="+escape(emailEntered);
     request.open("GET",url,true);
-    request.onreadystatechange=alert_duplicateEmail;
+    request.onreadystatechange=function(){alert_duplicateEmail(request)};
     request.send(null);
 
 }
 
-function alert_duplicateEmail() {
+function alert_duplicateEmail(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             if (request.responseText == "true")
@@ -87,23 +88,23 @@ function checkPassword() {
     }
 }
 
-function isValidDate(date)
-{
-    var matches = /^(\d{2})[-](\d{2})[-](\d{4})$/.exec(date);
-    if (matches == null) return false;
-    var m = matches[2];
-    var d = matches[1] - 1;
-    var y = matches[3];
-    var composedDate = new Date(y, m, d);
-    return composedDate.getDate() == d &&
-        composedDate.getMonth() == m &&
-        composedDate.getFullYear() == y;
-}
+// function isValidDate(date)
+// {
+//     var matches = /^(\d{2})[-](\d{2})[-](\d{4})$/.exec(date);
+//     if (matches == null) return false;
+//     var m = matches[2];
+//     var d = matches[1] - 1;
+//     var y = matches[3];
+//     var composedDate = new Date(y, m, d);
+//     return composedDate.getDate() == d &&
+//         composedDate.getMonth() == m &&
+//         composedDate.getFullYear() == y;
+// }
 
-function checkDate() {
-    var dateEntered = document . getElementById("dob").value;
-    if(!isValidDate(dateEntered)){
-        alert("Invalid Date Format. Please Use DD-MM-YYYY format");
-        document . getElementById("dob").value = null;
-    }
-}
+// function checkDate() {
+//     var dateEntered = document . getElementById("dob").value;
+//     if(!isValidDate(dateEntered)){
+//         alert("Invalid Date Format. Please Use DD-MM-YYYY format");
+//         document . getElementById("dob").value = null;
+//     }
+// }

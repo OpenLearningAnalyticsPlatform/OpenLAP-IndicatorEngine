@@ -3,7 +3,7 @@
         <h4>Request New Analytics Goal</h4>
         <div class="row">
             <div class="col-md-6">
-                <label for="new-analytics-goal-name">Name</label>
+                <label for="new-analytics-goal-name">Goal Name</label>
                 <input type="text" name ="name" id="new-analytics-goal-name"
                        required="required" placeholder="Analytics goal name" data-error="Enter analtyics goal name"/>
             </div>
@@ -22,10 +22,10 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button class="waves-effect waves-light btn light-blue darken-2" title="Send request for new analytics goal." onclick="sendGoalRequest()" >
+        <button class="waves-effect waves-light btn light-blue darken-2 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Send request for new analytics goal" onclick="sendGoalRequest()" >
             Send
         </button>
-        <button class="modal-close waves-effect waves-light btn light-blue darken-2" title="Close the dialog box." onclick="clearGoalRequestModal()" >
+        <button class="modal-close waves-effect waves-light btn light-blue darken-2 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Cancel and close the request" onclick="clearGoalRequestModal()" >
             Close
         </button>
     </div>

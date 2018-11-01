@@ -23,14 +23,15 @@
 
 
 
-var request;
 function createRequest() {
-    try {
+    var request;
+    if (window.XMLHttpRequest) {
         request = new XMLHttpRequest();
-    } catch(failed){
-        alert("Error creating request object!");
-        request = null;
     }
+    else {
+        request = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    return request;
 }
 
 // function populateSPA() {
@@ -41,14 +42,14 @@ function createRequest() {
 // }
 
 function FilterInit() {
-    request = createRequest();
+    var request = createRequest();
     var url ="/indicators/initFilters";
     request.open("GET",url,false);
-    request.onreadystatechange=processReceivedFilters;
+    request.onreadystatechange=function(){processReceivedFilters(request)};
     request.send(null);
 }
 
-function processReceivedFilters() {
+function processReceivedFilters(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
@@ -67,11 +68,11 @@ function processReceivedFilters() {
 //     request = createRequest();
 //     var url ="/indicators/initSources";
 //     request.open("GET",url,false);
-//     request.onreadystatechange=processReceivedSources;
+//     request.onreadystatechange=function(){processReceivedSources(request)};
 //     request.send(null);
 // }
 
-function processReceivedSources() {
+function processReceivedSources(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
@@ -89,11 +90,11 @@ function processReceivedSources() {
 //     request = createRequest();
 //     var url ="/indicators/initPlatform";
 //     request.open("GET",url,false);
-//     request.onreadystatechange=processReceivedPlatforms;
+//     request.onreadystatechange=function(){processReceivedPlatforms(request)};
 //     request.send(null);
 // }
 
-function processReceivedPlatforms() {
+function processReceivedPlatforms(request) {
     if (request.readyState == 4) {
         if (request.status == 200) {
             var parsedJSON = JSON.parse(request.responseText);
@@ -111,7 +112,7 @@ function processReceivedPlatforms() {
 //     request = createRequest();
 //     var url ="/indicators/initAction";
 //     request.open("GET",url,false);
-//     request.onreadystatechange=processReceivedActions;
+//     request.onreadystatechange=function(){processReceivedActions(request)};
 //     request.send(null);
 // }
 

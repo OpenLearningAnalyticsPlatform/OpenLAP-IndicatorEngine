@@ -35,7 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 @Scope("session")
-@SessionAttributes({"loggedIn", "userName", "sid", "activationStatus","role", "admin_access"})
+@SessionAttributes({"loggedIn", "userName", "rid", "sid", "activationStatus","role", "admin_access"})
 @RequestMapping(value="/admin")
 @SuppressWarnings({"unused", "unchecked"})
 public class AdminController {

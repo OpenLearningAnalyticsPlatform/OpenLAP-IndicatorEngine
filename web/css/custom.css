@@ -1,3 +1,17 @@
+.head-title{
+    padding-left:260px;
+}
+
+.footer-copyright{
+    padding-left:260px;
+    background-color: #0288d1 !important;
+}
+
+.footer-copyright p a{
+    color:white;
+    text-decoration: none;
+}
+
 .panel-default > .panel-heading {
     color: #ffffff;
     background-color: #26a69a;
@@ -48,13 +62,15 @@ label {
     color: black !important;
     font-size: 1.0rem !important;
     margin: 10px 0 0 0;
+    width: 100%;
 }
 .fixed-action-btn > ul > li {
     margin-top: 0px !important;
 }
 .fixed-action-btn.horizontal ul {
-    left: -321px !important;
-    transform: translateY(-50%) !important;
+    transform: translateX(50%);
+    top: 0;
+    right: 68px;
 }
 #associatedIndicatorsDiv {
     line-height: 42px;
@@ -103,9 +119,10 @@ input[type=text]:focus:not([readonly]) {
     width:100%;
     height:100%;
 }
-#visualizeQuestionModel {
-    min-height: 80% !important;
-    min-width: 80% !important;
+
+.openlap-help-model {
+    min-height: 90% !important;
+    min-width: 90% !important;
     top: 0 !important;
 }
 #loadIndicatorTemplateModel {
@@ -118,8 +135,8 @@ input[type=text]:focus:not([readonly]) {
 #floatingButtonDiv {
     margin-left: -50px;
 }
-label {
-    width: 100%;
+.question-actions{
+    margin-left:15px;
 }
 label:after {
     -moz-transition-property: all;
@@ -161,12 +178,15 @@ input::-webkit-input-placeholder {
     font-size: 13px;
     line-height: 2;
 }
-table#methodMappingTable {
+table#methodMappingTable,
+table#visualizerMappingTable,
+table#mlaids_methodMappingTable,
+table#mlai_methodMappingTable,
+table#mlai_visualizerMappingTable
+{
     font-size: 13px;
 }
-table#visualizerMappingTable {
-    font-size: 13px;
-}
+
 i {
     cursor: pointer;
 }
@@ -224,12 +244,24 @@ header, main, footer {
     header, main, footer {
         padding-left: 0;
     }
-}
-@media only screen and (min-width: 993px) {
-    .container {
-        width: 98% !important;
+
+    .head-title{
+        padding-left:20px;
+    }
+
+    .page-title{
+        padding-left:20px;
+    }
+
+    .footer-copyright{
+        padding-left:20px;
     }
 }
+/*@media only screen and (min-width: 993px) {*/
+    /*.container {*/
+        /*width: 98% !important;*/
+    /*}*/
+/*}*/
 /*
 .side-nav a {
     text-decoration: none !important;
@@ -392,13 +424,21 @@ footer.page-footer {
     text-align: center!important;
 }
 
-
 .preview-action td {
     padding: 0;
     display: table-cell;
     text-align: right;
     vertical-align: top;
     border-radius: 0;
+}
+
+.preview-success-msg{
+    font-size: 0.9em;
+    font-weight: bold;
+    margin-right: 10px;
+    color: #058409;
+    display: block;
+    cursor: default;
 }
 
 .preview-err-msg{
@@ -430,7 +470,7 @@ footer.page-footer {
 
 .add-datasource-div{
     position: absolute;
-    left: 270px;
+    left: 195px;
     margin-top: 7px;
 }
 
@@ -442,7 +482,7 @@ footer.page-footer {
 
 .add-datasource-label{
     line-height: 25px!important;
-    font-size: 1.3rem!important;
+    font-size: 1.2rem!important;
 }
 
 .comp-checkbox{
@@ -503,3 +543,46 @@ footer.page-footer {
     width: 18px;
     margin: 0px;
 }
+
+#mlai_combineMethodsSelection label{
+    color:gray!important;
+    font-weight: 500;
+    display: inline;
+    margin-right:10px;
+}
+
+.smallgraytext{
+    font-size: 13px;
+    color: gray;
+}
+
+#addFirstMethodModal{
+    width:80%;
+    height:90%;
+    max-height:90%;
+    top:0;
+}
+
+.invalidBorder {
+    border: 2px solid red;
+}
+
+.dynamic-params label{
+    font-size: 12px!important;
+}
+
+.required-column{
+    color: #e40f0f;
+}
+
+.optional-column{
+    color: green;
+}
+
+/*.item-title {*/
+    /*width: auto;*/
+/*}*/
+
+/*.item-title .active{*/
+    /*width: 100%;*/
+/*}*/

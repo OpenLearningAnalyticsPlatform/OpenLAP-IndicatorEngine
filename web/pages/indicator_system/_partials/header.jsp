@@ -60,3 +60,16 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/materialize/js/materialize.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/custom/openlap.js"></script>
+
+    <script type="text/javascript" >
+        //$(document).ready(function() { $('.modal-trigger').leanModal();});
+
+        window.onresize = function(){
+            window.parent.postMessage(
+                    Math.max(document.documentElement.scrollHeight, document.documentElement.offsetHeight,
+                            document.body.scrollHeight, document.body.offsetHeight)
+                    ,"*")
+        };
+
+        window.onload = function () { window.parent.postMessage(800, "*"); };
+    </script>

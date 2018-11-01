@@ -9,10 +9,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class SessionIndicator implements Serializable, Cloneable {
     private static final AtomicInteger count = new AtomicInteger(0);
+
     private int identifier;
     private String indicatorName;
     private String indicatorType;
     private String visualization;
+
+    //private long loadedIndicatorID;
 
     private Map<String, String> hqlQuery;
 
@@ -84,6 +87,14 @@ public class SessionIndicator implements Serializable, Cloneable {
     public void setIndicatorParameters(IndicatorParameters indicatorParameters) {
         this.indicatorParameters = indicatorParameters;
     }
+
+//    public long getLoadedIndicatorID() {
+//        return loadedIndicatorID;
+//    }
+//
+//    public void setLoadedIndicatorID(long loadedIndicatorID) {
+//        this.loadedIndicatorID = loadedIndicatorID;
+//    }
 
     @Override
     public boolean equals(Object o) {

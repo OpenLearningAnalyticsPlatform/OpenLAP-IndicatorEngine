@@ -20,10 +20,13 @@
 
 package com.indicator_engine.controller;
 
+import com.google.gson.Gson;
 import com.indicator_engine.dao.SecurityRoleEntityDao;
 import com.indicator_engine.dao.UserCredentialsDao;
 import com.indicator_engine.datamodel.SecurityRoleEntity;
 import com.indicator_engine.datamodel.UserCredentials;
+import com.indicator_engine.misc.GlobalMethods;
+import com.indicator_engine.misc.L2PTokenResult;
 import com.indicator_engine.model.app.LoginForm;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
@@ -34,16 +37,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 
 @Controller
 @Scope("session")
-@SessionAttributes({"loggedIn", "userName", "sid", "activationStatus","role", "admin_access"})
+@SessionAttributes({"loggedIn", "userName", "rid", "sid", "activationStatus","role", "admin_access"})
 @SuppressWarnings({"unused", "unchecked"})
 public class LoginController {
     static Logger log = Logger.getLogger(LoginController.class.getName());
@@ -62,11 +69,63 @@ public class LoginController {
         return model;
     }*/
 
+    String L2PTokenDecoderURL = "https://www3.elearning.rwth-aachen.de/_vti_bin/l2pservices/externalapi.svc/Context?token=";
+
+//    @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
+//    public String getLogin(Map<String, Object> model) {
+//            LoginForm loginForm = new LoginForm();
+//            model.put("loginForm", loginForm);
+//            return "app/login";
+//    }
+
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
-    public String getLogin(Map<String, Object> model) {
-        LoginForm loginForm = new LoginForm();
-        model.put("loginForm", loginForm);
-        return "app/login";
+    public ModelAndView getLogin(Map<String, Object> model, HttpServletRequest request) {
+        Map<String, String[]> allRequestParams = request.getParameterMap();
+
+        if(allRequestParams.containsKey("accessToken")){
+            String accessToken = allRequestParams.get("accessToken")[0];
+
+            RestTemplate restTemplate = new RestTemplate();
+            String jsonResult = "";
+            try {
+                jsonResult = restTemplate.getForObject(L2PTokenDecoderURL + accessToken, String.class);
+            }
+            catch(Exception exc){
+                return new ModelAndView("app/l2p_down");
+            }
+
+            Gson gson = new Gson();
+            L2PTokenResult result = gson.fromJson(jsonResult, L2PTokenResult.class);
+
+            if(result.getSuccess())
+            {
+                String sid = request.getSession().getId();
+
+                ModelAndView returnModel = new ModelAndView("redirect:/indicators/define_new");
+                returnModel.addObject("sid", sid);
+                returnModel.addObject("loggedIn", "true");
+                returnModel.addObject("userName", result.getDetailsValue("User.TimId"));
+                returnModel.addObject("activationStatus", "true");
+                returnModel.addObject("role", "User");
+                returnModel.addObject("admin_access", "NO");
+                returnModel.addObject("rid", GlobalMethods.getMD5Hash(result.getDetailsValue("User.TimId")));
+
+                log.info("[Login L2P],userid:" + result.getDetailsValue("User.TimId") + ",courseid:"+result.getCourseId());
+                return returnModel;
+            }
+            else{
+                LoginForm loginForm = new LoginForm();
+                model.put("loginForm", loginForm);
+                //return "app/login";
+                return new ModelAndView("app/login");
+            }
+        }
+        else{
+            LoginForm loginForm = new LoginForm();
+            model.put("loginForm", loginForm);
+            //return "app/login";
+            return new ModelAndView("app/login");
+        }
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -76,6 +135,7 @@ public class LoginController {
         if(bindingResult.hasErrors()) {
             return new ModelAndView("app/login");
         }
+
         boolean authid = false;
         String user_role = "INVALID";
         String admin_role = "NO";
@@ -88,9 +148,9 @@ public class LoginController {
         String password = loginForm.getPassword();
         List<UserCredentials> selectedUserList = userDetailsBean.searchByUserName(username);
         for (UserCredentials eachuser : selectedUserList) {
-            log.info("---------------------------------------------------");
-            log.info(eachuser.getUname());
-            log.info(eachuser.getPassword());
+            //log.info("---------------------------------------------------");
+            //log.info(eachuser.getUname());
+            //log.info(eachuser.getPassword());
             if (username.equals(eachuser.getUname())) {
                 if (encoder.matches(password, eachuser.getPassword())) {
                     authid = true;
@@ -112,12 +172,17 @@ public class LoginController {
                 }
             }
         }
-        log.info("---------------------------------------------------");
-        log.info("Debug Login : \n");
-        log.info("Debug Login : Auth ID : \t" + authid);
-        log.info("Debug Login : Activation Status : \t" + activation_status);
-        log.info("Debug Login : Session User Name : \t" + sessionUserName);
-        log.info("Debug Login : Role : \t" + user_role);
+        //log.info("---------------------------------------------------");
+        //log.info("Debug Login : \n");
+        //log.info("Debug Login : Auth ID : \t" + authid);
+        //log.info("Debug Login : Activation Status : \t" + activation_status);
+        //log.info("Debug Login : Session User Name : \t" + sessionUserName);
+        //log.info("Debug Login : Role : \t" + user_role);
+
+        String userHash = GlobalMethods.getMD5Hash(sessionUserName);
+
+        log.info("[Login OpenLAP],userid:" + sessionUserName + ",role:"+user_role+ ",rid:"+userHash);
+
         if (authid && activation_status) {
             String sid = session.getId();
 //            model = new ModelAndView("app/home");
@@ -128,6 +193,7 @@ public class LoginController {
             model.addObject("activationStatus", "true");
             model.addObject("role", user_role);
             model.addObject("admin_access", admin_role);
+            model.addObject("rid", userHash);
         }
         else if (authid && !activation_status) {
             String sid = session.getId();
@@ -138,10 +204,11 @@ public class LoginController {
             model.addObject("activationStatus", "false");
             model.addObject("role", user_role);
             model.addObject("admin_access", admin_role);
+            model.addObject("rid", userHash);
         }
         else
             model = new ModelAndView("app/login");
-        log.info("Debug Login : Selected Model : \t" + model);
+        //log.info("Debug Login : Selected Model : \t" + model);
         return model;
     }
 
@@ -149,6 +216,5 @@ public class LoginController {
     public ModelAndView getLogOff() {
         return new ModelAndView("app/logoff");
     }
-
 }
 

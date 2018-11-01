@@ -67,7 +67,7 @@ public class OperationNumberProcessor implements OperationNumberProcessorDao {
         }
         //log.info("Dumping HQL" + entitySpecification.getHql());
 
-        log.info("Result Finished ");
+        //log.info("Result Finished ");
 
     }
 

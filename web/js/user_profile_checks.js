@@ -20,13 +20,28 @@
  * Created by Tanmaya Mahapatra on 16-03-2015.
  */
 
-var request;
-function createRequest() {
-    try {
-        request = new XMLHttpRequest();
-    } catch(failed){
-        alert("Error creating request object!");
-        request = null;
-    }
 
+// function createRequest() {
+//     try {
+//         request = new XMLHttpRequest();
+//     } catch(failed){
+//         alert("Error creating request object!");
+//         request = null;
+//     }
+// }
+
+function createRequest(success) {
+    var request;
+    if (window.XMLHttpRequest) {
+        request = new XMLHttpRequest();
+    }
+    else {
+        request = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    request.onreadystatechange = function (request) {
+        if (request.currentTarget.readyState == 4 && success != undefined) {
+            success();
+        }
+    };
+    return request;
 }

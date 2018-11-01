@@ -1,4 +1,4 @@
-<div id="visualizeQuestionModel" class="modal modal-fixed-footer">
+<div id="visualizeQuestionModel" class="modal modal-fixed-footer openlap-help-model">
     <div class="modal-content">
         <h4>Visualize Question</h4>
         <div id="visualizeQuestionContent"></div>
@@ -7,10 +7,10 @@
         <table>
             <tbody>
             <tr>
-                <td class="full-width">
-                    <span id="question_preview_msg" class="preview-err-msg"></span>
+                <td class="full-width no-padding">
+                    <span id="question_preview_msg"></span>
                 </td>
-                <td>
+                <td class="no-padding">
                     <button class="modal-action modal-close waves-effect waves-light btn light-blue darken-2" onclick="resetQuestionVisualization()">
                         Close
                     </button>

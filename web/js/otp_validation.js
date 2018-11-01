@@ -77,20 +77,3 @@ function validateOTP(){
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
 }
-
-/*
-function alert_updateStatus() {
-    if (request.readyState == 4) {
-        if (request.status == 200) {
-
-            if (request.responseText == "true") {
-
-                document.getElementById("status").value = "Your Account is Activated";
-            }
-            else {
-                document.getElementById("status").value = "Failed to Activate your account. Please Try again!";
-            }
-
-        }
-    }
-}*/

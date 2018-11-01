@@ -24,12 +24,11 @@ function loadAssociatedEntityFilters(entityValues) {
         var etValue = entityValue.eValues;
         var etTitle = entityValue.title;
 
+        // + "id='" + etKey + "_" + etValue.replace(" ", "_") + "'"
         $('#appliedAttributeFiltersDiv').append("<div class='chip filter-chip' "
-            + "data='" + etKey + "_" + etValue + "' " +
-            + "id='" + etKey + "_" + etValue.replace(",", "_") + "' " +
-            "title='" + etTitle + "_" + etValue +"'>" +
-            "<span>" + etTitle + ": " + etValue +
-            "</span><i class='material-icons' onclick='showDeleteEntityFilterModal(this, event);'>close</i></div>");
+            + "data='" + etKey + "~" + etValue + "' "
+            + "<span>" + etTitle + ": " + etValue
+            + "</span><i class='material-icons' onclick='showDeleteEntityFilterModal(this, event);'>close</i></div>");
 
         // var index = selectedMethods.indexOf(entityValue.key);
         // if (index < 0) {
@@ -88,38 +87,53 @@ function loadAssociatedTimeFilters(timeSpecs) {
             timeTitle = "End Date";
 
         $('#appliedUserTimeFiltersDiv').append("<div class='chip filter-chip'"
-            + "' id='" + timeSpec.type + "_" + timeSpec.timestamp +
-            "' title='" + timeSpec.type + "_" + formattedDate + "'>" +
+            + " data='" + timeSpec.type + "~" + timeSpec.timestamp + "'>" +
             "<span>" + timeTitle + ": " + formattedDate
             + "</span><i class='material-icons' onclick='showDeleteTimeFilterModal(this, event);'>close</i></div>");
     }
 }
-//
-// function loadAssociatedUserFilters(userSpecs) {
-//
-//     for (var userSpecsIndex = 0; userSpecsIndex < userSpecs.length; userSpecsIndex++) {
-//         var userSpec = userSpecs[userSpecsIndex];
-//
-//         $('#appliedUserTimeFiltersDiv').append("<div class='chip filter-chip'"
-//             + "' id='" + userSpec.key + "_" + userSpec.value +
-//             "' title='" + userSpec.key + "-" + userSpec.value +"'>" +
-//             "<span>" + userSpec.key + ": " + userSpec.value
-//             + "</span><i class='material-icons' onclick='showDeleteUserFilterModal(this, event);'>close</i></div>");
-//     }
-// }
-//
+
+function loadAssociatedUserFilters(userSpecs) {
+    if(userSpecs == null || userSpecs.length ==0 ){
+        $("#userFilterAll").prop("checked", true);
+        //$("#userFilterRadioAction").hide();
+        $("#userEncryptedHash").val("");
+    }
+    else{
+        var userSpec = userSpecs[0];
+
+        if(userSpec.key == "mine"){
+            $("#userFilterMy").prop("checked", true)
+        }
+        else if(userSpec.key == "notmine"){
+            $("#userFilterOthers").prop("checked", true)
+        }
+
+        //$("#userFilterRadioAction").show();
+        //$("#userEncryptedHash").val(userSpec.value);
+    }
+}
+
 
 function deleteEntityFilter() {
-    // var e = event;
+    var indicatoType = localStorage.getItem("indType");
+    var dsid = "0";
+    if(indicatoType=='multianalysis') {
+        dsid = $("#mlaids_datasourceId").val();
+    }
+
     $(function() {
         $.ajax({
             type: "GET",
             url: "/indicators/deleteEntities",
             // data: {filter: $(filter).closest('div').attr("id")},
-            data: {filter: $("#deleteEntityFilterValue").val()},
+            data: {filter: $("#deleteEntityFilterValue").val(), dsid: dsid},
             dataType: "json",
             success: function (response) {
-                loadAssociatedEntityFilters(response);
+                if(indicatoType=='multianalysis')
+                    loadMLAIEntityFilters(response);
+                else
+                    loadAssociatedEntityFilters(response);
             }
         });
     });
@@ -146,70 +160,89 @@ function addTimeFilter() {
     });
 }
 
-function addUserFilter() {
-    $(function() {
-        var isUserData = ( $("#isMyData").is(':checked') ) ? true : false;
-        $.ajax({
-            type: "GET",
-            url: "/indicators/addUserFilter?isUserData=" + isUserData,
-            dataType: "json",
-            success: function (userFilterResponse) {
-                loadAssociatedUserFilters(userFilterResponse);
-            }
-        });
+function userFilterChanged() {
+    var checkId = $("#userFilterRadioDiv input:checked").attr("id");
+
+    var userFilter = "all";
+    var userHash = $("#rid").val();
+
+    if(checkId == "userFilterMy")
+        userFilter = "mine";
+    else if(checkId == "userFilterOthers")
+        userFilter = "notmine";
+
+    $.ajax({
+        type: "GET",
+        url: "/indicators/setUserFilter?userFilter=" + userFilter + "&userHash=" + userHash,
+        dataType: "json",
+        success: function (userFilterResponse) {
+            //console.log(userFilterResponse);
+        }
     });
 }
+
+// function userFilterChanged() {
+//     var checkId = $("#userFilterRadioDiv input:checked").attr("id");
+//
+//     if(checkId == "userFilterAll"){
+//         $("#userFilterRadioAction").hide();
+//
+//         $.ajax({
+//             type: "GET",
+//             url: "/indicators/setUserFilter?userFilter=all&userHash=",
+//             dataType: "json",
+//             success: function (userFilterResponse) {
+//                 console.log("user filter set to all");
+//             }
+//         });
+//     }
+//     else if(checkId == "userFilterMy"){
+//         $("#userFilterRadioAction").show();
+//     }
+//     else if(checkId == "userFilterOthers"){
+//         $("#userFilterRadioAction").show();
+//     }
+// }
+//
+// function setUserFilter() {
+//     var checkId = $("#userFilterRadioDiv input:checked").attr("id");
+//
+//     var userFilter = "all";
+//     var userHash = $("#userEncryptedHash").val();
+//
+//     if(checkId == "userFilterMy")
+//         userFilter = "mine";
+//     else if(checkId == "userFilterOthers")
+//         userFilter = "notmine";
+//
+//     $.ajax({
+//         type: "GET",
+//         url: "/indicators/setUserFilter?userFilter=" + userFilter + "&userHash=" + userHash,
+//         dataType: "json",
+//         success: function (userFilterResponse) {
+//             console.log("user filter set: " + userFilter + "-" + userHash);
+//         }
+//     });
+// }
 
 function deleteTimeFilter() {
-    // var e = event;
-    $(function() {
-        $.ajax({
-            type: "GET",
-            url: "/indicators/deleteTimeFilters",
-            // data: {filter: $(filter).closest('div').attr("id")},
-            data: {filter: $("#deleteTimeFilterValue").val()},
-            dataType: "json",
-            success: function (timeFilterResponse) {
+    var indicatoType = localStorage.getItem("indType");
+    var dsid = "0";
+    if(indicatoType=='multianalysis') {
+        dsid = $("#mlaids_datasourceId").val();
+    }
+
+    $.ajax({
+        type: "GET",
+        url: "/indicators/deleteTimeFilters",
+        data: {filter: $("#deleteTimeFilterValue").val(), dsid: dsid},
+        dataType: "json",
+        success: function (timeFilterResponse) {
+            if(indicatoType=='multianalysis')
+                loadMLAIDSTimeFilters(timeFilterResponse);
+            else
                 loadAssociatedTimeFilters(timeFilterResponse);
-
-                // if (timeFilterResponse.length > 0) {
-                //     $.ajax({
-                //         type: "GET",
-                //         url: "/indicators/getUserFilters",
-                //         dataType: "json",
-                //         success: function (userFilterResponse) {
-                //             loadAssociatedUserTimeFilters(userFilterResponse, timeFilterResponse);
-                //         }
-                //     });
-                // }
-            }
-        });
-    });
-}
-
-function deleteUserFilter() {
-    // var e = event;
-    $(function() {
-        $.ajax({
-            type: "GET",
-            url: "/indicators/deleteUserFilters",
-            // data: {filter: $(filter).closest('div').attr("id")},
-            data: {filter: $("#deleteUserFilterValue").val()},
-            dataType: "json",
-            success: function (userFilterResponse) {
-                loadAssociatedUserFilters(userFilterResponse);
-                // if (userFilterResponse.length > 0) {
-                //     $.ajax({
-                //         type: "GET",
-                //         url: "/indicators/getTimeFilters",
-                //         dataType: "json",
-                //         success: function (timeFilterResponse) {
-                //             loadAssociatedUserTimeFilters(userFilterResponse, timeFilterResponse);
-                //         }
-                //     });
-                // }
-            }
-        });
+        }
     });
 }
 
@@ -219,14 +252,14 @@ function showDeleteEntityFilterModal(filter, event) {
     event.stopPropagation();
 }
 
-function showDeleteUserFilterModal(filter, event) {
-    $("#deleteUserFilterValue").val($(filter).closest('div').attr("id"));
-    $('#confirmUserDeleteModal').openModal();
-    event.stopPropagation();
-}
+// function showDeleteUserFilterModal(filter, event) {
+//     $("#deleteUserFilterValue").val($(filter).closest('div').attr("id"));
+//     $('#confirmUserDeleteModal').openModal();
+//     event.stopPropagation();
+// }
 
 function showDeleteTimeFilterModal(filter, event) {
-    $("#deleteTimeFilterValue").val($(filter).closest('div').attr("id"));
+    $("#deleteTimeFilterValue").val($(filter).closest('div').attr("data"));
     $('#confirmTimeDeleteModal').openModal();
     event.stopPropagation();
 }

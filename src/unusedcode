@@ -58,7 +58,7 @@ http://www.tutorialspoint.com/hibernate/hibernate_criteria_queries.htm
     <authentication-manager>
         <authentication-provider>
             <user-service>
-                <user name="tanmaya" password="123456" authorities="ROLE_ADMIN" />
+                <user name="tanmaya" password="123456" authorities="Admin" />
             </user-service>
         </authentication-provider>
     </authentication-manager>

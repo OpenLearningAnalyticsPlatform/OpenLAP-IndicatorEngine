@@ -1,4 +1,6 @@
 $(function () {
+    $('.modal-trigger').leanModal();
+    $(".button-collapse").sideNav();
     var current = location.pathname;
     $('#nav-sub li a').each(function () {
         var curItem = $(this);
@@ -539,3 +541,14 @@ $(function () {
         $('.tooltipped').tooltip();
     });
 }( jQuery ));
+
+function copyIndicatorRequestCode(element,event) {
+    event.stopPropagation();
+    var codeDiv = $(element).closest('.card-reveal').find(".request-code p");
+    codeDiv.focus();
+    var copied;
+    try { copied = document.execCommand('copy'); } catch (ex) { copied = false; }
+    codeDiv.blur();
+    //if ( document.selection ) { document.selection.empty(); } else if ( window.getSelection ) { window.getSelection().removeAllRanges(); }
+    if(copied) Materialize.toast('Indicator request code copied to clipborad.', 3000, 'rounded');
+}

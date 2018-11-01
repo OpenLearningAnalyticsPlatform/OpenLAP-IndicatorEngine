@@ -71,6 +71,7 @@
 
         <%--<h5>Indicator Editor</h5>--%>
         <input type="hidden" name="userName" id="userName" value="${sessionScope.userName}" />
+            <input type="hidden" name="rid" id="rid" value="${sessionScope.rid}" />
 
         <!--FORM for Indicator Editor-->
         <div class="tab-content">
@@ -140,6 +141,9 @@
                 <li>
                     <div id="visualizationHead" class="light-blue darken-2 white-text collapsible-header">Visualization</div>
                     <div class="collapsible-body panel-body">
+                        <div class="center-align red-text">
+                            <p>Indicators that use personalized data will show your data here and not the data of user who created it. <br> All indicator request code provided here are personalized. Please do not put them where others can see them, e.g. L<sup>2</sup>P course dashboard.</p>
+                        </div>
                         <%--<div id="visualizeHead" class="col-md-12 center-align"></div>--%>
                         <div id="visualizeQuestionContent" class="col-md-12"></div>
                     </div>
